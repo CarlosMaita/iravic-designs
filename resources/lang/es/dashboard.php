@@ -4,6 +4,18 @@ return [
     'breadcrumb' => [
         'home' => 'Inicio',
     ],
+    'catalog' => [
+        'categories' => [
+            'index' => 'Listado de Categorías',
+            'create' => 'Crear nueva categoría',
+            'edit' => 'Editar categoría'
+        ],
+        'brands' => [
+            'index' => 'Listado de Marcas',
+            'create' => 'Crear nueva marca',
+            'edit' => 'Editar marca'
+        ],
+    ],
     'config' => [
         'roles' => [
             'index' => 'Listado de Roles',
@@ -37,7 +49,10 @@ return [
         'back to list' => 'Ir al listado',
         'create' => 'Crear',
         'save' => 'Guardar',
-        'update' => 'Actualizar'
+        'update' => 'Actualizar',
+        'fields' => [
+            'name' => 'Nombre'
+        ]
     ],
     'general' => [
         'delete_resource' => '¿Seguro que desea eliminar este recurso?',
@@ -56,6 +71,9 @@ return [
         'info-password' => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.'
     ],
     'sidebar' => [
+        'catalog' => 'Catalogo',
+        'categories' => 'Categorías',
+        'brands' => 'Marcas',
         'settings' => 'Configuración',
         'users' => 'Usuarios',
         'roles' => 'Roles',

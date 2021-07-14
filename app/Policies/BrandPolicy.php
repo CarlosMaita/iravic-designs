@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Role;
+use App\Models\Brand;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RolePolicy
+class BrandPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->permissions()->contains('view-role');
+        return $user->permissions()->contains('view-brand');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Brand  $brand
      * @return mixed
      */
-    public function view(User $user, Role $role)
+    public function view(User $user, Brand $brand)
     {
-        return $user->permissions()->contains('view-role');
+        return $user->permissions()->contains('view-brand');
     }
 
     /**
@@ -41,41 +41,41 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $user->permissions()->contains('create-role');
+        return $user->permissions()->contains('create-brand');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Brand  $brand
      * @return mixed
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, Brand $brand)
     {
-        return $user->permissions()->contains('update-role');
+        return $user->permissions()->contains('update-brand');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Brand  $brand
      * @return mixed
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Brand $brand)
     {
-        return !$role->is_superadmin && $user->permissions()->contains('delete-role');
+        return $user->permissions()->contains('delete-brand');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Brand  $brand
      * @return mixed
      */
-    public function restore(User $user, Role $role)
+    public function restore(User $user, Brand $brand)
     {
         //
     }
@@ -84,10 +84,10 @@ class RolePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Brand  $brand
      * @return mixed
      */
-    public function forceDelete(User $user, Role $role)
+    public function forceDelete(User $user, Brand $brand)
     {
         //
     }

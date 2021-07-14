@@ -19,7 +19,7 @@ Route::get('/', function () { return redirect('/login'); });
 
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/', function () { 
-        return view('dashboard.homepage'); 
+        return view('dashboard.homepage');
     })
     ->name('admin.home')
     ->middleware('redirect.home.role');
@@ -29,6 +29,15 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     #
     Route::put('mi-perfil', 'MyProfileController@update')->name('my-profile.update');
 
+    # Catalog Routes
+    Route::group(['prefix' => 'catalogo', 'namespace' => 'catalog'], function () {
+        #
+        Route::resource('categorias', 'CategoryController')->except('show');
+        #
+        Route::resource('marcas', 'BrandController')->except('show');
+    });
+
+    # Config Routes
     Route::group(['prefix' => 'config', 'namespace' => 'config'], function () {
         # 
         Route::resource('usuarios', 'UserController')->except('show');

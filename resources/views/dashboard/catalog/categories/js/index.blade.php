@@ -1,38 +1,31 @@
 <script>
     $(function () {
-        const URL_ROLES = "{{ route('roles.index') }}";
-        const DATATABLE_ROLES = $("#datatable_roles");
+        const URL_RESOURCE = "{{ route('categorias.index') }}";
+        const DATATABLE_RESOURCE = $("#datatable_categories");
 
         initDataTable();
 
         function initDataTable() {
-            DATATABLE_ROLES.DataTable({
+            DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
                 processing: false,
                 responsive: true,
                 serverSide: true,
-                ajax: URL_ROLES,
+                ajax: URL_RESOURCE,
                 pageLength: 25,
                 columns: [
                     {data: 'name'},
-                    {
-                        render: function(data, type, row){
-                            return row.is_employee ? 'Si' : 'No'
-                        },
-                        'class' : 'text-center'
-                    },
-                    {data: 'description'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
         }
 
 
-        $('body').on('click', 'tbody .delete-role', function (e) {
+        $('body').on('click', 'tbody .delete-category', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
             let token = $("input[name=_token]").val();
-            let url = `${URL_ROLES}/${id}`;
+            let url = `${URL_RESOURCE}/${id}`;
             
             swal({
                 title: '',
@@ -49,7 +42,7 @@
                     datatype: 'json',
                     success: function (response) {
                         if (response.success) {
-                            DATATABLE_ROLES.DataTable().ajax.reload();
+                            DATATABLE_RESOURCE.DataTable().ajax.reload();
                             new Noty({
                                 text: response.message,
                                 type: 'success'
@@ -66,7 +59,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar el rol en este momento.",
+                                text: "No se puede eliminar la categoría en este momento.",
                                 type: 'error'
                             }).show();
                         }
@@ -88,7 +81,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar el rol en este momento.",
+                                text: "No se puede eliminar la categoría en este momento.",
                                 type: 'error'
                             }).show();
                         }
@@ -96,5 +89,6 @@
                 });
             }).catch(swal.noop);
         });
+
     });
 </script>

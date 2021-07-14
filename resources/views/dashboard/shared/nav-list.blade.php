@@ -8,6 +8,28 @@
     {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href=""><i class="cil-calculator c-sidebar-nav-icon"></i>Inicio</a>
     </li> --}}
+    {{-- Catalog links --}}
+    <li class="c-sidebar-nav-dropdown {{
+        $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
+        $menuService->isActive($url,"/admin/catalogo/marcas", false, true) . " " . 
+        $menuService->isActive($url,"/admin/catalogo/productos", false, true)
+    }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.catalog') }}</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            {{-- Categorias --}}
+            @can('viewany', App\Models\Category::class)
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/categorias")}}" href="{{ route('categorias.index') }}"></span>{{ __('dashboard.sidebar.categories') }}</a>
+                </li>
+            @endcan
+            {{-- Marcas --}}
+            @can('viewany', App\Models\Brand::class)
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/marcas")}}" href="{{ route('marcas.index') }}"></span>{{ __('dashboard.sidebar.brands') }}</a>
+                </li>
+            @endcan
+        </ul>
+    </li>
     {{-- Configuration links --}}
     <li class="c-sidebar-nav-dropdown {{
         $menuService->isActive($url,"/admin/config/usuarios", false, true) . " " .
