@@ -22,9 +22,6 @@ class RoleController extends Controller
     {
         $this->permissionsRepository = $permissionsRepository;
         $this->roleRepository = $roleRepository;
-
-        $this->middleware('can:viewany,App\Models\Role');
-        $this->middleware('can:create,App\Models\Role');
     }
     
     /**
@@ -34,6 +31,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewany', 'App\Models\Role');
+
         if ($request->ajax()) {
             $roles = $this->roleRepository->all('superadmin');
             return Datatables::of($roles)
@@ -65,6 +64,7 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', 'App\Models\Role');
         $permissions = $this->permissionsRepository->all();
 
         return view('dashboard.config.roles.create')
@@ -81,6 +81,7 @@ class RoleController extends Controller
     public function store(RoleRequest $request)
     {
         try {
+            $this->authorize('create', 'App\Models\Role');
             $role = $this->roleRepository->create($request->only('name', 'description', 'is_employee'));
             $role->permissions()->sync($request->permissions);
             flash("El rol <b>$request->name</b> ha sido creado con éxito")->success();
