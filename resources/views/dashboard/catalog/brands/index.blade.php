@@ -21,7 +21,7 @@
                                         <table id="datatable_brands" class="table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th scope="col">{{ __('dashboard.form.fields.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

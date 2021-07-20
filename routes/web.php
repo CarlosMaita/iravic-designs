@@ -35,6 +35,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('categorias', 'CategoryController')->except('show');
         #
         Route::resource('marcas', 'BrandController')->except('show');
+        #
+        Route::resource('productos', 'ProductController');
     });
 
     # Config Routes

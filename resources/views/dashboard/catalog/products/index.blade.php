@@ -6,11 +6,11 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.catalog.categories.index') }}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.catalog.products.index') }}</div>
                         <div class="card-body">
-                            @can('create', App\Models\Category::class)
+                            @can('create', App\Models\Product::class)
                                 <div class="row"> 
-                                    <a href="{{ route('categorias.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
+                                    <a href="{{ route('productos.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                 </div>
                                 <br>
                             @endcan
@@ -18,9 +18,11 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <table id="datatable_categories" class="table" width="100%">
+                                        <table id="datatable_products" class="table" width="100%">
                                         <thead>
                                             <tr>
+                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
                                                 <th></th>
                                             </tr>
@@ -39,5 +41,5 @@
 
 @push('js')
     @include('plugins.sweetalert')
-    @include('dashboard.catalog.categories.js.index')
+    @include('dashboard.catalog.products.js.index')
 @endpush

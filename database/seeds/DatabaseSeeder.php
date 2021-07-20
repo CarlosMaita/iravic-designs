@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Color;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Size;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,5 +24,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call('UsersSeeder');
+
+        if (!Color::first()) {
+            $this->call(ColorsSeeder::class);
+        }
+
+        if (!Size::first()) {
+            $this->call(SizesSeeder::class);
+        }
     }
 }

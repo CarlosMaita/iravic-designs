@@ -12,7 +12,7 @@ class BrandRepository extends BaseRepository implements BrandRepositoryInterface
     /**
      * BrandRepository constructor.
      *
-     * @param Cliente $model
+     * @param Brand $model
      */
     public function __construct(Brand $model)
     {

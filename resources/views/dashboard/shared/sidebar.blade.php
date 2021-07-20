@@ -1,17 +1,15 @@
 <div class="c-sidebar-brand test">
-  <a href="{{ route('admin.home') }}">
-      <img class="c-sidebar-brand-full" src="{{ url('/assets/brand/coreui-base-white.svg') }}" width="118" height="46" alt="CoreUI Logo">
-      <img class="c-sidebar-brand-minimized" src="{{ url('/assets/brand/coreui-signet-white.svg') }}" width="118" height="46" alt="CoreUI Logo">
-  </a>
+    <a href="{{ route('admin.home') }}">
+        <img class="c-sidebar-brand-full" src="{{ url('/assets/brand/coreui-base-white.svg') }}" width="118" height="46" alt="CoreUI Logo">
+        <img class="c-sidebar-brand-minimized" src="{{ url('/assets/brand/coreui-signet-white.svg') }}" width="118" height="46" alt="CoreUI Logo">
+    </a>
 </div>
 <ul class="c-sidebar-nav">
-    {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href=""><i class="cil-calculator c-sidebar-nav-icon"></i>Inicio</a>
-    </li> --}}
     {{-- Catalog links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Brand::class) || 
-        Auth::user()->can('viewany', App\Models\Category::class)
+        Auth::user()->can('viewany', App\Models\Category::class) || 
+        Auth::user()->can('viewany', App\Models\Product::class)
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
@@ -30,6 +28,12 @@
                 @can('viewany', App\Models\Brand::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/marcas")}}" href="{{ route('marcas.index') }}"></span>{{ __('dashboard.sidebar.brands') }}</a>
+                    </li>
+                @endcan
+                {{-- Productos --}}
+                @can('viewany', App\Models\Product::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/productos")}}" href="{{ route('productos.index') }}"></span>{{ __('dashboard.sidebar.poducts') }}</a>
                     </li>
                 @endcan
             </ul>

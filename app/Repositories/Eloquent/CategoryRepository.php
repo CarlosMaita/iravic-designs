@@ -12,7 +12,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     /**
      * BrandRepository constructor.
      *
-     * @param Cliente $model
+     * @param Category $model
      */
     public function __construct(Category $model)
     {

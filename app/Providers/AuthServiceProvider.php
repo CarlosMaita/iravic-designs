@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Brand' => 'App\Policies\BrandPolicy',
         'App\Models\Category' => 'App\Policies\CategoryPolicy',
         'App\Models\Permission' => 'App\Policies\PermissionPolicy',
+        'App\Models\Product' => 'App\Policies\ProductPolicy',
         'App\Models\Role' => 'App\Policies\RolePolicy',
         'App\User' => 'App\Policies\UserPolicy'
     ];
@@ -30,11 +31,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Gate::before(function (User $user) {
-            // if (!empty(array_intersect(array('superadmin', 'admin'), $user->roles->pluck('name')->toArray()))) {
+        Gate::before(function (User $user) {
+            if (!empty(array_intersect(array('superadmin', 'admin'), $user->roles->pluck('name')->toArray()))) {
                 // return true;
-        //     }
-        // });
+            }
+        });
 
         // Gate::define('create-user', function ($user) {
         //     return $user->permissions()->contains('create-user');
