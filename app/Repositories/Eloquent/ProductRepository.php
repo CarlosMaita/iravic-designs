@@ -43,7 +43,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         $data = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name');
 
-        if (isset($request->is_regular)) {
+        if (isset($request->is_regular) && $request->is_regular) {
             $data = array_merge(
                 $data,
                 $request->only('color_id', 'size_id', 'stock_depot', 'stock_local', 'stock_truck')
@@ -66,6 +66,31 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     
                 $this->create($data);
             }
+        }
+    }
+
+    /**
+    * @param $request
+    * @return void
+    */
+    public function updateByRequest($id, $request): void
+    {
+        $data = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name');
+
+        if (isset($request->is_regular) && $request->is_regular) {
+            $data = array_merge(
+                $data,
+                $request->only('color_id', 'size_id', 'stock_depot', 'stock_local', 'stock_truck')
+            );
+        }
+
+        $model = $this->model->find($id);
+        $model->update($data);
+
+        if ($model->is_regular && $model->product_combinations->count()) {
+            $model->product_combinations()->delete();
+        } else if (!$model->is_regular && isset($request->combinations) && count($request->combinations)) {
+            // update combinations
         }
     }
 }

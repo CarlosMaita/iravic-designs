@@ -29,25 +29,23 @@ class ProductRequest extends FormRequest
             'sizes.required' => 'Debe seleccionar una talla para cada combinación.',
             'stock_depot.required' => 'El campo Stock Depósito es obligatorio.',
             'stock_depot.min' => 'El Stock Depósito no puede ser menor a :min.',
-            // 'stocks_depot.required' => 'Debe ingresar el stock Depósito para cada combinación.',
             'stock_local.required' => 'El campo Stock Local es obligatorio.',
             'stock_local.min' => 'El Stock Local no puede ser menor a :min.',
-            // 'stocks_local.required' => 'Debe ingresar el stock Local para cada combinación.',
             'stock_truck.required' => 'El campo Stock Camioneta es obligatorio.',
-            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.',
-            // 'stocks_depot.required' => 'Debe ingresar el stock Camioneta para cada combinación.'
+            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.'
         ];
 
-        
-        foreach ($this->combinations as $combination) {
-            $messages['colors.' . $combination . 'exists'] = 'El color seleccionado para la combinación ' . ($combination + 1) . ' no se encuentra disponible en la BD.';
-            $messages['sizes.' . $combination . 'exists'] = 'La talla seleccionada para la combinación ' . ($combination + 1) . ' no se encuentra disponible en la BD.';
-            $messages['stocks_depot.' . $combination . '.integer'] = 'Ingrese Stock Depósito válido para la combinación ' . ($combination + 1);
-            $messages['stocks_depot.' . $combination . '.min'] = 'El Stock Depósito para la combinación ' . ($combination + 1) . ' no puede ser menor a :min';
-            $messages['stocks_local.' . $combination . '.integer'] = 'Ingrese Stock Local válido para la combinación ' . ($combination + 1);
-            $messages['stocks_local.' . $combination . '.min'] = 'El Stock Local para la combinación ' . ($combination + 1) . ' no puede ser menor a :min';
-            $messages['stocks_truck.' . $combination . '.integer'] = 'Ingrese Stock Camioneta válido para la combinación ' . ($combination + 1);
-            $messages['stocks_truck.' . $combination . '.min'] = 'El Stock Camioneta para la combinación ' . ($combination + 1) . ' no puede ser menor a :min';
+        if (isset($this->combinations)) {
+            foreach ($this->combinations as $combination) {
+                $messages['colors.' . $combination . 'exists'] = 'El color seleccionado para la combinación ' . ($combination + 1) . ' no se encuentra disponible en la BD.';
+                $messages['sizes.' . $combination . 'exists'] = 'La talla seleccionada para la combinación ' . ($combination + 1) . ' no se encuentra disponible en la BD.';
+                $messages['stocks_depot.' . $combination . '.integer'] = 'Ingrese Stock Depósito válido para la combinación ' . ($combination + 1);
+                $messages['stocks_depot.' . $combination . '.min'] = 'El Stock Depósito para la combinación ' . ($combination + 1) . ' no puede ser menor a :min';
+                $messages['stocks_local.' . $combination . '.integer'] = 'Ingrese Stock Local válido para la combinación ' . ($combination + 1);
+                $messages['stocks_local.' . $combination . '.min'] = 'El Stock Local para la combinación ' . ($combination + 1) . ' no puede ser menor a :min';
+                $messages['stocks_truck.' . $combination . '.integer'] = 'Ingrese Stock Camioneta válido para la combinación ' . ($combination + 1);
+                $messages['stocks_truck.' . $combination . '.min'] = 'El Stock Camioneta para la combinación ' . ($combination + 1) . ' no puede ser menor a :min';
+            }
         }
 
         return $messages;
@@ -78,7 +76,7 @@ class ProductRequest extends FormRequest
             'category_id' => 'required|exists:categories,id'
         ];
 
-        if (!isset($this->is_regular)) {
+        if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
             $rules['combinations'] = 'required';
 
             if (isset($this->combinations) && is_array($this->combinations) && count($this->combinations)) {
@@ -102,5 +100,39 @@ class ProductRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * 
+     */
+    public function withValidator($validator)
+    {
+        if (isset($this->combinations) && is_array($this->combinations)) {
+            foreach ($this->combinations as $combination) {
+                if (!isset($this->colors[$combination])) {
+                    $validator->after(function ($validator) use($combination) {
+                        $validator->errors()->add('color_' . $combination, 'Debe seleccionar un color para la combinación ' . ($combination + 1) . ' .');
+                    });
+                }
+
+                if (!isset($this->sizes[$combination])) {
+                    $validator->after(function ($validator) use($combination) {
+                        $validator->errors()->add('color_' . $combination, 'Debe seleccionar una talla para la combinación ' . ($combination + 1) . ' .');
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'is_regular' => isset($this->is_regular) ? 1 : 0
+        ]);
     }
 }

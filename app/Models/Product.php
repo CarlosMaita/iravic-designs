@@ -24,6 +24,9 @@ class Product extends Model
         'is_regular',
         'gender',
         'is_child_size',
+        'stock_depot',
+        'stock_local',
+        'stock_truck'
     ];
 
     protected $softCascade = [

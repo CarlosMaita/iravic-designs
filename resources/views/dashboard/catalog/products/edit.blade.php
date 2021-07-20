@@ -11,7 +11,16 @@
                           <form id="form-products" method="POST" action="{{ route('productos.update', [$product->id]) }}">
                             @csrf
                             @method('PUT')
-                            @include('dashboard.catalog.products._form')
+                            {{--  --}}
+                            <product-form 
+                                v-bind:product="{{ $product->exists ? json_encode($product) : json_encode(new stdClass()) }}"
+                                v-bind:brands="{{ json_encode($brands) }}"
+                                v-bind:categories="{{ json_encode($categories) }}"
+                                v-bind:colors="{{ json_encode($colors) }}"
+                                v-bind:genders="{{ json_encode(array('F','M')) }}"
+                                v-bind:sizes="{{ json_encode($sizes) }}"
+                            ></product-form>
+                            {{--  --}}
                             <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                             <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                           </form>

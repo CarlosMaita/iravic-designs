@@ -26,7 +26,9 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('is_regular')->default(0);
             // $table->enum('color', ['Amarillo', 'Azul', 'Rojo', 'Verde'])->nullable();
             $table->enum('gender', ['M', 'F'])->nullable();
-            $table->tinyInteger('is_child_size')->default(0);
+            $table->integer('stock_depot')->default(0);
+            $table->integer('stock_local')->default(0);
+            $table->integer('stock_truck')->default(0);
 
             // $table->enum('size', ['32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'])->nullable();
             // $table->enum('size_shoes', ['32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'])->nullable();

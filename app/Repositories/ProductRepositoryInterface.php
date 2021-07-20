@@ -15,4 +15,10 @@ interface ProductRepositoryInterface
     * @return void
     */
     public function createByRequest($request): void;
+
+    /**
+    * @param $request
+    * @return void
+    */
+    public function updateByRequest($id, $request): void;
 }

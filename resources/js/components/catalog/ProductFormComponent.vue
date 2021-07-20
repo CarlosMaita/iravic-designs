@@ -15,7 +15,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="name">Nombre</label>
-                        <input class="form-control" id="name" name="name" type="text" v-model="name" autofocus>
+                        <input class="form-control" id="name" name="name" type="text" v-model="product.name" autofocus>
                     </div>
                 </div>
             </div>
@@ -23,13 +23,13 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="code">Código</label>
-                        <input class="form-control" id="code" name="code" type="text" v-model="code" autofocus>
+                        <input class="form-control" id="code" name="code" type="text" v-model="product.code">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
                         <label for="gender">Género</label>
-                        <select class="form-control" id="gender" name="gender" v-model="gender">
+                        <select class="form-control" id="gender" name="gender" v-model="product.gender">
                             <option :value="null" selected disabled>Seleccionar</option>
                             <option v-for="(gender,index) in genders" :value="gender" :key="`gender-${index}`">{{ gender }}</option>
                         </select>
@@ -40,7 +40,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="category_id">Categoría</label>
-                        <select class="form-control" id="category" name="category_id" v-model="category">
+                        <select class="form-control" id="category" name="category_id" v-model="product.category_id">
                             <option :value="null" selected disabled>Seleccionar</option>
                             <option v-for="(category,index) in categories" :value="category.id" :key="`category-${index}`">{{ category.name }}</option>
                         </select>
@@ -49,7 +49,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="brand_id">Marca</label>
-                        <select class="form-control" id="brand" name="brand_id" v-model="brand">
+                        <select class="form-control" id="brand" name="brand_id" v-model="product.brand_id">
                             <option :value="null" selected disabled>Seleccionar</option>
                             <option v-for="(brand,index) in brands" :value="brand.id" :key="`brand-${index}`">{{ brand.name }}</option>
                         </select>
@@ -76,7 +76,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="color">Color</label>
-                            <select class="form-control" id="color" name="color_id" v-model="color">
+                            <select class="form-control" id="color" name="color_id" v-model="product.color_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(color,index) in colors" :value="color.id" :key="`color-${index}`">{{ color.name }}</option>
                             </select>
@@ -85,7 +85,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label :for="`size`">Talla</label>
-                            <select class="form-control" :id="`size`" name="size_id" v-model="size">
+                            <select class="form-control" :id="`size`" name="size_id" v-model="product.size_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(size,index) in sizes" :value="size.id" :key="`color-${index}`">{{ size.name }}</option>
                             </select>
@@ -97,19 +97,19 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label :for="`stock-depot`">Stock Depósito</label>
-                            <input type="number" class="form-control" :id="`stock-depot`" name="stock_depot" v-model="stock_deposit">
+                            <input type="number" class="form-control" :id="`stock-depot`" name="stock_depot" v-model="product.stock_depot">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label :for="`stock-local`">Stock Local</label>
-                            <input type="number" class="form-control" :id="`stock-local`" name="stock_local" v-model="stock_local">
+                            <input type="number" class="form-control" :id="`stock-local`" name="stock_local" v-model="product.stock_local">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label :for="`stock-truck`">Stock Camioneta</label>
-                            <input type="number" class="form-control" :id="`stock-truck`" name="stock_truck" v-model="stock_truck">
+                            <input type="number" class="form-control" :id="`stock-truck`" name="stock_truck" v-model="product.stock_truck">
                         </div>
                     </div>
                 </div>
@@ -124,6 +124,7 @@
                     <!--  -->
                     <div>
                         <input type="hidden" name="combinations[]" :value="index">
+                        <input v-if="combination.product_id" type="hidden" name="product_combinations[]" :value="combination.id">
                     </div>
                     <div class="row">
                         <div class="col-12">
@@ -134,7 +135,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`color-${index}`">Color</label>
-                                <select class="form-control" :id="`color-${index}`" :name="`colors[${index}]`" v-model="combination.color">
+                                <select class="form-control" :id="`color-${index}`" :name="`colors[${index}]`" v-model="combination.color_id">
                                     <option :value="null" selected disabled>Seleccionar</option>
                                     <option v-for="(color,j) in colors" :value="color.id" :key="`color-${index}-${j}`">{{ color.name }}</option>
                                 </select>
@@ -143,7 +144,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`size-${index}`">Talla</label>
-                                <select class="form-control" :id="`size-${index}`" :name="`sizes[${index}]`" v-model="combination.size">
+                                <select class="form-control" :id="`size-${index}`" :name="`sizes[${index}]`" v-model="combination.size_id">
                                     <option :value="null" selected disabled>Seleccionar</option>
                                     <option v-for="(size,j) in sizes" :value="size.id" :key="`color-${index}-${j}`">{{ size.name }}</option>
                                 </select>
@@ -155,7 +156,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-depot-${index}`">Stock Depósito</label>
-                                <input type="number" class="form-control" :id="`stock-depot-${index}`" :name="`stocks_depot[${index}]`" v-model="combination.stock_deposit">
+                                <input type="number" class="form-control" :id="`stock-depot-${index}`" :name="`stocks_depot[${index}]`" v-model="combination.stock_depot">
                             </div>
                         </div>
                         <div class="col-4">
@@ -222,7 +223,7 @@
             is_regular: 1,
             name: '',
             size: null,
-            stock_deposit: null,
+            stock_depot: null,
             stock_local: null,
             stock_truck: null,
             combinations: [],
@@ -230,24 +231,51 @@
             mounted: false,
         }),
 	    computed: {
-		    
 	    },
         async mounted() {
-            this.mounted = true
+            this.mounted = true;
+
+            console.log(this.product)
+
+            if (this.product.id) {
+                this.combinations = this.product.product_combinations;
+
+                if (!this.product.is_regular) {
+                    this.is_regular = 0;
+                }
+            }
         },
         methods: {
             addCombination() {
                 let new_combination = {
-                    color: null,
-                    size: null,
-                    stock_deposit: null,
+                    color_id: null,
+                    size_id: null,
+                    stock_depot: null,
                     stock_local: null,
                     stock_truck: null
                 };
 
+
+                // if (!this.product.id) {
+                //     console.log('no hay poducto');
+
+                //     this.product.brand_id = null;
+                //     this.product.category_id = null;
+                //     this.product.code = '';
+                //     this.product.gender = '';
+                //     this.product.is_regular = 1;
+                //     this.product.name = '';
+                //     this.product.product_combinations = []; 
+                // }
+
+                // if (!this.product.id) {
+                //     this.product.product_combinations = [];    
+                // }
+
+                
+                // this.product.product_combinations.push(new_combination);
+
                 this.combinations.push(new_combination);
-                // console.log('Combinacion agregada');
-                // console.log(this.combinations);
             },
             removeCombination(index) {
                 if (index < 0)

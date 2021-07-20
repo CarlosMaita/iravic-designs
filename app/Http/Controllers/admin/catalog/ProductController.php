@@ -87,11 +87,11 @@ class ProductController extends Controller
         $sizes = Size::all();
 
         return view('dashboard.catalog.products.create')
-                ->withColors($colors)
-                ->withSizes($sizes)
                 ->withBrands($brands)
                 ->withCategories($categories)
-                ->withProduct(new Product());
+                ->withColors($colors)
+                ->withProduct(new Product())
+                ->withSizes($sizes);
     }
 
     /**
@@ -151,11 +151,16 @@ class ProductController extends Controller
         $this->authorize('update', $producto);
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $producto->load('product_combinations');
 
         return view('dashboard.catalog.products.edit')
                 ->withBrands($brands)
                 ->withCategories($categories)
-                ->withProduct($producto);
+                ->withColors($colors)
+                ->withProduct($producto)
+                ->withSizes($sizes);
     }
 
     /**
@@ -169,7 +174,9 @@ class ProductController extends Controller
     {
         try {
             $this->authorize('update', $producto);
-            $product = $this->brandRepository->update($producto->id, $request->only('name'));
+            DB::beginTransaction();
+            $this->productRepository->updateByRequest($producto->id, $request);
+            DB::commit();
             flash("El producto <b>$request->name</b> ha sido actualizado con éxito")->success();
 
             return response()->json([
@@ -179,6 +186,7 @@ class ProductController extends Controller
                 ]
             ]);
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
@@ -199,13 +207,16 @@ class ProductController extends Controller
     {
         try {
             $this->authorize('delete', $producto);
+            DB::beginTransaction();
             $producto->delete();
+            DB::commit();
             
             return response()->json([
                 'success' => true,
                 'message' => "El producto ha sido eliminado con éxito"
             ]);
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
