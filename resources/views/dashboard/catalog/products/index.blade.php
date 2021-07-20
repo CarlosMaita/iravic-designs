@@ -1,5 +1,13 @@
 @extends('dashboard.base')
 
+@push('css')
+    <style>
+        .select2-container {
+            width: 100%!important;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="animated fadeIn">
@@ -14,6 +22,8 @@
                                 </div>
                                 <br>
                             @endcan
+                            {{--  --}}
+                            @include('dashboard.catalog.products._filter')
                             {{-- Datatable --}}
                             <div class="row">
                                 <div class="col-12">
@@ -22,8 +32,13 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
-                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
-                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.products.code') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.products.combinations') }}</th>
+                                                {{-- <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th> --}}
+                                                {{-- <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th> --}}
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -40,6 +55,7 @@
 @endsection
 
 @push('js')
+    @include('plugins.select2')
     @include('plugins.sweetalert')
     @include('dashboard.catalog.products.js.index')
 @endpush

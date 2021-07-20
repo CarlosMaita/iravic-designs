@@ -60,8 +60,14 @@ return [
                 'name' => 'Nombre',
             ],
             'products' => [
+                'brand'         => 'Marca',
+                'category'      => 'Categoría',
                 'code'          => 'Código',
-                'is_regular'    => 'Es un producto regular?'
+                'color'         => 'Color',
+                'combinations'  => 'Combinaciones',
+                'gender'        => 'Género',
+                'is_regular'    => 'Es un producto regular?',
+                'size'          => 'Talla',
             ]
         ]
     ],

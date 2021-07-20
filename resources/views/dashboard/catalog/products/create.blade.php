@@ -32,6 +32,5 @@
 @endsection
 
 @push('js')
-    @include('plugins.select2')
     @include('dashboard.catalog.products.js.form')
 @endpush

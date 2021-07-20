@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="code">Género</label>
+                        <label for="gender">Género</label>
                         <select class="form-control" id="gender" name="gender" v-model="gender">
                             <option :value="null" selected disabled>Seleccionar</option>
                             <option v-for="(gender,index) in genders" :value="gender" :key="`gender-${index}`">{{ gender }}</option>
@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="code">Categoría</label>
+                        <label for="category_id">Categoría</label>
                         <select class="form-control" id="category" name="category_id" v-model="category">
                             <option :value="null" selected disabled>Seleccionar</option>
                             <option v-for="(category,index) in categories" :value="category.id" :key="`category-${index}`">{{ category.name }}</option>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="code">Marca</label>
+                        <label for="brand_id">Marca</label>
                         <select class="form-control" id="brand" name="brand_id" v-model="brand">
                             <option :value="null" selected disabled>Seleccionar</option>
                             <option v-for="(brand,index) in brands" :value="brand.id" :key="`brand-${index}`">{{ brand.name }}</option>

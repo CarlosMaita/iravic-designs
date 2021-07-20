@@ -24,7 +24,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      */
     public function all(): Collection
     {
-        return $this->model->orderBy('name')->get();
+        return $this->model->with(['brand', 'category'])->orderBy('name')->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function onlyPrincipals(): Collection
+    {
+        return $this->model->doesntHave('product_parent')->with(['brand', 'category'])->orderBy('name')->get();
     }
 
     /**

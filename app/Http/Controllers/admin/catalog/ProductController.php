@@ -41,7 +41,7 @@ class ProductController extends Controller
         $this->authorize('viewany', 'App\Models\Product');
 
         if ($request->ajax()) {
-            $products = $this->productRepository->all();
+            $products = $this->productRepository->onlyPrincipals();
             return Datatables::of($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -61,7 +61,16 @@ class ProductController extends Controller
                     ->make(true);
         }
 
-        return view('dashboard.catalog.products.index');
+        $brands = $this->brandRepository->all();
+        $categories = $this->categoryRepository->all();
+        $colors = Color::all();
+        $sizes = Size::all();
+
+        return view('dashboard.catalog.products.index')
+            ->withColors($colors)
+            ->withSizes($sizes)
+            ->withBrands($brands)
+            ->withCategories($categories);
     }
 
     /**
@@ -74,7 +83,6 @@ class ProductController extends Controller
         $this->authorize('create', 'App\Models\Product');
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
-
         $colors = Color::all();
         $sizes = Size::all();
 
