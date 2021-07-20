@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
+    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
     
     protected $table = 'products';
     protected $guarded = [];
@@ -23,6 +24,10 @@ class Product extends Model
         'is_regular',
         'gender',
         'is_child_size',
+    ];
+
+    protected $softCascade = [
+        'product_combinations'
     ];
 
     # Relationships

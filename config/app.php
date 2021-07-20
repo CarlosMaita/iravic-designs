@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Askedio\SoftCascade\Providers\GenericServiceProvider::class,
         Laraveles\Spanish\SpanishServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
 

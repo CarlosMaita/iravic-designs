@@ -1,7 +1,6 @@
 <div class="row mb-3">
     <div class="col-12 mb-2">
         <div>
-            {{-- <button id="btn-advanced-search" class="btn" type="button" data-toggle="collapse" href="#adv-search" role="button" aria-expanded="false" aria-controls="adv-search" style="border: 1px solid #000;border-radius: unset;font-weight: 600;"><i class="fa fa-search"></i> Búsqueda Avanzada</button> --}}
             <button id="btn-advanced-search" class="btn" type="button" style="border: 1px solid #000;border-radius: unset;font-weight: 600;"><i class="fa fa-search"></i> Búsqueda Avanzada</button>
         </div>
         <div class="collapse mt-3" id="adv-search">
@@ -70,7 +69,6 @@
                             <div class="d-flex">
                                 <button type="button" class="btn text-primary clear-form">Limpiar filtro</button>
                                 <div class="d-inline-block ml-auto">
-                                    {{-- <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#adv-search" aria-expanded="false" aria-controls="adv-search">Cerrar</button> --}}
                                     <button id="close-advance-search" type="button" class="btn btn-danger">Cerrar</button>
                                     <button type="submit" class="btn btn-primary">Buscar</button>
                                 </div>
