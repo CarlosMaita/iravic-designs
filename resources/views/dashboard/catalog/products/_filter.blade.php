@@ -1,7 +1,7 @@
 <div class="row mb-3">
     <div class="col-12 mb-2">
         <div>
-            <button id="btn-advanced-search" class="btn" type="button" style="border: 1px solid #000;border-radius: unset;font-weight: 600;"><i class="fa fa-search"></i> Búsqueda Avanzada</button>
+            <button id="btn-advanced-search" class="btn" type="button" style="border: 1px solid #000;border-radius: unset;font-weight: 600;"><i class="fa fa-search"></i> {{ __('dashboard.advanced_search.advanced_search') }}</button>
         </div>
         <div class="collapse mt-3" id="adv-search">
             <div class="card card-body px-2">
@@ -67,10 +67,10 @@
                     <div class="row">
                         <div class="col-12 mb-2">
                             <div class="d-flex">
-                                <button type="button" class="btn text-primary clear-form">Limpiar filtro</button>
+                                <button type="button" class="btn text-primary clear-form">{{ __('dashboard.advanced_search.clear_filter') }}</button>
                                 <div class="d-inline-block ml-auto">
-                                    <button id="close-advance-search" type="button" class="btn btn-danger">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                    <button id="close-advance-search" type="button" class="btn btn-danger">{{ __('dashboard.general.close') }}</button>
+                                    <button type="submit" class="btn btn-primary">{{ __('dashboard.general.search') }}</button>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'advanced_search' => [
+        'advanced_search' => 'Búsqueda Avanzada',
+        'clear_filter'    => 'Limpiar filtro'
+    ],
     'breadcrumb' => [
         'home' => 'Inicio',
     ],
@@ -72,11 +76,13 @@ return [
         ]
     ],
     'general' => [
+        'close'             => 'Cerrar',
         'delete_resource'   => '¿Seguro que desea eliminar este recurso?',
         'home'              => 'Inicio',
         'new_a'             => 'Nueva',
         'new_o'             => 'Nuevo',
-        'operation_error'   => 'Ha ocurrido un error al tratar de realizar la operación en este momento.'
+        'operation_error'   => 'Ha ocurrido un error al tratar de realizar la operación en este momento.',
+        'search'            => 'Buscar'
     ],
     'header' => [
         'profile'   => 'Perfil',
