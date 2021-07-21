@@ -57,6 +57,7 @@ return [
         'back'          => 'Atrás',
         'back to list'  => 'Ir al listado',
         'create'        => 'Crear',
+        'edit'          => 'Editar',
         'save'          => 'Guardar',
         'update'        => 'Actualizar',
         'fields' => [

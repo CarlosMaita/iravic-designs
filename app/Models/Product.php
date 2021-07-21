@@ -44,6 +44,11 @@ class Product extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
+    public function color()
+    {
+        return $this->belongsTo('App\Models\Color');
+    }
+
     public function product_combinations()
     {
         return $this->hasMany('App\Models\Product');
@@ -52,5 +57,10 @@ class Product extends Model
     public function product_parent()
     {
         return $this->belongsTo('App\Models\Product', 'product_id', 'id');
+    }
+
+    public function size()
+    {
+        return $this->belongsTo('App\Models\Size');
     }
 }

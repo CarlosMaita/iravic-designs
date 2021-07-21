@@ -84,7 +84,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label :for="`size`">Talla</label>
+                            <label for="size">Talla</label>
                             <select class="form-control" :id="`size`" name="size_id" v-model="product.size_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(size,index) in sizes" :value="size.id" :key="`color-${index}`">{{ size.name }}</option>
@@ -96,19 +96,19 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="form-group">
-                            <label :for="`stock-depot`">Stock Depósito</label>
+                            <label for="stock-depot">Stock Depósito</label>
                             <input type="number" class="form-control" :id="`stock-depot`" name="stock_depot" v-model="product.stock_depot">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label :for="`stock-local`">Stock Local</label>
+                            <label for="stock-local">Stock Local</label>
                             <input type="number" class="form-control" :id="`stock-local`" name="stock_local" v-model="product.stock_local">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label :for="`stock-truck`">Stock Camioneta</label>
+                            <label for="stock-truck">Stock Camioneta</label>
                             <input type="number" class="form-control" :id="`stock-truck`" name="stock_truck" v-model="product.stock_truck">
                         </div>
                     </div>

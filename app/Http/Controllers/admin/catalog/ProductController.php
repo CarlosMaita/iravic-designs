@@ -136,7 +136,7 @@ class ProductController extends Controller
     public function show(Product $producto)
     {
         $this->authorize('view', $producto);
-        return view('dashboard.catalog.products.edit')
+        return view('dashboard.catalog.products.show')
                 ->withProduct($producto);
     }
 
