@@ -39,6 +39,24 @@
             </ul>
         </li>
     @endif
+    {{-- Customer Management links --}}
+    @if (
+        Auth::user()->can('viewany', App\Models\Zone::class)
+    )
+        <li class="c-sidebar-nav-dropdown {{
+            $menuService->isActive($url,"/admin/gestion-clientes/zonas", false, true)
+        }}">
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
+            <ul class="c-sidebar-nav-dropdown-items">
+                {{-- Zonas --}}
+                @can('viewany', App\Models\Zone::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/zonas")}}" href="{{ route('zonas.index') }}"></span>{{ __('dashboard.sidebar.zones') }}</a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
+    @endif
     {{-- Configuration links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Role::class) || 

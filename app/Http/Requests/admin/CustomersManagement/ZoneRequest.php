@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Requests\admin\Catalog;
+namespace App\Http\Requests\admin\CustomersManagement;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BrandRequest extends FormRequest
+class ZoneRequest extends FormRequest
 {
     public function messages()
     {
         return [
             'name.required' => 'El campo nombre es obligatorio.',
-            'name.unique' => 'El campo nombre ya se encuentra ocupado por otra marca',
             'name.max' => 'El campo nombre no puede tener mas de :max caracteres.'
         ];
     }

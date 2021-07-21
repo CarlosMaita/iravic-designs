@@ -25,6 +25,13 @@ return [
             'edit'      => 'Editar producto'
         ],
     ],
+    'customers-management' => [
+        'zones' => [
+            'index'     => 'Listado de Zonas',
+            'create'    => 'Crear nueva zona',
+            'edit'      => 'Editar zona'
+        ]
+    ],
     'config' => [
         'roles' => [
             'index'             => 'Listado de Roles',
@@ -95,14 +102,16 @@ return [
         'info-password'             => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.'
     ],
     'sidebar' => [
-        'catalog'     => 'Catálogo',
-        'categories'  => 'Categorías',
-        'brands'      => 'Marcas',
-        'poducts'     => 'Productos',
-        'settings'    => 'Configuración',
-        'users'       => 'Usuarios',
-        'roles'       => 'Roles',
-        'permissions' => 'Permisos',
-        'privileges'  => 'Privilegios'
+        'brands'                => 'Marcas',
+        'catalog'               => 'Catálogo',
+        'categories'            => 'Categorías',
+        'customers-management'  => 'Gestión Clientes',
+        'poducts'               => 'Productos',
+        'settings'              => 'Configuración',
+        'users'                 => 'Usuarios',
+        'roles'                 => 'Roles',
+        'permissions'           => 'Permisos',
+        'privileges'            => 'Privilegios',
+        'zones'                 => 'Zonas'
     ],
 ];

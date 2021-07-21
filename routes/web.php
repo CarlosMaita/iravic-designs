@@ -39,11 +39,16 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('productos', 'ProductController');
     });
 
+    # Customers Routes
+    Route::group(['prefix' => 'gestion-clientes', 'namespace' => 'customers_management'], function () {
+        #
+        Route::resource('zonas', 'ZoneController')->except('show');
+    });
+
     # Config Routes
     Route::group(['prefix' => 'config', 'namespace' => 'config'], function () {
         # 
         Route::resource('usuarios', 'UserController')->except('show');
-
         #
         Route::resource('permisos', 'PermissionController')->only('index');
         #

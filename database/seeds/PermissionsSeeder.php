@@ -166,6 +166,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Zones
+            [
+                'name'         => 'view-zone',
+                'display_name' => 'Zonas Ver',
+                'description'  => 'Zonas Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-zone',
+                'display_name' => 'Zonas Crear',
+                'description'  => 'Zonas Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-zone',
+                'display_name' => 'Zonas Editar',
+                'description'  => 'Zonas Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-zone',
+                'display_name' => 'Zonas Eliminar',
+                'description'  => 'Zonas Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);

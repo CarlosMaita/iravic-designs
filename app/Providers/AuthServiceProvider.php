@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Permission' => 'App\Policies\PermissionPolicy',
         'App\Models\Product' => 'App\Policies\ProductPolicy',
         'App\Models\Role' => 'App\Policies\RolePolicy',
+        'App\Models\Zone' => 'App\Policies\ZonePolicy',
         'App\User' => 'App\Policies\UserPolicy'
     ];
 
@@ -33,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::before(function (User $user) {
             if (!empty(array_intersect(array('superadmin', 'admin'), $user->roles->pluck('name')->toArray()))) {
-                // return true;
+                return true;
             }
         });
 
