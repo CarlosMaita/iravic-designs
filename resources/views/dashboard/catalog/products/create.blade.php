@@ -32,5 +32,6 @@
 @endsection
 
 @push('js')
+    @include('plugins.sweetalert')
     @include('dashboard.catalog.products.js.form')
 @endpush

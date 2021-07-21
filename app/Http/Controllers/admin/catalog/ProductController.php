@@ -191,7 +191,7 @@ class ProductController extends Controller
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
                     'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
+                    'trace' => $e->getTrace()
                 ]
             ]);
         }

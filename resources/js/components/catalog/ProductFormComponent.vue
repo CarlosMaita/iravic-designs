@@ -123,19 +123,19 @@
                 <div v-for="(combination, index) in combinations" :key="`combination-${index}`">
                     <!--  -->
                     <div>
-                        <input type="hidden" name="combinations[]" :value="index">
+                        <input v-if="!combination.product_id" type="hidden" name="combinations[]" :value="index">
                         <input v-if="combination.product_id" type="hidden" name="product_combinations[]" :value="combination.id">
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <p>Combinación #{{ (index + 1) }} <button class="btn btn-danger" type="button" @click="removeCombination(index)"><i class="fas fa-trash-alt"></i></button></p> 
+                            <p><b>Combinación #{{ (index + 1) }}</b> <button class="btn btn-sm btn-danger" type="button" @click="removeCombination(index, combination.id)"><i class="fas fa-trash-alt"></i></button></p> 
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`color-${index}`">Color</label>
-                                <select class="form-control" :id="`color-${index}`" :name="`colors[${index}]`" v-model="combination.color_id">
+                                <select class="form-control" :id="`color-${index}`" :name="getCombinationInputName('color', index, combination)" v-model="combination.color_id">
                                     <option :value="null" selected disabled>Seleccionar</option>
                                     <option v-for="(color,j) in colors" :value="color.id" :key="`color-${index}-${j}`">{{ color.name }}</option>
                                 </select>
@@ -144,7 +144,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`size-${index}`">Talla</label>
-                                <select class="form-control" :id="`size-${index}`" :name="`sizes[${index}]`" v-model="combination.size_id">
+                                <select class="form-control" :id="`size-${index}`" :name="getCombinationInputName('size', index, combination)" v-model="combination.size_id">
                                     <option :value="null" selected disabled>Seleccionar</option>
                                     <option v-for="(size,j) in sizes" :value="size.id" :key="`color-${index}-${j}`">{{ size.name }}</option>
                                 </select>
@@ -156,19 +156,19 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-depot-${index}`">Stock Depósito</label>
-                                <input type="number" class="form-control" :id="`stock-depot-${index}`" :name="`stocks_depot[${index}]`" v-model="combination.stock_depot">
+                                <input type="number" class="form-control" :id="`stock-depot-${index}`" :name="getCombinationInputName('stock_depot', index, combination)" v-model="combination.stock_depot">
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-local-${index}`">Stock Local</label>
-                                <input type="number" class="form-control" :id="`stock-local-${index}`" :name="`stocks_local[${index}]`" v-model="combination.stock_local">
+                                <input type="number" class="form-control" :id="`stock-local-${index}`" :name="getCombinationInputName('stock_local', index, combination)" v-model="combination.stock_local">
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-truck-${index}`">Stock Camioneta</label>
-                                <input type="number" class="form-control" :id="`stock-truck-${index}`" :name="`stocks_truck[${index}]`" v-model="combination.stock_truck">
+                                <input type="number" class="form-control" :id="`stock-truck-${index}`" :name="getCombinationInputName('stock_truck', index, combination)" v-model="combination.stock_truck">
                             </div>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
         async mounted() {
             this.mounted = true;
 
-            console.log(this.product)
+            console.log(this.product);
 
             if (this.product.id) {
                 this.combinations = this.product.product_combinations;
@@ -255,33 +255,80 @@
                     stock_truck: null
                 };
 
-
-                // if (!this.product.id) {
-                //     console.log('no hay poducto');
-
-                //     this.product.brand_id = null;
-                //     this.product.category_id = null;
-                //     this.product.code = '';
-                //     this.product.gender = '';
-                //     this.product.is_regular = 1;
-                //     this.product.name = '';
-                //     this.product.product_combinations = []; 
-                // }
-
-                // if (!this.product.id) {
-                //     this.product.product_combinations = [];    
-                // }
-
-                
-                // this.product.product_combinations.push(new_combination);
-
                 this.combinations.push(new_combination);
             },
-            removeCombination(index) {
-                if (index < 0)
-                    return;
+            getCombinationInputName(input, index, product_combination) {
+                let input_name = '';
+                switch(input) { 
+                    case 'color':
+                        input_name = product_combination.product_id ? `colors_existing[${product_combination.id}]` : `colors[${index}]`;
+                        break;
+                    case 'size':
+                        input_name = product_combination.product_id ? `sizes_existing[${product_combination.id}]` : `sizes[${index}]`;
+                        break;
+                    case 'stock_depot':
+                        input_name = product_combination.product_id ? `stocks_depot_existing[${product_combination.id}]` : `stocks_depot[${index}]`;
+                        break;
+                    case 'stock_local':
+                        input_name = product_combination.product_id ? `stocks_local_existing[${product_combination.id}]` : `stocks_local[${index}]`;
+                        break;
+                    case 'stock_truck':
+                        input_name = product_combination.product_id ? `stocks_truck_existing[${product_combination.id}]` : `stocks_truck[${index}]`;
+                        break;
+                }
+
+                return input_name;
+            },
+            async httpDeleteCombination(index, producto_id) {
+                try {
+                    $('body').append('<div class="loading">Loading&#8230;</div>');
+                    let url = `/zapatos/public//admin/catalogo/productos/${producto_id}`;
+                    let response = await this.$axios.delete(url);
+
+                    if (response.data.success) {
+                        this.combinations.splice(index, 1);
+
+                        new Noty({
+                            text: 'La combinación ha sido eliminada con éxito',
+                            type: 'success'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: 'La combinación no ha podido ser eliminada en este momento',
+                            type: 'error'
+                        }).show();
+                    }
+
+                    $('.loading').remove();
+                } catch (_error) {
+                    $('.loading').remove();
+                    console.log(_error)
+
+                    new Noty({
+                            text: 'La combinación no ha podido ser eliminada en este momento',
+                            type: 'error'
+                        }).show();
+                }
+            },
+            removeCombination(index, product_id = null) {
+                if (index < 0) return;
                 
-                this.combinations.splice(index, 1);
+                let self = this;
+
+                if (product_id) {
+                    swal({
+                        title: '',
+                        text: "Seguro desea eliminar esta combinación?",
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Si',
+                        cancelButtonText: 'No'
+                    }).then(function () {
+                        self.httpDeleteCombination(index, product_id);
+                    }).catch(swal.noop);
+                } else {
+                    self.combinations.splice(index, 1);
+                }
             }
         }
     }
