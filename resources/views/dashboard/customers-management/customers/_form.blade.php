@@ -109,5 +109,26 @@
         </div>
     </div>
 </fieldset>
-
-{{-- 'address', --}}
+<hr>
+<fieldset>
+    <div class="row mb-4">
+        <div class="col-12">
+            <small class="form-text text-muted font-weight-bold text-success">{{ __('dashboard.form.labels.customer_address_info') }}</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="address">{{ __('dashboard.form.fields.customers.address') }}:</label>
+                <textarea id="address" name="address" rows="2" cols="1" class="form-control">{{ old("address", $customer->address)}}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div id="map-customer" style="height: 300px;"></div>
+            <input id="latitude" name="latitude" type="hidden" value='{{old("latitude", $customer->latitude)}}'>
+            <input id="longitude" name="longitude" type="hidden" value='{{old("longitude", $customer->longitude)}}'>
+        </div>  
+    </div>
+</fieldset>

@@ -70,7 +70,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
-    {{-- <script src="{{ asset('plugins/jquery/jquery-3.5.1.js') }}"></script> --}}
     <script src="{{ asset('js/popovers.js') }}"></script>
     <script src="{{ asset('plugins/datatables/js/datatables.min.js') }}"></script>
     <script src="{{ asset('plugins/noty/js/noty.min.js') }}"></script>

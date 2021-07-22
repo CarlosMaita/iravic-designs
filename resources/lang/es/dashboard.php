@@ -74,6 +74,7 @@ return [
         'update'        => 'Actualizar',
         'fields' => [
             'customers' => [
+                'address' => 'Dirección',
                 'contact_name' => 'Nombre de contacto',
                 'contact_telephone' => 'Teléfono de contacto',
                 'contact_dni' => 'C.I de contacto',
@@ -101,6 +102,7 @@ return [
             ]
         ],
         'labels' => [
+            'customer_address_info' => 'Dirección y Ubicación del cliente',
             'customer_contact_info' => 'Información Persona de Contacto',
             'customer_finance_info' => 'Información Financiera',
             'customer_personal_info' => 'Información Personal'

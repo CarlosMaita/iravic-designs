@@ -24,6 +24,13 @@
 @endsection
 
 @push('js')
+  <script>
+    const $customer = @json($customer);
+  </script>
+  <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
+
+  @include('plugins.google-maps')
   @include('plugins.select2')
+  @include('dashboard.customers-management.customers.js.customer-map')
   @include('dashboard.customers-management.customers.js.form')
 @endpush

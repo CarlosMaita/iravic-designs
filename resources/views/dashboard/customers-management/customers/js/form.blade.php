@@ -2,7 +2,17 @@
     $(function(){
         const FORM_RESOURCE = $("#form-customers");
 
+        var customer_map = $customer ? new CustomerMap('map-customer', $customer.latitude, $customer.longitude) : new ClienteMap('map-customer');
+        customer_map.setMap();
+        customer_map.setInitialMarker();
+
         $('select').select2();
+
+        $("#address").keypress( _.debounce( function(){
+            if (customer_map.canGeocoding) {
+                customer_map.geocoding();
+            }
+        }, 700));
 
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
