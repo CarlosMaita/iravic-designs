@@ -195,6 +195,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Customers
+            [
+                'name'         => 'view-customer',
+                'display_name' => 'Clientes Ver',
+                'description'  => 'Clientes Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-customer',
+                'display_name' => 'Clientes Crear',
+                'description'  => 'Clientes Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-customer',
+                'display_name' => 'Clientes Editar',
+                'description'  => 'Clientes Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-customer',
+                'display_name' => 'Clientes Eliminar',
+                'description'  => 'Clientes Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);

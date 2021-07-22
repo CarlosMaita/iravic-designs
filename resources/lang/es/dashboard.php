@@ -26,6 +26,11 @@ return [
         ],
     ],
     'customers-management' => [
+        'customers' => [
+            'index'     => 'Listado de Clientes',
+            'create'    => 'Crear nuevo cliente',
+            'edit'      => 'Editar cliente'
+        ],
         'zones' => [
             'index'     => 'Listado de Zonas',
             'create'    => 'Crear nueva zona',
@@ -68,6 +73,19 @@ return [
         'save'          => 'Guardar',
         'update'        => 'Actualizar',
         'fields' => [
+            'customers' => [
+                'contact_name' => 'Nombre de contacto',
+                'contact_telephone' => 'Teléfono de contacto',
+                'contact_dni' => 'C.I de contacto',
+                'dni' => 'C.I',
+                'dni_picture' => 'Foto C.I',
+                'max_credit' => 'Crédito máximo',
+                'name' => 'Nombre',
+                'qualification' => 'Calificación',
+                'receipt_picture' => 'Foto recibo',
+                'telephone' => 'Teléfono ',
+                'zone' => 'Zona'
+            ],
             'general' => [
                 'name' => 'Nombre',
             ],
@@ -81,6 +99,11 @@ return [
                 'is_regular'    => 'Es un producto regular?',
                 'size'          => 'Talla',
             ]
+        ],
+        'labels' => [
+            'customer_contact_info' => 'Información Persona de Contacto',
+            'customer_finance_info' => 'Información Financiera',
+            'customer_personal_info' => 'Información Personal'
         ]
     ],
     'general' => [
@@ -106,6 +129,7 @@ return [
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',
         'customers-management'  => 'Gestión Clientes',
+        'customers'             => 'Clientes',
         'poducts'               => 'Productos',
         'settings'              => 'Configuración',
         'users'                 => 'Usuarios',

@@ -31,6 +31,11 @@ class Role extends Model
         return $query->where('is_employee', 1);
     }
 
+    public function scopeWhereNotEmployee($query)
+    {
+        return $query->where('is_employee', 0);
+    }
+
     public function scopeWhereNotSuperadmin($query)
     {
         return $query->where('is_superadmin', 0);

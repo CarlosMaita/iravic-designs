@@ -41,7 +41,7 @@ class ZoneController extends Controller
                         }
 
                         if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-brand" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-zone" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
 
                         return $btn;

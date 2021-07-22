@@ -33,11 +33,25 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
         return $roles->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function allEmployees(): Collection
     {
         return $this->model
                     ->whereEmployee()
                     ->whereNotSuperadmin()
+                    ->orderBy('name')
+                    ->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function allNotEmployees(): Collection
+    {
+        return $this->model
+                    ->whereNotEmployee()
                     ->orderBy('name')
                     ->get();
     }

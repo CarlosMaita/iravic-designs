@@ -42,6 +42,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     # Customers Routes
     Route::group(['prefix' => 'gestion-clientes', 'namespace' => 'customers_management'], function () {
         #
+        Route::resource('clientes', 'CustomerController');
+        #
         Route::resource('zonas', 'ZoneController')->except('show');
     });
 
