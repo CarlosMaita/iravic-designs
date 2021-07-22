@@ -39,7 +39,7 @@
                 <select id="zone" class="form-control" name="zone_id">
                     <option selected disabled>Seleccionar</option>
                     @foreach ($zones as $zone)
-                        <option value="{{ $zone->id }}">{{ $zone->name }}</option>
+                        <option value="{{ $zone->id }}" @if($customer->zone_id == $zone->id) selected @endif>{{ $zone->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -49,9 +49,9 @@
                 <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
                 <select id="qualification" class="form-control" name="qualification">
                     <option selected disabled>Seleccionar</option>
-                    <option value="Bueno">Bueno</option>
-                    <option value="Malo">Malo</option>
-                    <option value="Muy Malo">Muy Malo</option>
+                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
+                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
+                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
                 </select>
             </div>
         </div>
@@ -68,7 +68,7 @@
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="max_credit">{{ __('dashboard.form.fields.customers.max_credit') }}</label>
-                <input class="form-control" id="max_credit" name="max_credit" type="number" step="any" value="{{ old("max_credit", $customer->dni) }}">
+                <input class="form-control" id="max_credit" name="max_credit" type="number" step="any" value="{{ old("max_credit", $customer->max_credit) }}">
             </div>
         </div>
         <div class="col-md-6 col-sm-12">

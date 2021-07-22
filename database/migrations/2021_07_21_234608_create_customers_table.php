@@ -24,10 +24,10 @@ class CreateCustomersTable extends Migration
             $table->string('dni')->nullable();
             $table->text('dni_picture')->nullable();
             $table->text('receipt_picture')->nullable();
-            $table->float('max_credit');
-            $table->string('contact_name');
-            $table->string('contact_telephone');
-            $table->string('contact_dni');
+            $table->string('max_credit')->nullable();
+            $table->string('contact_name')->nullable();
+            $table->string('contact_telephone')->nullable();
+            $table->string('contact_dni')->nullable();
             $table->enum('qualification', ['Bueno', 'Malo', 'Muy Malo']);
             $table->timestamps();
             $table->softDeletes();

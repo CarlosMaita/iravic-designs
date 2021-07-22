@@ -51,7 +51,7 @@ class CustomerRequest extends FormRequest
             // 'contact_telephone' => '',
             // 'contact_dni' => '',
             'dni' => 'required',
-            'dni_picture' => 'required',
+            // 'dni_picture.required' => '',
             'max_credit' => 'required|numeric',
             'name' => 'required|min:2',
             // 'receipt_picture' => '',
@@ -69,7 +69,7 @@ class CustomerRequest extends FormRequest
         /**
          * Request should have latitude and longitude from address
          */
-        if ($this->address && (!$this->latitude || $this->longitude)) {
+        if ($this->address && (!$this->latitude || !$this->longitude)) {
             $validator->after(function ($validator) {
                 $validator->errors()->add('coords', 'No se ha encontrado latitud y longitud para la dirección.');
             });
