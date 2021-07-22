@@ -11,7 +11,10 @@ class CustomerRequest extends FormRequest
     public function messages()
     {
         return [
-            'address.required' => 'El campo dirección es obligatorio',
+            'address.required' => 'El campo dirección es obligatorio.',
+            'contact_name.required' => 'El campo Nombre de contacto es obligatorio.',
+            'contact_telephone.required' => 'El campo teléfono de contacto es obligatorio.',
+            'contact_dni.required' => 'El campo DNI de contacto es obligatorio.',
             'dni.required' => 'El campo C.I es obligatorio.',
             'dni_picture.required' => 'La foto de la C.I es obligatoria.',
             'max_credit.required' => 'El campo Crédito Máximo es obligatorio.',
@@ -45,6 +48,9 @@ class CustomerRequest extends FormRequest
     {
         return [
             'address' => 'required',
+            'contact_name' => 'required',
+            'contact_telephone' => 'required',
+            'contact_dni' => 'required',
             'dni' => 'required',
             // 'dni_picture.required' => '',
             'max_credit' => 'required|numeric',
@@ -74,26 +80,41 @@ class CustomerRequest extends FormRequest
          * Custom Unique rule for DNI
          */
         if ($this->dni) {
-            if ($existing_customer = Customer::where('dni', $this->dni)->first()) {
+            $customer = $this->route('cliente');
+            $existing_customer = Customer::where('dni', $this->dni)->first();
+
+            if ($existing_customer && (!$customer || $customer->id != $existing_customer->id)) {
                 $validator->after(function ($validator) use($existing_customer) {
-                    $validator->errors()->add('dni_used', 'El DNI ingresado se encuentra registrado para el cliente <b>' . $existing_customer->name . '</b>');
+                    $validator->errors()->add('dni_unique', 'El DNI ingresado se encuentra registrado para el cliente ' . $existing_customer->name);
                 });
             }
 
-            if ($existing_customer = Customer::where('contact_dni', $this->dni)->first()) {
+            if ($this->dni == $this->contact_dni) {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('dni_unique', 'El DNI del cliente tiene que ser diferente al DNI de la persona de contacto.');
+                });
+            } else if (!isset($this->confirm) && $existing_customer = Customer::where('contact_dni', $this->dni)->first()) {
                 $validator->after(function ($validator) use ($existing_customer) {
-                    $validator->errors()->add('dni_used', 'El DNI ingresado se encuentra registrado como DNI de contacto para el cliente <b>' . $existing_customer->name . '</b>');
+                    $validator->errors()->add('dni_contact_used', 'El DNI ingresado se encuentra registrado como DNI de contacto para el cliente ' . $existing_customer->name . ' (' . $existing_customer->qualification . ')');
                 });
             }
+        }
+
+        if ($this->telephone == $this->contact_telephone) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('dni_unique', 'El teléfono del cliente tiene que ser diferente al teléfono de la persona de contacto.');
+            });
         }
 
         /**
          * There should be a contact name if contact telephone o contact dni is present
          */
+        /*
         if (!$this->contact_name && ($this->contact_telephone || $this->contact_dni)) {
             $validator->after(function ($validator) {
                 $validator->errors()->add('contact_info', 'Debe ingresar el nombre de la persona de contacto');
             });
         }
+        */
     }
 }

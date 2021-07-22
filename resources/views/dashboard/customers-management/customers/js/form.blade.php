@@ -16,11 +16,21 @@
 
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
+            httpSubmitForm();
+        });
+
+
+        function httpSubmitForm(confirm = false) {
+            var url = FORM_RESOURCE.attr('action');
             var form = $('#form-customers')[0];
             var formData = new FormData(form);
             
+            if (confirm) {
+                url += '?confirm=1';
+            }
+
             $.ajax({
-                    url: FORM_RESOURCE.attr('action'),
+                    url: url,
                     type: FORM_RESOURCE.attr('method'),
                     enctype: 'multipart/form-data',
                     data: formData,
@@ -45,10 +55,25 @@
                     if (e.responseJSON.errors) {
                         $.each(e.responseJSON.errors, function (index, element) {
                             if ($.isArray(element)) {
-                                new Noty({
-                                    text: element[0],
-                                    type: 'error'
-                                }).show();
+
+                                if (index == 'dni_contact_used' && Object.keys(e.responseJSON.errors).length  == 1) {
+                                    swal({
+                                        title: 'Desea confirmar el usuario?',
+                                        text: element[0],
+                                        type: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Si',
+                                        cancelButtonText: 'No'
+                                    }).then(function () {
+                                        console.log('Debe confirmarse el formulario');
+                                        httpSubmitForm(true);
+                                    }).catch(swal.noop);
+                                } else {
+                                    new Noty({
+                                        text: element[0],
+                                        type: 'error'
+                                    }).show();
+                                }
                             }
                         });
                     } else if (e.responseJSON.error){
@@ -69,6 +94,6 @@
                     }
                 }
             });
-        });
+        }
     });
 </script>
