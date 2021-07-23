@@ -6,3 +6,7 @@
 
 // If you want to add something do it here
 @import "custom";
+
+.custom-file-input:lang(es) ~ .custom-file-label::after {
+    content: "Buscar";
+}

@@ -2,9 +2,59 @@
     $(function(){
         const FORM_RESOURCE = $("#form-customers");
 
+        var inputs_files = $('.custom-file-input');
         var customer_map = $customer ? new CustomerMap('map-customer', $customer.latitude, $customer.longitude) : new ClienteMap('map-customer');
         customer_map.setMap();
         customer_map.setInitialMarker();
+
+        inputs_files.on('change', function(event) {
+            const id = this.id
+            const img_target = document.getElementById('img-' + id);
+            const [file] = this.files;
+
+            if (img_target) {
+                if (file) {
+                    img_target.src = URL.createObjectURL(file)
+                    img_target.classList.remove('d-none');
+                } else {
+                    img_target.src = '';
+                    img_target.classList.add('d-none');
+                }
+            }
+        });
+
+        $('.delete-img').on('click', function(e) {
+            e.preventDefault();
+            var parent = $(this).parent('.img-wrapper'); // closest
+            var img = parent.find('img');
+            var link_cancel_delete = parent.find('a.cancel-delete-img');
+            var target = $(this).data('target');
+
+            $(this).addClass('d-none');
+            img.addClass('d-none');
+            link_cancel_delete.removeClass('d-none');
+
+            if (target) {
+                // add input to delete server side
+                var html = `<input class="delete" name="delete_${target}" type="hidden" value="1">`;
+                parent.append(html);
+            }
+        });
+
+        $('.cancel-delete-img').on('click', function(e){
+            e.preventDefault();
+            var parent = $(this).parent('.img-wrapper');
+            var img = parent.find('img');
+            var link_delete = parent.find('.delete-img');
+            var input_delete = parent.find('input.delete');
+
+            $(this).addClass('d-none');
+            img.removeClass('d-none');
+            link_delete.removeClass('d-none');
+
+            // remove input de delete
+            input_delete.remove();
+        });
 
         $('select').select2();
 
@@ -18,7 +68,6 @@
             e.preventDefault();
             httpSubmitForm();
         });
-
 
         function httpSubmitForm(confirm = false) {
             var url = FORM_RESOURCE.attr('action');
@@ -76,14 +125,14 @@
                                 }
                             }
                         });
+                    }else if (e.responseJSON.message){
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
                     } else if (e.responseJSON.error){
                         new Noty({
                             text: e.responseJSON.error,
-                            type: 'error'
-                        }).show();
-                    } else if (e.responseJSON.message){
-                        new Noty({
-                            text: e.responseJSON.message,
                             type: 'error'
                         }).show();
                     } else {

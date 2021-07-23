@@ -28,7 +28,17 @@
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="dni_picture">{{ __('dashboard.form.fields.customers.dni_picture') }}</label>
-                {{-- dni_picture --}}
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="dni_picture" name="dni_picture" lang="es">
+                    <label class="custom-file-label" for="dni_picture">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-dni_picture" class="mt-3 img-fluid @if(!$customer->dni_picture) d-none @endif" src="{{ $customer->url_dni }}" alt="{{ __('dashboard.form.fields.customers.dni_picture') }}" />
+                    @if($customer->dni_picture) 
+                        <span class="delete-img position-absolute" type="button" data-target="dni_picture"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -74,7 +84,17 @@
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="receipt_picture">{{ __('dashboard.form.fields.customers.receipt_picture') }}</label>
-                receipt_picture
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="receipt_picture" name="receipt_picture" lang="es">
+                    <label class="custom-file-label" for="receipt_picture">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-receipt_picture" class="mt-3 img-fluid  @if(!$customer->receipt_picture) d-none @endif" src="{{ $customer->url_receipt }}" alt="{{ __('dashboard.form.fields.customers.receipt_picture') }}" />
+                    @if($customer->receipt_picture) 
+                        <span class="delete-img position-absolute" type="button" data-target="receipt_picture"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

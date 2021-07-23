@@ -46,7 +46,7 @@ class CustomerRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'address' => 'required',
             'contact_name' => 'required',
             'contact_telephone' => 'required',
@@ -60,6 +60,21 @@ class CustomerRequest extends FormRequest
             'telephone' => 'required',
             'zone_id' => 'required|exists:zones,id'
         ];
+
+        if ($this->isMethod('POST')) {
+            $rules['dni_picture'] = 'required|image';
+            $rules['receipt_picture'] = 'required|image';
+        } else {
+            if (isset($this->delete_dni_picture) && !$this->dni_picture) {
+                $rules['dni_picture'] = 'required|image';
+            }
+
+            if (isset($this->delete_receipt_picture) && !$this->receipt_picture) {
+                $rules['receipt_picture'] = 'required|image';
+            }
+        }
+
+        return $rules;
     }
 
     /**

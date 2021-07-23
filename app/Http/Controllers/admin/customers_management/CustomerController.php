@@ -7,6 +7,7 @@ use App\Http\Requests\admin\CustomerRequest;
 use App\Models\Customer;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\ZoneRepository;
+use App\Services\Images\ImageService;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,6 +19,10 @@ class CustomerController extends Controller
     public $customerRepository;
 
     public $zoneRepository;
+
+    private $disk_dni = 'customers_dni';
+
+    private $disk_receipt = 'customers_receipt';
 
     public function __construct(CustomerRepository $customerRepository, ZoneRepository $zoneRepository)
     {
@@ -83,7 +88,12 @@ class CustomerController extends Controller
         try {
             $this->authorize('create', 'App\Models\Customer');
             DB::beginTransaction();
-            $this->customerRepository->create($request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'dni_picture', 'latitude', 'longitude', 'max_credit', 'name', 'receipt_picture', 'qualification', 'telephone', 'zone_id'));
+            $attributes = array_merge(
+                array('dni_picture' => ImageService::save($this->disk_dni, $request->file('dni_picture'))),
+                array('receipt_picture' => ImageService::save($this->disk_receipt, $request->file('receipt_picture'))),
+                $request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+            );
+            $this->customerRepository->create($attributes);
             DB::commit();
             flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
 
@@ -143,7 +153,12 @@ class CustomerController extends Controller
         try {
             $this->authorize('update', $cliente);
             DB::beginTransaction();
-            $this->customerRepository->update($cliente->id, $request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'dni_picture', 'latitude', 'longitude', 'max_credit', 'name', 'receipt_picture', 'qualification', 'telephone', 'zone_id'));
+            $attributes = array_merge(
+                array('dni_picture' => $cliente->updateImage($this->disk_dni, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
+                array( 'receipt_picture' => $cliente->updateImage($this->disk_receipt, $cliente->receipt_picture, $request->receipt_picture, $request->delete_receipt_picture)),
+                $request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+            );
+            $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();
             flash("El cliente <b>$request->name</b> ha sido actualizado con éxito")->success();
 
