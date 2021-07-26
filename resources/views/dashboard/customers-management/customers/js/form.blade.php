@@ -3,7 +3,7 @@
         const FORM_RESOURCE = $("#form-customers");
 
         var inputs_files = $('.custom-file-input');
-        var customer_map = $customer ? new CustomerMap('map-customer', $customer.latitude, $customer.longitude) : new ClienteMap('map-customer');
+        var customer_map = $customer ? new CustomerMap('map-customer', $customer.latitude, $customer.longitude, $customer.address, true) : new ClienteMap('map-customer',null, null, null, true);
         customer_map.setMap();
         customer_map.setInitialMarker();
 

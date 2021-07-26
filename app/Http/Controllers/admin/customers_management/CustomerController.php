@@ -46,6 +46,10 @@ class CustomerController extends Controller
                     ->addColumn('action', function($row){
                         $btn = '';
 
+                        if (Auth::user()->can('view', $row)) {
+                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        }
+                        
                         if (Auth::user()->can('update', $row)) {
                             $btn .= '<a href="'. route('clientes.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
@@ -123,7 +127,9 @@ class CustomerController extends Controller
      */
     public function show(Customer $cliente)
     {
-        //
+        $this->authorize('view', $cliente);
+        return view('dashboard.customers-management.customers.show')
+                ->withCustomer($cliente);
     }
 
     /**

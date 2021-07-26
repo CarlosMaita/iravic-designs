@@ -21,7 +21,11 @@
                                         <table id="datatable_customers" class="table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers-management.customers.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers-management.customers.dni') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers-management.customers.telephone') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers-management.customers.qualification') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers-management.customers.zone') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

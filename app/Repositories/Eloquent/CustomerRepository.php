@@ -24,6 +24,6 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      */
     public function all(): Collection
     {
-        return $this->model->orderBy('name')->get();
+        return $this->model->with('zone')->orderBy('name')->get();
     }
 }

@@ -62,15 +62,15 @@ class CustomerRequest extends FormRequest
         ];
 
         if ($this->isMethod('POST')) {
-            $rules['dni_picture'] = 'required|image';
-            $rules['receipt_picture'] = 'required|image';
+            $rules['dni_picture'] = 'required|file';
+            $rules['receipt_picture'] = 'required|file';
         } else {
             if (isset($this->delete_dni_picture) && !$this->dni_picture) {
-                $rules['dni_picture'] = 'required|image';
+                $rules['dni_picture'] = 'required|file';
             }
 
             if (isset($this->delete_receipt_picture) && !$this->receipt_picture) {
-                $rules['receipt_picture'] = 'required|image';
+                $rules['receipt_picture'] = 'required|file';
             }
         }
 

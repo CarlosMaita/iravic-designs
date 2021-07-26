@@ -29,7 +29,13 @@ return [
         'customers' => [
             'index'     => 'Listado de Clientes',
             'create'    => 'Crear nuevo cliente',
-            'edit'      => 'Editar cliente'
+            'details'   => 'Detalle cliente',
+            'edit'      => 'Editar cliente',
+            'name'      => 'Nombre',
+            'dni'       => 'C.I',
+            'telephone'     => 'Teléfono',
+            'qualification' => 'Calificación',
+            'zone'      => 'Zona',
         ],
         'zones' => [
             'index'     => 'Listado de Zonas',

@@ -1,7 +1,8 @@
 <script type="text/javascript">
     var geocoder = new google.maps.Geocoder;
 
-    function CustomerMap(map_id, lat = null, lng = null, lat_marker = null) {
+    function CustomerMap(map_id, lat = null, lng = null, address = '', updatable = false) {
+        this.address = address;
         this.lat = lat;
         this.lng = lng;
         this.map_id = map_id;
@@ -10,6 +11,7 @@
         this.has_marker = false;
         this.marker_created_after_search = false;
         this.marker_created_after_click = false;
+        this.updatable = updatable;
         this.setHasMarker();
         this.setMapCoords();
     }
@@ -32,10 +34,13 @@
     	$('#address').after(content);
     }
 
-    CustomerMap.prototype.createMarkerPopup = function(marker){
-        var address_val = $('#address').val();
+    CustomerMap.prototype.createMarkerPopup = function(marker, content){
+        // var address_val = $('#address').val();
+        // this.marker.infowindow = new google.maps.InfoWindow({
+        //     content: address_val
+        // });
         this.marker.infowindow = new google.maps.InfoWindow({
-            content: address_val
+            content: content
         });
 
         var that = this;
@@ -72,19 +77,29 @@
         	map: this.map,
         	animation: google.maps.Animation.DROP,
         	position: latlong,
-        	draggable: true
+        	draggable: this.updatable
       	});
 
      	this.map.setCenter(latlong);
      	this.map.setZoom(18);
         this.marker.setAnimation(google.maps.Animation.BOUNCE);
-        this.createMarkerPopup(this.marker);
-        this.updateLatLngInputs(data.lat, data.lng);
 
-        var that = this;
-        google.maps.event.addListener(that.marker, 'dragend', function(evt) {
-        	that.updateLatLngInputs(evt.latLng.lat(), evt.latLng.lng());
-		});
+        if (this.address) {
+            var content = this.address;
+        } else if ($('#address').val().length) {
+            var content = $('#address').val();
+        }
+
+        this.createMarkerPopup(this.marker, content);
+
+        if (this.updatable) {
+            this.updateLatLngInputs(data.lat, data.lng);
+
+            var that = this;
+            google.maps.event.addListener(that.marker, 'dragend', function(evt) {
+                that.updateLatLngInputs(evt.latLng.lat(), evt.latLng.lng());
+            });
+        }
     }
 
     CustomerMap.prototype.setHasMarker = function () {
@@ -126,20 +141,23 @@
             });
 
             var that = this;
-            google.maps.event.addListener(that.map, 'click', function(event) {
-                var data =  {
-		              	lat: event.latLng.lat(),
-		              	lng: event.latLng.lng()
-		            };
-                
-				if (that.canGeocodingReverse()) {
-					that.geocodingReverse(event.latLng);
-				}
 
-		        that.addMarker(data);
-		        that.removeErrorAddress();
-                that.marker_created_after_click = true;
-		    });
+            if (that.updatable) {
+                google.maps.event.addListener(that.map, 'click', function(event) {
+                    var data =  {
+                            lat: event.latLng.lat(),
+                            lng: event.latLng.lng()
+                        };
+                    
+                    if (that.canGeocodingReverse()) {
+                        that.geocodingReverse(event.latLng);
+                    }
+
+                    that.addMarker(data);
+                    that.removeErrorAddress();
+                    that.marker_created_after_click = true;
+                });
+            }
         }
     };  
 

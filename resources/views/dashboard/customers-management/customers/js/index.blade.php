@@ -15,6 +15,10 @@
                 pageLength: 25,
                 columns: [
                     {data: 'name'},
+                    {data: 'dni'},
+                    {data: 'telephone'},
+                    {data: 'qualification'},
+                    {data: 'zone.name'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
