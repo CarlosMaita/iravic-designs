@@ -30,9 +30,10 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
 
     /**
      * @param $user_id = Authenticated user
-     * @return Model
+     * @return     public function getOpenByUserId($user_id): int
+
      */
-    public function getOpenByUserId($user_id): Model
+    public function getOpenByUserId($user_id): ?Model
     {
         return $this->model->where([
             ['user_id', $user_id],

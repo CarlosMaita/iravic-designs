@@ -10,5 +10,5 @@ interface BoxRepositoryInterface
      * @param $user_id = Authenticated user
      * @return Model
      */
-    public function getOpenByUserId($user_id): Model;
+    public function getOpenByUserId($user_id): ?Model;
 }
