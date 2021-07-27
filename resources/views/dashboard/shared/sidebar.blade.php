@@ -65,6 +65,24 @@
             </ul>
         </li>
     @endif
+    {{-- Sales Management links --}}
+    @if (
+        Auth::user()->can('viewany', App\Models\Box::class)
+    )
+        <li class="c-sidebar-nav-dropdown {{
+            $menuService->isActive($url,"/admin/cajas-ventas/cajas", false, true)
+        }}">
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-sales') }}</a>
+            <ul class="c-sidebar-nav-dropdown-items">
+                {{-- Boxes --}}
+                @can('viewany', App\Models\Box::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/cajas")}}" href="{{ route('cajas.index') }}"></span>{{ __('dashboard.sidebar.boxes') }}</a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
+    @endif
     {{-- Configuration links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Role::class) || 

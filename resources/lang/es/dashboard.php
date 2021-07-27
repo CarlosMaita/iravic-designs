@@ -5,6 +5,26 @@ return [
         'advanced_search' => 'Búsqueda Avanzada',
         'clear_filter'    => 'Limpiar filtro'
     ],
+    'boxes-sales' => [
+        'boxes' => [
+            'index'             => 'Listado de Cajas',
+            'create'            => 'Crear nueva Caja',
+            'edit'              => 'Editar Caja',
+            'box'               => 'Caja',
+            'cash_initial'      => 'Efectivo inicial',
+            'closed'            => 'Cerrada',
+            'date'              => 'Fecha',
+            'date_start'        => 'Fecha Inicio',
+            'date_end'          => 'Fecha Fin',
+            'sure_to_close_box' => 'Seguro de cerrar la caja',
+            'total_bankwire'    => 'Total Transferencia',
+            'total_card'        => 'Total Tarjeta',
+            'total_cash'        => 'Total Efectivo',
+            'total_credit'      => 'Total Crédito',
+            'total_payed'       => 'Total Pagado',
+            'user'              => 'Usuario'
+        ]
+    ],
     'breadcrumb' => [
         'home' => 'Inicio',
     ],
@@ -79,6 +99,9 @@ return [
         'save'          => 'Guardar',
         'update'        => 'Actualizar',
         'fields' => [
+            'boxes' => [
+                'cash_initial' => 'Efectivo inicial'
+            ],
             'customers' => [
                 'address' => 'Dirección',
                 'contact_name' => 'Nombre de contacto',
@@ -120,8 +143,10 @@ return [
         'home'              => 'Inicio',
         'new_a'             => 'Nueva',
         'new_o'             => 'Nuevo',
+        'no'                => 'No',
         'operation_error'   => 'Ha ocurrido un error al tratar de realizar la operación en este momento.',
-        'search'            => 'Buscar'
+        'search'            => 'Buscar',
+        'yes'               => 'Si'
     ],
     'header' => [
         'profile'   => 'Perfil',
@@ -133,6 +158,8 @@ return [
         'info-password'             => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.'
     ],
     'sidebar' => [
+        'boxes'                 => 'Cajas',
+        'boxes-sales'           => 'Cajas y Ventas',
         'brands'                => 'Marcas',
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',

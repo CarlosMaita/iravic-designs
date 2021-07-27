@@ -47,6 +47,12 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('zonas', 'ZoneController')->except('show');
     });
 
+    # Customers Routes
+    Route::group(['prefix' => 'cajas-ventas', 'namespace' => 'sales'], function () {
+        #
+        Route::resource('cajas', 'BoxController');
+    });
+
     # Config Routes
     Route::group(['prefix' => 'config', 'namespace' => 'config'], function () {
         # 

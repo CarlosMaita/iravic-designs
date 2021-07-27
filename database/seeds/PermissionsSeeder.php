@@ -224,6 +224,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Boxes
+            [
+                'name'         => 'view-box',
+                'display_name' => 'Cajas Ver',
+                'description'  => 'Cajas Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-box',
+                'display_name' => 'Cajas Crear',
+                'description'  => 'Cajas Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-box',
+                'display_name' => 'Cajas Editar',
+                'description'  => 'Cajas Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-box',
+                'display_name' => 'Cajas Eliminar',
+                'description'  => 'Cajas Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);
