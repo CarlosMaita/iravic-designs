@@ -253,6 +253,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Orders
+            [
+                'name'         => 'view-order',
+                'display_name' => 'Pedidos Ver',
+                'description'  => 'Pedidos Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-order',
+                'display_name' => 'Pedidos Crear',
+                'description'  => 'Pedidos Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-order',
+                'display_name' => 'Pedidos Editar',
+                'description'  => 'Pedidos Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-order',
+                'display_name' => 'Pedidos Eliminar',
+                'description'  => 'Pedidos Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);

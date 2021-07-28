@@ -26,6 +26,7 @@
 @push('js')
   <script>
     const $customer = @json($customer);
+    const is_creating_order = false;
   </script>
   <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
 

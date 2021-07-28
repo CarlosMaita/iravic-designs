@@ -97,13 +97,17 @@ class CustomerController extends Controller
                 array('receipt_picture' => ImageService::save($this->disk_receipt, $request->file('receipt_picture'))),
                 $request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
-            $this->customerRepository->create($attributes);
+            $customer = $this->customerRepository->create($attributes);
             DB::commit();
-            flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
 
+            if (!isset($request->without_flash)) {
+                flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
+            }
+            
             return response()->json([
                     'success' => true,
                     'data' => [
+                        'customer' => $customer,
                         'redirect' => route('clientes.index')
                     ]
             ]);

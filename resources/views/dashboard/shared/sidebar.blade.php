@@ -67,10 +67,12 @@
     @endif
     {{-- Sales Management links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Box::class)
+        Auth::user()->can('viewany', App\Models\Box::class) ||
+        Auth::user()->can('viewany', App\Models\Order::class)
     )
         <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/cajas-ventas/cajas", false, true)
+            $menuService->isActive($url,"/admin/cajas-ventas/cajas", false, true) . " " .
+            $menuService->isActive($url,"/admin/cajas-ventas/pedidos", false, true)
         }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-sales') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
@@ -78,6 +80,12 @@
                 @can('viewany', App\Models\Box::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/cajas")}}" href="{{ route('cajas.index') }}"></span>{{ __('dashboard.sidebar.boxes') }}</a>
+                    </li>
+                @endcan
+                {{-- Orders --}}
+                @can('viewany', App\Models\Order::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/pedidos")}}" href="{{ route('pedidos.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
                     </li>
                 @endcan
             </ul>

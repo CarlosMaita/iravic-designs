@@ -23,6 +23,26 @@ return [
             'total_credit'      => 'Total Crédito',
             'total_payed'       => 'Total Pagado',
             'user'              => 'Usuario'
+        ],
+        'orders' => [
+            'index'             => 'Listado de Pedidos',
+            'create'            => 'Crear nuevo Pedido',
+            'edit'              => 'Editar Pedido',
+            'order'             => 'Pedido',
+            'id'                => 'ID',
+            'box_id'            => 'ID Caja',
+            'customer'          => 'Cliente',
+            'date'              => 'Fecha',
+            'products'          => [
+                'index'         => 'Productos',
+                'name'          => 'Nombre',
+                'color'         => 'Color',
+                'qty'           => 'Cant.',
+                'size'          => 'Tamaño',
+                'total'         => 'Total'
+            ],
+            'total'             => 'Total',
+            'user'              => 'Usuario'
         ]
     ],
     'breadcrumb' => [
@@ -94,6 +114,7 @@ return [
     'form' => [
         'back'          => 'Atrás',
         'back to list'  => 'Ir al listado',
+        'cancel'        => 'Cancelar',
         'create'        => 'Crear',
         'edit'          => 'Editar',
         'save'          => 'Guardar',
@@ -118,6 +139,9 @@ return [
             ],
             'general' => [
                 'name' => 'Nombre',
+            ],
+            'orders' => [
+                'customer' => 'Cliente'
             ],
             'products' => [
                 'brand'         => 'Marca',
@@ -165,6 +189,7 @@ return [
         'categories'            => 'Categorías',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
+        'orders'                => 'Pedidos',
         'poducts'               => 'Productos',
         'settings'              => 'Configuración',
         'users'                 => 'Usuarios',

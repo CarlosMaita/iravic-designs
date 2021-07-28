@@ -52,7 +52,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         $product = $this->create($attributes);
 
-        if (!isset($request->is_regular) && isset($request->combinations) && count($request->combinations)) {
+        if ((!isset($request->is_regular) || !$request->is_regular )&& isset($request->combinations) && count($request->combinations)) {
             foreach ($request->combinations as $combination) {
                 $attributes = array_merge(
                     array('product_id' => $product->id),

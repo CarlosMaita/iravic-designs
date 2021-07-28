@@ -125,7 +125,7 @@
                 </div>
             </div>
             <!--  -->
-            <div class="`tab-pane fade" id="combinations" role="tabpanel" aria-labelledby="combinations-tab">
+            <div class="tab-pane fade" id="combinations" role="tabpanel" aria-labelledby="combinations-tab">
                 <div class="d-flex justify-content-end my-3">
                     <button class="btn btn-light" type="button" @click="addCombination"><i class="fas fa-plus"></i> Agregar Combinación</button>
                 </div>

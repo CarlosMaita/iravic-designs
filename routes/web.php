@@ -51,6 +51,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     Route::group(['prefix' => 'cajas-ventas', 'namespace' => 'sales'], function () {
         #
         Route::resource('cajas', 'BoxController');
+        #
+        Route::resource('pedidos', 'OrderController')->except('destroy');
     });
 
     # Config Routes

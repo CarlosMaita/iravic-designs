@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'redirect.home.role' => \App\Http\Middleware\RedirectHomeByRole::class,
         'box.create' => \App\Http\Middleware\CheckForCreateBox::class,
         'box.destroy' => \App\Http\Middleware\CheckForDestroyBox::class,
+        'order.create' => \App\Http\Middleware\CheckForCreateOrder::class,
     ];
 
     /**

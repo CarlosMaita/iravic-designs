@@ -84,7 +84,7 @@ class Box extends Model
     public function getTotalPayedAttribute()
     {
         $total = $this->getTotalPayed();
-        return number_format($total, 2 , ',', '.');
+        return number_format($total, 2, '.', ',');
     }
 
     # Methods

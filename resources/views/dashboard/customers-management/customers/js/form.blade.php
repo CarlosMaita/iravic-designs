@@ -3,7 +3,7 @@
         const FORM_RESOURCE = $("#form-customers");
 
         var inputs_files = $('.custom-file-input');
-        var customer_map = $customer ? new CustomerMap('map-customer', $customer.latitude, $customer.longitude, $customer.address, true) : new ClienteMap('map-customer',null, null, null, true);
+        var customer_map = $customer ? new CustomerMap('map-customer', $customer.latitude, $customer.longitude, $customer.address, true) : new CustomerMap('map-customer',null, null, null, true);
         customer_map.setMap();
         customer_map.setInitialMarker();
 
@@ -87,7 +87,21 @@
                     contentType: false,
                 success: function (response) {
                     if (response.success) {
-                        window.location.href = response.data.redirect;
+                        if (is_creating_order) {
+                            const customer = response.data.customer;
+                            const customer_select = $('select#customer');
+                            customer_select.attr('disabled', false);
+                            customer_select.append(`<option value="${customer.id}" selected>${customer.name}</option>`);
+                            customer_select.select2().val(customer.id).trigger('change');
+                            $('#modal-new-customer').modal('hide');
+
+                            new Noty({
+                                text: 'Cliente creado',
+                                type: 'success'
+                            }).show();
+                        } else {
+                            window.location.href = response.data.redirect;
+                        }
                     } else if (response.error) {
                         new Noty({
                             text: response.error,
@@ -114,7 +128,6 @@
                                         confirmButtonText: 'Si',
                                         cancelButtonText: 'No'
                                     }).then(function () {
-                                        console.log('Debe confirmarse el formulario');
                                         httpSubmitForm(true);
                                     }).catch(swal.noop);
                                 } else {
