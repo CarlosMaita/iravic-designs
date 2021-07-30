@@ -18,7 +18,7 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                   <div class="card">
                       <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.boxes-sales.orders.create') }}</div>
-                      <div class="card-body">
+                      <div class="card-body px-2">
                         <form id="form-orders" method="POST" action="{{ route('pedidos.store') }}">
                           @csrf
                           @include('dashboard.orders._form')
@@ -26,7 +26,7 @@
                           <div class="container-fluid">
                             <div class="row">
                               <div class="col-md-12 justify-content-end">
-                                <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
+                                {{-- <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button> --}}
                                 <a href="{{ route('pedidos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                               </div>
                             </div>

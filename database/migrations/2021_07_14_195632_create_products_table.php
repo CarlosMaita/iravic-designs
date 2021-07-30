@@ -14,7 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements();
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('color_id')->nullable();
@@ -26,9 +26,9 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('is_regular')->default(0);
             // $table->enum('color', ['Amarillo', 'Azul', 'Rojo', 'Verde'])->nullable();
             $table->enum('gender', ['M', 'F'])->nullable();
-            $table->integer('stock_depot')->default(0);
-            $table->integer('stock_local')->default(0);
-            $table->integer('stock_truck')->default(0);
+            $table->string('stock_depot')->default(0);
+            $table->string('stock_local')->default(0);
+            $table->string('stock_truck')->default(0);
 
             // $table->enum('size', ['32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'])->nullable();
             // $table->enum('size_shoes', ['32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'])->nullable();

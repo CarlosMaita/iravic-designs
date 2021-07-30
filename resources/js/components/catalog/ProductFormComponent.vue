@@ -46,10 +46,16 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="gender">Género</label>
-                            <select class="form-control" id="gender" name="gender" v-model="product.gender">
+                            <!-- <select class="form-control" id="gender" name="gender" v-model="product.gender">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(gender,index) in genders" :value="gender" :key="`gender-${index}`">{{ gender }}</option>
-                            </select>
+                            </select> -->
+                            <v-select placeholder="Seleccionar"
+                                        :options="genders"
+                                        v-model="gender"
+                                        @input="setGenderSelected">
+                            </v-select>
+                            <input type="hidden" name="gender" v-model="product.gender">
                         </div>
                     </div>
                 </div>
@@ -57,19 +63,33 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="category_id">Categoría</label>
-                            <select class="form-control" id="category" name="category_id" v-model="product.category_id">
+                            <!-- <select class="form-control" id="category" name="category_id" v-model="product.category_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(category,index) in categories" :value="category.id" :key="`category-${index}`">{{ category.name }}</option>
-                            </select>
+                            </select> -->
+                            <v-select placeholder="Seleccionar"
+                                        :options="categories" 
+                                        label="name" 
+                                        v-model="category"
+                                        @input="setCategorySelected">
+                            </v-select>
+                            <input type="hidden" name="category_id" v-model="product.category_id">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label for="brand_id">Marca</label>
-                            <select class="form-control" id="brand" name="brand_id" v-model="product.brand_id">
+                            <!-- <select class="form-control" id="brand" name="brand_id" v-model="product.brand_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(brand,index) in brands" :value="brand.id" :key="`brand-${index}`">{{ brand.name }}</option>
-                            </select>
+                            </select> -->
+                            <v-select placeholder="Seleccionar"
+                                        :options="brands" 
+                                        label="name" 
+                                        v-model="brand"
+                                        @input="setBrandSelected">
+                            </v-select>
+                            <input type="hidden" name="brand_id" v-model="product.brand_id">
                         </div>
                     </div>
                 </div>
@@ -86,19 +106,38 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="color">Color</label>
+                            <!-- 
                             <select class="form-control" id="color" name="color_id" v-model="product.color_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(color,index) in colors" :value="color.id" :key="`color-${index}`">{{ color.name }}</option>
-                            </select>
+                            </select> 
+                            -->
+                            <v-select placeholder="Seleccionar"
+                                        :options="colors" 
+                                        label="name" 
+                                        v-model="color"
+                                        @input="setColorSelected">
+                            </v-select>
+                            <input type="hidden" name="color_id" v-model="product.color_id">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="size">Talla</label>
+                            <!-- 
                             <select class="form-control" :id="`size`" name="size_id" v-model="product.size_id">
                                 <option :value="null" selected disabled>Seleccionar</option>
                                 <option v-for="(size,index) in sizes" :value="size.id" :key="`color-${index}`">{{ size.name }}</option>
-                            </select>
+                            </select> 
+                            -->
+                            <v-select placeholder="Seleccionar"
+                                        multiple
+                                        :options="sizes" 
+                                        label="name" 
+                                        v-model="size"
+                                        @input="setSizeSelected">
+                            </v-select>
+                            <input type="hidden" name="sizes" v-model="size_values">
                         </div>
                     </div>
                 </div>
@@ -145,19 +184,38 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`color-${index}`">Color</label>
-                                <select class="form-control" :id="`color-${index}`" :name="getCombinationInputName('color', index, combination)" v-model="combination.color_id">
+                                <!-- <select class="form-control" :id="`color-${index}`" :name="getCombinationInputName('color', index, combination)" v-model="combination.color_id">
                                     <option :value="null" selected disabled>Seleccionar</option>
                                     <option v-for="(color,j) in colors" :value="color.id" :key="`color-${index}-${j}`">{{ color.name }}</option>
-                                </select>
+                                </select> -->
+                                <v-select placeholder="Seleccionar"
+                                            :options="colors" 
+                                            label="name" 
+                                            v-model="combinations[index].color_prop"
+                                            @input="setCombinationColorSelected(combinations[index].color_prop, index)">
+                                </v-select>
+                                <input type="hidden" :name="getCombinationInputName('color', index, combination)" v-model="combinations[index].color_id">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`size-${index}`">Talla</label>
-                                <select class="form-control" :id="`size-${index}`" :name="getCombinationInputName('size', index, combination)" v-model="combination.size_id">
+                                <!-- <select class="form-control" :id="`size-${index}`" :name="getCombinationInputName('size', index, combination)" v-model="combination.size_id" multiple>
                                     <option :value="null" selected disabled>Seleccionar</option>
                                     <option v-for="(size,j) in sizes" :value="size.id" :key="`color-${index}-${j}`">{{ size.name }}</option>
-                                </select>
+                                </select> -->
+                                <v-select placeholder="Seleccionar"
+                                            multiple
+                                            :options="sizes" 
+                                            label="name" 
+                                            :value="combinations[index].size_prop"
+                                            @input="size => setCombinationSizeSelected(combination, size)">
+                                            
+                                            <!-- @input="setCombinationSizeSelected(combinations[index].size_prop, index)"> -->
+                                            <!-- v-model="combinations[index].size_prop"
+                                            @input="setCombinationSizeSelected(combinations[index].size_prop, index)"> -->
+                                </v-select>
+                                <input type="hidden" :name="getCombinationInputName('size', index, combination)" v-model="combinations[index].size_values">
                             </div>
                         </div>
                     </div>
@@ -233,33 +291,102 @@
             is_regular: 1,
             name: '',
             size: null,
+            size_values: null,
             stock_depot: null,
             stock_local: null,
             stock_truck: null,
             combinations: [],
             loading: false,
-            mounted: false,
+            mounted: false
         }),
 	    computed: {
 	    },
         async mounted() {
             this.mounted = true;
 
-            console.log(this.product);
-
             if (this.product.id) {
-                this.combinations = this.product.product_combinations;
+                // this.combinations = this.product.product_combinations;
 
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
                 }
+                if (this.product.color) {
+                    this.color = this.product.color.name;
+                }
+
+                this.brand = this.product.brand.name;
+                this.category = this.product.category.name;
+                this.gender = this.product.gender;
+
+                if (this.product.sizes && this.product.sizes.length) {
+                    this.size = this.product.sizes.map(item => item.size)
+                    this.size_values = this.product.sizes.map(item => item.size_id).toString();
+                }
+
+                // if (this.combinations) {
+                if (this.product.product_combinations) {
+                    // this.combinations.forEach(function(item, index) {
+                    //     item.color_prop = item.color;
+                        // item.size_prop = item.sizes.map(item => item.size);
+                    //     item.size_values = item.sizes.map(item => item.size_id).toString();
+                    // });
+                    for (var i=0; i<this.product.product_combinations.length; i++) {
+                        const combination = this.product.product_combinations[i];
+                        let new_combination = {
+                            color_prop: combination.color,
+                            color_id: combination.color_id,
+                            id: combination.id,
+                            product_id: combination.product_id,
+                            size_id: [],
+                            size_prop: combination.sizes.map(item => item.size),
+                            size_values: combination.sizes.map(item => item.size_id).toString(),
+                            stock_depot: combination.stock_depot,
+                            stock_local: combination.stock_local,
+                            stock_truck: combination.stock_truck
+                        };
+
+                        this.combinations.push(new_combination);
+                    }
+                }
             }
         },
         methods: {
+            setBrandSelected(value) {
+                this.product.brand_id = value ? value.id : null;
+            },
+            setCategorySelected(value) {
+                this.product.category_id = value ? value.id : null;
+            },
+            setColorSelected(value) {
+                this.product.color_id = value ? value.id : null;
+            },
+            setGenderSelected(value) {
+                this.product.gender = value;
+            },
+            setSizeSelected(value) {
+                this.size_values = value.map(item => item.id).toString();
+                // let result = objArray.map(({ foo }) => foo);
+            },
+            setCombinationColorSelected(value, index) {
+                this.combinations[index].color_id = value ? value.id : null;
+            },
+            // setCombinationSizeSelected(value, index) {
+            //     // this.combinations[index].size_prop = value;
+            //     // this.combinations[index].size_values = value.map(item => item.id).toString();
+            // },
+            setCombinationSizeSelected(combination, value) {
+                combination.size_prop = value;
+                combination.size_values = value.map(item => item.id).toString();
+            },
             addCombination() {
                 let new_combination = {
+                    color_prop: null,
                     color_id: null,
-                    size_id: null,
+                    id: null,
+                    product_id: null,
+                    size_id: [],
+                    size_prop: null,
+                    size_values: null,
                     stock_depot: null,
                     stock_local: null,
                     stock_truck: null

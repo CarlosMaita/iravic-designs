@@ -149,11 +149,11 @@ class ProductController extends Controller
     public function edit(Product $producto)
     {
         $this->authorize('update', $producto);
+        $producto->load('brand', 'category', 'color', 'product_combinations.color', 'product_combinations.sizes.size', 'sizes.size');
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $producto->load('product_combinations');
 
         return view('dashboard.catalog.products.edit')
                 ->withBrands($brands)
@@ -173,6 +173,7 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $producto)
     {
         try {
+            // return $request->all();
             $this->authorize('update', $producto);
             DB::beginTransaction();
             $this->productRepository->updateByRequest($producto->id, $request);

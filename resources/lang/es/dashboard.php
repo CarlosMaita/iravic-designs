@@ -141,7 +141,19 @@ return [
                 'name' => 'Nombre',
             ],
             'orders' => [
-                'customer' => 'Cliente'
+                'customer'  => 'Cliente',
+                'finish'    => 'Finalizar',
+                'payment'   => 'Pago',
+                'products'  => 'Productos',
+                'product'   => 'Producto',
+                'confirmar' => 'Confirmar',
+                'bankwire'  => 'Transferencia',
+                'card'      => 'Tarjeta',
+                'cash'      => 'Efectivo',
+                'credit'    => 'Crédito',
+                'customer_information' => 'Información de Cliente',
+                'products_information' => 'Información de Productos',
+                'payment_information' => 'Información de Pago'
             ],
             'products' => [
                 'brand'         => 'Marca',
@@ -158,7 +170,9 @@ return [
             'customer_address_info' => 'Dirección y Ubicación del cliente',
             'customer_contact_info' => 'Información Persona de Contacto',
             'customer_finance_info' => 'Información Financiera',
-            'customer_personal_info' => 'Información Personal'
+            'customer_personal_info' => 'Información Personal',
+            'customer_selected' => 'Información Cliente Seleccionado',
+            'Complete each step until you reach the end' => 'Complete cada paso hasta llegar al final'
         ]
     ],
     'general' => [
@@ -167,7 +181,9 @@ return [
         'home'              => 'Inicio',
         'new_a'             => 'Nueva',
         'new_o'             => 'Nuevo',
+        'next'              => 'Siguiente',
         'no'                => 'No',
+        'previous'          => 'Anterior',
         'operation_error'   => 'Ha ocurrido un error al tratar de realizar la operación en este momento.',
         'search'            => 'Buscar',
         'yes'               => 'Si'
