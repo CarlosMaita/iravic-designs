@@ -99,7 +99,6 @@
                     processData: false,
                     contentType: false,
                     success: function(res) {
-                        console.log(res);
                         if (res) {
                             handleShowProductForm(res);
                         } else {
@@ -111,11 +110,20 @@
                     },
                     error: function(e) {
                         if (e.responseJSON.message) {
-                            toastr.error(e.responseJSON.message);
+                            new Noty({
+                                text: e.responseJSON.message,
+                                type: 'error'
+                            }).show();
                         } else if (e.responseJSON.error) {
-                            toastr.error(e.responseJSON.error);
+                            new Noty({
+                                text: e.responseJSON.error,
+                                type: 'error'
+                            }).show();
                         } else {
-                            toastr.error("No se ha podido obtener la información del producto en este momento.");
+                            new Noty({
+                                text: "No se ha podido obtener la información del producto en este momento.",
+                                type: 'error'
+                            }).show();
                         }
                     }
                 });
@@ -183,6 +191,7 @@
         * 
         */
         function handleShowProductForm(product) {
+            console.log(product);
             modal_product.modal('show');
         }
 

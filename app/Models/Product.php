@@ -36,6 +36,7 @@ class Product extends Model
     ];
 
     public $appends = [
+        'real_code',
         'regular_price',
         'regular_price_str'
     ];
@@ -72,6 +73,19 @@ class Product extends Model
     }
 
     # Appends
+    public function getRealCodeAttribute()
+    {
+        if ($this->code) {
+            return $this->code;
+        }
+
+        if ($parent = $this->product_parent) {
+            return $parent->code;
+        }
+
+        return null;
+    }
+
     public function getRegularPriceAttribute()
     {
         return $this->getRegularPrice();

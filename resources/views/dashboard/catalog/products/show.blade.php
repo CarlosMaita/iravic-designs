@@ -125,19 +125,27 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Color</label>
                                                                 <input class="form-control" value="{{ optional($product_combination->color)->name }}" readOnly>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Talla</label>
                                                                 <input class="form-control" value="{{ optional($product_combination->size)->name }}" readOnly>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Código</label>
+                                                                <input class="form-control" value="{{ $product_combination->real_code }}" readOnly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Precio</label>
                                                                 <input class="form-control" value="{{ $product_combination->regular_price_str }}" readOnly>

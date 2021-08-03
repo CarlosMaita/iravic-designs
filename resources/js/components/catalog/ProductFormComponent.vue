@@ -145,7 +145,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`color-${index}`">Color</label>
                                 <v-select placeholder="Seleccionar"
@@ -157,7 +157,7 @@
                                 <input type="hidden" :name="getCombinationInputName('colors', index, combination)" v-model="combinations[index].color_id">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label :for="`size-${index}`">Talla</label>
                                 <v-select placeholder="Seleccionar"
@@ -169,10 +169,18 @@
                                 <input type="hidden" :name="getCombinationInputName('sizes', index, combination)" v-model="combinations[index].size_id">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Código</label>
+                                <input class="form-control" :id="`code-${index}`" type="text" :name="getCombinationInputName('codes', index, combination)" v-model="combination.code">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="name">Precio</label>
-                                <input class="form-control" :id="`price-${index}`" type="text" min="0" step="any" :name="getCombinationInputName('prices', index, combination)" v-model="combination.price">
+                                <input class="form-control" :id="`price-${index}`" type="number" min="0" step="any" :name="getCombinationInputName('prices', index, combination)" v-model="combination.price">
                             </div>
                         </div>
                     </div>
@@ -277,6 +285,7 @@
                     for (var i=0; i<this.product.product_combinations.length; i++) {
                         const combination = this.product.product_combinations[i];
                         let new_combination = {
+                            code: combination.code,
                             color_id: combination.color_id,
                             color_prop: combination.color,
                             id: combination.id,
@@ -322,6 +331,7 @@
             // },
             addCombination() {
                 let new_combination = {
+                    code: null,
                     color_prop: null,
                     color_id: null,
                     id: null,

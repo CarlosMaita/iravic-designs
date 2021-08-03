@@ -114,33 +114,13 @@
                                         </div>
                                     </div>
                                     {{--  --}}
-
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Genero</label>
-                                                <input type="text" value="" readOnly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Categoría</label>
-                                                <input type="text" value="" readOnly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Marca</label>
-                                                <input type="text" value="" readOnly>
-                                            </div>
-                                        </div>
-
+                                        Price
                                         Color
                                         Talla
                                         Cantidad Disponible
                                         Agregrar
                                     </div>
-
                                     {{--  --}}
                                     <hr>
                                     <div class="row mb-4">
@@ -159,9 +139,9 @@
                                                             <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
-
-                                                            <th scope="col">Disponibles</th>
-                                                            <th scope="col">Cantidad</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.available') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.qty') }}</th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
@@ -174,6 +154,7 @@
                                                                 <td>{{ optional($product->brand)->name }}</td>
                                                                 <td>{{ optional($product->category)->name }}</td>
                                                                 <td>{{ $product['stock_depot'] }}</td>
+                                                                <td>{{ $product->regular_price_str }}</td>
                                                                 <td>
                                                                     <input class="form-control input-product-qty" type="number" min="0" max="{{ $product['stock_depot'] }}" step="1" data-name="{{ $product->name }}" data-stock="{{ $product['stock_depot'] }}" data-prev="1" value="1">
                                                                 </td>

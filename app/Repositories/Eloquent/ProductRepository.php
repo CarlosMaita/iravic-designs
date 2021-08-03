@@ -59,6 +59,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 foreach ($request->combinations as $combination) {
                     $attributes = array_merge(
                         array('product_id' => $product->id),
+                        array('code' => $request->codes[$combination]),
                         array('color_id' => $request->colors[$combination]),
                         array('size_id' => $request->sizes[$combination]),
                         array('price' => $request->prices[$combination]),
@@ -101,13 +102,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 foreach ($request->combinations as $combination) {
                     $attributes = array_merge(
                         array('product_id' => $product->id),
+                        array('code' => $request->codes[$combination]),
                         array('color_id' => $request->colors[$combination]),
                         array('size_id' => $request->sizes[$combination]),
                         array('price' => $request->prices[$combination]),
                         array('stock_depot' => $request->stocks_depot[$combination]),
                         array('stock_local' => $request->stocks_local[$combination]),
                         array('stock_truck' => $request->stocks_truck[$combination]),
-                        $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
+                        $request->only('brand_id', 'category_id', 'gender', 'name')
                     );
         
                     $this->create($attributes);
@@ -121,13 +123,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
                     if ($product_combination) {
                         $attributes = array_merge(
+                            array('code' => $request->codes_existing[$product_combination_id]),
                             array('color_id' => $request->colors_existing[$product_combination_id]),
                             array('size_id' => $request->sizes_existing[$product_combination_id]),
                             array('price' => $request->prices_existing[$product_combination_id]),
                             array('stock_depot' => $request->stocks_depot_existing[$product_combination_id]),
                             array('stock_local' => $request->stocks_local_existing[$product_combination_id]),
                             array('stock_truck' => $request->stocks_truck_existing[$product_combination_id]),
-                            $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
+                            $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
 
                         $this->update($product_combination->id, $attributes);
