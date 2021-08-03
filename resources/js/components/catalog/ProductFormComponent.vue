@@ -172,7 +172,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label :for="`color-${index}`">Color</label>
                                 <v-select placeholder="Seleccionar"
@@ -181,10 +181,10 @@
                                             v-model="combinations[index].color_prop"
                                             @input="setCombinationColorSelected(combinations[index].color_prop, index)">
                                 </v-select>
-                                <input type="hidden" :name="getCombinationInputName('color', index, combination)" v-model="combinations[index].color_id">
+                                <input type="hidden" :name="getCombinationInputName('colors', index, combination)" v-model="combinations[index].color_id">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label :for="`size-${index}`">Talla</label>
                                 <v-select placeholder="Seleccionar"
@@ -193,7 +193,13 @@
                                             v-model="combinations[index].size_prop"
                                             @input="setCombinationSizeSelected(combinations[index].size_prop, index)">
                                 </v-select>
-                                <input type="hidden" :name="getCombinationInputName('size', index, combination)" v-model="combinations[index].size_id">
+                                <input type="hidden" :name="getCombinationInputName('sizes', index, combination)" v-model="combinations[index].size_id">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="name">Precio</label>
+                                <input class="form-control" :id="`price-${index}`" type="text" min="0" step="any" :name="getCombinationInputName('prices', index, combination)" v-model="combination.price">
                             </div>
                         </div>
                     </div>
@@ -202,19 +208,19 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-depot-${index}`">Stock Depósito</label>
-                                <input type="number" class="form-control" :id="`stock-depot-${index}`" :name="getCombinationInputName('stock_depot', index, combination)" v-model="combination.stock_depot">
+                                <input class="form-control" :id="`stock-depot-${index}`" type="number" min="0" step="any" :name="getCombinationInputName('stocks_depot', index, combination)" v-model="combination.stock_depot">
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-local-${index}`">Stock Local</label>
-                                <input type="number" class="form-control" :id="`stock-local-${index}`" :name="getCombinationInputName('stock_local', index, combination)" v-model="combination.stock_local">
+                                <input class="form-control" :id="`stock-local-${index}`" type="number" min="0" step="any" :name="getCombinationInputName('stocks_local', index, combination)" v-model="combination.stock_local">
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-group">
                                 <label :for="`stock-truck-${index}`">Stock Camioneta</label>
-                                <input type="number" class="form-control" :id="`stock-truck-${index}`" :name="getCombinationInputName('stock_truck', index, combination)" v-model="combination.stock_truck">
+                                <input class="form-control" :id="`stock-truck-${index}`" type="number" min="0" step="any" :name="getCombinationInputName('stocks_truck', index, combination)" v-model="combination.stock_truck">
                             </div>
                         </div>
                     </div>
@@ -316,7 +322,7 @@
                             size_prop: combination.size,
                             // size_prop: combination.sizes.map(item => item.size),
                             // size_values: combination.sizes.map(item => item.size_id).toString(),
-                            price: combination.regular_price,
+                            price: combination.price,
                             stock_depot: combination.stock_depot,
                             stock_local: combination.stock_local,
                             stock_truck: combination.stock_truck
@@ -367,20 +373,31 @@
                     product_id: null,
                     size_id: null,
                     size_prop: null,
+                    price: null,
                     stock_depot: null,
                     stock_local: null,
                     stock_truck: null
                 };
 
                 this.combinations.push(new_combination);
-
-                console.log(this.combinations);
             },
             getCombinationInputName(input, index, product_combination) {
                 let input_name = '';
+
+                if (product_combination.product_id) {
+                    input_name = `${input}_existing[${product_combination.id}]`;
+                } else {
+                    input_name = `${input}[${index}]`;
+                }
+                
+                return input_name;
+
                 switch(input) { 
                     case 'color':
                         input_name = product_combination.product_id ? `colors_existing[${product_combination.id}]` : `colors[${index}]`;
+                        break;
+                    case 'price':
+                        input_name = product_combination.product_id ? `prices_existing[${product_combination.id}]` : `prices[${index}]`;
                         break;
                     case 'size':
                         input_name = product_combination.product_id ? `sizes_existing[${product_combination.id}]` : `sizes[${index}]`;

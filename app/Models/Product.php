@@ -87,10 +87,10 @@ class Product extends Model
     {
         $parent = $this->product_parent;
 
-        if ($parent && $parent->is_price_generic) {
+        if ($parent && ($parent->is_price_generic || !$this->price)) {
             return $parent->regular_price;
         }
 
-        return $this->price;
+        return $this->price ? $this->price : 0;
     }
 }

@@ -51,6 +51,8 @@ class ProductRequest extends FormRequest
                 $messages['stocks_local_existing.' . $i . '.min'] = 'El Stock Local para la combinación ' . ($combination) . ' no puede ser menor a :min';
                 $messages['stocks_local_existing.' . $i . '.integer'] = 'Ingrese Stock Camioneta válido para la combinación ' . ($combination);
                 $messages['stocks_local_existing.' . $i . '.min'] = 'El Stock Camioneta para la combinación ' . ($combination) . ' no puede ser menor a :min';
+                $messages['prices_existing.' . $i . '.min'] = 'El precio para la combinación ' . ($combination) . ' no puede ser menor a :min';
+                $messages['prices_existing.' . $i . '.numeric'] = 'Ingrese un Precio válido para la combinación ' . ($combination);
             }
         }
 
@@ -69,6 +71,8 @@ class ProductRequest extends FormRequest
                 $messages['stocks_local.' . $i . '.min'] = 'El Stock Local para la combinación ' . ($combination) . ' no puede ser menor a :min';
                 $messages['stocks_truck.' . $i . '.integer'] = 'Ingrese Stock Camioneta válido para la combinación ' . ($combination);
                 $messages['stocks_truck.' . $i . '.min'] = 'El Stock Camioneta para la combinación ' . ($combination) . ' no puede ser menor a :min';
+                $messages['prices.' . $i . '.min'] = 'El precio para la combinación ' . ($combination) . ' no puede ser menor a :min';
+                $messages['prices.' . $i . '.numeric'] = 'Ingrese un Precio válido para la combinación ' . ($combination);
             }
         }
 
@@ -97,7 +101,8 @@ class ProductRequest extends FormRequest
             'code' => 'required|min:1|max:100',
             'gender' => 'required',
             'brand_id' => 'required|exists:brands,id',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric'
         ];
 
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
@@ -118,6 +123,14 @@ class ProductRequest extends FormRequest
                 $rules['stocks_local.*'] = 'integer|min:0';
                 $rules['stocks_truck'] = 'required';
                 $rules['stocks_truck.*'] = 'integer|min:0';
+
+                if (!empty($this->prices)) {
+                    foreach ($this->combinations as $combination) {
+                        if (!empty($this->prices[$combination])) {
+                            $rules['prices.' . $combination] = 'min:0|numeric';
+                        }
+                    }
+                }
             }
 
             if (isset($this->product_combinations) && is_array($this->product_combinations) && count($this->product_combinations)) {
@@ -131,11 +144,18 @@ class ProductRequest extends FormRequest
                 $rules['stocks_local_existing.*'] = 'integer|min:0';
                 $rules['stocks_truck_existing'] = 'required';
                 $rules['stocks_truck_existing.*'] = 'integer|min:0';
+
+                if (!empty($this->prices_existing)) {
+                    foreach ($this->product_combinations as $product_combination_id) {
+                        if (!empty($this->prices_existing[$product_combination_id])) {
+                            $rules['prices_existing.' . $product_combination_id] = 'min:0|numeric';
+                        }
+                    }
+                }
             }
         } else {
             $rules['color_id'] = 'required|exists:colors,id';
             $rules['size_id'] = 'required|exists:sizes,id';
-            $rules['price'] = 'required|numeric';
             $rules['stock_depot'] = 'required|integer|min:0';
             $rules['stock_local'] = 'required|integer|min:0';
             $rules['stock_truck'] = 'required|integer|min:0';

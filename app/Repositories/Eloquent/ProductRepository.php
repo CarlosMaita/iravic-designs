@@ -123,7 +123,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         $attributes = array_merge(
                             array('color_id' => $request->colors_existing[$product_combination_id]),
                             array('size_id' => $request->sizes_existing[$product_combination_id]),
-                            array('price' => $request->prices[$combination]),
+                            array('price' => $request->prices_existing[$product_combination_id]),
                             array('stock_depot' => $request->stocks_depot_existing[$product_combination_id]),
                             array('stock_local' => $request->stocks_local_existing[$product_combination_id]),
                             array('stock_truck' => $request->stocks_truck_existing[$product_combination_id]),
