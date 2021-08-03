@@ -21,8 +21,10 @@ class Product extends Model
         'name',
         'code',
         'cover',
+        'is_price_generic',
         'is_regular',
         'gender',
+        'price',
         'is_child_size',
         'stock_depot',
         'stock_local',
@@ -31,6 +33,11 @@ class Product extends Model
 
     protected $softCascade = [
         'product_combinations'
+    ];
+
+    public $appends = [
+        'regular_price',
+        'regular_price_str'
     ];
 
     # Relationships
@@ -62,5 +69,28 @@ class Product extends Model
     public function size()
     {
         return $this->belongsTo('App\Models\Size');
+    }
+
+    # Appends
+    public function getRegularPriceAttribute()
+    {
+        return $this->getRegularPrice();
+    }
+    
+    public function getRegularPriceStrAttribute()
+    {
+        return '$ ' . number_format($this->regular_price, 2, '.', ',');
+    }
+
+    # Methods
+    public function getRegularPrice()
+    {
+        $parent = $this->product_parent;
+
+        if ($parent && $parent->is_price_generic) {
+            return $parent->regular_price;
+        }
+
+        return $this->price;
     }
 }

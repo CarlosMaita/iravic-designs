@@ -81,6 +81,22 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="price">Precio</label>
+                            <input class="form-control" name="price" type="number" min="0" step="any" v-model="product.price">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check form-check-inline my-4">
+                            <input class="form-check-input" type="checkbox" name="is_price_generic" id="is_price_generic" value="1" 
+                            v-model="is_price_generic">
+                            <label class="form-check-label" for="is_price_generic">Activar Precio Base.</label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!--  -->
             <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
@@ -247,16 +263,11 @@
         data: () => ({
             brand: null,
             category: null,
-            code: '',
             color: null,
             gender: null,
+            is_price_generic: 0,
             is_regular: 1,
-            name: '',
             size: null,
-            size_values: null,
-            stock_depot: null,
-            stock_local: null,
-            stock_truck: null,
             combinations: [],
             loading: false,
             mounted: false
@@ -269,6 +280,10 @@
             if (this.product.id) {
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
+                }
+
+                if (this.product.is_price_generic) {
+                    this.is_price_generic = 1;
                 }
 
                 if (this.product.color) {
@@ -301,6 +316,7 @@
                             size_prop: combination.size,
                             // size_prop: combination.sizes.map(item => item.size),
                             // size_values: combination.sizes.map(item => item.size_id).toString(),
+                            price: combination.regular_price,
                             stock_depot: combination.stock_depot,
                             stock_local: combination.stock_local,
                             stock_truck: combination.stock_truck

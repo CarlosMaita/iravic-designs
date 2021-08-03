@@ -37,6 +37,7 @@
                                                 <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.products.combinations') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
                                                 {{-- <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th> --}}
                                                 {{-- <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th> --}}
                                                 <th></th>

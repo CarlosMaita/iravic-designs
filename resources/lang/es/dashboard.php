@@ -156,14 +156,16 @@ return [
                 'payment_information' => 'Información de Pago'
             ],
             'products' => [
-                'brand'         => 'Marca',
-                'category'      => 'Categoría',
-                'code'          => 'Código',
-                'color'         => 'Color',
-                'combinations'  => 'Combinaciones',
-                'gender'        => 'Género',
-                'is_regular'    => 'Es un producto regular?',
-                'size'          => 'Talla',
+                'brand'             => 'Marca',
+                'category'          => 'Categoría',
+                'code'              => 'Código',
+                'color'             => 'Color',
+                'combinations'      => 'Combinaciones',
+                'gender'            => 'Género',
+                'is_regular'        => 'Es un producto regular?',
+                'is_price_generic'  => 'Precio genérico',
+                'price'             => 'Precio',
+                'size'              => 'Talla',
             ]
         ],
         'labels' => [

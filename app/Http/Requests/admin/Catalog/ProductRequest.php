@@ -135,6 +135,7 @@ class ProductRequest extends FormRequest
         } else {
             $rules['color_id'] = 'required|exists:colors,id';
             $rules['size_id'] = 'required|exists:sizes,id';
+            $rules['price'] = 'required|numeric';
             $rules['stock_depot'] = 'required|integer|min:0';
             $rules['stock_local'] = 'required|integer|min:0';
             $rules['stock_truck'] = 'required|integer|min:0';
@@ -200,7 +201,8 @@ class ProductRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'is_regular' => isset($this->is_regular) ? 1 : 0
+            'is_price_generic'  => isset($this->is_price_generic) ? 1 : 0,
+            'is_regular'        => isset($this->is_regular) ? 1 : 0
         ]);
     }
 }

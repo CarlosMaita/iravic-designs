@@ -41,7 +41,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function createByRequest($request): void
     {
-        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name');
+        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_price_generic', 'is_regular', 'name', 
+        'price');
 
         if (isset($request->is_regular) && $request->is_regular) {
             $attributes = array_merge(
@@ -60,6 +61,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         array('product_id' => $product->id),
                         array('color_id' => $request->colors[$combination]),
                         array('size_id' => $request->sizes[$combination]),
+                        array('price' => $request->prices[$combination]),
                         array('stock_depot' => $request->stocks_depot[$combination]),
                         array('stock_local' => $request->stocks_local[$combination]),
                         array('stock_truck' => $request->stocks_truck[$combination]),
@@ -78,7 +80,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function updateByRequest($id, $request): void
     {
-        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name');
+        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_price_generic', 'is_regular', 'name', 
+        'price');
 
         if (isset($request->is_regular) && $request->is_regular) {
             $attributes = array_merge(
@@ -100,6 +103,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         array('product_id' => $product->id),
                         array('color_id' => $request->colors[$combination]),
                         array('size_id' => $request->sizes[$combination]),
+                        array('price' => $request->prices[$combination]),
                         array('stock_depot' => $request->stocks_depot[$combination]),
                         array('stock_local' => $request->stocks_local[$combination]),
                         array('stock_truck' => $request->stocks_truck[$combination]),
@@ -119,6 +123,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         $attributes = array_merge(
                             array('color_id' => $request->colors_existing[$product_combination_id]),
                             array('size_id' => $request->sizes_existing[$product_combination_id]),
+                            array('price' => $request->prices[$combination]),
                             array('stock_depot' => $request->stocks_depot_existing[$product_combination_id]),
                             array('stock_local' => $request->stocks_local_existing[$product_combination_id]),
                             array('stock_truck' => $request->stocks_truck_existing[$product_combination_id]),

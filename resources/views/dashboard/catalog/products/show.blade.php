@@ -53,6 +53,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Precio</label>
+                                            <input class="form-control" value="{{ $product->regular_price_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    @if($product->product_combinations)
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Precio base activado para combinaciones</label>
+                                            <input class="form-control" value="{{ $product->is_price_generic ? 'Si' : 'No' }}" readOnly>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
                                 <!--  -->
                                 <br>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">

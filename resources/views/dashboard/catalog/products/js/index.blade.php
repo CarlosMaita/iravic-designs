@@ -46,6 +46,7 @@
                             return row.is_regular ? 'No' : 'Si';
                         }
                     },
+                    {data: 'regular_price_str'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
