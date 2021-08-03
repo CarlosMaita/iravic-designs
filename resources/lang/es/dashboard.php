@@ -166,6 +166,13 @@ return [
                 'is_price_generic'  => 'Precio genérico',
                 'price'             => 'Precio',
                 'size'              => 'Talla',
+            ],
+            'users' => [
+                'email' => 'Correo electrónico',
+                'name'  => 'Nombre',
+                'password'  => 'Contraseña',
+                'confirm_password'  => 'Confirmar Contraseña',
+                'role'  => 'Rol'
             ]
         ],
         'labels' => [
