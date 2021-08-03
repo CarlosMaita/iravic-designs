@@ -16,8 +16,8 @@ class ProductRequest extends FormRequest
             'code.required' => 'El campo código es obligatorio.',
             'code.min' => 'El campo código debe tener un mínimo  de :min caracteres.',
             'code.max' => 'El campo código debe tener un máximo de :max caracteres.',
-            'color_id.required' => 'El campo color es obligatorio.',
-            'color_id.exists' => 'El color seleccionado no existe en nuestra BD.',
+            // 'color_id.required' => 'El campo color es obligatorio.',
+            // 'color_id.exists' => 'El color seleccionado no existe en nuestra BD.',
             'colors.required' => 'Debe seleccionar un color para cada combinación.',
             'colors.required' => 'Debe seleccionar un color para cada combinación ya existente.',
             'combinations.required' => 'Debe agregar al menos 1 combinación.',
@@ -25,8 +25,8 @@ class ProductRequest extends FormRequest
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El campo nombre debe tener un mínimo de :min caracteres.',
             'name.max' => 'El campo nombre debe tener un máximo de :max caracteres.',
-            'size_id.required' => 'El campo talla es obligatorio.',
-            'size_id.exists' => 'La talla seleccionada no existe en nuestra BD.',
+            // 'size_id.required' => 'El campo talla es obligatorio.',
+            // 'size_id.exists' => 'La talla seleccionada no existe en nuestra BD.',
             'sizes.required' => 'Debe seleccionar una talla para cada combinación.',
             'sizes_existing.required' => 'Debe seleccionar una talla para cada combinación ya existente.',
             'stock_depot.required' => 'El campo Stock Depósito es obligatorio.',
@@ -154,8 +154,8 @@ class ProductRequest extends FormRequest
                 }
             }
         } else {
-            $rules['color_id'] = 'required|exists:colors,id';
-            $rules['size_id'] = 'required|exists:sizes,id';
+            // $rules['color_id'] = 'required|exists:colors,id';
+            // $rules['size_id'] = 'required|exists:sizes,id';
             $rules['stock_depot'] = 'required|integer|min:0';
             $rules['stock_local'] = 'required|integer|min:0';
             $rules['stock_truck'] = 'required|integer|min:0';

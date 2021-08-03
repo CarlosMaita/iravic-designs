@@ -74,7 +74,7 @@
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     @if($product->is_regular) 
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="stocks-tab" data-toggle="tab" href="#stocks" role="tab" aria-controls="stocks" aria-selected="true">Atributos y Stocks</a>
+                                            <a class="nav-link active" id="stocks-tab" data-toggle="tab" href="#stocks" role="tab" aria-controls="stocks" aria-selected="true">Stocks</a>
                                         </li>
                                     @endif
                                     @if(!$product->is_regular) 
@@ -88,21 +88,6 @@
                                     <!--  -->
                                     @if($product->is_regular)
                                         <div class="tab-pane fade show active" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
-                                            <!--  -->
-                                            <div class="row mt-3">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Color</label>
-                                                        <input class="form-control" value="{{ optional($product->color)->name }}" readOnly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Talla</label>
-                                                        <input class="form-control" value="{{ optional($product->size)->name }}" readOnly>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <!--  -->
                                             <div class="row">
                                                 <div class="col-4">

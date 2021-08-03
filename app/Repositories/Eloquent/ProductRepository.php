@@ -47,7 +47,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if (isset($request->is_regular) && $request->is_regular) {
             $attributes = array_merge(
                 $attributes,
-                $request->only('color_id', 'size_id', 'stock_depot', 'stock_local', 'stock_truck')
+                $request->only('stock_depot', 'stock_local', 'stock_truck')
             );
         }
 
@@ -86,7 +86,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if (isset($request->is_regular) && $request->is_regular) {
             $attributes = array_merge(
                 $attributes,
-                $request->only('color_id', 'size_id', 'stock_depot', 'stock_local', 'stock_truck')
+                $request->only('stock_depot', 'stock_local', 'stock_truck')
             );
         }
 

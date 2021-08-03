@@ -107,33 +107,6 @@
             <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
                 <!--  -->
                 <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="color">Color</label>
-                            <v-select placeholder="Seleccionar"
-                                        :options="colors" 
-                                        label="name" 
-                                        v-model="color"
-                                        @input="setColorSelected">
-                            </v-select>
-                            <input type="hidden" name="color_id" v-model="product.color_id">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="size">Talla</label>
-                            <v-select placeholder="Seleccionar"
-                                        :options="sizes" 
-                                        label="name" 
-                                        v-model="size"
-                                        @input="setSizeSelected">
-                            </v-select>
-                            <input type="hidden" name="size_id" v-model="product.size_id">
-                        </div>
-                    </div>
-                </div>
-                <!--  -->
-                <div class="row">
                     <div class="col-4">
                         <div class="form-group">
                             <label for="stock-depot">Stock Depósito</label>
@@ -269,11 +242,9 @@
         data: () => ({
             brand: null,
             category: null,
-            color: null,
             gender: null,
             is_price_generic: 0,
             is_regular: 1,
-            size: null,
             combinations: [],
             loading: false,
             mounted: false
@@ -290,14 +261,6 @@
 
                 if (this.product.is_price_generic) {
                     this.is_price_generic = 1;
-                }
-
-                if (this.product.color) {
-                    this.color = this.product.color;
-                }
-
-                if (this.product.size) {
-                    this.size = this.product.size;
                 }
 
                 this.brand = this.product.brand.name;
@@ -340,16 +303,8 @@
             setCategorySelected(value) {
                 this.product.category_id = value ? value.id : null;
             },
-            setColorSelected(value) {
-                this.product.color_id = value ? value.id : null;
-            },
             setGenderSelected(value) {
                 this.product.gender = value;
-            },
-            setSizeSelected(value) {
-                this.product.size_id = value ? value.id : null;
-                // this.size_values = value.map(item => item.id).toString();
-                // let result = objArray.map(({ foo }) => foo);
             },
             setCombinationColorSelected(value, index) {
                 this.combinations[index].color_id = value ? value.id : null;
