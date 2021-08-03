@@ -1,14 +1,27 @@
 <script>
     $(function(){
         const FORM_RESOURCE_ORDERS = $("#form-orders");
+        const URL_PRODUCTS = "{{ route('productos.index') }}";
         const btn_add_customer = $('#add-customer');
+        const btn_add_product = $('#add-product');
         const btn_cancel_new_customer = $('#btn-cancel-new-customer');
         const container_new_customer = $('#container-new-customer');
         const modal_new_customer = $('#modal-new-customer');
+        const modal_product = $('#modal-product');
         const select_customer = $('select#customer');
+        const select_product = $('select#product');
+
+        let datatable_products = $('#datatable_products');
+        let order_products = [];
 
         $('select').select2();
 
+        datatable_products.DataTable();
+
+
+        /**
+        *
+        */
         FORM_RESOURCE_ORDERS.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-orders')[0];
@@ -74,11 +87,61 @@
         /**
         *
         */
+        btn_add_product.on('click', function(e) {
+            var selected = select_product.val();
+
+            console.log(selected);
+
+            if (selected) {
+                $.ajax({
+                    url: `${URL_PRODUCTS}/${selected}`,
+                    type: "GET",
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        console.log(res);
+                        if (res) {
+                            handleShowProductForm(res);
+                        } else {
+                            new Noty({
+                                text: "No se ha podido obtener la información del producto en este momento.",
+                                type: 'error'
+                            }).show();
+                        }
+                    },
+                    error: function(e) {
+                        if (e.responseJSON.message) {
+                            toastr.error(e.responseJSON.message);
+                        } else if (e.responseJSON.error) {
+                            toastr.error(e.responseJSON.error);
+                        } else {
+                            toastr.error("No se ha podido obtener la información del producto en este momento.");
+                        }
+                    }
+                });
+            }
+
+
+            /**
+            *
+            *   
+            *
+            */
+        });
+
+        /*
+            - desactivar en el selector al agregar producto
+        */
+
+        /**
+        *
+        */
         btn_add_customer.on('click', function(e) {
             e.preventDefault();
             modal_new_customer.modal('show');
             select_customer.attr('disabled', true);
         });
+
         /**
         *
         */
@@ -114,8 +177,61 @@
             container.find('#selected-customer-telephone').val(telephone);
             container.removeClass('d-none');
         });
+
+
+        /**
+        * 
+        */
+        function handleShowProductForm(product) {
+            modal_product.modal('show');
+        }
+
+        /**
+        *
+        */
+        $('body').on('change', '.input-product-qty', function(e) {
+            var stock = Number($(this).data('stock')),
+                name = $(this).data('name'),
+                val = Number($(this).val());
+
+            if (val < 0 || isNaN(val))  {
+                $(this).val(0);
+            }
+
+            if (val > stock) {
+                $(this).val(stock);
+
+                new Noty({
+                    text: `El límite en stock para el producto <b>${name}</b> es de ${stock}`,
+                    type: 'error'
+                }).show();
+            }
+        });
+
+        /**
+        *
+        */
+        $('body').on('click', 'tbody .remove-product', function (e) {
+            var id = $(this).data('id'),
+                name = $(this).data('name'),
+                tr = $(this).parents('tr');
+
+            datatable_products.DataTable().row(tr).remove().draw();
+
+            new Noty({
+                    text: `Producto <b>${name}</b> eliminado con éxito.`,
+                    type: 'success'
+                }).show();
+
+            /*
+                - activar en el selector
+            */
+        });
     });
 
+    /**
+    * Steps form
+    */
     $(document).ready(function(){
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;

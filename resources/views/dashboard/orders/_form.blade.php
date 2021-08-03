@@ -103,13 +103,87 @@
                                                         @foreach ($products as $product)
                                                             <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
-                                                            >{{ $product->name }}</option>
+                                                            >{{ $product->name }} (#{{ $product->code }})</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="add-product" type="button"><i class="fa fa-plus"></i></span>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{--  --}}
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Genero</label>
+                                                <input type="text" value="" readOnly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Categoría</label>
+                                                <input type="text" value="" readOnly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Marca</label>
+                                                <input type="text" value="" readOnly>
+                                            </div>
+                                        </div>
+
+                                        Color
+                                        Talla
+                                        Cantidad Disponible
+                                        Agregrar
+                                    </div>
+
+                                    {{--  --}}
+                                    <hr>
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <small class="form-text text-muted font-weight-bold text-success">Productos seleccionados</small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <table id="datatable_products" class="table" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.code') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
+
+                                                            <th scope="col">Disponibles</th>
+                                                            <th scope="col">Cantidad</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($products as $product)
+                                                            <tr>
+                                                                <td>{{ $product->name }}</td>
+                                                                <td>{{ $product->code }}</td>
+                                                                <td>{{ $product->gender }}</td>
+                                                                <td>{{ optional($product->brand)->name }}</td>
+                                                                <td>{{ optional($product->category)->name }}</td>
+                                                                <td>{{ $product['stock_depot'] }}</td>
+                                                                <td>
+                                                                    <input class="form-control input-product-qty" type="number" min="0" max="{{ $product['stock_depot'] }}" step="1" data-name="{{ $product->name }}" data-stock="{{ $product['stock_depot'] }}" data-prev="1" value="1">
+                                                                </td>
+                                                                <td>
+                                                                    <button data-id="{{ $product->id }}" data-name="{{ $product->name }}" class="btn btn-sm btn-danger  btn-action-icon remove-product" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

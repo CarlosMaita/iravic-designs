@@ -63,9 +63,4 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Size');
     }
-
-    public function sizes()
-    {
-        return $this->hasMany('App\Models\ProductSize');
-    }
 }

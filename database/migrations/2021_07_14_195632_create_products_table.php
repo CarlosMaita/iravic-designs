@@ -24,15 +24,12 @@ class CreateProductsTable extends Migration
             $table->string('code')->nullable();
             $table->string('cover')->nullable();
             $table->tinyInteger('is_regular')->default(0);
-            // $table->enum('color', ['Amarillo', 'Azul', 'Rojo', 'Verde'])->nullable();
             $table->enum('gender', ['M', 'F'])->nullable();
+            $table->tinyInteger('is_price_generic')->default(0);
+            $table->string('price')->nullable();
             $table->string('stock_depot')->default(0);
             $table->string('stock_local')->default(0);
             $table->string('stock_truck')->default(0);
-
-            // $table->enum('size', ['32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'])->nullable();
-            // $table->enum('size_shoes', ['32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'])->nullable();
-            // $table->enum('size_clothes', ['XS', 'S', 'M', 'L', 'XL', 'XXL'])->nullable();
             $table->timestamps();
             $table->softDeletes();
 

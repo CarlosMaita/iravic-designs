@@ -133,9 +133,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $producto)
+    public function show(Request $request, Product $producto)
     {
         $this->authorize('view', $producto);
+
+        if ($request->ajax()) {
+            $producto->load('brand', 'category', 'color', 'product_combinations', 'sizes');
+            return response()->json($producto);
+        }
+
         return view('dashboard.catalog.products.show')
                 ->withProduct($producto);
     }
@@ -149,7 +155,7 @@ class ProductController extends Controller
     public function edit(Product $producto)
     {
         $this->authorize('update', $producto);
-        $producto->load('brand', 'category', 'color', 'product_combinations.color', 'product_combinations.sizes.size', 'sizes.size');
+        $producto->load('brand', 'category', 'color', 'product_combinations.color', 'product_combinations.size', 'size');
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
@@ -173,7 +179,6 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $producto)
     {
         try {
-            // return $request->all();
             $this->authorize('update', $producto);
             DB::beginTransaction();
             $this->productRepository->updateByRequest($producto->id, $request);

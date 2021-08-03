@@ -46,7 +46,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if (isset($request->is_regular) && $request->is_regular) {
             $attributes = array_merge(
                 $attributes,
-                $request->only('color_id', 'stock_depot', 'stock_local', 'stock_truck')
+                $request->only('color_id', 'size_id', 'stock_depot', 'stock_local', 'stock_truck')
             );
         }
 
@@ -59,74 +59,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     $attributes = array_merge(
                         array('product_id' => $product->id),
                         array('color_id' => $request->colors[$combination]),
-                        // array('size_id' => $request->sizes[$combination]),
+                        array('size_id' => $request->sizes[$combination]),
                         array('stock_depot' => $request->stocks_depot[$combination]),
                         array('stock_local' => $request->stocks_local[$combination]),
                         array('stock_truck' => $request->stocks_truck[$combination]),
                         $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
                     );
         
-                    $product_combination = $this->create($attributes);
-
-                    if (isset($request->sizes[$combination])) {
-                        $sizes = explode(',', $request->sizes[$combination]);
-                        $product_sizes = array();
-
-                        foreach ($sizes as $size) {
-                            array_push(
-                                $product_sizes,
-                                array('size_id' => $size)
-                            );
-                        }
-
-                        $product_combination->sizes()->createMany($product_sizes);
-                    }
+                    $this->create($attributes);
                 }
             }
-
-            // Update existing combinations
-            /*
-            if (isset($request->product_combinations) && count($request->product_combinations)) {
-                foreach ($request->product_combinations as $product_combination) {
-                    if ($product_combination = $this->find($product_combination)) {
-                        $attributes = array_merge(
-                            array('color_id' => $request->colors[$combination]),
-                            array('stock_depot' => $request->stocks_depot[$combination]),
-                            array('stock_local' => $request->stocks_local[$combination]),
-                            array('stock_truck' => $request->stocks_truck[$combination]),
-                            $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
-                        );
-            
-                        $this->update($product_combination, $attributes);
-
-                        if (isset($request->sizes[$combination])) {
-                            $sizes = explode(',', $request->sizes[$combination]);
-                            $product_sizes = array();
-
-                            foreach ($sizes as $size) {
-                                array_push(
-                                    $product_sizes,
-                                    array('size_id' => $size)
-                                );
-                            }
-
-                            $product_combination->sizes()->createMany($product_sizes);
-                        }
-                    }
-                }
-            }
-            */
-        } else if (isset($request->sizes)) {
-            $sizes = explode(',', $request->sizes);
-            $product_sizes = array();
-
-            foreach ($sizes as $size) {
-                array_push($product_sizes,
-                    array('size_id' => $size)
-                );
-            }
-
-            $product->sizes()->createMany($product_sizes);
         }
     }
 
@@ -150,23 +92,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         if ($product->is_regular) {
             $product->product_combinations()->delete();
-
-            if (isset($request->sizes)) {
-                $product_sizes = array();
-                $sizes = explode(',', $request->sizes);
-                $product->sizes()->whereNotIn('size_id', $sizes)->delete(); # Delete all sizes not selected anymore
-    
-                # Fill array with news product sizes
-                foreach ($sizes as $size) {
-                    if (!$product->sizes()->where('size_id', $size)->first()) {
-                        array_push($product_sizes,
-                            array('size_id' => $size)
-                        );
-                    }
-                }
-    
-                $product->sizes()->createMany($product_sizes);
-            }
         } else if (!$product->is_regular) {
             // New combinations
             if (isset($request->combinations) && count($request->combinations)) {
@@ -174,28 +99,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     $attributes = array_merge(
                         array('product_id' => $product->id),
                         array('color_id' => $request->colors[$combination]),
-                        // array('size_id' => $request->sizes[$combination]),
+                        array('size_id' => $request->sizes[$combination]),
                         array('stock_depot' => $request->stocks_depot[$combination]),
                         array('stock_local' => $request->stocks_local[$combination]),
                         array('stock_truck' => $request->stocks_truck[$combination]),
                         $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
                     );
         
-                    $product_combination = $this->create($attributes);
-
-                    if (isset($request->sizes[$combination])) {
-                        $sizes = explode(',', $request->sizes[$combination]);
-                        $product_sizes = array();
-
-                        foreach ($sizes as $size) {
-                            array_push(
-                                $product_sizes,
-                                array('size_id' => $size)
-                            );
-                        }
-
-                        $product_combination->sizes()->createMany($product_sizes);
-                    }
+                    $this->create($attributes);
                 }
             }
 
@@ -207,30 +118,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     if ($product_combination) {
                         $attributes = array_merge(
                             array('color_id' => $request->colors_existing[$product_combination_id]),
+                            array('size_id' => $request->sizes_existing[$product_combination_id]),
                             array('stock_depot' => $request->stocks_depot_existing[$product_combination_id]),
                             array('stock_local' => $request->stocks_local_existing[$product_combination_id]),
                             array('stock_truck' => $request->stocks_truck_existing[$product_combination_id]),
                             $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
                         );
 
-                        $product_combination->update($attributes);
-
-                        if (isset($request->sizes_existing[$product_combination->id])) {
-                            $sizes = explode(',', $request->sizes_existing[$product_combination->id]);
-                            $product_sizes = array();
-                            $product_combination->sizes()->whereNotIn('size_id', $sizes)->delete(); # Delete all sizes not selected anymore
-                
-                            # Fill array with news product sizes
-                            foreach ($sizes as $size) {
-                                if (!$product_combination->sizes()->where('size_id', $size)->first()) {
-                                    array_push($product_sizes,
-                                        array('size_id' => $size)
-                                    );
-                                }
-                            }
-                
-                            $product_combination->sizes()->createMany($product_sizes);
-                        }
+                        $this->update($product_combination->id, $attributes);
                     }
                 }
             }

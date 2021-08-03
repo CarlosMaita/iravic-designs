@@ -39,12 +39,14 @@
       </div>
   </div>
   @include('dashboard.orders._modal_new_costumer', ['customer' => new App\Models\Customer])
+  @include('dashboard.orders._modal_product')
 @endsection
 
 @push('js')
   <script>
     const $customer = null;
     const is_creating_order = true;
+    const stock_column = {!! json_encode($stockColumn) !!};
   </script>
   <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
 

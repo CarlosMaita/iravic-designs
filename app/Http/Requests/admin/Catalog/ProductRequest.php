@@ -111,6 +111,7 @@ class ProductRequest extends FormRequest
                 $rules['colors'] = 'required';
                 $rules['colors.*'] = 'exists:colors,id';
                 $rules['sizes'] = 'required';
+                $rules['sizes.*'] = 'exists:sizes,id';
                 $rules['stocks_depot'] = 'required';
                 $rules['stocks_depot.*'] = 'integer|min:0';
                 $rules['stocks_local'] = 'required';
@@ -133,7 +134,7 @@ class ProductRequest extends FormRequest
             }
         } else {
             $rules['color_id'] = 'required|exists:colors,id';
-            $rules['sizes']  = 'required';
+            $rules['size_id'] = 'required|exists:sizes,id';
             $rules['stock_depot'] = 'required|integer|min:0';
             $rules['stock_local'] = 'required|integer|min:0';
             $rules['stock_truck'] = 'required|integer|min:0';
@@ -184,7 +185,7 @@ class ProductRequest extends FormRequest
 
                 if (!isset($this->sizes[$i])) {
                     $validator->after(function ($validator) use($i, $combination) {
-                        $validator->errors()->add('size_' . $i, 'Debe seleccionar por lo menos una talla para la combinación ' . ($combination) . ' .');
+                        $validator->errors()->add('size_' . $i, 'Debe seleccionar la talla para la combinación ' . ($combination) . ' .');
                     });
                 }
             }

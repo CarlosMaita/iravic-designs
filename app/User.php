@@ -66,4 +66,23 @@ class User extends Authenticatable
     {
         return $this->roles()->sync($role);
     }
+
+    public function getColumnStock()
+    {
+        $roles_name = $this->roles->flatten()->pluck('name');
+
+        if ($roles_name->contains('superadmin') || $roles_name->contains('admin')) {
+            return 'stock_depot';
+        }
+
+        if ($roles_name->contains('camion') || $roles_name->contains('moto')) {
+            return 'stock_local';
+        }
+
+        if ($roles_name->contains('local')) {
+            return 'stock_truck';
+        }
+
+        return null;
+    }
 }
