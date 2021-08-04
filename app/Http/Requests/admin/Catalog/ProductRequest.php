@@ -25,6 +25,8 @@ class ProductRequest extends FormRequest
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El campo nombre debe tener un mínimo de :min caracteres.',
             'name.max' => 'El campo nombre debe tener un máximo de :max caracteres.',
+            'price.required' => 'El campo Precio es obligatorio.',
+            'price.min' => 'El campo Precio no debe ser menor a :min.',
             // 'size_id.required' => 'El campo talla es obligatorio.',
             // 'size_id.exists' => 'La talla seleccionada no existe en nuestra BD.',
             'sizes.required' => 'Debe seleccionar una talla para cada combinación.',
@@ -53,6 +55,7 @@ class ProductRequest extends FormRequest
                 $messages['stocks_local_existing.' . $i . '.min'] = 'El Stock Camioneta para la combinación ' . ($combination) . ' no puede ser menor a :min';
                 $messages['prices_existing.' . $i . '.min'] = 'El precio para la combinación ' . ($combination) . ' no puede ser menor a :min';
                 $messages['prices_existing.' . $i . '.numeric'] = 'Ingrese un Precio válido para la combinación ' . ($combination);
+                $messages['prices_existing.' . $i . '.min'] = 'El precio para la combinación ' . ($combination) . ' no puede ser menor a :min';
             }
         }
 
@@ -73,6 +76,7 @@ class ProductRequest extends FormRequest
                 $messages['stocks_truck.' . $i . '.min'] = 'El Stock Camioneta para la combinación ' . ($combination) . ' no puede ser menor a :min';
                 $messages['prices.' . $i . '.min'] = 'El precio para la combinación ' . ($combination) . ' no puede ser menor a :min';
                 $messages['prices.' . $i . '.numeric'] = 'Ingrese un Precio válido para la combinación ' . ($combination);
+                $messages['prices.' . $i . '.min'] = 'El precio para la combinación ' . ($combination) . ' no puede ser menor a :min';
             }
         }
 
@@ -102,7 +106,7 @@ class ProductRequest extends FormRequest
             'gender' => 'required',
             'brand_id' => 'required|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric'
+            'price' => 'required|numeric|min:0'
         ];
 
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
@@ -127,7 +131,7 @@ class ProductRequest extends FormRequest
                 if (!empty($this->prices)) {
                     foreach ($this->combinations as $combination) {
                         if (!empty($this->prices[$combination])) {
-                            $rules['prices.' . $combination] = 'min:0|numeric';
+                            $rules['prices.' . $combination] = 'min:0|numeric|min:0';
                         }
                     }
                 }
@@ -148,7 +152,7 @@ class ProductRequest extends FormRequest
                 if (!empty($this->prices_existing)) {
                     foreach ($this->product_combinations as $product_combination_id) {
                         if (!empty($this->prices_existing[$product_combination_id])) {
-                            $rules['prices_existing.' . $product_combination_id] = 'min:0|numeric';
+                            $rules['prices_existing.' . $product_combination_id] = 'min:0|numeric|min:0';
                         }
                     }
                 }

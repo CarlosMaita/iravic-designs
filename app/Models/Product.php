@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -38,7 +39,8 @@ class Product extends Model
     public $appends = [
         'real_code',
         'regular_price',
-        'regular_price_str'
+        'regular_price_str',
+        'stock_user'
     ];
 
     # Relationships
@@ -94,6 +96,17 @@ class Product extends Model
     public function getRegularPriceStrAttribute()
     {
         return '$ ' . number_format($this->regular_price, 2, '.', ',');
+    }
+
+    public function getStockUserAttribute()
+    {
+        $user = Auth::user();
+
+        if ($stock_column = $user->getColumnStock()) {
+            return $this->$stock_column;
+        }
+
+        return 0;
     }
 
     # Methods

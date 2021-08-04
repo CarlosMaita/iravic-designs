@@ -82,14 +82,13 @@ class OrderController extends Controller
     {
         $this->authorize('create', 'App\Models\Order');
         $customers = $this->customerRepository->all();
-        $products = $this->productRepository->onlyPrincipals();
-        $stock_column = Auth::user()->getColumnStock();
+        // $products = $this->productRepository->onlyPrincipals();
+        $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();
         return view('dashboard.orders.create')
                 ->withCustomers($customers)
                 ->withOrder(new Order())
                 ->withProducts($products)
-                ->withStockColumn($stock_column)
                 ->withZones($zones);
     }
 

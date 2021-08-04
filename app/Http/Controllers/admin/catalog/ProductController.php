@@ -142,7 +142,8 @@ class ProductController extends Controller
         $this->authorize('view', $producto);
 
         if ($request->ajax()) {
-            $producto->load('brand', 'category', 'color', 'product_combinations', 'size');
+            // $producto->load('brand', 'category', 'color', 'product_combinations.color', 'product_combinations.size', 'size');
+            $producto->load('brand', 'category', 'color', 'size');
             return response()->json($producto);
         }
 

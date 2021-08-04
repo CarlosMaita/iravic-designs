@@ -166,6 +166,8 @@ return [
                 'is_price_generic'  => 'Precio genérico',
                 'price'             => 'Precio',
                 'size'              => 'Talla',
+                'available'         => 'Disponible',
+                'qty'               => 'Cantidad'
             ],
             'users' => [
                 'email' => 'Correo electrónico',

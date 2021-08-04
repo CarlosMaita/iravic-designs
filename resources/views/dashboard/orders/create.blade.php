@@ -46,7 +46,7 @@
   <script>
     const $customer = null;
     const is_creating_order = true;
-    const stock_column = {!! json_encode($stockColumn) !!};
+    const $products = @json($products);
   </script>
   <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
 

@@ -10,11 +10,12 @@
                         <div id="msform">
                             <!-- progressbar -->
                             <ul id="progressbar" class="p-0">
-                                <li class="active" id="customer-step"><strong>{{ __('dashboard.form.fields.orders.customer') }}</strong></li>
-                                <li id="products-step"><strong>{{ __('dashboard.form.fields.orders.products') }}</strong></li>
+                                {{-- <li class="active" id="customer-step"><strong>{{ __('dashboard.form.fields.orders.customer') }}</strong></li> --}}
+                                <li class="active" id="products-step"><strong>{{ __('dashboard.form.fields.orders.products') }}</strong></li>
                                 <li id="payment-step"><strong>{{ __('dashboard.form.fields.orders.payment') }}</strong></li>
                                 <li id="confirm-step"><strong>{{ __('dashboard.form.fields.orders.finish') }}</strong></li>
                             </ul> <!-- fieldsets -->
+                            {{-- 
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.customer_information') }}</h2>
@@ -89,9 +90,10 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-info next action-button" type="button" data-step="1">{{ __('dashboard.general.next') }}</button>
-                            </fieldset>
+                            </fieldset> 
+                            --}}
                             <fieldset>
-                                <div class="form-card">
+                                <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.products_information') }}</h2> 
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
@@ -101,9 +103,34 @@
                                                     <select class="form-control" id="product">
                                                         <option selected disabled>Seleccionar</option>
                                                         @foreach ($products as $product)
-                                                            <option value="{{ $product->id }}" 
+                                                            {{-- <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
-                                                            >{{ $product->name }} (#{{ $product->code }})</option>
+                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-category="{{ $product->category->name }}"
+                                                                    data-code="{{ $product->code }}"
+                                                            >{{ $product->name }} - {{ $product->gender }}</option> --}}
+
+                                                            @if ($product->is_regular)
+                                                                <option value="{{ $product->id }}" 
+                                                                    data-id="{{ $product->id }}"
+                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-category="{{ $product->category->name }}"
+                                                                    data-code="{{ $product->code }}"
+                                                                    @if($product->stock_user < 1) disabled @endif
+                                                                >
+                                                                    {{ $product->name }} - Cod:{{ $product->code }} @if($product->stock_user < 1) (SIN STOCK) @endif
+                                                                </option>
+                                                            @elseif($product->product_id)
+                                                                <option value="{{ $product->id }}" 
+                                                                    data-id="{{ $product->id }}"
+                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-category="{{ $product->category->name }}"
+                                                                    data-code="{{ $product->code }}"
+                                                                    @if($product->stock_user < 1) disabled @endif
+                                                                >
+                                                                    {{ $product->name }} (T: {{ optional($product->size)->name }} - Color: {{ optional($product->color)->name }}) - Cod: {{ $product->real_code }} @if($product->stock_user < 1) (SIN STOCK) @endif
+                                                                </option>
+                                                            @endif
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-prepend">
@@ -112,14 +139,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {{--  --}}
-                                    <div class="row">
-                                        Price
-                                        Color
-                                        Talla
-                                        Cantidad Disponible
-                                        Agregrar
                                     </div>
                                     {{--  --}}
                                     <hr>
@@ -139,6 +158,8 @@
                                                             <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.color') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.size') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.available') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.qty') }}</th>
@@ -146,23 +167,6 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($products as $product)
-                                                            <tr>
-                                                                <td>{{ $product->name }}</td>
-                                                                <td>{{ $product->code }}</td>
-                                                                <td>{{ $product->gender }}</td>
-                                                                <td>{{ optional($product->brand)->name }}</td>
-                                                                <td>{{ optional($product->category)->name }}</td>
-                                                                <td>{{ $product['stock_depot'] }}</td>
-                                                                <td>{{ $product->regular_price_str }}</td>
-                                                                <td>
-                                                                    <input class="form-control input-product-qty" type="number" min="0" max="{{ $product['stock_depot'] }}" step="1" data-name="{{ $product->name }}" data-stock="{{ $product['stock_depot'] }}" data-prev="1" value="1">
-                                                                </td>
-                                                                <td>
-                                                                    <button data-id="{{ $product->id }}" data-name="{{ $product->name }}" class="btn btn-sm btn-danger  btn-action-icon remove-product" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>

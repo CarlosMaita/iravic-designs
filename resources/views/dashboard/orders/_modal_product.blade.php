@@ -2,46 +2,46 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Agregar producto</h5>
+                <h5 class="modal-title">Formulario Producto</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                
-
-                
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Genero</label>
-                            <input type="text" value="" readOnly>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6 col-md-3">
+                            <div class="form-group">
+                                <label><b>Nombre</b></label>
+                                <p class="product-name font-weight-normal"></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="form-group">
+                                <label><b>Código</b></label>
+                                <p class="product-code font-weight-normal"></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="form-group">
+                                <label><b>Categoría</b></label>
+                                <p class="product-category font-weight-normal"></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="form-group">
+                                <label><b>Marca</b></label>
+                                <p class="product-brand font-weight-normal"></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Categoría</label>
-                            <input type="text" value="" readOnly>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Marca</label>
-                            <input type="text" value="" readOnly>
-                        </div>
-                    </div>
-
-                    Color
-                    Talla
-                    Cantidad Disponible
-                    Agregrar
                 </div>
-
-
+                <div id="product-add-stocks">
+                </div>
             </div>
             <div class="modal-footer">
                 <button id="btn-cancel-product" class="btn btn-danger" type="button" data-dismiss="modal">{{ __('dashboard.form.cancel') }}</button>
-                <button class="btn btn-primary">Agregar</button>
+                <button id="add-product-modal" class="btn btn-primary">Agregar</button>
             </div>
         </div>
     </div>
