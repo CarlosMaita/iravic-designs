@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.boxes-sales.boxes.index') }}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.boxes.index') }}</div>
                         <div class="card-body">
                             @can('create', App\Models\Box::class)
                                 <div class="row"> 
@@ -21,10 +21,10 @@
                                         <table id="datatable_boxes" class="table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.boxes.date') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.boxes.user') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.boxes.closed') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.boxes.total_payed') }}</th>
+                                                <th scope="col">{{ __('dashboard.boxes.date') }}</th>
+                                                <th scope="col">{{ __('dashboard.boxes.user') }}</th>
+                                                <th scope="col">{{ __('dashboard.boxes.closed') }}</th>
+                                                <th scope="col">{{ __('dashboard.boxes.total_payed') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

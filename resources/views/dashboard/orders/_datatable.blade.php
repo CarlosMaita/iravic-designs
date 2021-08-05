@@ -1,11 +1,11 @@
 <table id="datatable_orders" class="table" width="100%">
     <thead>
         <tr>
-            <th scope="col">{{ __('dashboard.boxes-sales.orders.id') }}</th>
-            <th scope="col">{{ __('dashboard.boxes-sales.orders.customer') }}</th>
-            <th scope="col">{{ __('dashboard.boxes-sales.orders.date') }}</th>
-            <th scope="col">{{ __('dashboard.boxes-sales.orders.payment_method') }}</th>
-            <th scope="col">{{ __('dashboard.boxes-sales.orders.total') }}</th>
+            <th scope="col">{{ __('dashboard.orders.id') }}</th>
+            <th scope="col">{{ __('dashboard.orders.customer') }}</th>
+            <th scope="col">{{ __('dashboard.orders.date') }}</th>
+            <th scope="col">{{ __('dashboard.orders.payment_method') }}</th>
+            <th scope="col">{{ __('dashboard.orders.total') }}</th>
             <th></th>
         </tr>
     </thead>

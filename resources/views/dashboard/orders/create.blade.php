@@ -17,7 +17,7 @@
           <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                   <div class="card">
-                      <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.boxes-sales.orders.create') }}</div>
+                      <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.orders.create') }}</div>
                       <div class="card-body px-2">
                         <form id="form-orders" method="POST" action="{{ route('pedidos.store') }}">
                           @csrf

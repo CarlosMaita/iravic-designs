@@ -6,14 +6,14 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify" aria-hidden="true"></i> {{ __('dashboard.boxes-sales.orders.order') }} - #{{ $order->id }} </div>
+                        <div class="card-header"><i class="fa fa-align-justify" aria-hidden="true"></i> {{ __('dashboard.orders.order') }} - #{{ $order->id }} </div>
                         <div class="card-body">
                             <div class="container-fluid mb-3">
                                 <!--  -->
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.customer') }}</label>
+                                            <label>{{ __('dashboard.orders.customer') }}</label>
                                             <input class="form-control" type="text" value="{{ optional($order->customer)->name }}" readOnly>
                                         </div>
                                     </div>
@@ -21,13 +21,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.user') }}</label>
+                                            <label>{{ __('dashboard.orders.user') }}</label>
                                             <input class="form-control" type="text" value="{{ optional($order->user)->name }}" readOnly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.box_id') }}</label>
+                                            <label>{{ __('dashboard.orders.box_id') }}</label>
                                             <input class="form-control" type="text" value="{{ optional($order->box)->id }}" readOnly>
                                         </div>
                                     </div>
@@ -35,13 +35,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.date') }}</label>
+                                            <label>{{ __('dashboard.orders.date') }}</label>
                                             <input class="form-control" type="text" value="{{ $order->date }}" readOnly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.payment_method') }}</label>
+                                            <label>{{ __('dashboard.orders.payment_method') }}</label>
                                             <input class="form-control" type="text" value="{{ $order->payment_method }}" readOnly>
                                         </div>
                                     </div>
@@ -49,7 +49,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.total') }}</label>
+                                            <label>{{ __('dashboard.orders.total') }}</label>
                                             <input class="form-control" type="text" value="{{ $order->total }}" readOnly>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                                 <br>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="true">{{ __('dashboard.boxes-sales.orders.products.index') }}</a>
+                                        <a class="nav-link active" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="true">{{ __('dashboard.orders.products.index') }}</a>
                                     </li>
                                 </ul>
                                 <!--  -->
@@ -71,11 +71,11 @@
                                                     <table id="datatable_order_products" class="table" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">{{ __('dashboard.boxes-sales.orders.products.name') }}</th>
-                                                            <th>{{ __('dashboard.boxes-sales.orders.products.color') }}</th>
-                                                            <th>{{ __('dashboard.boxes-sales.orders.products.size') }}</th>
-                                                            <th>{{ __('dashboard.boxes-sales.orders.products.qty') }}</th>
-                                                            <th>{{ __('dashboard.boxes-sales.orders.products.total') }}</th>
+                                                            <th scope="col">{{ __('dashboard.orders.products.name') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.color') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.size') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.qty') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.total') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

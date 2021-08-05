@@ -22,6 +22,7 @@ class Box extends Model
         'total_bankwire',
         'total_card',
         'total_cash',
+        'total_cash_in_box',
         'total_credit',
         'total_payed'
     ];
@@ -82,6 +83,13 @@ class Box extends Model
     {
         $total = $this->getTotalByPaymentMethod('cash');
         return '$ ' . number_format($total, 2, '.', ',');
+    }
+
+    public function getTotalCashInBoxAttribute()
+    {
+        $total = $this->getTotalByPaymentMethod('cash');
+        $total += $this->getOriginal('cash_initial');
+        return '$ ' . number_format($total, 2, '.', ','); 
     }
     
     public function getTotalCreditAttribute()

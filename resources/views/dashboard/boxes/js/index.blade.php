@@ -110,7 +110,7 @@
             
             swal({
                 title: '',
-                text: "{{ __('dashboard.boxes-sales.boxes.sure_to_close_box') }}?",
+                text: "{{ __('dashboard.boxes.sure_to_close_box') }}?",
                 type: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Si',

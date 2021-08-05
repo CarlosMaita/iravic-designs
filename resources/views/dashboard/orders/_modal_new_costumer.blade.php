@@ -15,7 +15,7 @@
                 </div>
                 <div class="modal-footer">
                     <button id="btn-cancel-new-customer" class="btn btn-danger" type="button" data-dismiss="modal">{{ __('dashboard.form.cancel') }}</button>
-                    <button class="btn btn-primary">{{ __('dashboard.form.create') }} {{ __('dashboard.boxes-sales.orders.customer') }}</button>
+                    <button class="btn btn-primary">{{ __('dashboard.form.create') }} {{ __('dashboard.orders.customer') }}</button>
                 </div>
             </div>
         </form>
