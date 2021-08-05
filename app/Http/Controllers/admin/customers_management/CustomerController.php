@@ -132,8 +132,10 @@ class CustomerController extends Controller
     public function show(Customer $cliente)
     {
         $this->authorize('view', $cliente);
+        $orders = $cliente->orders()->orderBy('date', 'desc')->get();
         return view('dashboard.customers-management.customers.show')
-                ->withCustomer($cliente);
+                ->withCustomer($cliente)
+                ->withOrders($orders);
     }
 
     /**

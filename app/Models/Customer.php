@@ -51,6 +51,11 @@ class Customer extends Model
     }
 
     # Relationships
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Order');
+    }
+
     public function zone()
     {
         return $this->belongsTo('App\Models\Zone');
