@@ -18,18 +18,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <table id="datatable_orders" class="table" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.orders.id') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.orders.customer') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.orders.user') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.orders.date') }}</th>
-                                                <th scope="col">{{ __('dashboard.boxes-sales.orders.total') }}</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        </table>
+                                        @include('dashboard.orders._datatable')
                                     </div>
                                 </div>
                             </div>

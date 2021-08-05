@@ -114,8 +114,10 @@ class BoxController extends Controller
     public function show(Box $caja)
     {
         $this->authorize('view', $caja);
+        $orders = $caja->orders()->orderBy('date', 'desc')->get();
         return view('dashboard.boxes.show')
-                ->withBox($caja);
+                ->withBox($caja)
+                ->withOrders($orders);
     }
 
     /**

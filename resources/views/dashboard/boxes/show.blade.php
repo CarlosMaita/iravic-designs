@@ -14,6 +14,10 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
                                     </li>
+                                    <!--  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
+                                    </li>
                                 </ul>
                                 <!--  -->
                                 <div class="tab-content" id="myTabContent">
@@ -106,6 +110,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  -->
+                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.orders._datatable', ['orders' => $orders])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
@@ -117,3 +131,15 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    @include('plugins.sweetalert')
+    
+    <script>
+        $(function() {
+            $('#datatable_orders').DataTable({
+                pageLength: 25,
+            });
+        });
+    </script>
+@endpush
