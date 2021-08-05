@@ -21,20 +21,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.date') }}</label>
-                                            <input class="form-control" type="text" value="{{ $order->date }}" readOnly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{ __('dashboard.boxes-sales.orders.total') }}</label>
-                                            <input class="form-control" type="text" value="{{ $order->total }}" readOnly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label>{{ __('dashboard.boxes-sales.orders.user') }}</label>
                                             <input class="form-control" type="text" value="{{ optional($order->user)->name }}" readOnly>
                                         </div>
@@ -43,6 +29,28 @@
                                         <div class="form-group">
                                             <label>{{ __('dashboard.boxes-sales.orders.box_id') }}</label>
                                             <input class="form-control" type="text" value="{{ optional($order->box)->id }}" readOnly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('dashboard.boxes-sales.orders.date') }}</label>
+                                            <input class="form-control" type="text" value="{{ $order->date }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('dashboard.boxes-sales.orders.payment_method') }}</label>
+                                            <input class="form-control" type="text" value="{{ $order->payment_method }}" readOnly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('dashboard.boxes-sales.orders.total') }}</label>
+                                            <input class="form-control" type="text" value="{{ $order->total }}" readOnly>
                                         </div>
                                     </div>
                                 </div>

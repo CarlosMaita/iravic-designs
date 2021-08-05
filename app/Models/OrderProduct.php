@@ -34,4 +34,15 @@ class OrderProduct extends Model
     {
         return $this->belongsTo('App\Models\Product');
     }
+    
+    public function size()
+    {
+        return $this->belongsTo('App\Models\Size');
+    }
+
+    # Accessors
+    public function getTotalAttribute($value)
+    {
+        return '$ ' . number_format($value, 2, '.', ',');
+    }
 }

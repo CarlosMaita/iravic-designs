@@ -33,12 +33,13 @@ return [
             'box_id'            => 'ID Caja',
             'customer'          => 'Cliente',
             'date'              => 'Fecha',
+            'payment_method'    => 'Método de pago',
             'products'          => [
                 'index'         => 'Productos',
                 'name'          => 'Nombre',
                 'color'         => 'Color',
                 'qty'           => 'Cant.',
-                'size'          => 'Tamaño',
+                'size'          => 'Talla',
                 'total'         => 'Total'
             ],
             'total'             => 'Total',

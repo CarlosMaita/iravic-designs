@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $table = 'orders';
+    
     protected $guarded = [];
+    
     public $fillable = [
         'box_id',
         'customer_id',
@@ -19,6 +21,10 @@ class Order extends Model
         'payed_card',
         'payed_cash',
         'payed_credit'
+    ];
+
+    public $appends = [
+        'payment_method'
     ];
 
     # Relationships
@@ -59,5 +65,27 @@ class Order extends Model
         }
 
         return '$ 0,00';
+    }
+
+    # Appends
+    public function getPaymentMethodAttribute()
+    {
+        if ($this->payed_bankwire) {
+            return 'Transferencia';
+        }
+
+        if ($this->payed_card) {
+            return 'Tarjeta';
+        }
+
+        if ($this->payed_cash) {
+            return 'Efectivo';
+        }
+
+        if ($this->payed_credit) {
+            return 'Crédito';
+        }
+
+        return '';
     }
 }
