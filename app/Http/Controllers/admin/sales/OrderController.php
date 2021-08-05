@@ -7,18 +7,22 @@ use App\Http\Requests\admin\OrderRequest;
 use App\Models\Order;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
+use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public $customerRepository;
     
     public $orderRepository;
+
+    public $orderProductRepository;
 
     public $productRepository;
 
@@ -27,10 +31,11 @@ class OrderController extends Controller
     /**
      * Construct
      */
-    public function __construct(CustomerRepository $customerRepository, OrderRepository $orderRepository, ProductRepository $productRepository, ZoneRepository $zoneRepository)
+    public function __construct(CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, ZoneRepository $zoneRepository)
     {
         $this->customerRepository = $customerRepository;
         $this->orderRepository = $orderRepository;
+        $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
         $this->zoneRepository = $zoneRepository;
         $this->middleware('order.create')->only('create');
@@ -82,7 +87,6 @@ class OrderController extends Controller
     {
         $this->authorize('create', 'App\Models\Order');
         $customers = $this->customerRepository->all();
-        // $products = $this->productRepository->onlyPrincipals();
         $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();
         return view('dashboard.orders.create')
@@ -102,7 +106,29 @@ class OrderController extends Controller
     {
         try {
             $this->authorize('create', 'App\Models\Order');
-            // $this->orderRepository->create($request->only('date', 'date_start', 'cash_initial', 'user_id'));
+            DB::beginTransaction();
+            $attributes = $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'total');
+            $order = $this->orderRepository->create($attributes);
+
+            foreach ($request->products as $key => $product_id) {
+                if ($product = $this->productRepository->find($product_id)) {
+                    if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
+                        $attributes = array(
+                            'color_id' => $product->color_id,
+                            'order_id'  => $order->id,
+                            'product_id' => $product->id,
+                            'product_name' => $product->name,
+                            'product_price' => $product->regular_price,
+                            'qty' => $request->qtys[$product_id],
+                            'size_id' => $product->size_id,
+                            'stock_type' => $request->stock_type,
+                            'total' => ($product->regular_price * $request->qtys[$product_id])
+                        );
+                        $this->orderProductRepository->create($attributes);
+                    }
+                }
+            }
+            DB::commit();
             flash("El pedido ha sido creado con éxito")->success();
 
             return response()->json([
@@ -112,6 +138,7 @@ class OrderController extends Controller
                     ]
             ]);
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [

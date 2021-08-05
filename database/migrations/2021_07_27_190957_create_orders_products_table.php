@@ -20,7 +20,9 @@ class CreateOrdersProductsTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('size_id')->nullable();
             $table->string('product_name');
+            $table->string('product_price');
             $table->integer('qty');
+            $table->string('stock_type')->nullable();
             $table->string('total');
             $table->timestamps();
             
@@ -39,7 +41,6 @@ class CreateOrdersProductsTable extends Migration
                 ->on('products')
                 ->onDelete('cascade');
 
-            
             $table->foreign('size_id')
                 ->references('id')
                 ->on('sizes')

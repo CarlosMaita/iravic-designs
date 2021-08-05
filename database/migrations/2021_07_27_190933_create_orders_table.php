@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->datetime('date');
-            $table->string('total');
+            $table->string('total')->default(0);
             $table->tinyInteger('payed_bankwire')->default(0)->nullable();
             $table->tinyInteger('payed_card')->default(0)->nullable();
             $table->tinyInteger('payed_cash')->default(0)->nullable();

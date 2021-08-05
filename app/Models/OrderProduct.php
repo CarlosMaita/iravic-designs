@@ -9,12 +9,13 @@ class OrderProduct extends Model
     protected $table = 'orders_products';
     protected $guarded = [];
     public $fillable = [
+        'color_id',
         'order_id',
         'product_id',
-        'color_id',
-        'size_id',
         'product_name',
         'qty',
+        'size_id',
+        'stock_type',
         'total'
     ];
 

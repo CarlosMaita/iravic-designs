@@ -49,8 +49,12 @@ class User extends Authenticatable
     protected $attributes = [
     ];
 
-
     // Relations
+    public function boxes()
+    {
+        return $this->hasMany('App\Models\Box');
+    }
+
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role')->withTimestamps();
