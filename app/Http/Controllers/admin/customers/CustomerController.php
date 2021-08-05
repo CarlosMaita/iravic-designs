@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin\customers_management;
+namespace App\Http\Controllers\admin\customers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CustomerRequest;
@@ -64,7 +64,7 @@ class CustomerController extends Controller
                     ->make(true);
         }
 
-        return view('dashboard.customers-management.customers.index');
+        return view('dashboard.customers.index');
     }
 
     /**
@@ -76,7 +76,7 @@ class CustomerController extends Controller
     {
         $this->authorize('create', 'App\Models\Customer');
         $zones = $this->zoneRepository->all();
-        return view('dashboard.customers-management.customers.create')
+        return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
                 ->withZones($zones);
     }
@@ -133,7 +133,7 @@ class CustomerController extends Controller
     {
         $this->authorize('view', $cliente);
         $orders = $cliente->orders()->orderBy('date', 'desc')->get();
-        return view('dashboard.customers-management.customers.show')
+        return view('dashboard.customers.show')
                 ->withCustomer($cliente)
                 ->withOrders($orders);
     }
@@ -148,7 +148,7 @@ class CustomerController extends Controller
     {
         $this->authorize('update', $cliente);
         $zones = $this->zoneRepository->all();
-        return view('dashboard.customers-management.customers.edit')
+        return view('dashboard.customers.edit')
                 ->withCustomer($cliente)
                 ->withZones($zones);
     }

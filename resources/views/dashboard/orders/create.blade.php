@@ -53,7 +53,7 @@
   @include('plugins.google-maps')
   @include('plugins.select2')
   @include('plugins.sweetalert')
-  @include('dashboard.customers-management.customers.js.customer-map')
-  @include('dashboard.customers-management.customers.js.form')
+  @include('dashboard.customers.js.customer-map')
+  @include('dashboard.customers.js.form')
   @include('dashboard.orders.js.form')
 @endpush

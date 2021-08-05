@@ -10,7 +10,7 @@
                         <div class="card-body">
                           <form id="form-zones" method="POST" action="{{ route('zonas.store') }}">
                             @csrf
-                            @include('dashboard.customers-management.zones._form')
+                            @include('dashboard.zones._form')
                             <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('zonas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                           </form>
@@ -23,5 +23,5 @@
 @endsection
 
 @push('js')
-  @include('dashboard.customers-management.zones.js.form')
+  @include('dashboard.zones.js.form')
 @endpush

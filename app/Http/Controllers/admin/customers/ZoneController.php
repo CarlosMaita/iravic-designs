@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\admin\customers_management;
+namespace App\Http\Controllers\admin\customers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\admin\CustomersManagement\ZoneRequest;
+use App\Http\Requests\admin\ZoneRequest;
 use App\Models\Zone;
 use App\Repositories\Eloquent\ZoneRepository;
 use DataTables;
@@ -50,7 +50,7 @@ class ZoneController extends Controller
                     ->make(true);
         }
 
-        return view('dashboard.customers-management.zones.index');
+        return view('dashboard.zones.index');
     }
 
     /**
@@ -61,7 +61,7 @@ class ZoneController extends Controller
     public function create()
     {
         $this->authorize('create', 'App\Models\Zone');
-        return view('dashboard.customers-management.zones.create')
+        return view('dashboard.zones.create')
                 ->withZone(new Zone());
     }
 
@@ -104,7 +104,7 @@ class ZoneController extends Controller
     public function edit(Zone $zona)
     {
         $this->authorize('update', $zona);
-        return view('dashboard.customers-management.zones.edit')
+        return view('dashboard.zones.edit')
                 ->withZone($zona);
     }
 

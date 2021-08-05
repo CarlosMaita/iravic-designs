@@ -40,7 +40,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     });
 
     # Customers Routes
-    Route::group(['prefix' => 'gestion-clientes', 'namespace' => 'customers_management'], function () {
+    Route::group(['prefix' => 'gestion-clientes', 'namespace' => 'customers'], function () {
         #
         Route::resource('clientes', 'CustomerController');
         #

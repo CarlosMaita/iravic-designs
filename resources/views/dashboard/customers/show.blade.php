@@ -181,6 +181,6 @@
         const $customer = @json($customer);
     </script>
     @include('plugins.google-maps')
-    @include('dashboard.customers-management.customers.js.customer-map')
-    @include('dashboard.customers-management.customers.js.show')
+    @include('dashboard.customers.js.customer-map')
+    @include('dashboard.customers.js.show')
 @endpush

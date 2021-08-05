@@ -11,7 +11,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @include('dashboard.customers-management.customers._form')
+                    @include('dashboard.customers._form')
                 </div>
                 <div class="modal-footer">
                     <button id="btn-cancel-new-customer" class="btn btn-danger" type="button" data-dismiss="modal">{{ __('dashboard.form.cancel') }}</button>

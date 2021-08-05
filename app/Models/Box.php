@@ -68,22 +68,26 @@ class Box extends Model
     # Appends
     public function getTotalBankwireAttribute()
     {
-        return 0;
+        $total = $this->getTotalByPaymentMethod('bankwire');
+        return '$ ' . number_format($total, 2, '.', ',');
     }
 
     public function getTotalCardAttribute()
     {
-        return 0;
+        $total = $this->getTotalByPaymentMethod('card');
+        return '$ ' . number_format($total, 2, '.', ',');
     }
 
     public function getTotalCashAttribute()
     {
-        return 0;
+        $total = $this->getTotalByPaymentMethod('cash');
+        return '$ ' . number_format($total, 2, '.', ',');
     }
     
     public function getTotalCreditAttribute()
     {
-        return 0;
+        $total = $this->getTotalByPaymentMethod('credit');
+        return '$ ' . number_format($total, 2, '.', ',');
     }
 
     public function getTotalPayedAttribute()
@@ -95,6 +99,17 @@ class Box extends Model
     # Methods
     public function getTotalPayed()
     {
-        return 0;
+        return $this->getTotalByPaymentMethod();
+    }
+
+    public function getTotalByPaymentMethod($payment_method = null)
+    {
+        $orders = $this->orders();
+        
+        if ($payment_method) {
+            $ordes = $orders->where('payed_' . $payment_method, 1);
+        }
+
+        return $orders->sum('total');
     }
 }

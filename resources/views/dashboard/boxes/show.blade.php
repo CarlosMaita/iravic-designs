@@ -11,8 +11,12 @@
                             <div class="container-fluid">
                                 <!--  -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                    </li><!--  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="account-status-tab" data-toggle="tab" href="#account-status" role="tab" aria-controls="account-status" aria-selected="true">Estado de Cuenta</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
@@ -66,6 +70,25 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes-sales.boxes.cash_initial') }}</label>
+                                                        <input class="form-control" type="text" value="{{ number_format($box->cash_initial, 2, ',', '.') }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes-sales.boxes.total_payed') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_payed}}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="tab-pane fade" id="account-status" role="tabpanel" aria-labelledby="account-status-tab">
+                                        <div class="container-fluid mt-3">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group">
