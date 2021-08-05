@@ -33,6 +33,11 @@ class Box extends Model
         return $this->hasMany('App\Models\Order');
     }
 
+    public function payments()
+    {
+        return $this->hasMany('App\Models\Payment');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -94,7 +99,7 @@ class Box extends Model
     
     public function getTotalCreditAttribute()
     {
-        $total = $this->getTotalByPaymentMethod('credit');
+        $total = $this->getTotalOrdersByPaymentMethod('credit');
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
@@ -112,12 +117,30 @@ class Box extends Model
 
     public function getTotalByPaymentMethod($payment_method = null)
     {
+        $total_orders = $this->getTotalOrdersByPaymentMethod($payment_method);
+        $total_payments = $payment_method != 'credit' ? $this->getTotalPaymentsByPaymentMethod($payment_method) : 0;
+        return ($total_orders + $total_payments);
+    }
+
+    public function getTotalOrdersByPaymentMethod($payment_method = null)
+    {
         $orders = $this->orders();
         
         if ($payment_method) {
-            $ordes = $orders->where('payed_' . $payment_method, 1);
+            $orders = $orders->where('payed_' . $payment_method, 1);
         }
 
         return $orders->sum('total');
+    }
+
+    public function getTotalPaymentsByPaymentMethod($payment_method = null)
+    {
+        $payments = $this->payments();
+        
+        if ($payment_method) {
+            $payments = $payments->where('payed_' . $payment_method, 1);
+        }
+
+        return $payments->sum('total');
     }
 }

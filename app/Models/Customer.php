@@ -32,6 +32,10 @@ class Customer extends Model
 
     public $appends = [
         'max_credit_str',
+        'total_buyed',
+        'total_credit',
+        'total_debt',
+        'total_payments',
         'url_dni',
         'url_receipt'
     ];
@@ -56,6 +60,11 @@ class Customer extends Model
         return $this->hasMany('App\Models\Order');
     }
 
+    public function payments()
+    {
+        return $this->hasMany('App\Models\Payment');
+    }
+
     public function zone()
     {
         return $this->belongsTo('App\Models\Zone');
@@ -69,6 +78,30 @@ class Customer extends Model
         }
 
         return '$ 0.00';
+    }
+
+    public function getTotalBuyedAttribute()
+    {
+        $total = $this->getTotalBuyed();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
+    public function getTotalCreditAttribute()
+    {
+        $total = $this->getTotalCredit();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
+    public function getTotalDebtAttribute()
+    {
+        $total = $this->getTotalDebt();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
+    public function getTotalPaymentsAttribute()
+    {
+        $total = $this->getTotalPayments();
+        return '$ ' . number_format($total, 2, '.', ',');
     }
 
     public function getUrlDniAttribute()
@@ -88,6 +121,7 @@ class Customer extends Model
 
         return url("/img/no_image.jpg");
     }
+    
 
     # Methods
     public function updateImage($disk, $old_image, $new_file, $delete)
@@ -105,5 +139,28 @@ class Customer extends Model
         }
 
         return $url;
+    }
+
+    public function getTotalBuyed()
+    {
+        return $this->orders()->sum('total');
+    }
+
+    public function getTotalCredit()
+    {
+        return $this->orders()->where('payed_credit', 1)->sum('total');
+    }
+
+    public function getTotalPayments()
+    {
+        return $this->payments()->sum('amount');
+    }
+
+    public function getTotalDebt()
+    {
+        $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
+        $total_payments = $this->payments()->sum('amount');
+
+        return ($total_credit - $total_payments);
     }
 }

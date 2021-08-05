@@ -16,6 +16,10 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
+                                        <a class="nav-link" id="account-status-tab" data-toggle="tab" href="#account-status" role="tab" aria-controls="account-status" aria-selected="true">Estado de Cuenta</a>
+                                    </li>
+                                    <!--  -->
+                                    <li class="nav-item">
                                         <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
                                     </li>
                                 </ul>
@@ -150,6 +154,39 @@
                                                 <div class="col-md-12">
                                                     <div id="map-customer" style="height: 300px;"></div>
                                                 </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="tab-pane fade" id="account-status" role="tabpanel" aria-labelledby="account-status-tab">
+                                        <div class="container-fluid mb-4 mt-3">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.customers.total_buyed') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $customer->total_buyed }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.customers.total_credit_give_for') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $customer->total_credit }}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.customers.total_payments') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $customer->total_payments }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.customers.total_debt') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $customer->total_debt }}" readOnly>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

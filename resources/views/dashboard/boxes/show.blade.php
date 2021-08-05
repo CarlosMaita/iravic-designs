@@ -14,7 +14,8 @@
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
-                                    </li><!--  -->
+                                    </li>
+                                    <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="account-status-tab" data-toggle="tab" href="#account-status" role="tab" aria-controls="account-status" aria-selected="true">Estado de Cuenta</a>
                                     </li>
@@ -93,7 +94,7 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.cash_initial') }}</label>
-                                                        <input class="form-control" type="text" value="{{ number_format($box->cash_initial, 2, ',', '.') }}" readOnly>
+                                                        <input class="form-control" type="text" value="$ {{ number_format($box->cash_initial, 2, ',', '.') }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">

@@ -64,6 +64,21 @@ return [
             'edit'      => 'Editar producto'
         ],
     ],
+    'customers' => [
+        'index'                 => 'Listado de Clientes',
+        'create'                => 'Crear nuevo cliente',
+        'details'               => 'Detalle cliente',
+        'edit'                  => 'Editar cliente',
+        'name'                  => 'Nombre',
+        'dni'                   => 'C.I',
+        'telephone'             => 'Teléfono',
+        'total_buyed'           => 'Total comprado',
+        'total_credit_give_for' => 'Total credito dado',
+        'total_payments'        => 'Total pagos',
+        'total_debt'            => 'Total deuda',
+        'qualification'         => 'Calificación',
+        'zone'                  => 'Zona',
+    ],
     'customers-management' => [
         'customers' => [
             'index'     => 'Listado de Clientes',
