@@ -13,6 +13,7 @@ class OrderProduct extends Model
         'order_id',
         'product_id',
         'product_name',
+        'product_price',
         'qty',
         'size_id',
         'stock_type',
@@ -32,7 +33,7 @@ class OrderProduct extends Model
 
     public function product()
     {
-        return $this->belongsTo('App\Models\Product');
+        return $this->belongsTo('App\Models\Product')->withTrashed();
     }
     
     public function size()
@@ -44,5 +45,16 @@ class OrderProduct extends Model
     public function getTotalAttribute($value)
     {
         return '$ ' . number_format($value, 2, '.', ',');
+    }
+
+    # Boot
+    public static function boot()
+    {
+        parent::boot();
+
+        OrderProduct::saved(function($order_product) {
+            $qty = $order_product->qty;
+            $order_product->product->subtractStockUser($order_product->id, $qty);
+        });
     }
 }

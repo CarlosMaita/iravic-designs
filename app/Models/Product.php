@@ -74,6 +74,11 @@ class Product extends Model
         return $this->belongsTo('App\Models\Size');
     }
 
+    public function stocks_history()
+    {
+        return $this->hasMany('App\Models\ProductStockHistory');
+    }
+
     # Appends
     public function getRealCodeAttribute()
     {
@@ -119,5 +124,27 @@ class Product extends Model
         }
 
         return $this->price ? $this->price : 0;
+    }
+
+    public function subtractStockUser($order_product_id, $qty)
+    {
+        $user = Auth::user();
+        $column_stock = $user->getColumnStock();
+        $old_stock = $this->stock_user;    
+        $new_stock = ($old_stock - $qty);
+
+        if ($column_stock) {
+            $this->$column_stock = $new_stock;
+            $this->save();
+
+            $this->stocks_history()->create([
+                'order_product_id' => $order_product_id,
+                'user_id' => $user->id,
+                'new_stock' => $new_stock,
+                'old_stock' => $old_stock,
+                'order_product_qty' => $qty,
+                'stock' => $column_stock
+            ]);
+        }
     }
 }
