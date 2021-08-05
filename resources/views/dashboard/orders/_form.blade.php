@@ -10,12 +10,11 @@
                         <div id="msform">
                             <!-- progressbar -->
                             <ul id="progressbar" class="p-0">
-                                {{-- <li class="active" id="customer-step"><strong>{{ __('dashboard.form.fields.orders.customer') }}</strong></li> --}}
-                                <li class="active" id="products-step"><strong>{{ __('dashboard.form.fields.orders.products') }}</strong></li>
+                                <li class="active" id="customer-step"><strong>{{ __('dashboard.form.fields.orders.customer') }}</strong></li>
+                                <li id="products-step"><strong>{{ __('dashboard.form.fields.orders.products') }}</strong></li>
                                 <li id="payment-step"><strong>{{ __('dashboard.form.fields.orders.payment') }}</strong></li>
                                 <li id="confirm-step"><strong>{{ __('dashboard.form.fields.orders.finish') }}</strong></li>
                             </ul> <!-- fieldsets -->
-                            {{-- 
                             <fieldset>
                                 <div class="form-card">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.customer_information') }}</h2>
@@ -30,6 +29,8 @@
                                                             <option value="{{ $customer->id }}" 
                                                                     data-address="{{ $customer->address }}"
                                                                     data-dni="{{ $customer->dni }}"
+                                                                    data-max-credit="{{ $customer->max_credit }}"
+                                                                    data-max-credit-str="{{ $customer->max_credit_str }}"
                                                                     data-name="{{ $customer->name }}"
                                                                     data-telephone="{{ $customer->telephone }}"
                                                                     data-qualification="{{ $customer->qualification }}"
@@ -79,6 +80,14 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.form.fields.customers.max_credit') }}</label>
+                                                        <input id="selected-customer-maxcredit" class="form-control" type="text" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.address') }}</label>
@@ -90,8 +99,7 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-info next action-button" type="button" data-step="1">{{ __('dashboard.general.next') }}</button>
-                            </fieldset> 
-                            --}}
+                            </fieldset>
                             <fieldset>
                                 <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.products_information') }}</h2> 
@@ -103,13 +111,6 @@
                                                     <select class="form-control" id="product">
                                                         <option selected disabled>Seleccionar</option>
                                                         @foreach ($products as $product)
-                                                            {{-- <option value="{{ $product->id }}" 
-                                                                    data-id="{{ $product->id }}"
-                                                                    data-brand="{{ $product->brand->name }}"
-                                                                    data-category="{{ $product->category->name }}"
-                                                                    data-code="{{ $product->code }}"
-                                                            >{{ $product->name }} - {{ $product->gender }}</option> --}}
-
                                                             @if ($product->is_regular)
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
@@ -172,6 +173,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <p class="font-weight-bold text-dark">Total: <span class="total">$ 0.00</span></p>
+                                        </div>
+                                    </div>
                                 </div> 
                                 {{--  --}}
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
@@ -183,40 +189,77 @@
                                     <div class="radio-group">
                                         <div class='radio' data-value="bankwire" for="bankwire">
                                             <label for="bankwire">{{ __('dashboard.form.fields.orders.bankwire') }}</label>
-                                            <input id="bankwire" type="hidden" name="payment_method" value="bankwire">
+                                            <input id="bankwire" class="d-none" type="radio" name="payment_method" value="bankwire">
                                         </div>
                                         <div class='radio' data-value="cash" for="cash">
                                             <label for="cash">{{ __('dashboard.form.fields.orders.cash') }}</label>
-                                            <input id="cash" type="hidden" name="payment_method" value="cash">
+                                            <input id="cash" class="d-none" type="radio" name="payment_method" value="cash">
                                         </div>
                                         <div class='radio' data-value="card" for="card">
                                             <label for="card">{{ __('dashboard.form.fields.orders.card') }}</label>
-                                            <input id="card" type="hidden" name="payment_method" value="card">
+                                            <input id="card" class="d-none" type="radio" name="payment_method" value="card">
                                         </div>
                                         <div class='radio' data-value="credit" for="credit">
                                             <label for="credit">{{ __('dashboard.form.fields.orders.credit') }}</label>
-                                            <input id="credit" type="hidden" name="payment_method" value="credit">
+                                            <input id="credit" class="d-none" type="radio" name="payment_method" value="credit">
                                         </div>
                                         <br>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="font-weight-bold text-dark mb-1">Crédito Máximo: <span class="max-credit">$ 0.00</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="font-weight-bold text-dark">Total: <span class="total">$ 0.00</span></p>
+                                        </div>
+                                    </div>
                                 </div> 
                                 {{--  --}}
-                                <input type="button" name="previous" class="btn btn-secondary previous action-button-previous" value="Previous" />
-                                <input type="button" name="make_payment" class="btn btn-info next action-button" value="Confirm" data-step="3" />
+                                <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
+                                <button class="btn btn-info next action-button" type="button" data-step="3">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
-                                    <h2 class="fs-title text-center">Confirmar pedido</h2> <br><br>
-                                    {{-- <div class="row justify-content-center">
-                                        <div class="col-3"> <img src="https://img.icons8.com/color/96/000000/ok--v2.png" class="fit-image"> </div>
-                                    </div> <br><br> --}}
-                                    <div class="row justify-content-center">
-                                        <div class="col-7 text-center">
-                                            {{-- <h5>You Have Successfully Signed Up</h5> --}}
-                                            <button class="btn btn-success" type="submit">Confirmar</button>
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <small class="form-text text-muted font-weight-bold text-success">Resumen Productos</small>
+                                        </div>
+                                    </div>
+                                    {{--  --}}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <table id="datatable_products_resume" class="table" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.code') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.color') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.size') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.qty') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h2 class="fs-title text-center mt-4">Confirmar pedido</h2>
+                                    <div class="row mt-3 mb-4">
+                                        <div class="col-12">
+                                            <p class="font-weight-bold text-dark text-center mb-0">Total: <span class="total">$ 0.00</span></p>
                                         </div>
                                     </div>
                                 </div>
+                                <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
+                                <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             </fieldset>
                         </div>
                     </div>

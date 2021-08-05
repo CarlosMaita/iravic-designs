@@ -31,7 +31,9 @@ class Customer extends Model
     ];
 
     public $appends = [
-        'url_dni'
+        'max_credit_str',
+        'url_dni',
+        'url_receipt'
     ];
 
     private $disk_dni = 'customers_dni';
@@ -55,6 +57,15 @@ class Customer extends Model
     }
     
     # Attributes
+    public function getMaxCreditStrAttribute()
+    {
+        if ($this->max_credit) {
+            return '$ ' . number_format($this->max_credit, 2, '.', ',');
+        }
+
+        return '$ 0.00';
+    }
+
     public function getUrlDniAttribute()
     {
         if (Storage::disk($this->disk_dni)->exists($this->dni_picture)) {
