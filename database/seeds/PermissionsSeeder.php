@@ -282,6 +282,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Payments
+            [
+                'name'         => 'view-payment',
+                'display_name' => 'Pagos/Cobros Ver',
+                'description'  => 'Pagos/Cobros Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-payment',
+                'display_name' => 'Pagos/Cobros Crear',
+                'description'  => 'Pagos/Cobros Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-payment',
+                'display_name' => 'Pagos/Cobros Editar',
+                'description'  => 'Pagos/Cobros Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-payment',
+                'display_name' => 'Pagos/Cobros Eliminar',
+                'description'  => 'Pagos/Cobros Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);

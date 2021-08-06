@@ -18,7 +18,7 @@ class PaymentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->permissions()->contains('view-payment');
     }
 
     /**
@@ -30,7 +30,7 @@ class PaymentPolicy
      */
     public function view(User $user, Payment $payment)
     {
-        //
+        return $user->permissions()->contains('view-payment');
     }
 
     /**
@@ -41,7 +41,7 @@ class PaymentPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->permissions()->contains('create-payment');
     }
 
     /**
@@ -53,7 +53,7 @@ class PaymentPolicy
      */
     public function update(User $user, Payment $payment)
     {
-        //
+        return $user->permissions()->contains('update-payment');
     }
 
     /**
@@ -65,7 +65,7 @@ class PaymentPolicy
      */
     public function delete(User $user, Payment $payment)
     {
-        //
+        return $user->permissions()->contains('delete-payment');
     }
 
     /**

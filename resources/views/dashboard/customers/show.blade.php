@@ -22,6 +22,10 @@
                                     <li class="nav-item">
                                         <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
                                     </li>
+                                    <!--  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="orders" aria-selected="true">Pagos/Cobros</a>
+                                    </li>
                                 </ul>
                                 <!--  -->
                                 <div class="tab-content" id="myTabContent">
@@ -200,6 +204,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  -->
+                                    <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.payments._datatable')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             {{--  --}}
@@ -218,6 +232,8 @@
         const $customer = @json($customer);
     </script>
     @include('plugins.google-maps')
+    @include('plugins.sweetalert')
     @include('dashboard.customers.js.customer-map')
     @include('dashboard.customers.js.show')
+    @include('dashboard.payments.js.index')
 @endpush

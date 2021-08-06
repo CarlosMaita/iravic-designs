@@ -204,6 +204,14 @@ return [
         'enter-current-password'    => 'Ingresa tu contraseña actual',
         'info-password'             => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.'
     ],
+    'payments' => [
+        'id'                => 'ID',
+        'box'               => 'Caja',
+        'customer'          => 'Cliente',
+        'date'              => 'Fecha',
+        'payment_method'    => 'Método de Pago',
+        'amount'            => 'Monto'
+    ],
     'sidebar' => [
         'boxes'                 => 'Cajas',
         'boxes-sales'           => 'Cajas y Ventas',

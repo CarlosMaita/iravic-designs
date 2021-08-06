@@ -141,6 +141,6 @@ class Box extends Model
             $payments = $payments->where('payed_' . $payment_method, 1);
         }
 
-        return $payments->sum('total');
+        return $payments->sum('amount');
     }
 }
