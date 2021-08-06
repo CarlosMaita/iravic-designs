@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers-management.customers.create') }}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers.create') }}</div>
                         <div class="card-body">
                           <form id="form-customers" method="POST" action="{{ route('clientes.store') }}">
                             @csrf

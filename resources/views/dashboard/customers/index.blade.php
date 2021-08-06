@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers-management.customers.index') }}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers.index') }}</div>
                         <div class="card-body">
                             @can('create', App\Models\Customer::class)
                                 <div class="row"> 
@@ -21,11 +21,11 @@
                                         <table id="datatable_customers" class="table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th scope="col">{{ __('dashboard.customers-management.customers.name') }}</th>
-                                                <th scope="col">{{ __('dashboard.customers-management.customers.dni') }}</th>
-                                                <th scope="col">{{ __('dashboard.customers-management.customers.telephone') }}</th>
-                                                <th scope="col">{{ __('dashboard.customers-management.customers.qualification') }}</th>
-                                                <th scope="col">{{ __('dashboard.customers-management.customers.zone') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers.dni') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers.telephone') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers.qualification') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers.zone') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

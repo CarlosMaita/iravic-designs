@@ -5,7 +5,7 @@
             <input type="hidden" name="without_flash" value="0">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ __('dashboard.customers-management.customers.create') }}</h5>
+                    <h5 class="modal-title">{{ __('dashboard.customers.create') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

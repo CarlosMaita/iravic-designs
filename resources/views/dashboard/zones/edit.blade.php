@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers-management.zones.edit') }} - {{ $zone->name }}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.zones.edit') }} - {{ $zone->name }}</div>
                         <div class="card-body">
                           <form id="form-zones" method="POST" action="{{ route('zonas.update', [$zone->id]) }}">
                             @csrf
