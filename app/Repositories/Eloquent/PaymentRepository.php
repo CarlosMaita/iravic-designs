@@ -22,12 +22,16 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     /**
      * @return Collection
      */
-    public function all($customer_id = null): Collection
+    public function all($params = null): Collection
     {
-        $payments = $this->model->with(['box', 'user']);
+        $payments = $this->model->with(['box', 'customer', 'user']);
 
-        if ($customer_id) {
-            $payments->where('customer_id', $customer_id);
+        if (isset($params['customer'])) {
+            $payments->where('customer_id', $params['customer']);
+        }
+
+        if (isset($params['box'])) {
+            $payments->where('box_id', $params['box']);
         }
         
         return $payments->orderBy('date', 'DESC')->get();

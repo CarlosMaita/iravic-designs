@@ -1,7 +1,13 @@
-<div id="modal-new-customer" class="modal" tabindex="-1" role="dialog">
+<div id="modal-payments" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-        <form id="form-payments" method="POST" action="#">
+        <form id="form-payments">
             @csrf
+            @if (isset($customer))
+                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+            @endif
+            @if (isset($box))
+                <input type="hidden" name="box_id" value="{{ $box->id }}">
+            @endif
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"></h5>

@@ -14,6 +14,7 @@ class Payment extends Model
         'customer_id',
         'user_id',
         'amount',
+        'comment',
         'date',
         'payed_bankwire',
         'payed_card',
@@ -21,7 +22,9 @@ class Payment extends Model
     ];
 
     public $appends = [
-        'payment_method'
+        'amount_str',
+        'payment_method',
+        'payment_selected'
     ];
 
     # Relationships
@@ -50,16 +53,12 @@ class Payment extends Model
         return null;
     }
 
-    public function getAmountAttribute($value)
+    # Appends
+    public function getAmountStrAttribute()
     {
-        if ($value) {
-            return '$ ' . number_format($value, 2, '.', ',');
-        }
-
-        return '$ 0,00';
+        return '$ ' . number_format($this->amount, 2, '.', ',');
     }
 
-    # Appends
     public function getPaymentMethodAttribute()
     {
         if ($this->payed_bankwire) {
@@ -75,5 +74,22 @@ class Payment extends Model
         }
 
         return '';
+    }
+
+    public function getPaymentSelectedAttribute()
+    {
+        if ($this->payed_bankwire) {
+            return 'bankwire';
+        }
+
+        if ($this->payed_card) {
+            return 'card';
+        }
+
+        if ($this->payed_cash) {
+            return 'cash';
+        }
+
+        return null;
     }
 }

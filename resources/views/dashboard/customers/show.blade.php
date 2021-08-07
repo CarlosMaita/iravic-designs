@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers.details') }} - {{ $customer->name }}</div>
                         <div class="card-body">
-                            <div class="container-fluid">
+                            <div class="container-fluid px-0">
                                 <!--  -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
@@ -165,13 +165,13 @@
                                     <div class="tab-pane fade" id="account-status" role="tabpanel" aria-labelledby="account-status-tab">
                                         <div class="container-fluid mb-4 mt-3">
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.customers.total_buyed') }}</label>
                                                         <input class="form-control" type="text" value="{{ $customer->total_buyed }}" readOnly>
                                                     </div>
                                                 </div>
-                                                <div class="col-6">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.customers.total_credit_give_for') }}</label>
                                                         <input class="form-control" type="text" value="{{ $customer->total_credit }}" readOnly>
@@ -206,6 +206,12 @@
                                     </div>
                                     <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+                                        @can('create', App\Models\Payment::class)
+                                            <div class="row"> 
+                                                <a id="btn-create-payment" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                            </div>
+                                            <br>
+                                        @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <div class="table-responsive">
@@ -225,13 +231,37 @@
             </div>
         </div>
     </div>
+
+    @include('dashboard.payments.modal_form')
 @endsection
 
 @push('js')
     <script>
         const $customer = @json($customer);
+
+        $(function() {
+            $('#datatable_orders').DataTable({
+                pageLength: 25,
+            });
+
+            // $('#orders')
+            // // .bind('beforeShow', function() {
+            // // }) 
+            // .bind('afterShow', function() {
+            //     // $('#orders').removeAttr('style');
+            //     $('#payments').removeAttr('style');
+            // })
+            // .show(1000, function() {
+            //     $('#datatable_orders').DataTable()
+            //         .columns.adjust()
+            //         .responsive.recalc();
+            // })
+            // .show();
+        });
     </script>
+    
     @include('plugins.google-maps')
+    @include('plugins.show_bind')
     @include('plugins.sweetalert')
     @include('dashboard.customers.js.customer-map')
     @include('dashboard.customers.js.show')

@@ -32,18 +32,25 @@ class PaymentController extends Controller
         $this->authorize('viewany', 'App\Models\Payment');
 
         if ($request->ajax()) {
-            $payments = $request->customer ? $this->paymentRepository->all($request->customer) : array();
+            if ($request->customer) {
+                $payments = $this->paymentRepository->all(array('customer' => $request->customer));
+            } else if ($request->box) {
+                $payments = $this->paymentRepository->all(array('box' => $request->box));
+            } else {
+                $payments = array();
+            }
+            
             return Datatables::of($payments)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
 
-                        if (Auth::user()->can('view', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></button>';
-                        }
+                        // if (Auth::user()->can('view', $row)) {
+                        //     $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></button>';
+                        // }
                         
                         if (Auth::user()->can('update', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-payment" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                         }
 
                         if (Auth::user()->can('delete', $row)) {
@@ -74,6 +81,7 @@ class PaymentController extends Controller
 
             return response()->json([
                 'success' => true,
+                'message' => 'El pago ha sido creado con éxito'
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -113,7 +121,7 @@ class PaymentController extends Controller
     {
         $this->authorize('update', $pago);
 
-        if ($request->isAjax()) {
+        if ($request->ajax()) {
             return response()->json($pago);
         }
         
@@ -137,6 +145,7 @@ class PaymentController extends Controller
 
             return response()->json([
                 'success' => 'true',
+                'message' => 'El pago ha sido actualizado con éxito'
             ]);
         } catch (Exception $e) {
             return response()->json([

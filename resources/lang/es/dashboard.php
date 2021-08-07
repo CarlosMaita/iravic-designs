@@ -151,6 +151,11 @@ return [
                 'products_information' => 'Información de Productos',
                 'payment_information' => 'Información de Pago'
             ],
+            'payments' => [
+                'amount'            => 'Monto',
+                'comment'           => 'Comentario',
+                'payment_method'    => 'Método de pago'
+            ],
             'products' => [
                 'brand'             => 'Marca',
                 'category'          => 'Categoría',
@@ -206,11 +211,12 @@ return [
     ],
     'payments' => [
         'id'                => 'ID',
+        'amount'            => 'Monto',
         'box'               => 'Caja',
+        'comment'           => 'Comentario',
         'customer'          => 'Cliente',
         'date'              => 'Fecha',
-        'payment_method'    => 'Método de Pago',
-        'amount'            => 'Monto'
+        'payment_method'    => 'Método de Pago'
     ],
     'sidebar' => [
         'boxes'                 => 'Cajas',
