@@ -122,6 +122,7 @@ class ProductController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             return response()->json([
+                'success' => false,
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
                     'e' => $e->getMessage(),
@@ -142,7 +143,6 @@ class ProductController extends Controller
         $this->authorize('view', $producto);
 
         if ($request->ajax()) {
-            // $producto->load('brand', 'category', 'color', 'product_combinations.color', 'product_combinations.size', 'size');
             $producto->load('brand', 'category', 'color', 'size');
             return response()->json($producto);
         }
@@ -160,7 +160,7 @@ class ProductController extends Controller
     public function edit(Product $producto)
     {
         $this->authorize('update', $producto);
-        $producto->load('brand', 'category', 'color', 'product_combinations.color', 'product_combinations.size', 'size');
+        $producto->load('brand', 'category', 'color', 'images', 'product_combinations.color', 'product_combinations.size', 'size');
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
         $colors = Color::all();

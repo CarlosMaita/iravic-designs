@@ -77,6 +77,13 @@ return [
             'url' => env('APP_URL').'/storage/img/customers/receipt',
             'visibility' => 'public',
         ],
+
+        'products' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/img/products'),
+            'url' => env('APP_URL').'/storage/img/products',
+            'visibility' => 'public',
+        ],
     ],
 
 ];

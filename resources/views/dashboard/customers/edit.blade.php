@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers.edit') }} - {{ $customer->name }}</div>
                         <div class="card-body">
-                          <form id="form-customers" method="POST" action="{{ route('clientes.update', [$customer->id]) }}">
+                          <form id="form-customers" method="POST" action="{{ route('clientes.update', [$customer->id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             @include('dashboard.customers._form')

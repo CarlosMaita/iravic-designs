@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories;
+
 use Illuminate\Support\Collection;
 
 interface ProductRepositoryInterface
@@ -21,4 +22,11 @@ interface ProductRepositoryInterface
     * @return void
     */
     public function updateByRequest($id, $request): void;
+
+    /**
+    * @param $product
+    * @param $files
+    * @return void
+    */
+    public function saveImages($product, $files): void;
 }

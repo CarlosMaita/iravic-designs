@@ -166,6 +166,21 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Products images
+            [
+                'name'         => 'view-products-image',
+                'display_name' => 'Productos Imágenes Ver',
+                'description'  => 'Productos Imágenes Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-products-image',
+                'display_name' => 'Productos Imágenes Eliminar',
+                'description'  => 'Productos Imágenes Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Zones
             [
                 'name'         => 'view-zone',

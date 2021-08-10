@@ -113,7 +113,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar la categoría en este momento.",
+                                text: "No se puede eliminar el producto en este momento.",
                                 type: 'error'
                             }).show();
                         }

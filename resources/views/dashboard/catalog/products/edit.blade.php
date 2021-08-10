@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.catalog.products.edit') }} - {{ $product->name }}</div>
                         <div class="card-body">
-                          <form id="form-products" method="POST" action="{{ route('productos.update', [$product->id]) }}">
+                          <form id="form-products" method="POST" action="{{ route('productos.update', [$product->id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             {{--  --}}
@@ -33,6 +33,14 @@
 @endsection
 
 @push('js')
+    @include('plugins.dropzone')
     @include('plugins.sweetalert')
+
+    <script>
+        Dropzone.autoDiscover = false;
+
+        let URL_RESOURCE = "{{ route('productos.update', [$product->id]) }}";
+    </script>
+    
     @include('dashboard.catalog.products.js.form')
 @endpush

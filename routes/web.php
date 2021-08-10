@@ -37,6 +37,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('marcas', 'BrandController')->except('show');
         #
         Route::resource('productos', 'ProductController');
+        #
+        Route::resource('producto-imagen', 'ProductImageController')->only('index', 'destroy');
     });
 
     # Customers Routes

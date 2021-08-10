@@ -100,8 +100,17 @@
             </div>
             <!--  -->
             <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
-                <!--  -->
-                <p>Multimedia</p>
+                <div class="dropzone" id="myDropzone"></div>
+                <div v-if="product.id" class="mt-4">
+                    <table id="datatable_images" class="table" width="100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Foto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
             <!--  -->
             <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
@@ -263,6 +272,8 @@
             this.mounted = true;
 
             if (this.product.id) {
+                console.log(this.product)
+
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
                 }

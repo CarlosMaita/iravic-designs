@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.customers.create') }}</div>
                         <div class="card-body">
-                          <form id="form-customers" method="POST" action="{{ route('clientes.store') }}">
+                          <form id="form-customers" method="POST" action="{{ route('clientes.store') }}" enctype="multipart/form-data">
                             @csrf
                             @include('dashboard.customers._form')
                             <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>

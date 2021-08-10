@@ -59,6 +59,11 @@ class Product extends Model
         return $this->belongsTo('App\Models\Color');
     }
 
+    public function images()
+    {
+        return $this->hasMany('App\Models\ProductImage');
+    }
+
     public function product_combinations()
     {
         return $this->hasMany('App\Models\Product');

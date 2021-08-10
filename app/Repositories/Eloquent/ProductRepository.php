@@ -5,9 +5,11 @@ namespace App\Repositories\Eloquent;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 use App\Repositories\ProductRepositoryInterface;
+use App\Services\Images\ImageService;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
+    private $filedisk = 'products';
 
     /**
      * ProductRepository constructor.
@@ -72,6 +74,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     $this->create($attributes);
                 }
             }
+        }
+
+        // Images
+        if (isset($request->file)) {
+            $this->saveImages($product, $request->file);
         }
     }
 
@@ -138,5 +145,30 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 }
             }
         }
+
+        // Images
+        if (isset($request->file)) {
+            $this->saveImages($product, $request->file);
+        }
+    }
+
+    /**
+    * @param $product
+    * @param $files
+    * @return void
+    */
+    public function saveImages($product, $files): void
+    {
+        $filesname = array();
+
+        foreach ($files as $file) {
+            $url = ImageService::save($this->filedisk, $file);
+
+            if ($url) {
+                array_push($filesname, array('url' => $url));
+            }
+        }
+
+        $product->images()->createMany($filesname);
     }
 }
