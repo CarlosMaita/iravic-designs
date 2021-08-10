@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Schedule extends Model
+{
+    public $table = 'schedules';
+
+    public $fillable = [
+        'date',
+        'completed'
+    ];
+}

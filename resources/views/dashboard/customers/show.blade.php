@@ -24,7 +24,11 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="orders" aria-selected="true">Pagos/Cobros</a>
+                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
+                                    </li>
+                                    <!--  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="visits-tab" data-toggle="tab" href="#visits" role="tab" aria-controls="visits" aria-selected="true">Visitas</a>
                                     </li>
                                 </ul>
                                 <!--  -->
@@ -220,6 +224,22 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  -->
+                                    <div class="tab-pane fade" id="visits" role="tabpanel" aria-labelledby="visits-tab">
+                                        @can('create', App\Models\Visit::class)
+                                            <div class="row"> 
+                                                <a id="btn-create-visit" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
+                                            </div>
+                                            <br>
+                                        @endcan
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.visits._datatable')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             {{--  --}}
@@ -266,4 +286,5 @@
     @include('dashboard.customers.js.customer-map')
     @include('dashboard.customers.js.show')
     @include('dashboard.payments.js.index')
+    @include('dashboard.visits.js.index')
 @endpush

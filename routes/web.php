@@ -49,6 +49,12 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('zonas', 'ZoneController')->except('show');
     });
 
+    # Schedules Routes
+    Route::group(['prefix' => 'gestion-agendas', 'namespace' => 'schedules'], function () {
+        #
+        Route::resource('visitas', 'VisitController')->except('create', 'show');
+    });
+
     # Customers Routes
     Route::group(['prefix' => 'cajas-ventas', 'namespace' => 'sales'], function () {
         #

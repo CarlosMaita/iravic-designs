@@ -11,6 +11,7 @@ use App\Repositories\OrderProductRepositoryInterface;
 use App\Repositories\PermissionRepositoryInterface;
 use App\Repositories\RoleRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\VisitRepositoryInterface;
 use App\Repositories\ZoneRepositoryInterface;
 use App\Repositories\Eloquent\BaseRepository;
 use App\Repositories\Eloquent\BoxRepository;
@@ -21,6 +22,7 @@ use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\PermissionRepository;
 use App\Repositories\Eloquent\RoleRepository;
 use App\Repositories\Eloquent\UserRepository;
+use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +44,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(VisitRepositoryInterface::class, VisitRepository::class);
         $this->app->bind(ZoneRepositoryInterface::class, ZoneRepository::class);
     }
 
