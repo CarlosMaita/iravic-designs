@@ -355,6 +355,28 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Schedules
+            [
+                'name'         => 'view-schedule',
+                'display_name' => 'Agendas Ver',
+                'description'  => 'Agendas Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-schedule',
+                'display_name' => 'Agendas Editar',
+                'description'  => 'Agendas Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-schedule',
+                'display_name' => 'Agendas Eliminar',
+                'description'  => 'Agendas Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);
