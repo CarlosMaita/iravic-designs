@@ -25,15 +25,6 @@ class Visit extends Model
     {
         parent::boot();
 
-        // Visit::updating(function ($model) {
-        //     if ($model->schedule->id != $model->getOriginal('schedule_id')) {
-        //         $schedule = Schedule::find($model->getOriginal('schedule_id'));
-
-        //         if ($schedule->visits()->count()) {
-        //             $schedule->delete();
-        //         }
-        //     }
-        // });
         Visit::updated(function ($model) {
             if ($model->schedule->id != $model->getOriginal('schedule_id')) {
                 $schedule = Schedule::find($model->getOriginal('schedule_id'));

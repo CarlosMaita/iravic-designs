@@ -326,6 +326,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Visits
+            [
+                'name'         => 'view-visit',
+                'display_name' => 'Visitas Ver',
+                'description'  => 'Visitas Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-visit',
+                'display_name' => 'Visitas Crear',
+                'description'  => 'Visitas Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-visit',
+                'display_name' => 'Visitas Editar',
+                'description'  => 'Visitas Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-visit',
+                'display_name' => 'Visitas Eliminar',
+                'description'  => 'Visitas Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
         Permission::insert($permissions);
