@@ -188,7 +188,7 @@ class VisitController extends Controller
         try {
             $attributes = $request->only('is_completed');
             $this->visitRepository->update($visita->id, $attributes);
-            $message = $request->complete ? 'La visita ha sido marcada como completa con éxito' : 'La visita ha sido marcada como NO completa con éxito';
+            $message = $request->is_completed ? 'La visita ha sido marcada como completa con éxito' : 'La visita ha sido marcada como NO completa con éxito';
 
             return response()->json([
                 'success' => true,
