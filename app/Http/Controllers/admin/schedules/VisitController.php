@@ -11,6 +11,7 @@ use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VisitController extends Controller
 {
@@ -42,7 +43,7 @@ class VisitController extends Controller
                         $btn = '';
 
                         if (Auth::user()->can('update', $row)) {
-                            $btn .= '<a href="'. route('visitas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                         }
 
                         if (Auth::user()->can('delete', $row)) {
@@ -68,18 +69,21 @@ class VisitController extends Controller
     {
         try {
             $this->authorize('create', 'App\Models\Visit');
+            DB::beginTransaction();
             $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->date));
             $attributes = array_merge(
                 array('schedule_id' => $schedule->id),
                 $request->only('customer_id', 'user_creator_id', 'date', 'comment')
             );
             $this->visitRepository->create($attributes);
+            DB::commit();
 
             return response()->json([
                     'message' => 'La visita ha sido creada con éxito',
                     'success' => true
             ]);
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
@@ -118,13 +122,27 @@ class VisitController extends Controller
     {
         try {
             $this->authorize('update', $visita);
-            $this->visitaRepository->update($visita->id, $request->only('date'));
+            DB::beginTransaction();
+            $prev_schedule = $visita->schedule;
+            $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->date));
+            $attributes = array_merge(
+                array('schedule_id' => $schedule->id),
+                $request->only('date', 'comment')
+            );
+            $this->visitRepository->update($visita->id, $attributes);
             
+            if ($schedule->id != $prev_schedule->id && !$prev_schedule->visits()->count()) {
+                $prev_schedule->delete();
+            }
+
+            DB::commit();
+
             return response()->json([
                 'message' => "La visita ha sido actualizada con éxito",
                 'success' => 'true',
             ]);
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [

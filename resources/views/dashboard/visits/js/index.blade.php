@@ -174,7 +174,6 @@
         });
 
 
-        /*
         $('body').on('click', 'tbody .edit-visit', function (e) {
             var id = $(this).data('id'),
                 url = `${URL_RESOURCE}/${id}`;
@@ -184,14 +183,13 @@
                     type: 'GET',
                     contentType: 'application/json',
                 success: function (response) {
-                    form_payments.append(`<input id="input-method-put" type="hidden" name="_method"" value="PUT">`);
-                    form_payments.attr('action', url);
-                    form_payments.attr('method', 'POST');
-                    form_payments.find('#amount').val(response.amount);
-                    form_payments.find('#payment_method').val(response.payment_selected);
-                    form_payments.find('#comment').val(response.comment);
-                    modal_payments.modal('show');
-                    modal_payments.find('.modal-title').text('Editar pago');
+                    form_resource.append(`<input id="input-method-put" type="hidden" name="_method"" value="PUT">`);
+                    form_resource.attr('action', url);
+                    form_resource.attr('method', 'POST');
+                    form_resource.find('#visit-date').val(response.date);
+                    form_resource.find('#visit-comment').val(response.comment);
+                    modal_resource.modal('show');
+                    modal_resource.find('.modal-title').text('Editar Visita');
                 },
                 error: function (e) {
                     if (e.responseJSON.errors) {
@@ -222,7 +220,6 @@
                 }
             });
         });
-        */
 
         function initDataTable() {
             var url_params = getDatatableUrlParams();
@@ -249,7 +246,8 @@
                             return '';
                         }
                     },
-                    {data: 'schedule.date'},
+                    {data: 'responsable.name'},
+                    {data: 'date'},
                     {
                         render: function (data, type, row) {
                             return row.is_completed ? 'Si' : 'No'

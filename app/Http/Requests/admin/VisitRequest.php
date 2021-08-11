@@ -50,7 +50,7 @@ class VisitRequest extends FormRequest
 
         $this->merge([
             'user_creator_id'   => $user->id,
-            'date'              => $date
+            'date'              => $date->format('Y-m-d')
         ]);
     }
 }

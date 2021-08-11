@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Visit extends Model
@@ -23,6 +24,26 @@ class Visit extends Model
     protected static function boot()
     {
         parent::boot();
+
+        // Visit::updating(function ($model) {
+        //     if ($model->schedule->id != $model->getOriginal('schedule_id')) {
+        //         $schedule = Schedule::find($model->getOriginal('schedule_id'));
+
+        //         if ($schedule->visits()->count()) {
+        //             $schedule->delete();
+        //         }
+        //     }
+        // });
+        Visit::updated(function ($model) {
+            if ($model->schedule->id != $model->getOriginal('schedule_id')) {
+                $schedule = Schedule::find($model->getOriginal('schedule_id'));
+
+                if ($schedule->visits()->count()) {
+                    $schedule->delete();
+                }
+            }
+        });
+
         Visit::deleting(function ($model) {
             if (!$model->schedule->visits()->where('id', '<>', $model->id)->count()) {
                 $model->schedule->delete();
@@ -49,5 +70,15 @@ class Visit extends Model
     public function schedule()
     {
         return $this->belongsTo('App\Models\Schedule');
+    }
+
+    # Accessors
+    public function getDateAttribute($value)
+    {
+        if ($value) {
+            return Carbon::parse($value)->format('d-m-Y');
+        }
+
+        return null;
     }
 }

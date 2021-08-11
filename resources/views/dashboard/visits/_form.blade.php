@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div class="form-group">
             <label for="visit-date">{{ __('dashboard.form.fields.visits.date') }}</label>
-            <input class="form-control datepicker-form" id="visit-date" name="date">
+            <input class="form-control datepicker-form" id="visit-date" name="date" autocomplete="off">
         </div>
     </div>
 </div>

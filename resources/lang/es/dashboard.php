@@ -240,11 +240,12 @@ return [
         'zones'                 => 'Zonas'
     ],
     'visits' => [
-        'id'        => 'ID',
-        'customer'  => 'Cliente',
-        'completed' => 'Completada',
-        'date'      => 'Fecha',
-        'schedule'  => 'Agenda'
+        'id'            => 'ID',
+        'customer'      => 'Cliente',
+        'completed'     => 'Completada',
+        'date'          => 'Fecha',
+        'responsable'   => 'Responsable',
+        'schedule'      => 'Agenda'
     ],
     'zones' => [
         'index'     => 'Listado de Zonas',
