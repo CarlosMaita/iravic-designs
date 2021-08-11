@@ -222,6 +222,10 @@ return [
         'date'              => 'Fecha',
         'payment_method'    => 'Método de Pago'
     ],
+    'schedules' => [
+        'id'                => 'ID',
+        'date'              => 'Fecha'
+    ],
     'sidebar' => [
         'boxes'                 => 'Cajas',
         'boxes-sales'           => 'Cajas y Ventas',
@@ -235,6 +239,7 @@ return [
         'settings'              => 'Configuración',
         'users'                 => 'Usuarios',
         'roles'                 => 'Roles',
+        'schedules'             => 'Agendas',
         'permissions'           => 'Permisos',
         'privileges'            => 'Privilegios',
         'zones'                 => 'Zonas'

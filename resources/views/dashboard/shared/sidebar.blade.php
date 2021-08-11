@@ -5,6 +5,12 @@
     </a>
 </div>
 <ul class="c-sidebar-nav">
+    {{-- Schedule link --}}
+    @if (Auth::user()->can('viewany', App\Models\Schedule::class))
+    <li class="c-sidebar-nav-item {{ $menuService->isActive($url,"/admin/gestion-agendas/agendas", false, true) }}">
+        <a class="c-sidebar-nav-link" href="{{ route('agendas.index') }}"><i class="cil-calculator c-sidebar-nav-icon"></i> {{ __('dashboard.sidebar.schedules') }}</a>
+    </li>
+    @endif
     {{-- Catalog links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Brand::class) || 
