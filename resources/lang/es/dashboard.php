@@ -253,7 +253,8 @@ return [
         'completed'     => 'Completada',
         'date'          => 'Fecha',
         'responsable'   => 'Responsable',
-        'schedule'      => 'Agenda'
+        'schedule'      => 'Agenda',
+        'zone'          => 'Zona'
     ],
     'zones' => [
         'index'     => 'Listado de Zonas',

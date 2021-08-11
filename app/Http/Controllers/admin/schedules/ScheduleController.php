@@ -46,10 +46,6 @@ class ScheduleController extends Controller
                             $btn .= '<a href="'. route('agendas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        if (Auth::user()->can('update', $row)) {
-                            $btn .= '<a href="'. route('agendas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        }
-
                         if (Auth::user()->can('delete', $row)) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-schedule" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
@@ -85,53 +81,6 @@ class ScheduleController extends Controller
                 ->withSchedule($agenda);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Schedule $agenda)
-    {
-        $this->authorize('update', $agenda);
-        return view('dashboard.schedules.edit')
-                ->withSchedule($agenda);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ScheduleRequest $request, Schedule $agenda)
-    {
-        try {
-            $this->authorize('update', $agenda);
-            DB::beginTransaction();
-            $attributes = $request->only('');
-            $this->customerRepository->update($agenda->id, $attributes);
-            DB::commit();
-            flash("La agenda ha sido actualizada con éxito")->success();
-
-            return response()->json([
-                'success' => 'true',
-                'data' => [
-                    'redirect' => route('agendas.edit', $agenda->id)
-                ]
-            ]);
-        } catch (Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'message' => __('dashboard.general.operation_error'),
-                'error' => [
-                    'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
-                ]
-            ]);
-        }
-    }
 
     /**
      * Remove the specified resource from storage.

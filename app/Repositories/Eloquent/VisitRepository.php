@@ -44,7 +44,7 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     public function allBySchedule($schedule_id): Collection
     {
         return $this->model->select('visits.*')
-                            ->with('customer', 'responsable')
+                            ->with(['customer.zone', 'responsable'])
                             ->join('customers', 'customers.id', '=', 'visits.customer_id')
                             ->join('zones', 'zones.id', '=', 'customers.zone_id')
                             ->where('visits.schedule_id', $schedule_id)

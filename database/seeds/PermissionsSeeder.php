@@ -355,6 +355,20 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            [
+                'name'         => 'complete-visit',
+                'display_name' => 'Visitas Completar',
+                'description'  => 'Visitas Marcar como Visitas y desmarcarlas',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-responsable-visit',
+                'display_name' => 'Visitas Actualizar responsable',
+                'description'  => 'Visitas Actualizar responsable',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Schedules
             [
                 'name'         => 'view-schedule',

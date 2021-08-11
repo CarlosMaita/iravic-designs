@@ -50,12 +50,12 @@ class Visit extends Model
 
     public function creator()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_creator_id', 'id');
     }
 
     public function responsable()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_responsable_id', 'id');
     }
     
     public function schedule()

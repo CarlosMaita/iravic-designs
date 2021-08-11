@@ -52,7 +52,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     # Schedules Routes
     Route::group(['prefix' => 'gestion-agendas', 'namespace' => 'schedules'], function () {
         #
-        Route::resource('agendas', 'ScheduleController')->except('create', 'store');
+        Route::resource('agendas', 'ScheduleController')->except('create', 'store', 'edit', 'update');
         #
         Route::resource('visitas', 'VisitController')->except('create', 'show');
     });

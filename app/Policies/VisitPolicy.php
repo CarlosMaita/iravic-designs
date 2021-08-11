@@ -91,4 +91,26 @@ class VisitPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can set the visit as completed (Visited)
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function complete(User $user)
+    {
+        return $user->permissions()->contains('complete-visit');
+    }
+    
+    /**
+     * Determine whether the user can update the visit responsable
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function updateResponsable(User $user)
+    {
+        return $user->permissions()->contains('update-responsable-visit');
+    }
 }
