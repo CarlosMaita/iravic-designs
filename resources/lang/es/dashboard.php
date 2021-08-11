@@ -224,7 +224,8 @@ return [
     ],
     'schedules' => [
         'id'                => 'ID',
-        'date'              => 'Fecha'
+        'date'              => 'Fecha',
+        'details'           => 'Detalle agenda',
     ],
     'sidebar' => [
         'boxes'                 => 'Cajas',
@@ -246,6 +247,8 @@ return [
     ],
     'visits' => [
         'id'            => 'ID',
+        'address'       => 'Dirección',
+        'comment'       => 'Comentario',
         'customer'      => 'Cliente',
         'completed'     => 'Completada',
         'date'          => 'Fecha',

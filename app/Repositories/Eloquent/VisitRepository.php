@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Visit;
 use App\Repositories\VisitRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;  
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class VisitRepository extends BaseRepository implements VisitRepositoryInterface
@@ -36,6 +36,20 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
         }
         
         return $results->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function allBySchedule($schedule_id): Collection
+    {
+        return $this->model->select('visits.*')
+                            ->with('customer', 'responsable')
+                            ->join('customers', 'customers.id', '=', 'visits.customer_id')
+                            ->join('zones', 'zones.id', '=', 'customers.zone_id')
+                            ->where('visits.schedule_id', $schedule_id)
+                            ->orderBy('zones.name')
+                            ->get();
     }
 
 }

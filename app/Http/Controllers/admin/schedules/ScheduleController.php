@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\ScheduleRequest;
 use App\Models\Schedule;
 use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Eloquent\VisitRepository;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,9 +19,11 @@ class ScheduleController extends Controller
 
     public $visitRepository;
 
-    public function __construct(ScheduleRepository $scheduleRepository)
+    public function __construct(ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
+
+        $this->visitRepository = $visitRepository;
     }
 
     /**
@@ -66,9 +69,18 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Schedule $agenda)
+    public function show(Request $request, Schedule $agenda)
     {
         $this->authorize('view', $agenda);
+
+        if ($request->ajax()) {
+            $visits = $this->visitRepository->allBySchedule($agenda->id);
+            return response()->json([
+                'schedule' => $agenda,
+                'visits' => $visits
+            ]);
+        }
+
         return view('dashboard.schedules.show')
                 ->withSchedule($agenda);
     }
