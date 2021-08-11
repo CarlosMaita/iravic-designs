@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\schedules;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\VisitRequest;
 use App\Models\Visit;
+use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use DataTables;
 use Exception;
@@ -13,10 +14,14 @@ use Illuminate\Support\Facades\Auth;
 
 class VisitController extends Controller
 {
+    public $scheduleRepository;
+
     public $visitRepository;
 
-    public function __construct(VisitRepository $visitRepository)
+    public function __construct(ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
     {
+        $this->scheduleRepository = $scheduleRepository;
+
         $this->visitRepository = $visitRepository;
     }
 
@@ -30,7 +35,7 @@ class VisitController extends Controller
         $this->authorize('viewany', 'App\Models\Visit');
 
         if ($request->ajax()) {
-            $visits = isset($request->customer) ? $this->visitRepository->all($request->customer) : array();
+            $visits = isset($request->customer) ? $this->visitRepository->all(array('customer' => $request->customer)) : array();
             return Datatables::of($visits)
                     ->addIndexColumn()
                     ->addColumn('action', function($row) {
@@ -62,8 +67,13 @@ class VisitController extends Controller
     public function store(VisitRequest $request)
     {
         try {
-            $this->authorize('create', 'App\Models\Brand');
-            $this->visitRepository->create($request->only('date'));
+            $this->authorize('create', 'App\Models\Visit');
+            $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->date));
+            $attributes = array_merge(
+                array('schedule_id' => $schedule->id),
+                $request->only('customer_id', 'user_creator_id', 'date', 'comment')
+            );
+            $this->visitRepository->create($attributes);
 
             return response()->json([
                     'message' => 'La visita ha sido creada con éxito',

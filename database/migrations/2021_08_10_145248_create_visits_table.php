@@ -19,6 +19,8 @@ class CreateVisitsTable extends Migration
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('user_creator_id')->nullable();
             $table->unsignedBigInteger('user_responsable_id')->nullable();
+            $table->text('comment')->nullable();
+            $table->date('date');
             $table->tinyInteger('is_completed')->default(0);
             $table->datetime('completed_date')->nullable();
             $table->timestamps();

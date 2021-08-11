@@ -176,6 +176,10 @@ return [
                 'password'  => 'Contraseña',
                 'confirm_password'  => 'Confirmar Contraseña',
                 'role'  => 'Rol'
+            ],
+            'visits' => [
+                'comment' => 'Comentario',
+                'date'  => 'Fecha',
             ]
         ],
         'labels' => [
@@ -234,6 +238,13 @@ return [
         'permissions'           => 'Permisos',
         'privileges'            => 'Privilegios',
         'zones'                 => 'Zonas'
+    ],
+    'visits' => [
+        'id'        => 'ID',
+        'customer'  => 'Cliente',
+        'completed' => 'Completada',
+        'date'      => 'Fecha',
+        'schedule'  => 'Agenda'
     ],
     'zones' => [
         'index'     => 'Listado de Zonas',

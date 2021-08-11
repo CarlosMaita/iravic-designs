@@ -3,8 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Visit;
-use Illuminate\Support\Collection;
 use App\Repositories\VisitRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;  
+use Illuminate\Support\Collection;
 
 class VisitRepository extends BaseRepository implements VisitRepositoryInterface
 {
@@ -36,4 +37,5 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
         
         return $results->get();
     }
+
 }

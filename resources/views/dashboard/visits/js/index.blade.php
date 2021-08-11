@@ -8,6 +8,7 @@
             form_resource = $('#form-visits');
 
         initDataTable();
+        setDatePicker();
 
         $('#visits-tab').on('click', function(e) {
             setTimeout(function(e) {
@@ -19,10 +20,10 @@
 
         btn_create_visit.on('click', function(e) {
             e.preventDefault();
-            form_visits.attr('action', URL_RESOURCE);
-            form_visits.attr('method', 'POST');
+            form_resource.attr('action', URL_RESOURCE);
+            form_resource.attr('method', 'POST');
             modal_resource.modal('show');
-            modal_resource.find('.modal-title').text('Crear pago');
+            modal_resource.find('.modal-title').text('Crear Visita');
         });
 
         form_resource.on('submit', function(e) {
@@ -46,7 +47,7 @@
                             type: 'success'
                         }).show();
                         
-                        modal_payments.modal('hide');
+                        modal_resource.modal('hide');
                         DATATABLE_RESOURCE.DataTable().ajax.reload();
                     } else if (response.error) {
                         new Noty({
@@ -95,10 +96,11 @@
         */
         modal_resource.on('hidden.coreui.modal', function(e) {
             $('#input-method-put').remove();
-            form_payments.attr('action', '');
-            form_payments.attr('method', '');
-            // form_payments.find('#amount').val('');
-            modal_payments.find('.modal-title').text('');
+            form_resource.attr('action', '');
+            form_resource.attr('method', '');
+            form_resource.find('#visit-date').val('');
+            form_resource.find('#visit-comment').val('');
+            form_resource.find('.modal-title').text('');
         });
 
         $('body').on('click', 'tbody .delete-visit', function (e) {
@@ -270,6 +272,34 @@
             }
 
             return params;
+        }
+
+        function setDatePicker() {
+            var inputs = $('.datepicker-form');
+
+            inputs.each((index, element) => {
+                var value = element.value;
+
+                if (value) {
+                    var dateParts = value.split("-");
+                    var date = dateParts[2] + "/" +  dateParts[1] + "/" + dateParts[0];
+                } else {
+                    var date = new Date(value);
+                }
+
+                $(element).datepicker({
+                    format: "dd-mm-yyyy",
+                    todayBtn: "linked",
+                    language: "es",
+                    autoclose: true,
+                    todayHighlight: true,
+                    showOnFocus: true,
+                }).datepicker("setDate",date)
+                .end().on('keypress paste', function (e) {
+                    // e.preventDefault();
+                    // return false;
+                });
+            });
         }
     });
 </script>

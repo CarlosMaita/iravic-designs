@@ -13,6 +13,8 @@ class Visit extends Model
         'schedule_id',
         'user_creator_id',
         'user_responsable_id',
+        'comment',
+        'date',
         'is_completed',
         'completed_date'
     ];

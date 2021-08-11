@@ -253,6 +253,7 @@
     </div>
 
     @include('dashboard.payments.modal_form')
+    @include('dashboard.visits.modal_form')
 @endsection
 
 @push('js')
@@ -280,6 +281,7 @@
         });
     </script>
     
+    @include('plugins.datepicker')
     @include('plugins.google-maps')
     @include('plugins.show_bind')
     @include('plugins.sweetalert')
