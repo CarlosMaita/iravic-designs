@@ -19,6 +19,17 @@ class Visit extends Model
         'completed_date'
     ];
 
+    # Boot
+    protected static function boot()
+    {
+        parent::boot();
+        Visit::deleting(function ($model) {
+            if (!$model->schedule->visits()->where('id', '<>', $model->id)->count()) {
+                $model->schedule->delete();
+            }
+        });
+    }
+
     # Relationships
     public function customer()
     {

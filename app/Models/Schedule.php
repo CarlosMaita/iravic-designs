@@ -12,4 +12,10 @@ class Schedule extends Model
         'date',
         'completed'
     ];
+
+    # Relationships
+    public function visits()
+    {
+        return $this->hasMany('App\Models\Visit');
+    }
 }
