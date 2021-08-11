@@ -179,4 +179,29 @@ class VisitController extends Controller
             ]);
         }
     }
+
+    /**
+     * 
+     */
+    public function complete(Request $request, Visit $visita)
+    {
+        try {
+            $attributes = $request->only('is_completed');
+            $this->visitRepository->update($visita->id, $attributes);
+            $message = $request->complete ? 'La visita ha sido marcada como completa con éxito' : 'La visita ha sido marcada como NO completa con éxito';
+
+            return response()->json([
+                'success' => true,
+                'message' => $message
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('dashboard.general.operation_error'),
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
 }

@@ -24,9 +24,9 @@
 
         $('body').on('click', 'tbody .delete-schedule', function (e) {
             e.preventDefault();
-            let id = $(this).data('id');
-            let token = $("input[name=_token]").val();
-            let url = `${URL_RESOURCE}/${id}`;
+            var id = $(this).data('id');
+            var token = $("input[name=_token]").val();
+            var url = `${URL_RESOURCE}/${id}`;
             
             swal({
                 title: '',
