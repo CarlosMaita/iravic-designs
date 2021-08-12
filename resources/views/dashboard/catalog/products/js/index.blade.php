@@ -14,45 +14,16 @@
             select_color = $('#color'),
             select_size = $('#size');
 
-        $('select').select2();
+        $('select').select2({
+            allowClear: true,
+            placeholder: "Seleccionar"
+        });
 
         initDataTable();
 
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
-                fixedHeader: true,
-                processing: false,
-                responsive: true,
-                serverSide: true,
-                ajax: {
-                    url: URL_RESOURCE,
-                    data: function(d) {
-                        d.brand     = $("#brand").val() > 0 ? $("#brand").val() : null;
-                        d.category  = $("#category").val() > 0 ? $("#category").val() : null;
-                        d.gender    = $("#gender").val() ? $("#gender").val() : null;
-                        d.color     = $("#color").val() > 0 ? $("#color").val() : null;
-                        d.size      = $("#size").val() > 0 ? $("#size").val() : null;
-                    },
-                },
-                pageLength: 25,
-                columns: [
-                    {data: 'name'},
-                    {data: 'code'},
-                    {data: 'gender'},
-                    {data: 'brand.name'},
-                    {data: 'category.name'},
-                    {
-                        render: function (data, type, row) {
-                            return row.is_regular ? 'No' : 'Si';
-                        }
-                    },
-                    {data: 'regular_price_str'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
-            });
-        }
-
-
+        /**
+         * 
+         */
         $('body').on('click', 'tbody .delete-resource', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -158,5 +129,42 @@
         btn_close_filter.click(function() {
             advanced_search.collapse('hide');
         });
+
+        /**
+         * 
+         */
+        function initDataTable() {
+            DATATABLE_RESOURCE.DataTable({
+                fixedHeader: true,
+                processing: false,
+                responsive: true,
+                serverSide: true,
+                ajax: {
+                    url: URL_RESOURCE,
+                    data: function(d) {
+                        d.brand     = $("#brand").val() ? $("#brand").val() : null;
+                        d.category  = $("#category").val() ? $("#category").val() : null;
+                        d.gender    = $("#gender").val() ? $("#gender").val() : null;
+                        d.color     = $("#color").val() ? $("#color").val() : null;
+                        d.size      = $("#size").val() ? $("#size").val() : null;
+                    },
+                },
+                pageLength: 25,
+                columns: [
+                    {data: 'name'},
+                    {data: 'code'},
+                    {data: 'gender'},
+                    {data: 'brand.name'},
+                    {data: 'category.name'},
+                    {
+                        render: function (data, type, row) {
+                            return row.is_regular ? 'No' : 'Si';
+                        }
+                    },
+                    {data: 'regular_price_str'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+        }
     });
 </script>

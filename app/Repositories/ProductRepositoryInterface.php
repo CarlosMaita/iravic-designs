@@ -9,7 +9,7 @@ interface ProductRepositoryInterface
     /**
      * @return Collection
      */
-    public function onlyPrincipals(): Collection;
+    public function onlyPrincipals($criteria = null): Collection;
 
     /**
     * @param $request

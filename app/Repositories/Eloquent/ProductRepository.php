@@ -32,9 +32,23 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     /**
      * @return Collection
      */
-    public function onlyPrincipals(): Collection
+    public function onlyPrincipals($criteria = null): Collection
     {
-        return $this->model->doesntHave('product_parent')->with(['brand', 'category'])->orderBy('name')->get();
+        $query = $this->model->doesntHave('product_parent')->with(['brand', 'category']);
+        
+        if (isset($criteria['brand']) && is_array($criteria['brand'])) {
+            $query->whereInBrand($criteria['brand']);
+        }
+
+        if (isset($criteria['category']) && is_array($criteria['category'])) {
+            $query->whereInCategory($criteria['category']);
+        }
+
+        if (isset($criteria['gender']) && is_array($criteria['gender'])) {
+            $query->whereInGender($criteria['gender']);
+        }
+
+        return $query->orderBy('name')->get();
     }
 
     /**

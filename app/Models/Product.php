@@ -119,6 +119,22 @@ class Product extends Model
         return 0;
     }
 
+    # Scopes
+    public function scopeWhereInBrand($query, $brands_id)
+    {
+        return $query->whereIn('brand_id', $brands_id);
+    }
+
+    public function scopeWhereInCategory($query, $categories_id)
+    {
+        return $query->whereIn('category_id', $categories_id);
+    }
+    
+    public function scopeWhereInGender($query, $genders)
+    {
+        return $query->whereIn('gender', $genders);
+    }
+
     # Methods
     public function getRegularPrice()
     {

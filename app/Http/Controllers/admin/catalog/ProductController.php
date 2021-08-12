@@ -41,7 +41,8 @@ class ProductController extends Controller
         $this->authorize('viewany', 'App\Models\Product');
 
         if ($request->ajax()) {
-            $products = $this->productRepository->onlyPrincipals();
+            $criteria = $request->only('brand', 'category', 'color', 'gender', 'size');
+            $products = $this->productRepository->onlyPrincipals($criteria);
             return Datatables::of($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
