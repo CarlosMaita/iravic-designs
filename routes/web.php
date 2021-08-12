@@ -55,6 +55,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('agendas', 'ScheduleController')->except('create', 'store', 'edit', 'update');
         #
         Route::resource('visitas', 'VisitController')->except('create', 'show');
+        Route::put('visitas/{visita}/update-responsable', 'VisitController@updateResponsable');
         Route::put('visitas/{visita}/complete', 'VisitController@complete');
     });
 

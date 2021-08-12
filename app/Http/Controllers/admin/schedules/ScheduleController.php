@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\admin\schedules;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\admin\ScheduleRequest;
 use App\Models\Schedule;
 use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use DataTables;
 use Exception;
@@ -17,11 +17,15 @@ class ScheduleController extends Controller
 {
     public $scheduleRepository;
 
+    public $userRepository;
+
     public $visitRepository;
 
-    public function __construct(ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
+    public function __construct(ScheduleRepository $scheduleRepository, UserRepository $userRepository, VisitRepository $visitRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
+
+        $this->userRepository = $userRepository;
 
         $this->visitRepository = $visitRepository;
     }
@@ -77,8 +81,10 @@ class ScheduleController extends Controller
             ]);
         }
 
+        $employees = $this->userRepository->allEmployees();
         return view('dashboard.schedules.show')
-                ->withSchedule($agenda);
+                ->withSchedule($agenda)
+                ->withEmployees($employees);
     }
 
 

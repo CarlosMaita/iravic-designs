@@ -10,7 +10,7 @@ class RoleRequest extends FormRequest
     {
         return [
             'name.required' => 'El campo nombre es obligatorio.',
-            'name.unique' => 'El campo nombre ya se encuentra ocupado por otro rol'
+            'name.unique' => 'El campo nombre ya se encuentra ocupado por otro rol.'
         ];
     }
     

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\schedules;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\VisitRequest;
+use App\Http\Requests\admin\VisitResponsableRequest;
 use App\Models\Visit;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
@@ -168,6 +169,30 @@ class VisitController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => "La visita ha sido eliminada con éxito"
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('dashboard.general.operation_error'),
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * 
+     */
+    public function updateResponsable(VisitResponsableRequest $request, Visit $visita)
+    {
+        try {
+            $attributes = $request->only('user_responsable_id');
+            $this->visitRepository->update($visita->id, $attributes);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'El responsable de la visita ha sido actualizado'
             ]);
         } catch (Exception $e) {
             return response()->json([

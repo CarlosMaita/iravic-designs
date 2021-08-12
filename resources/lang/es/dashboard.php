@@ -225,6 +225,7 @@ return [
     'schedules' => [
         'id'                => 'ID',
         'date'              => 'Fecha',
+        'index'             => 'Listado de agendas',
         'details'           => 'Detalle agenda',
     ],
     'sidebar' => [

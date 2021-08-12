@@ -21,9 +21,12 @@
             </div>
         </div>
     </div>
+
+    @include('dashboard.schedules._modal_visits')
 @endsection
 
 @push('js')
+    @include('plugins.select2')
     @include('plugins.sweetalert')
     @include('dashboard.schedules.js.show')
 @endpush
