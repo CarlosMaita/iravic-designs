@@ -25,6 +25,7 @@ class CheckForCreateOrder
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
+        
         if (!$this->boxRepository->getOpenByUserId($user->id)) {
             flash("Usted no tiene una caja abierta para registrar pedidos.")->warning();
             return redirect()->route('pedidos.index');

@@ -25,6 +25,7 @@ class CheckForCreateBox
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
+        
         if ($this->boxRepository->getOpenByUserId($user->id)) {
             flash("Usted ya posee una caja abierta.")->warning();
             return redirect()->route('cajas.index');

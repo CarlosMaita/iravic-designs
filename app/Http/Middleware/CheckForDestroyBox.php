@@ -16,14 +16,14 @@ class CheckForDestroyBox
      */
     public function handle($request, Closure $next)
     {
-        // $box = $request->route('caja');
+        $box = $request->route('caja');
 
-        // if ($box->ventas()->count()) {
+        if ($box->ventas()->count()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No puede eliminar una caja que ya posea ventas registradas.'
             ]);
-        // }
+        }
 
         return $next($request);
     }

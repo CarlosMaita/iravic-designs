@@ -3,12 +3,20 @@
 namespace App\Http\Requests\admin;
 
 use App\Models\Customer;
+use App\Repositories\Eloquent\BoxRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class PaymentRequest extends FormRequest
 {
+    public $boxRepository;
+
+    public function __construct(BoxRepository $boxRepository)
+    {
+        $this->boxRepository = $boxRepository;
+    }
+
     public function messages()
     {
         return [
@@ -51,16 +59,11 @@ class PaymentRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        if (!$this->box_id) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add('box', 'El usuario no tiene una caja abierta en este momento.');
-            });
-        }
-
+        
         if (isset($this->customer_id) && isset($this->amount) && $customer = Customer::find($this->customer_id)) {
             if ($this->isMethod('POST') && $this->amount > $customer->getTotalDebt()) {
                 $validator->after(function ($validator) {
-                    $validator->errors()->add('debt', 'El monto registrado es mayor a la deuda del cliente.');
+                    $validator->errors()->add('debt', 'El monto registrado es mayor a la deuda actual del cliente.');
                 });
             } else if ($this->isMethod('PUT')) {
                 $payment = $this->route('pago');
@@ -69,9 +72,17 @@ class PaymentRequest extends FormRequest
 
                 if ($this->amount > $new_debt) {
                     $validator->after(function ($validator) {
-                        $validator->errors()->add('debt', 'El monto registrado es mayor a la deuda del cliente.');
+                        $validator->errors()->add('debt', 'El monto registrado es mayor a la deuda actual del cliente.');
                     });
                 }
+            }
+        }
+
+        if ($this->isMethod('POST')) {
+            if (!$this->box_id) {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('box', 'No posee una caja abierta en la cual se puedan registrar pagos.');
+                });
             }
         }
     }
@@ -84,7 +95,7 @@ class PaymentRequest extends FormRequest
     protected function prepareForValidation()
     {
         $user = Auth::user();
-        $box = $user->boxes()->where('closed', 0)->first();
+        $box = $this->boxRepository->getOpenByUserId($user->id);
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,
