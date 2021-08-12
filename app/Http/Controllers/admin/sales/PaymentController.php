@@ -6,20 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\PaymentRequest;
 use App\Models\Payment;
 use App\Repositories\Eloquent\PaymentRepository;
+use App\Repositories\Eloquent\VisitRepository;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
     public $paymentRepository;
 
-    public function __construct(PaymentRepository $paymentRepository)
+    public $visitRepository;
+
+    public function __construct(PaymentRepository $paymentRepository, VisitRepository $visitRepository)
     {
         $this->paymentRepository = $paymentRepository;
-        // $this->middleware('box.create')->only('create');
-        // $this->middleware('box.destroy')->only('destroy');
+        $this->visitRepository = $visitRepository;
     }
 
     /**
@@ -44,10 +47,6 @@ class PaymentController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
-
-                        // if (Auth::user()->can('view', $row)) {
-                        //     $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></button>';
-                        // }
                         
                         if (Auth::user()->can('update', $row)) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-payment" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
@@ -76,14 +75,18 @@ class PaymentController extends Controller
     {
         try {
             $this->authorize('create', 'App\Models\Payment');
+            DB::beginTransaction();
             $attributes = $request->only('box_id', 'customer_id', 'user_id', 'amount', 'comment', 'date', 'payed_bankwire', 'payed_card', 'payed_cash');
-            $this->paymentRepository->create($attributes);
+            $payment = $this->paymentRepository->create($attributes);
+            $this->visitRepository->completeByDateUser($payment->customer_id, $payment->getRawOriginal('date'));
+            DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'El pago ha sido creado con éxito'
             ]);
         } catch (Exception $e) {
+            DB::rollback();
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
@@ -103,8 +106,7 @@ class PaymentController extends Controller
     public function show(Request $request, Payment $pago)
     {
         $this->authorize('view', $pago);
-
-        if ($request->isAjax()) {
+        if ($request->ajax()) {
             return response()->json($pago);
         }
         

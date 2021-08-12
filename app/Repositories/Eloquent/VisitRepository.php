@@ -52,4 +52,14 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
                             ->get();
     }
 
+    /**
+     * 
+     */
+    public function completeByDateUser($customer_id, $date): bool
+    {
+        return $this->model->where('customer_id', $customer_id)
+                            ->whereDate('date', $date)
+                            ->update(['is_completed' => 1]);
+    }
+
 }
