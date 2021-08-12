@@ -129,10 +129,28 @@ class Product extends Model
     {
         return $query->whereIn('category_id', $categories_id);
     }
+
+    public function scopeWhereInColor($query, $colors)
+    {
+        return $query->where(function ($q) use ($colors) {
+            $q->whereHas('product_combinations', function ($q) use ($colors) {
+                $q->whereIn('color_id', $colors);
+            });
+        });
+    }
     
     public function scopeWhereInGender($query, $genders)
     {
         return $query->whereIn('gender', $genders);
+    }
+
+    public function scopeWhereInSize($query, $sizes)
+    {
+        return $query->where(function ($q) use ($sizes) {
+            $q->whereHas('product_combinations', function ($q) use ($sizes) {
+                $q->whereIn('size_id', $sizes);
+            });
+        });
     }
 
     # Methods

@@ -92,7 +92,7 @@
                                     @if($product->is_regular)
                                         <div class="tab-pane fade show active" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
                                             <!--  -->
-                                            <div class="row">
+                                            <div class="row mt-3">
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Stock Depósito</label>

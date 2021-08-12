@@ -48,6 +48,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $query->whereInGender($criteria['gender']);
         }
 
+        if (isset($criteria['color']) && is_array($criteria['color'])) {
+            $query->whereInColor($criteria['color']);
+        }
+
+        if (isset($criteria['size']) && is_array($criteria['size'])) {
+            $query->whereInSize($criteria['size']);
+        }
+
         return $query->orderBy('name')->get();
     }
 
