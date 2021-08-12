@@ -2,13 +2,13 @@
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
             <label for="name">{{ __('dashboard.form.fields.users.name') }}</label>
-            <input class="form-control" id="name" name="name" type="text" value="{{ old("name", $user->name) }}" required autofocus>
+            <input class="form-control" id="name" name="name" type="text" value="{{ old("name", $user->name) }}" autofocus>
         </div>
     </div>
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
             <label for="email">{{ __('dashboard.form.fields.users.email') }}</label>
-            <input class="form-control" id="email" name="email" type="text" value="{{ old("name", $user->email) }}" required>
+            <input class="form-control" id="email" name="email" type="text" value="{{ old("name", $user->email) }}">
         </div>
     </div>
 </div>

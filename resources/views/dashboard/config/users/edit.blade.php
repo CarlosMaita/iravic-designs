@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.config.users.edit') }} - {{ $user->name }}</div>
                         <div class="card-body">
-                          <form id="form-users" method="POST" action="{{ route('usuarios.update', [$user->id]) }}">
+                          <form id="form-users" method="POST" action="{{ route('usuarios.update', [$user->id]) }}" autocomplete="off">
                             @csrf
                             @method('PUT')
                             @include('dashboard.config.users._form')
