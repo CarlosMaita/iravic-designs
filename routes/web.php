@@ -39,6 +39,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('productos', 'ProductController');
         #
         Route::resource('producto-imagen', 'ProductImageController')->only('index', 'destroy');
+        #
+        Route::get('download', 'ProductController@download')->name('catalog.download');
     });
 
     # Customers Routes

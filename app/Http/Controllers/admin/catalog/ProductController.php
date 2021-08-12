@@ -11,6 +11,7 @@ use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use DataTables;
+use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -237,5 +238,28 @@ class ProductController extends Controller
                 ]
             ]);
         }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+        $criteria = $request->only('brand', 'category', 'color', 'gender', 'size');
+        $products = $this->productRepository->onlyPrincipals($criteria);
+    
+        $pdf = \PDF::loadView('pdf/catalog', [
+            'date' => now()->format('d-m-Y'),
+            'products' => $products
+        ]);
+
+        return $pdf->stream('catalogo.pdf');
+
+        // return $pdf->download('catalogo.pdf');
+        // return PDF::loadView('pdf/catalog', $products)
+        //         ->stream('archivo.pdf');
     }
 }

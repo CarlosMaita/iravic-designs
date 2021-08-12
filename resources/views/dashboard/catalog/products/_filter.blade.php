@@ -18,7 +18,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="brand">{{ __('dashboard.form.fields.products.brand') }}</label>
-                                <select class="form-control" id="brand" name="brand" multiple>
+                                <select class="form-control" id="brand" name="brand[]" multiple>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
@@ -28,7 +28,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="category">{{ __('dashboard.form.fields.products.category') }}</label>
-                                <select class="form-control" id="category" name="category" multiple>
+                                <select class="form-control" id="category" name="category[]" multiple>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -40,7 +40,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="gender">{{ __('dashboard.form.fields.products.gender') }}</label>
-                                <select class="form-control" id="gender" name="gender" multiple>
+                                <select class="form-control" id="gender" name="gender[]" multiple>
                                     <option value="F">F</option>
                                     <option value="M">M</option>
                                 </select>
@@ -49,7 +49,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="color">{{ __('dashboard.form.fields.products.color') }}</label>
-                                <select class="form-control" id="color" name="color" multiple>
+                                <select class="form-control" id="color" name="color[]" multiple>
                                     @foreach ($colors as $color)
                                         <option value="{{ $color->id }}">{{ $color->name }}</option>
                                     @endforeach
@@ -59,7 +59,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="size">{{ __('dashboard.form.fields.products.size') }}</label>
-                                <select class="form-control" id="size" name="size" multiple>
+                                <select class="form-control" id="size" name="size[]" multiple>
                                     @foreach ($sizes as $size)
                                         <option value="{{ $size->id }}">{{ $size->name }}</option>
                                     @endforeach

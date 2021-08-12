@@ -1,13 +1,15 @@
 <script>
     $(function () {
-        const URL_RESOURCE = "{{ route('productos.index') }}";
         const DATATABLE_RESOURCE = $("#datatable_products");
+        const URL_RESOURCE = "{{ route('productos.index') }}";
+        const URL_DOWNLOAD = "{{ route('catalog.download') }}";
 
         var form_advanced_search = $('#form-advanced-search'),
             advanced_search = $('#adv-search'),
             btn_advanced_search = $('#btn-advanced-search'),
             btn_clear_filter = form_advanced_search.find('.clear-form'),
             btn_close_filter = form_advanced_search.find('#close-advance-search'),
+            btn_download = $('#btn-download'),
             select_brand = $('#brand'),
             select_category = $('#category'),
             select_gender = $('#gender'),
@@ -20,6 +22,8 @@
         });
 
         initDataTable();
+
+        
 
         /**
          * 
@@ -128,6 +132,13 @@
          */
         btn_close_filter.click(function() {
             advanced_search.collapse('hide');
+        });
+        
+
+        btn_download.click(function(e) {
+            e.preventDefault();
+            var data = form_advanced_search.serialize();
+            window.location = `${URL_DOWNLOAD}?${data}`;
         });
 
         /**
