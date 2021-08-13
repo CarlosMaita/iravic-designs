@@ -256,6 +256,7 @@ class ProductController extends Controller
 
         foreach ($products as $product) {
             if ($product->category_id != $category_id) {
+                $category_id = $product->category_id;
                 $categories[$product->category_id] = array();
                 $categories[$product->category_id]['name'] = $product->category->name;
                 $categories[$product->category_id]['products'] = array();
