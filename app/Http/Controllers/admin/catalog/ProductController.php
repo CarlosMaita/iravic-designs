@@ -262,23 +262,32 @@ class ProductController extends Controller
                 $categories[$product->category_id]['products'] = array();
             }
 
+            $combinations = array();
+
+            foreach ($product->product_combinations as $product_combination) {
+                if (
+                    (isset($criteria['color']) && isset($criteria['size']) && (in_array($product_combination->color_id, $criteria['color']) || in_array($product_combination->size_id, $criteria['size']))) ||
+                    (isset($criteria['color']) && in_array($product_combination->color_id, $criteria['color'])) ||
+                    (isset($criteria['size']) && in_array($product_combination->size_id, $criteria['size'])) ||
+                    (!isset($criteria['color']) && !isset($criteria['size']))
+                ) {
+                    array_push($combinations, $product_combination);
+                }
+            }
+
+            $product['combinations'] = $combinations;
             array_push($categories[$product->category_id]['products'], $product);
         }
 
         // return view('pdf.catalog')
         //         ->withDate(now()->format('d-m-Y'))
-        //         ->withProducts($products);
+        //         ->withcategories($categories);
 
         $pdf = \PDF::loadView('pdf/catalog', [
             'categories' => $categories,
-            'date' => now()->format('d-m-Y'),
-            'products' => $products
+            'date' => now()->format('d-m-Y')
         ]);
 
         return $pdf->stream('catalogo.pdf');
-
-        // return $pdf->download('catalogo.pdf');
-        // return PDF::loadView('pdf/catalog', $products)
-        //         ->stream('archivo.pdf');
     }
 }

@@ -45,7 +45,6 @@
 
     {{-- Bootstrap --}}
     <style>
-
         html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
         body{margin:0}
 
@@ -56,8 +55,6 @@
             margin-right: auto;
             margin-left: auto;
         }
-
-        /* .row{margin-right:-15px;margin-left:-15px} */
         
         .col-xs-1,.col-xs-1-5,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9{position:relative;min-height:1px;padding-right:15px;padding-left:15px}
         .col-xs-1,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9{display: inline-block;}
@@ -84,9 +81,23 @@
             max-width: 100%;
             height: auto;
         }
+
+        .table {
+            border-top: 1px solid #ddd;
+        }
+        .table:last-child>.table:last-child, .table:last-child {
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table tr td {
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
     </style>
-
-
 
 
     <style>
@@ -129,10 +140,16 @@
             margin-bottom: 0;
             color: rgba(0, 0, 0, 0.8);
         }
-        .product .text .content .price > span {
+        .product .text .content .price > span{
             /* border-bottom: 3px solid #ffa323; */
             color: #ffa323;
             font-weight: 600;
+        }
+        .table th {
+            font-size: 14px;
+        }
+        .table td {
+            font-size: 12px;
         }
     </style>
 </head>
@@ -167,7 +184,7 @@
                     <div class="heading-menu text-center">
                         <h3>{{ $category['name'] }}</h3>
                     </div>
-
+                    {{--  --}}
                     @foreach ($category['products'] as $product)
                     <div class="row items product">
                         <div class="col-xs-9">
@@ -175,16 +192,49 @@
                                 <div class="content">
                                     <h3 class="name">{{ $product->name }} <span style="font-weight: normal;">(Cod: {{ $product->real_code }})</span></h3>
                                     <p class="description">Marca: {{ optional($product->brand)->name }}</p>
+
+                                    @if (!$product->product_combinations()->count())
                                     <p class="price"><span>{{ $product->regular_price_str }}</span></p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-1-5">
-                            @if (count($product->images))
-                                <div class="item-img img" style="overflow: hidden;">
-                                    <img src="{{ $product->images()->first()->url_img }}" alt="" class="img-fluid">
+                            <div class="item-img img" style="overflow: hidden;">    
+                                @if (count($product->images))
+                                    <img src="{{ $product->images()->first()->url_img }}" class="img-fluid">
+                                @else
+                                    <img src="{{ asset('img/no_image.jpg') }}" class="img-fluid">
+                                @endif
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-xs-12">
+                            <p>Disponible en:</p>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table" width="100%;" style=>
+                                        <thead>
+                                            <tr>
+                                                <th align="left" width="10%;">Cod</th>
+                                                <th align="left" width="30%;">Color</th>
+                                                <th align="left" width="30%;">Talla</th>
+                                                <th align="right" width="30%;">Precio</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($product['combinations'] as $combination)
+                                                <tr>
+                                                    <td>{{ $combination->real_code }}</td>
+                                                    <td>{{ optional($combination->color)->name }}</td>
+                                                    <td>{{ optional($combination->size)->name }}</td>
+                                                    <td align="right" style="color: #ffa323; font-weight: 700;">{{ $combination->regular_price_str }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                     @endforeach
