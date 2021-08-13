@@ -251,7 +251,25 @@ class ProductController extends Controller
         $criteria = $request->only('brand', 'category', 'color', 'gender', 'size');
         $products = $this->productRepository->onlyPrincipals($criteria);
     
+        $categories = array();
+        $category_id = null;
+
+        foreach ($products as $product) {
+            if ($product->category_id != $category_id) {
+                $categories[$product->category_id] = array();
+                $categories[$product->category_id]['name'] = $product->category->name;
+                $categories[$product->category_id]['products'] = array();
+            }
+
+            array_push($categories[$product->category_id]['products'], $product);
+        }
+
+        // return view('pdf.catalog')
+        //         ->withDate(now()->format('d-m-Y'))
+        //         ->withProducts($products);
+
         $pdf = \PDF::loadView('pdf/catalog', [
+            'categories' => $categories,
             'date' => now()->format('d-m-Y'),
             'products' => $products
         ]);
