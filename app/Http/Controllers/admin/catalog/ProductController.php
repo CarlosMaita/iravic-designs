@@ -262,21 +262,31 @@ class ProductController extends Controller
                 $categories[$product->category_id]['products'] = array();
             }
 
-            $combinations = array();
+            
 
-            foreach ($product->product_combinations as $product_combination) {
-                if (
-                    (isset($criteria['color']) && isset($criteria['size']) && (in_array($product_combination->color_id, $criteria['color']) || in_array($product_combination->size_id, $criteria['size']))) ||
-                    (isset($criteria['color']) && in_array($product_combination->color_id, $criteria['color'])) ||
-                    (isset($criteria['size']) && in_array($product_combination->size_id, $criteria['size'])) ||
-                    (!isset($criteria['color']) && !isset($criteria['size']))
-                ) {
-                    array_push($combinations, $product_combination);
+            if (count($product->product_combinations)) {
+                $combinations = array();
+
+                foreach ($product->product_combinations as $product_combination) {
+                    if (
+                        (isset($criteria['color']) && isset($criteria['size']) && (in_array($product_combination->color_id, $criteria['color']) || in_array($product_combination->size_id, $criteria['size']))) ||
+                        (isset($criteria['color']) && in_array($product_combination->color_id, $criteria['color'])) ||
+                        (isset($criteria['size']) && in_array($product_combination->size_id, $criteria['size'])) ||
+                        (!isset($criteria['color']) && !isset($criteria['size']) &&
+                        ($product_combination->stock_depot >0 || $product_combination->stock_local >0 || $product_combination->stock_truck >0))
+                    ) {
+                        array_push($combinations, $product_combination);
+                    }
                 }
+
+                if (count($combinations)) {
+                    $product['combinations'] = $combinations;
+                    array_push($categories[$product->category_id]['products'], $product);
+                }
+            } else if ($product->stock_depot >0 || $product->stock_local >0 || $product->stock_truck >0) {
+                array_push($categories[$product->category_id]['products'], $product);
             }
 
-            $product['combinations'] = $combinations;
-            array_push($categories[$product->category_id]['products'], $product);
         }
 
         // return view('pdf.catalog')

@@ -194,7 +194,7 @@
                                     <p class="description">Marca: {{ optional($product->brand)->name }}</p>
 
                                     @if (!$product->product_combinations()->count())
-                                    <p class="price"><span>{{ $product->regular_price_str }}</span></p>
+                                    <p class="price"><span class="font-weight-bold">{{ $product->regular_price_str }}</span></p>
                                     @endif
                                 </div>
                             </div>
@@ -208,6 +208,8 @@
                                 @endif
                             </div>
                         </div>
+
+                        @if (isset($product['combinations'])) 
                         <hr>
                         <div class="col-xs-12">
                             <p>Disponible en:</p>
@@ -236,6 +238,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                     @endforeach
                 </div>
