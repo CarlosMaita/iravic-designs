@@ -11,6 +11,7 @@ return [
         'edit'              => 'Editar Caja',
         'box'               => 'Caja',
         'cash_initial'      => 'Efectivo inicial',
+        'cash_in_box'       => 'Efectivo en caja',
         'closed'            => 'Cerrada',
         'date'              => 'Fecha',
         'date_start'        => 'Fecha Inicio',
