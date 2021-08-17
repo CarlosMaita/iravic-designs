@@ -18,7 +18,7 @@ class CategoryPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->permissions()->contains('view-role');
+        return $user->permissions()->contains('view-category');
     }
 
     /**
