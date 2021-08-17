@@ -8,8 +8,34 @@
     {{-- Schedule link --}}
     @if (Auth::user()->can('viewany', App\Models\Schedule::class))
     <li class="c-sidebar-nav-item {{ $menuService->isActive($url,"/admin/gestion-agendas/agendas", false, true) }}">
-        <a class="c-sidebar-nav-link" href="{{ route('agendas.index') }}"><i class="cil-calculator c-sidebar-nav-icon"></i> {{ __('dashboard.sidebar.schedules') }}</a>
+        <a class="c-sidebar-nav-link" href="{{ route('agendas.index') }}"><i class="cil-calendar-check c-sidebar-nav-icon"></i> {{ __('dashboard.sidebar.schedules') }}</a>
     </li>
+    @endif
+    {{-- Sales Management links --}}
+    @if (
+        Auth::user()->can('viewany', App\Models\Box::class) ||
+        Auth::user()->can('viewany', App\Models\Order::class)
+    )
+        <li class="c-sidebar-nav-dropdown {{
+            $menuService->isActive($url,"/admin/cajas-ventas/cajas", false, true) . " " .
+            $menuService->isActive($url,"/admin/cajas-ventas/pedidos", false, true)
+        }}">
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-sales') }}</a>
+            <ul class="c-sidebar-nav-dropdown-items">
+                {{-- Boxes --}}
+                @can('viewany', App\Models\Box::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/cajas")}}" href="{{ route('cajas.index') }}"></span>{{ __('dashboard.sidebar.boxes') }}</a>
+                    </li>
+                @endcan
+                {{-- Orders --}}
+                @can('viewany', App\Models\Order::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/pedidos")}}" href="{{ route('pedidos.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
     @endif
     {{-- Catalog links --}}
     @if (
@@ -22,7 +48,7 @@
             $menuService->isActive($url,"/admin/catalogo/marcas", false, true) . " " . 
             $menuService->isActive($url,"/admin/catalogo/productos", false, true)
         }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.catalog') }}</a>
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.catalog') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 {{-- Categorias --}}
                 @can('viewany', App\Models\Category::class)
@@ -54,7 +80,7 @@
             $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) . " " .
             $menuService->isActive($url,"/admin/gestion-clientes/zonas", false, true)
         }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 {{-- customers --}}
                 @can('viewany', App\Models\Client::class)
@@ -71,32 +97,6 @@
             </ul>
         </li>
     @endif
-    {{-- Sales Management links --}}
-    @if (
-        Auth::user()->can('viewany', App\Models\Box::class) ||
-        Auth::user()->can('viewany', App\Models\Order::class)
-    )
-        <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/cajas-ventas/cajas", false, true) . " " .
-            $menuService->isActive($url,"/admin/cajas-ventas/pedidos", false, true)
-        }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-sales') }}</a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                {{-- Boxes --}}
-                @can('viewany', App\Models\Box::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/cajas")}}" href="{{ route('cajas.index') }}"></span>{{ __('dashboard.sidebar.boxes') }}</a>
-                    </li>
-                @endcan
-                {{-- Orders --}}
-                @can('viewany', App\Models\Order::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/pedidos")}}" href="{{ route('pedidos.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
-                    </li>
-                @endcan
-            </ul>
-        </li>
-    @endif
     {{-- Configuration links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Role::class) || 
@@ -108,7 +108,7 @@
             $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
             $menuService->isActive($url,"/admin/config/permisos", false, true)
         }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.settings') }}</a>
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cog c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.settings') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 {{--  --}}
                 @if (Auth::user()->can('viewany', App\Models\Role::class) || Auth::user()->can('viewany', App\Models\Permission::class))
