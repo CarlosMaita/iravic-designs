@@ -14,50 +14,71 @@ class RolesSeeder extends Seeder
     public function run()
     {
         $superadmin = Role::create([
-                        'name' => 'superadmin',
-                        'is_superadmin' => 1,
-                        'is_employee' => 1
-                    ]);
+            'name' => 'superadmin',
+            'is_superadmin' => 1,
+            'is_employee' => 1
+        ]);
 
         $admin = Role::create([
-                        'name' => 'admin',
-                        'is_superadmin' => 0,
-                        'is_employee' => 1
-                    ]);
+            'name' => 'admin',
+            'is_superadmin' => 0,
+            'is_employee' => 1
+        ]);
+
+        $local = Role::create([
+            'name' => 'Local',
+            'is_superadmin' => 0,
+            'is_employee' => 1
+        ]);
+
+        $truck = Role::create([
+            'name' => 'Camión',
+            'is_superadmin' => 0,
+            'is_employee' => 1
+        ]);
+
+        $moto = Role::create([
+            'name' => 'Moto',
+            'is_superadmin' => 0,
+            'is_employee' => 1
+        ]);
 
         $permissions = Permission::all();
+        $othersPermissions = $this->getOthersPermissions($permissions);
+
         $superadmin->allowToMany($permissions);
         $admin->allowToMany($permissions);
+        $local->allowToMany($othersPermissions);
+        $truck->allowToMany($othersPermissions);
+        $moto->allowToMany($othersPermissions);
+    }
 
-        /*
-        $permisosEncargadoGraduacion = $permissions->reject(function ($permiso) {
+    private function getOthersPermissions($permissions)
+    {
+        return $permissions->reject(function ($permission) {
             return (
-                    $permiso->name == 'privilegios_ver'
-                    || $permiso->name == 'privilegios_crear'
-                    || $permiso->name == 'privilegios_editar'
-                    || $permiso->name == 'privilegios_eliminar'
-                    || $permiso->name == 'usuarios_ver'
-                    || $permiso->name == 'usuarios_crear'
-                    || $permiso->name == 'usuarios_editar'
-                    || $permiso->name == 'usuarios_eliminar'
-                    || $permiso->name == 'graduaciones_crear'
-                    || $permiso->name == 'graduaciones_editar'
-                    || $permiso->name == 'graduaciones_eliminar'
-                    || $permiso->name == 'grupos_crear'
-                    || $permiso->name == 'grupos_editar'
-                    || $permiso->name == 'grupos_eliminar'
-                    || $permiso->name == 'personas_crear'
-                    || $permiso->name == 'personas_editar'
-                    || $permiso->name == 'personas_eliminar'
-                    || $permiso->name == 'movimientos_personas_crear'
-                    || $permiso->name == 'movimientos_personas_editar'
-                    || $permiso->name == 'movimientos_personas_eliminar'
-                    || $permiso->name == 'movimientos_graduaciones_ver'
-                    || $permiso->name == 'movimientos_graduaciones_crear'
-                    || $permiso->name == 'movimientos_graduaciones_editar'
-                    || $permiso->name == 'movimientos_graduaciones_eliminar'
+                $permission->name == 'privilegios_ver'
+                || $permission->name == 'view-permission'
+                || $permission->name == 'view-role'
+                || $permission->name == 'create-role'
+                || $permission->name == 'update-role'
+                || $permission->name == 'delete-role'
+                || $permission->name == 'view-user'
+                || $permission->name == 'create-user'
+                || $permission->name == 'update-user'
+                || $permission->name == 'delete-user'
+                || $permission->name == 'create-brand'
+                || $permission->name == 'update-brand'
+                || $permission->name == 'delete-brand'
+                || $permission->name == 'create-category'
+                || $permission->name == 'update-category'
+                || $permission->name == 'delete-category'
+                || $permission->name == 'create-zone'
+                || $permission->name == 'update-zone'
+                || $permission->name == 'delete-zone'
+                || $permission->name == 'update-responsable-visit'
+                || $permission->name == 'delete-schedule'
             );
         });
-        */
     }
 }
