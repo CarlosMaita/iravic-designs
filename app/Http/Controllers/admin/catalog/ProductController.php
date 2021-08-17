@@ -250,7 +250,6 @@ class ProductController extends Controller
     {
         $criteria = $request->only('brand', 'category', 'color', 'gender', 'size');
         $products = $this->productRepository->onlyPrincipals($criteria);
-    
         $categories = array();
         $category_id = null;
 
@@ -261,8 +260,6 @@ class ProductController extends Controller
                 $categories[$product->category_id]['name'] = $product->category->name;
                 $categories[$product->category_id]['products'] = array();
             }
-
-            
 
             if (count($product->product_combinations)) {
                 $combinations = array();
@@ -286,17 +283,21 @@ class ProductController extends Controller
             } else if ($product->stock_depot >0 || $product->stock_local >0 || $product->stock_truck >0) {
                 array_push($categories[$product->category_id]['products'], $product);
             }
-
         }
+
 
         // return view('pdf.catalog')
         //         ->withDate(now()->format('d-m-Y'))
         //         ->withcategories($categories);
 
+        // $customPaper = array(0, 0, 5000, 1440);
+        $customPaper = array(0, 0, 5000, 650);
+
         $pdf = \PDF::loadView('pdf/catalog', [
             'categories' => $categories,
             'date' => now()->format('d-m-Y')
-        ]);
+        ])
+        ->setPaper($customPaper, 'landscape');
 
         return $pdf->stream('catalogo.pdf');
     }

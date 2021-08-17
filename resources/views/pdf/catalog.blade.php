@@ -179,7 +179,8 @@
             $index = 0;
         @endphp
         @foreach ($categories as $category)
-            <div class="row" @if ($index < (count($categories) - 1)) style="page-break-after: always;" @endif>
+            <div class="row">
+                {{--  @if ($index < (count($categories) - 1)) style="page-break-after: always;" @endif --}}
                 <div class="col-xs-12 item-wrap">
                     <div class="heading-menu text-center">
                         <h3>{{ $category['name'] }}</h3>
