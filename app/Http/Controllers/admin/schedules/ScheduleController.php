@@ -24,9 +24,7 @@ class ScheduleController extends Controller
     public function __construct(ScheduleRepository $scheduleRepository, UserRepository $userRepository, VisitRepository $visitRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
-
         $this->userRepository = $userRepository;
-
         $this->visitRepository = $visitRepository;
     }
 

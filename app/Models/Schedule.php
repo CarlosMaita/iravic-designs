@@ -29,4 +29,12 @@ class Schedule extends Model
 
         return null;
     }
+
+    # Scopes
+    public function scopeWhereHasVisitasByResponsable($query, $user_id)
+    {
+        return $query->whereHas('visits', function ($q) use ($user_id) {
+            $q->where('user_responsable_id', $user_id);
+        });
+    }
 }

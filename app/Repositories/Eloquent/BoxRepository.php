@@ -3,10 +3,10 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Box;
-use Illuminate\Support\Collection;
 use App\Repositories\BoxRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 
 class BoxRepository extends BaseRepository implements BoxRepositoryInterface
 {
@@ -30,7 +30,7 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
         $user_roles = $user->roles->flatten()->pluck('name');
         $query = $this->model->with('user');
 
-        if (!$user_roles->contains('superadmin') && !!!$user_roles->contains('admin')) {
+        if (!$user_roles->contains('superadmin') && !$user_roles->contains('admin')) {
             $query->whereUser($user->id);
         }
 
