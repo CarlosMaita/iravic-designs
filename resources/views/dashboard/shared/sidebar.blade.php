@@ -83,7 +83,7 @@
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 {{-- customers --}}
-                @can('viewany', App\Models\Client::class)
+                @can('viewany', App\Models\Customer::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/clientes")}}" href="{{ route('clientes.index') }}"></span>{{ __('dashboard.sidebar.customers') }}</a>
                     </li>
