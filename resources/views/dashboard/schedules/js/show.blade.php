@@ -33,10 +33,12 @@
                                 url = "{{ route('clientes.index') }}";
 
                             @if (Auth::user()->can('viewany', App\Models\Customer::class))
-                                html += `<a href="${url}/${row.customer_id}" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>`;
+                                html += `<a href="${url}/${row.customer_id}" class="link"><span>${row.customer.name}</span></a>`;
+                            @else
+                                html += `<span>${row.customer.name}</span>`;
                             @endif
 
-                            html += `<span>${row.customer.name}</span></div>`
+                            html += `</div>`;
 
                             return html;
                         }
