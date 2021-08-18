@@ -20,6 +20,17 @@ class OrderProduct extends Model
         'total'
     ];
 
+    # Boot
+    public static function boot()
+    {
+        parent::boot();
+
+        OrderProduct::saved(function($order_product) {
+            $qty = $order_product->qty;
+            $order_product->product->subtractStockUser($order_product->id, $qty);
+        });
+    }
+
     # Relationships
     public function color()
     {
@@ -45,16 +56,5 @@ class OrderProduct extends Model
     public function getTotalAttribute($value)
     {
         return '$ ' . number_format($value, 2, '.', ',');
-    }
-
-    # Boot
-    public static function boot()
-    {
-        parent::boot();
-
-        OrderProduct::saved(function($order_product) {
-            $qty = $order_product->qty;
-            $order_product->product->subtractStockUser($order_product->id, $qty);
-        });
     }
 }

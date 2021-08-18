@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductStockHistory extends Model
@@ -13,8 +14,13 @@ class ProductStockHistory extends Model
         'user_id',
         'new_stock',
         'old_stock',
-        'order_product_qty',
+        'qty',
         'stock'
+    ];
+    public $appends = [
+        'action',
+        'date',
+        'stock_column'
     ];
 
     # Relationships
@@ -28,4 +34,42 @@ class ProductStockHistory extends Model
         return $this->belongsTo('App\Models\Product');
     }
 
+    # Appends
+    public function getActionAttribute()
+    {
+        return $this->order_product ? 'Venta' : 'Actualización producto';
+    }
+
+    public function getDateAttribute()
+    {
+        if ($this->created_at) {
+            return Carbon::parse($this->created_at)->format('d-m-Y h:m:s');
+        }
+
+        return '';
+    }
+
+    public function getStockColumnAttribute()
+    {
+        $stock = '';
+
+        switch ($this->stock) {
+            case 'stock_depot':
+                $stock = 'Depósito';
+                break;
+
+            case 'stock_local':
+                $stock = 'Local';
+                break;
+
+            case 'stock_truck':
+                $stock = 'Camión';
+                break;
+            
+            default:
+                break;
+        }
+
+        return $stock;
+    }
 }

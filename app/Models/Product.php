@@ -43,6 +43,37 @@ class Product extends Model
         'stock_user'
     ];
 
+    # Boot
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function($product) {
+            $user = Auth::user();
+
+            if ($product->isDirty('stock_depot')) {
+                $old_stock = (int) $product->getRawOriginal('stock_depot');
+                $new_stock = $product->stock_depot;
+                $qty = $new_stock - $old_stock;
+                $product->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, 'stock_depot');
+            }
+
+            if ($product->isDirty('stock_local')) {
+                $old_stock = (int) $product->getRawOriginal('stock_local');
+                $new_stock = $product->stock_local;
+                $qty = $new_stock - $old_stock;
+                $product->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, 'stock_local');
+            }
+
+            if ($product->isDirty('stock_truck')) {
+                $old_stock = (int) $product->getRawOriginal('stock_truck');
+                $new_stock = $product->stock_truck;
+                $qty = $new_stock - $old_stock;
+                $product->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, 'stock_truck');
+            }
+        });
+    }
+
     # Relationships
     public function brand()
     {
@@ -176,14 +207,30 @@ class Product extends Model
             $this->$column_stock = $new_stock;
             $this->save();
 
-            $this->stocks_history()->create([
-                'order_product_id' => $order_product_id,
-                'user_id' => $user->id,
-                'new_stock' => $new_stock,
-                'old_stock' => $old_stock,
-                'order_product_qty' => $qty,
-                'stock' => $column_stock
-            ]);
+            // $this->stocks_history()->create([
+            //     'order_product_id' => $order_product_id,
+            //     'user_id' => $user->id,
+            //     'new_stock' => $new_stock,
+            //     'old_stock' => $old_stock,
+            //     'order_product_qty' => $qty,
+            //     'stock' => $column_stock
+            // ]);
+
+            $this->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, $column_stock, $order_product_id);
         }
+    }
+
+    public function addStockHistoryRecord($user_id, $new_stock, $old_stock, $qty, $stock, $order_product_id = null)
+    {
+        $attributes = array(
+            'user_id' => $user_id,
+            'order_product_id' => $order_product_id,
+            'new_stock' => $new_stock,
+            'old_stock' => $old_stock,
+            'qty' => $qty,
+            'stock' => $stock
+        );
+
+        $this->stocks_history()->create($attributes);
     }
 }

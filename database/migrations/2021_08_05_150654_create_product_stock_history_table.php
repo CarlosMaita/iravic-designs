@@ -19,7 +19,7 @@ class CreateProductStockHistoryTable extends Migration
             $table->unsignedBigInteger('order_product_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('stock')->nullable();
-            $table->string('order_product_qty')->nullable();
+            $table->string('qty')->nullable();
             $table->string('old_stock')->nullable();
             $table->string('new_stock')->nullable();
             $table->timestamps();
@@ -36,7 +36,7 @@ class CreateProductStockHistoryTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('orders_products')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }
