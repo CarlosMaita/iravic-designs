@@ -18,8 +18,6 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
-        
         return $user->permissions()->contains('view-permission');
     }
 

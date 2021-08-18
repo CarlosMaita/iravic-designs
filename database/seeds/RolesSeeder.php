@@ -57,8 +57,7 @@ class RolesSeeder extends Seeder
     {
         return $permissions->reject(function ($permission) {
             return (
-                $permission->name == 'privilegios_ver'
-                || $permission->name == 'view-permission'
+                $permission->name == 'view-permission'
                 || $permission->name == 'view-role'
                 || $permission->name == 'create-role'
                 || $permission->name == 'update-role'
