@@ -4,8 +4,8 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Visit;
 use App\Repositories\VisitRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class VisitRepository extends BaseRepository implements VisitRepositoryInterface
 {
@@ -43,13 +43,21 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
      */
     public function allBySchedule($schedule_id): Collection
     {
-        return $this->model->select('visits.*')
-                            ->with(['customer.zone', 'responsable'])
-                            ->join('customers', 'customers.id', '=', 'visits.customer_id')
-                            ->join('zones', 'zones.id', '=', 'customers.zone_id')
-                            ->where('visits.schedule_id', $schedule_id)
-                            ->orderBy('zones.name')
-                            ->get();
+        $user = Auth::user();
+        $user_roles = $user->roles->flatten()->pluck('name');
+
+        $query = $this->model->select('visits.*')
+                            ->with(['customer.zone', 'responsable']);
+
+        $query->joinCustomers();
+        $query->joinZones();
+        $query->whereScheduleId($schedule_id);
+
+        if (!$user_roles->contains('superadmin') && !$user_roles->contains('admin')) {
+            $query->whereUserResponsableId($user->id);
+        }
+
+        return $query->orderBy('zones.name')->get();
     }
 
     /**

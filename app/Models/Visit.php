@@ -72,4 +72,25 @@ class Visit extends Model
 
         return null;
     }
+
+    # Scopes
+    public function scopeJoinCustomers($query)
+    {
+        return $query->join('customers', 'customers.id', '=', 'visits.customer_id');
+    }
+
+    public function scopeJoinZones($query)
+    {
+        return $query->join('zones', 'zones.id', '=', 'customers.zone_id');
+    }
+
+    public function scopeWhereScheduleId($query, $schedule_id)
+    {
+        return $query->where('schedule_id', $schedule_id);
+    }
+
+    public function scopeWhereUserResponsableId($query, $user_responsable_id)
+    {
+        return $query->where('user_responsable_id', $user_responsable_id);
+    }
 }
