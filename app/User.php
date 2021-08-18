@@ -80,11 +80,11 @@ class User extends Authenticatable
         }
 
         if ($roles_name->contains('camion') || $roles_name->contains('moto')) {
-            return 'stock_local';
+            return 'stock_truck';
         }
 
         if ($roles_name->contains('local')) {
-            return 'stock_truck';
+            return 'stock_local';
         }
 
         return null;
