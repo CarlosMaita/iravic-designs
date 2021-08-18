@@ -71,6 +71,12 @@ class Box extends Model
         return null;
     }
 
+    # Scopes
+    public function scopeWhereUser($query, $user_id)
+    {
+        return $query->where('user_id', $user_id);
+    }
+
     # Appends
     public function getTotalBankwireAttribute()
     {

@@ -6,6 +6,7 @@ use App\Models\Box;
 use Illuminate\Support\Collection;
 use App\Repositories\BoxRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class BoxRepository extends BaseRepository implements BoxRepositoryInterface
 {
@@ -25,7 +26,15 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
      */
     public function all(): Collection
     {
-        return $this->model->with('user')->orderBy('date', 'DESC')->get();
+        $user = Auth::user();
+        $user_roles = $user->roles->flatten()->pluck('name');
+        $query = $this->model->with('user');
+
+        if (!$user_roles->contains('superadmin') && !!!$user_roles->contains('admin')) {
+            $query->whereUser($user->id);
+        }
+
+        return $query->orderBy('date', 'DESC')->get();
     }
 
     /**
