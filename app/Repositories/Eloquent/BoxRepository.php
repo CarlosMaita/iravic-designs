@@ -39,8 +39,7 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
 
     /**
      * @param $user_id = Authenticated user
-     * @return     public function getOpenByUserId($user_id): int
-
+     * @return
      */
     public function getOpenByUserId($user_id): ?Model
     {
