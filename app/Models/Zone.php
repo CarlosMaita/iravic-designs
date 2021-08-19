@@ -14,4 +14,10 @@ class Zone extends Model
     public $fillable = [
         'name'
     ];
+
+    # Relationships
+    public function customers()
+    {
+        return $this->hasMany('App\Models\Customer');
+    }
 }

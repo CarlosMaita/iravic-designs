@@ -36,6 +36,10 @@ class ZoneController extends Controller
                     ->addColumn('action', function($row){
                         $btn = '';
 
+                        if (Auth::user()->can('view', $row)) {
+                            $btn .= '<a href="'. route('zonas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        }
+
                         if (Auth::user()->can('update', $row)) {
                             $btn .= '<a href="'. route('zonas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
@@ -93,6 +97,20 @@ class ZoneController extends Controller
                 ]
             ]);
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Zone $zona)
+    {
+        $this->authorize('view', $zona);
+        $zona->load('customers');
+        return view('dashboard.zones.show')
+                ->withZone($zona);
     }
 
     /**

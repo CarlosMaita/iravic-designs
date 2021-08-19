@@ -48,7 +48,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('clientes', 'CustomerController');
         #
-        Route::resource('zonas', 'ZoneController')->except('show');
+        Route::resource('zonas', 'ZoneController');
     });
 
     # Schedules Routes

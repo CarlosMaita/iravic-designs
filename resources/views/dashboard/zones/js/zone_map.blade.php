@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var geocoder = new google.maps.Geocoder;
 
-    function ScheduleMap(map_id, schedule, url_schedule, zone_select) {
+    function ZoneMap(map_id, zone) {
         this.infowindow = new google.maps.InfoWindow();
         this.lat = -34.889052;
         this.lng = -56.164012;
@@ -9,22 +9,19 @@
         this.map = null;
         this.map_coords = null;
         this.markers = [];
-        this.schedule = schedule;
-        this.zone_select = zone_select;
-        this.showed = false;
-        this.url_schedule = url_schedule;
+        this.zone = zone;
         this.setMapCoords();
     };
 
-    ScheduleMap.prototype.getMapElement = function() {
+    ZoneMap.prototype.getMapElement = function() {
         return document.getElementById(this.map_id);
     }
 
-    ScheduleMap.prototype.setMapCoords = function() {
+    ZoneMap.prototype.setMapCoords = function() {
         this.map_coords = this.getCoords();
     }
 
-    ScheduleMap.prototype.getCoords = function() {
+    ZoneMap.prototype.getCoords = function() {
         if (this.lat && this.lng) {
             return  {
 	              	lat: Number(this.lat),
@@ -38,7 +35,7 @@
         }
     }
 
-    ScheduleMap.prototype.setMap = function() {
+    ZoneMap.prototype.setMap = function() {
         var map_element = this.getMapElement();
         
         if (map_element = this.getMapElement()) {
@@ -50,7 +47,7 @@
         }
     }
 
-    ScheduleMap.prototype.getIconByCustomerReputation = function(customer) {
+    ZoneMap.prototype.getIconByCustomerReputation = function(customer) {
         var icon = '';
 
         switch (customer.qualification) {
@@ -70,29 +67,27 @@
         return icon;
     }
 
-    ScheduleMap.prototype.showAllCustomers = function() {
-        this.showMarkers(this.schedule.visits);
+    ZoneMap.prototype.showAllCustomers = function() {
+        this.showMarkers(this.zone.customers);
     }
 
-    ScheduleMap.prototype.showMarkers = function(visits) {
+    ZoneMap.prototype.showMarkers = function(customers) {
         var that = this;
-        visits.forEach((visit, index) => {
-            if (!visit.is_completed) {
-                var data = {
-                    index: (index + 1),
-                    customer: visit.customer,
-                    comment: visit.comment,
-                    icon: that.getIconByCustomerReputation(visit.customer),
-                    lat: visit.customer.latitude,
-                    lng: visit.customer.longitude
-                }
-
-                that.addMarker(data);
+        customers.forEach((customer, index) => {
+            var data = {
+                index: (index + 1),
+                customer: customer,
+                address: customer.address,
+                icon: that.getIconByCustomerReputation(customer),
+                lat: customer.latitude,
+                lng: customer.longitude
             }
+
+            that.addMarker(data);
         });
     }
 
-    ScheduleMap.prototype.addMarker = function(data) {
+    ZoneMap.prototype.addMarker = function(data) {
         var that = this;
         var marker = new google.maps.Marker({
             map: this.map,
@@ -112,7 +107,7 @@
                     `<div id="content">
                         <h4 class="firstHeading" style="font-weight: bold;">${data.customer.name}</h4>
                         ${ data.customer.address ? '<p>' + data.customer.address + '</p>' : ''}
-                        ${ data.comentario ? '<p style="margin-top:10px;"><b>Comentario:</b> ' + data.comentario + '</p>' : ''}
+                        <p style="margin-top:10px;"><b>Calificación:</b> ${data.customer.qualification}</p>
                     </div>`
                 );
 
@@ -121,43 +116,14 @@
         })(marker, (data.index)));
     }
 
-    ScheduleMap.prototype.clearMarkers = function() {
+    ZoneMap.prototype.clearMarkers = function() {
         this.markers.forEach(element => {
             element.setMap(null);
         });
     }
 
-    ScheduleMap.prototype.removeMarkers = function() {
+    ZoneMap.prototype.removeMarkers = function() {
         this.clearMarkers();
         this.markers = [];
-    }
-
-    ScheduleMap.prototype.httpGetVisits = function() {
-        var params = this.getHttpZonesParams(),
-            url = `${this.url_schedule}?axios=1&zones=${params}`,
-            that = this;
-
-        axios.get(url)
-        .then(function (response) {
-            if (response.data.visits) {
-                that.showMarkers(response.data.visits);
-            }
-        })
-        .catch(function (error) {
-            new Noty({
-                text: 'Ha ocurrido un error al tratar de obtener las visitas',
-                type: 'error'
-            }).show();
-        })
-        .then(function () {
-            // always executed
-        });
-    }
-
-    ScheduleMap.prototype.getHttpZonesParams = function() {
-        var zones = this.zone_select.val(),
-            params = zones.join();
-
-        return params;
     }
 </script>
