@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VisitRepository;
+use App\Repositories\Eloquent\ZoneRepository;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,11 +22,14 @@ class ScheduleController extends Controller
 
     public $visitRepository;
 
-    public function __construct(ScheduleRepository $scheduleRepository, UserRepository $userRepository, VisitRepository $visitRepository)
+    public $zoneRepository;
+
+    public function __construct(ScheduleRepository $scheduleRepository, UserRepository $userRepository, VisitRepository $visitRepository, ZoneRepository $zoneRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
         $this->userRepository = $userRepository;
         $this->visitRepository = $visitRepository;
+        $this->zoneRepository = $zoneRepository;
     }
 
     /**
@@ -71,18 +75,21 @@ class ScheduleController extends Controller
     {
         $this->authorize('view', $agenda);
 
-        if ($request->ajax()) {
-            $visits = $this->visitRepository->allBySchedule($agenda->id);
+        if ($request->ajax() || isset($request->axios)) {
+            $visits = $this->visitRepository->allBySchedule($agenda->id, $request->zones);
             return response()->json([
                 'schedule' => $agenda,
                 'visits' => $visits
             ]);
         }
 
+        $agenda->load('visits.customer.zone');
         $employees = $this->userRepository->allEmployees();
+        $zones = $this->zoneRepository->all();
         return view('dashboard.schedules.show')
+                ->withEmployees($employees)
                 ->withSchedule($agenda)
-                ->withEmployees($employees);
+                ->withZones($zones);
     }
 
 

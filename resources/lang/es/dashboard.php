@@ -228,6 +228,7 @@ return [
         'date'              => 'Fecha',
         'index'             => 'Listado de agendas',
         'details'           => 'Detalle agenda',
+        'view-map'          => 'Ver mapa'
     ],
     'sidebar' => [
         'boxes'                 => 'Cajas',

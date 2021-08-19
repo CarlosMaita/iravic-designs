@@ -93,4 +93,9 @@ class Visit extends Model
     {
         return $query->where('user_responsable_id', $user_responsable_id);
     }
+
+    public function scopeWhereInZone($query, $zones_id)
+    {
+        return $query->whereIn('zone_id', $zones_id);
+    }
 }

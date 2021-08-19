@@ -4,16 +4,27 @@
         const URL_VISITS = "{{ route('visitas.index') }}";
         const DATATABLE_RESOURCE = $("#datatable_schedule_visits");
 
-        let form_visits = $('#form-visits'),
+        let btn_open_map = $('#btn-open-map'),
+            form_visits = $('#form-visits'),
             modal_visits = $('#modal-visits'),
-            visit_editing_id = null;
+            modal_map = $('#modal-map'),
+            visit_editing_id = null,
+            zone_select = $('#zones-map'),
+            update_markers = false,
+            schedule_map = new ScheduleMap('map-schedule', $schedule, URL_RESOURCE, zone_select);
 
         initDataTable();
+        schedule_map.setMap();
 
         $('#visit-responsable').select2({
             dropdownParent: modal_visits
         });
         
+        $('#zones-map').select2({
+            allowClear: true,
+            placeholder: "Seleccionar",
+            dropdownParent: modal_map
+        });
 
         /**
         * Init Datatable
@@ -77,6 +88,23 @@
                 responsive: true
             });
         }
+
+        /**
+        *
+        */
+        btn_open_map.on('click', function(e) {
+            e.preventDefault();
+            modal_map.modal('show');
+
+            if (!schedule_map.showed) {
+                schedule_map.showed = true;
+                schedule_map.showAllCustomers();
+            } else if (update_markers) {
+                update_markers = false;
+                schedule_map.removeMarkers();
+                schedule_map.httpGetVisits();
+            }
+        });
 
         /**
         *
@@ -153,14 +181,23 @@
             });
         });
 
+        /*
+        *
+        */
+        zone_select.on('change', function(e) {
+            schedule_map.removeMarkers();
+            schedule_map.httpGetVisits();
+        });
+
         /**
         * Complete visit
         */
         $('body').on('click', 'tbody .btn-complete-visit', function (e) {
             e.preventDefault();
             var id = $(this).data('id'),
-                token = $("input[name=_token]").val().
-                error_message = "No se puede actualizar el estado de la visita en este momento.";
+                complete = $(this).data('to-complete'),
+                token = $("input[name=_token]").val(),
+                error_message = "No se puede actualizar el estado de la visita en este momento.",
                 message = complete ? 'Seguro que quiere marcar la visita como completada?' : 'Seguro que quiere marcar la visita como no completada?',
                 url = `${URL_VISITS}/${id}/complete`,
                 data = `is_completed=${complete}`;
@@ -181,6 +218,7 @@
                     datatype: 'json',
                     success: function (response) {
                         if (response.success) {
+                            update_markers = true;
                             DATATABLE_RESOURCE.DataTable().ajax.reload();
                             new Noty({
                                 text: response.message,
