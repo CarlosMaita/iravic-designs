@@ -43,8 +43,6 @@
 @push('js')
     <script>
         let $zone = @json($zone);
-
-        console.log($zone)
     </script>
 
     @include('plugins.google-maps')

@@ -110,9 +110,10 @@
             return function() {
                 that.infowindow.setContent(
                     `<div id="content">
-                        <h4 class="firstHeading" style="font-weight: bold;">${data.customer.name}</h4>
-                        ${ data.customer.address ? '<p>' + data.customer.address + '</p>' : ''}
-                        ${ data.comentario ? '<p style="margin-top:10px;"><b>Comentario:</b> ' + data.comentario + '</p>' : ''}
+                        <h4 class="firstHeading" style="font-weight: bold;">${data.customer.name}</h4><hr>
+                        ${ data.customer.telephone ? '<p class="mb-1"><b>Teléfono:</b> ' + data.customer.telephone + '</p>' : ''}
+                        <p class="mb-1"><b>Calificación:</b> ${data.customer.qualification}</p>
+                        ${ data.customer.address ? '<p><b>Dirección:</b> ' + data.customer.address + '</p>' : ''}
                     </div>`
                 );
 

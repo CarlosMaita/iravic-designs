@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\Images\ImageService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +32,7 @@ class Customer extends Model
     ];
 
     public $appends = [
+        'date_next_visit',
         'max_credit_str',
         'total_buyed',
         'total_credit',
@@ -65,6 +67,11 @@ class Customer extends Model
         return $this->hasMany('App\Models\Payment');
     }
 
+    public function visits()
+    {
+        return $this->hasMany('App\Models\Visit');
+    }
+
     public function zone()
     {
         return $this->belongsTo('App\Models\Zone');
@@ -78,6 +85,18 @@ class Customer extends Model
         }
 
         return '$ 0.00';
+    }
+
+    public function getDateNextVisitAttribute()
+    {
+        $now = now();
+        $date = null;
+
+        if ($next = $this->visits()->whereDate('date', '>=', $now)->orderBy('date', 'ASC')->first()) {
+            $date = $next->date;
+        }
+
+        return $date;
     }
 
     public function getTotalBuyedAttribute()
