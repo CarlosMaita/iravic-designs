@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row mb-5">
+                    <div class="row mb-3">
                         <div class="col-md-12">
                             <div id="map-schedule" style="height: 300px;"></div>
                         </div>  

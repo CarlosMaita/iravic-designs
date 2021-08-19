@@ -96,7 +96,7 @@
             e.preventDefault();
             modal_map.modal('show');
 
-            if (!schedule_map.showed) {
+            if (!schedule_map.showed && !update_markers) {
                 schedule_map.showed = true;
                 schedule_map.showAllCustomers();
             } else if (update_markers) {
