@@ -29,15 +29,21 @@
         modal_stock_history.on('hidden.coreui.modal', function(e) {
             product_viewing = null;
             stock_column_viewing = null;
+            modal_stock_history.find('.modal-title span').text('');
         });
 
         /**
         *
         */
         $('.view-stock-history').on('click', function(e) {
+            var product_id = $(this).data('id'),
+                stock_column = $(this).data('stock'),
+                stock_name = getStockName(stock_column);
+
             modal_stock_history.modal('show');
-            product_viewing = $(this).data('id');
-            stock_column_viewing = $(this).data('stock');
+            modal_stock_history.find('.modal-title span').text(stock_name);
+            product_viewing = product_id;
+            stock_column_viewing = stock_column;
             datatable_history.DataTable().ajax.reload();
         });
 
@@ -99,6 +105,26 @@
                     {data: 'user.name'},
                 ]
             });
+        }
+
+        function getStockName(stock_column) {
+            var stock_name = '';
+
+            switch (stock_column) {
+                case 'stock_depot':
+                    stock_name = 'Depósito';
+                    break;
+                case 'stock_local':
+                    stock_name = 'Local';
+                    break;
+                case 'stock_truck':
+                    stock_name = 'Camioneta';
+                    break;
+                default:
+                    break;
+            }
+
+            return stock_name;
         }
     });
 </script>
