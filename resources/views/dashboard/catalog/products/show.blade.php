@@ -159,19 +159,19 @@
                                                     <div class="row">
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Depósito</label>
+                                                                <label>Stock Depósito <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_depot"><i class="fas fa-history"></i></button></label>
                                                                 <input class="form-control" value="{{ $product_combination->stock_depot }}" readOnly>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Local</label>
+                                                                <label>Stock Local <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button></label>
                                                                 <input class="form-control" value="{{ $product_combination->stock_local }}" readOnly>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Camioneta</label>
+                                                                <label>Stock Camioneta <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button></label>
                                                                 <input class="form-control" value="{{ $product_combination->stock_truck }}" readOnly>
                                                             </div>
                                                         </div>
