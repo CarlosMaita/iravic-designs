@@ -31,7 +31,7 @@
                     <input class="form-control" type="password" placeholder="{{ __('Password') }}" name="password" required>
                   </div>
                   <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" value="1" id="remember_me" value='1'>
+                    <input class="form-check-input" type="checkbox" value="1" id="remember_me" name="remember_me" value='1'>
                     <label class="form-check-label" for="remember_me">
                       {{ __('Remember Me') }}
                     </label>
