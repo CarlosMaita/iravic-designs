@@ -21,9 +21,7 @@
             placeholder: "Seleccionar"
         });
 
-        initDataTable();
-
-        
+        initDataTable();   
 
         /**
          * 

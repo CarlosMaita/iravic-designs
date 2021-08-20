@@ -34,6 +34,11 @@ class ProductStockHistory extends Model
         return $this->belongsTo('App\Models\Product');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     # Appends
     public function getActionAttribute()
     {
@@ -43,7 +48,7 @@ class ProductStockHistory extends Model
     public function getDateAttribute()
     {
         if ($this->created_at) {
-            return Carbon::parse($this->created_at)->format('d-m-Y h:m:s');
+            return Carbon::parse($this->created_at)->format('d-m-Y h:i:s');
         }
 
         return '';
@@ -71,5 +76,16 @@ class ProductStockHistory extends Model
         }
 
         return $stock;
+    }
+
+    # Scopes
+    public function scopeWhereProduct($query, $product_id)
+    {
+        return $query->where('product_id', $product_id);
+    }
+
+    public function scopeWhereStock($query, $stock_column)
+    {
+        return $query->where('stock', $stock_column);
     }
 }

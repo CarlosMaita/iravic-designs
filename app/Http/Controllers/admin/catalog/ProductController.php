@@ -285,7 +285,6 @@ class ProductController extends Controller
             }
         }
 
-
         // return view('pdf.catalog')
         //         ->withDate(now()->format('d-m-Y'))
         //         ->withcategories($categories);
