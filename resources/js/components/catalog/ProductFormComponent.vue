@@ -124,13 +124,13 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="stock-local">Stock Local <i class="cil-contact c-sidebar-nav-icon"></i> </label>
+                            <label for="stock-local">Stock Local</label>
                             <input type="number" class="form-control" :id="`stock-local`" name="stock_local" v-model="product.stock_local">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="stock-truck">Stock Camioneta <i class="cil-contact c-sidebar-nav-icon"></i></label>
+                            <label for="stock-truck">Stock Camioneta</label>
                             <input type="number" class="form-control" :id="`stock-truck`" name="stock_truck" v-model="product.stock_truck">
                         </div>
                     </div>

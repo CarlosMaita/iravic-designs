@@ -40032,7 +40032,9 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-4" }, [
               _c("div", { staticClass: "form-group" }, [
-                _vm._m(3),
+                _c("label", { attrs: { for: "stock-local" } }, [
+                  _vm._v("Stock Local")
+                ]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -40064,7 +40066,9 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-4" }, [
               _c("div", { staticClass: "form-group" }, [
-                _vm._m(4),
+                _c("label", { attrs: { for: "stock-truck" } }, [
+                  _vm._v("Stock Camioneta")
+                ]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -40585,24 +40589,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "stock-local" } }, [
-      _vm._v("Stock Local "),
-      _c("i", { staticClass: "cil-contact c-sidebar-nav-icon" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "stock-truck" } }, [
-      _vm._v("Stock Camioneta "),
-      _c("i", { staticClass: "cil-contact c-sidebar-nav-icon" })
-    ])
   }
 ]
 render._withStripped = true
