@@ -52,7 +52,7 @@ class Order extends Model
     public function getDateAttribute($value)
     {
         if ($value) {
-            return Carbon::parse($value)->format('d-m-Y h:m:s');
+            return Carbon::parse($value)->format('d-m-Y h:i:s');
         }
 
         return null;

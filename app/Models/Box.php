@@ -56,7 +56,7 @@ class Box extends Model
     public function getDateStartAttribute($value)
     {
         if ($value) {
-            return Carbon::parse($value)->format('d-m-Y h:m:s');
+            return Carbon::parse($value)->format('d-m-Y h:i:s');
         }
 
         return null;
@@ -65,7 +65,7 @@ class Box extends Model
     public function getDateEndAttribute($value)
     {
         if ($value) {
-            return Carbon::parse($value)->format('d-m-Y h:m:s');
+            return Carbon::parse($value)->format('d-m-Y h:i:s');
         }
 
         return null;
