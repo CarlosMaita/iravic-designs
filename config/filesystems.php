@@ -67,7 +67,8 @@ return [
         'customers_dni' => [
             'driver' => 'local',
             'root' => storage_path('app/public/img/customers/dni'),
-            'url' => env('APP_URL').'/storage/img/customers/dni',
+            // 'url' => env('APP_URL').'/storage/img/customers/dni',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
