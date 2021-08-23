@@ -12,8 +12,8 @@
                             @csrf
                             @method('PUT')
                             @include('dashboard.zones._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                             <a href="{{ route('zonas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                           </form>
                         </div>
                     </div>

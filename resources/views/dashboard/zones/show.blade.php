@@ -32,6 +32,7 @@
                             </div>
                             {{--  --}}
                             <a href="{{ route('zonas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <a href="{{ route('zonas.edit', [$zone->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                         </div>
                     </div>
                 </div>

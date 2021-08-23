@@ -11,8 +11,8 @@
                           <form id="form-customers" method="POST" action="{{ route('clientes.store') }}" enctype="multipart/form-data">
                             @csrf
                             @include('dashboard.customers._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('clientes.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                           </form>
                         </div>
                     </div>

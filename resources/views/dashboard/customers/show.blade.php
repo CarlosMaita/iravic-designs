@@ -243,8 +243,8 @@
                                 </div>
                             </div>
                             {{--  --}}
-                            <a href="{{ route('clientes.edit', [$customer->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                             <a href="{{ route('clientes.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <a href="{{ route('clientes.edit', [$customer->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                         </div>
                     </div>
                 </div>
