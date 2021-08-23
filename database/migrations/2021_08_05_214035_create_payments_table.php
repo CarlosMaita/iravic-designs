@@ -20,7 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->datetime('date');
             $table->string('amount')->default(0);
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->tinyInteger('payed_bankwire')->default(0)->nullable();
             $table->tinyInteger('payed_card')->default(0)->nullable();
             $table->tinyInteger('payed_cash')->default(0)->nullable();
