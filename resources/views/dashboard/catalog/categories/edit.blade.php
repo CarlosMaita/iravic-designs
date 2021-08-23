@@ -12,8 +12,8 @@
                             @csrf
                             @method('PUT')
                             @include('dashboard.catalog.categories._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                             <a href="{{ route('categorias.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                           </form>
                         </div>
                     </div>

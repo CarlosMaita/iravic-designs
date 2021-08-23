@@ -11,8 +11,8 @@
                           <form id="form-categories" method="POST" action="{{ route('categorias.store') }}">
                             @csrf
                             @include('dashboard.catalog.categories._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('categorias.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                           </form>
                         </div>
                     </div>

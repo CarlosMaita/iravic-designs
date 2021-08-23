@@ -21,8 +21,8 @@
                                 v-bind:sizes="{{ json_encode($sizes) }}"
                             ></product-form>
                             {{--  --}}
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                             <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
                           </form>
                         </div>
                     </div>

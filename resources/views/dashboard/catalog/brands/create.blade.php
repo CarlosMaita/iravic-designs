@@ -11,8 +11,8 @@
                           <form id="form-brands" method="POST" action="{{ route('marcas.store') }}">
                             @csrf
                             @include('dashboard.catalog.brands._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('marcas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                           </form>
                         </div>
                     </div>
