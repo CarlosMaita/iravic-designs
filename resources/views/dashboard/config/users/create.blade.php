@@ -11,8 +11,8 @@
                           <form id="form-users" method="POST" action="{{ route('usuarios.store') }}" autocomplete="off">
                             @csrf
                             @include('dashboard.config.users._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('usuarios.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                           </form>
                         </div>
                     </div>
