@@ -10,7 +10,8 @@ class ZoneRequest extends FormRequest
     {
         return [
             'name.required' => 'El campo nombre es obligatorio.',
-            'name.max' => 'El campo nombre no puede tener mas de :max caracteres.'
+            'name.max' => 'El campo nombre no puede tener mas de :max caracteres.',
+            'name.unique' => 'Ya existe una zona con el nombre ingresado.'
         ];
     }
 
@@ -31,8 +32,14 @@ class ZoneRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|max:100'
-        ];
+        $rules = array();
+
+        if ($this->isMethod('POST')) {
+            $rules['name'] = 'required|max:100|unique:zones,name,NULL,id,deleted_at,NULL';
+        } else {
+            $rules['name'] = 'required|max:100|unique:zones,name,' . $this->route('zona')->id;
+        }
+
+        return $rules;
     }
 }
