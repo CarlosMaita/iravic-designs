@@ -14,7 +14,7 @@ class CustomerRequest extends FormRequest
             'address.required' => 'El campo dirección es obligatorio.',
             'contact_name.required' => 'El campo Nombre de contacto es obligatorio.',
             'contact_telephone.required' => 'El campo teléfono de contacto es obligatorio.',
-            'contact_dni.required' => 'El campo DNI de contacto es obligatorio.',
+            'contact_dni.required' => 'El campo C.I de contacto es obligatorio.',
             'dni.required' => 'El campo C.I es obligatorio.',
             'dni_picture.required' => 'La foto de la C.I es obligatoria.',
             'max_credit.required' => 'El campo Crédito Máximo es obligatorio.',
