@@ -11,8 +11,8 @@
                           <form id="form-boxes" method="POST" action="{{ route('cajas.store') }}">
                             @csrf
                             @include('dashboard.boxes._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                           </form>
                         </div>
                     </div>

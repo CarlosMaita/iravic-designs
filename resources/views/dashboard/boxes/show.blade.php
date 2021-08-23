@@ -168,8 +168,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                             <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                         </div>
                     </div>
                 </div>

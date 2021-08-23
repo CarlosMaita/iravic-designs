@@ -100,7 +100,6 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <a href="{{ route('pedidos.edit', [$order->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                                         <a href="{{ route('pedidos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                                     </div>
                                 </div>
