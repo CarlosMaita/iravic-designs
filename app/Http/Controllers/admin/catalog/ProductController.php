@@ -109,6 +109,8 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
+            return $request->all();
+            
             $this->authorize('create', 'App\Models\Product');
             DB::beginTransaction();
             $this->productRepository->createByRequest($request);

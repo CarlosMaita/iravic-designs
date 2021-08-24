@@ -122,11 +122,11 @@ class ProductRequest extends FormRequest
                 $rules['sizes'] = 'required';
                 $rules['sizes.*'] = 'exists:sizes,id';
                 $rules['stocks_depot'] = 'required';
-                $rules['stocks_depot.*'] = 'integer|min:0';
+                $rules['stocks_depot.*'] = 'integer|min:0|nullable';
                 $rules['stocks_local'] = 'required';
-                $rules['stocks_local.*'] = 'integer|min:0';
+                $rules['stocks_local.*'] = 'integer|min:0|nullable';
                 $rules['stocks_truck'] = 'required';
-                $rules['stocks_truck.*'] = 'integer|min:0';
+                $rules['stocks_truck.*'] = 'integer|min:0|nullable';
 
                 if (!empty($this->prices)) {
                     foreach ($this->combinations as $combination) {
@@ -160,9 +160,9 @@ class ProductRequest extends FormRequest
         } else {
             // $rules['color_id'] = 'required|exists:colors,id';
             // $rules['size_id'] = 'required|exists:sizes,id';
-            $rules['stock_depot'] = 'required|integer|min:0';
-            $rules['stock_local'] = 'required|integer|min:0';
-            $rules['stock_truck'] = 'required|integer|min:0';
+            $rules['stock_depot'] = 'integer|min:0|nullable';
+            $rules['stock_local'] = 'integer|min:0|nullable';
+            $rules['stock_truck'] = 'integer|min:0|nullable';
         }
 
         return $rules;
@@ -224,6 +224,54 @@ class ProductRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        if (isset($this->is_regular)) {
+            $stock_depot = !empty($this->stock_depot) ? $this->stock_depot : 0;
+            $stock_local = !empty($this->stock_local) ? $this->stock_local : 0;
+            $stock_truck = !empty($this->stock_truck) ? $this->stock_truck : 0;
+
+            $this->merge([
+                'stock_depot' => $stock_depot,
+                'stock_local' => $stock_local,
+                'stock_truck' => $stock_truck
+            ]);
+        } else {
+            if (isset($this->combinations)) {
+                $stocks_depot = array();
+                $stocks_local = array();
+                $stocks_truck = array();
+
+                foreach ($this->combinations as $i) {
+                    $stocks_depot[$i] = !empty($this->stocks_depot[$i]) ? $this->stocks_depot[$i] : 0;
+                    $stocks_local[$i] = !empty($this->stocks_local[$i]) ? $this->stocks_local[$i] : 0;
+                    $stocks_truck[$i] = !empty($this->stocks_truck[$i]) ? $this->stocks_truck[$i] : 0;
+                }
+
+                $this->merge([
+                    'stocks_depot' => $stocks_depot,
+                    'stocks_local' => $stocks_local,
+                    'stocks_truck' => $stocks_truck
+                ]);
+            }
+
+            if (isset($this->product_combinations)) {
+                $stocks_depot_existing = array();
+                $stocks_local_existing = array();
+                $stocks_truck_existing = array();
+
+                foreach ($this->product_combinations as $key => $i) {
+                    $stocks_depot_existing[$i] = !empty($this->stocks_depot_existing[$i]) ? $this->stocks_depot_existing[$i] : 0;
+                    $stocks_local_existing[$i] = !empty($this->stocks_local_existing[$i]) ? $this->stocks_local_existing[$i] : 0;
+                    $stocks_truck_existing[$i] = !empty($this->stocks_truck_existing[$i]) ? $this->stocks_truck_existing[$i] : 0;
+                }
+
+                $this->merge([
+                    'stocks_depot_existing' => $stocks_depot_existing,
+                    'stocks_local_existing' => $stocks_local_existing,
+                    'stocks_truck_existing' => $stocks_truck_existing
+                ]);
+            }
+        }
+
         $this->merge([
             'is_price_generic'  => isset($this->is_price_generic) ? 1 : 0,
             'is_regular'        => isset($this->is_regular) ? 1 : 0
