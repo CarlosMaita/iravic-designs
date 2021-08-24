@@ -50,6 +50,15 @@ class BaseRepository implements EloquentRepositoryInterface
     }
 
     /**
+    * @param $id
+    * @return Model
+    */
+    public function findOnly($id): ?Model
+    {
+        return $this->model->find($id);
+    }
+
+    /**
     * @param $id 
     * @param array $attributes
     * @return Bool

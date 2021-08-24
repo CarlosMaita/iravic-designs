@@ -83,14 +83,17 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $this->authorize('create', 'App\Models\Order');
         $customers = $this->customerRepository->all();
+        $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();
+
         return view('dashboard.orders.create')
                 ->withCustomers($customers)
+                ->withCustomerParam($customerParam)
                 ->withOrder(new Order())
                 ->withProducts($products)
                 ->withZones($zones);
@@ -130,11 +133,14 @@ class OrderController extends Controller
             }
             DB::commit();
             flash("El pedido ha sido creado con éxito")->success();
+            $redirect = !isset($request->customer_param) 
+                        ? route('pedidos.index') 
+                        : route('clientes.show', [$request->customer_param]) . '?pedidos=true';
 
             return response()->json([
                     'success' => true,
                     'data' => [
-                        'redirect' => route('pedidos.index')
+                        'redirect' => $redirect
                     ]
             ]);
         } catch (Exception $e) {

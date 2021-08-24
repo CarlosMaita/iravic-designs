@@ -129,13 +129,15 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $cliente)
+    public function show(Request $request, Customer $cliente)
     {
         $this->authorize('view', $cliente);
         $orders = $cliente->orders()->orderBy('date', 'desc')->get();
+        $showOrdersTab = isset($request->pedidos) ? true : false;
         return view('dashboard.customers.show')
                 ->withCustomer($cliente)
-                ->withOrders($orders);
+                ->withOrders($orders)
+                ->withShowOrdersTab($showOrdersTab);
     }
 
     /**

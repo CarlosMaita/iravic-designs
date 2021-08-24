@@ -34,6 +34,7 @@
                                                                     data-name="{{ $customer->name }}"
                                                                     data-telephone="{{ $customer->telephone }}"
                                                                     data-qualification="{{ $customer->qualification }}"
+                                                                    @if(!empty($customerParam) && $customerParam->id == $customer->id) selected @endif
                                                             >{{ $customer->name }}</option>
                                                         @endforeach
                                                     </select>

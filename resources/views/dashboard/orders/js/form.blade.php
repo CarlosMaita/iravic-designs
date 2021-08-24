@@ -176,7 +176,6 @@
             //         value = elem.val();
             // });
         });
-        
 
         /**
         *
@@ -331,8 +330,7 @@
         /**
         * 
         */
-        function getHtmlTableBodyProductStocks(product)
-        {
+        function getHtmlTableBodyProductStocks(product) {
             let html = '<tbody>';
 
             if (!product.product_id) {

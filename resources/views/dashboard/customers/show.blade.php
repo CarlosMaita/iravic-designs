@@ -12,7 +12,7 @@
                                 <!--  -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                        <a class="nav-link @if(!$showOrdersTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
@@ -20,7 +20,7 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
+                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
@@ -34,7 +34,7 @@
                                 <!--  -->
                                 <div class="tab-content" id="myTabContent">
                                     <!--  -->
-                                    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                    <div class="tab-pane fade @if(!$showOrdersTab) show active @endif" id="info" role="tabpanel" aria-labelledby="info-tab">
                                         <div class="row mb-4 mt-3">
                                             <div class="col-12">
                                                 <small class="form-text text-muted font-weight-bold text-success">{{ __('dashboard.form.labels.customer_personal_info') }}</small>
@@ -199,7 +199,13 @@
                                         </div>
                                     </div>
                                     <!--  -->
-                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                    <div class="tab-pane fade @if($showOrdersTab) show active @endif" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        @can('create', App\Models\Order::class)
+                                            <div class="row"> 
+                                                <a href="{{ route('pedidos.create') }}?cliente={{ $customer->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                            </div>
+                                            <br>
+                                        @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <div class="table-responsive">

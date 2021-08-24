@@ -21,6 +21,9 @@
                       <div class="card-body px-2">
                         <form id="form-orders" method="POST" action="{{ route('pedidos.store') }}">
                           @csrf
+                          @if (!empty($customerParam))
+                            <input type="hidden" name="customer_param" value="{{ $customerParam->id }}">
+                          @endif
                           @include('dashboard.orders._form')
                           <hr>
                           <div class="container-fluid">
