@@ -16,8 +16,8 @@
                 columns: [
                     {data: 'id'},
                     {data: 'customer.name'},
-                    {data: 'user.name'},
                     {data: 'date'},
+                    {data: 'payment_method'},
                     {data: 'total'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
