@@ -141,9 +141,7 @@ class Product extends Model
 
     public function getStockUserAttribute()
     {
-        $user = Auth::user();
-
-        if ($stock_column = $user->getColumnStock()) {
+        if ($stock_column = Auth::user()->getColumnStock()) {
             return $this->$stock_column;
         }
 

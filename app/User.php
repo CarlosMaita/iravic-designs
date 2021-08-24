@@ -79,11 +79,11 @@ class User extends Authenticatable
             return 'stock_depot';
         }
 
-        if ($roles_name->contains('camion') || $roles_name->contains('moto')) {
+        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
             return 'stock_truck';
         }
 
-        if ($roles_name->contains('local')) {
+        if ($roles_name->contains('Local')) {
             return 'stock_local';
         }
 
