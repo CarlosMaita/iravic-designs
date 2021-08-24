@@ -98,7 +98,7 @@
 
             if (!schedule_map.showed && !update_markers) {
                 schedule_map.showed = true;
-                schedule_map.showAllCustomers();
+                schedule_map.showMarkers($visits);
             } else if (update_markers) {
                 update_markers = false;
                 schedule_map.removeMarkers();

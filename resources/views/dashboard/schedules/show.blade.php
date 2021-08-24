@@ -36,6 +36,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         let $schedule = @json($schedule);
+        let $visits = @json($visits);
     </script>
 
     @include('plugins.google-maps')
