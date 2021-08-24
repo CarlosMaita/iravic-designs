@@ -13,6 +13,7 @@
                 serverSide: true,
                 ajax: URL_RESOURCE,
                 pageLength: 25,
+                ordering: false,
                 columns: [
                     {data: 'id'},
                     {data: 'customer.name'},

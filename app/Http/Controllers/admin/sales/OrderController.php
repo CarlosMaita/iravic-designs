@@ -49,7 +49,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewany', 'App\Models\Order');
-
+        
         if ($request->ajax()) {
             $orders = $this->orderRepository->all();
             return Datatables::of($orders)

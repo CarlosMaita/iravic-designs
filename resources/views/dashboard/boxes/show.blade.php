@@ -184,6 +184,7 @@
         
         $(function() {
             $('#datatable_orders').DataTable({
+                ordering: false,
                 pageLength: 25,
             });
 

@@ -267,10 +267,6 @@
         const $customer = @json($customer);
 
         $(function() {
-            $('#datatable_orders').DataTable({
-                pageLength: 25,
-            });
-
             // $('#orders')
             // // .bind('beforeShow', function() {
             // // }) 

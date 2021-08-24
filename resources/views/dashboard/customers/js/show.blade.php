@@ -5,7 +5,8 @@
         customer_map.setInitialMarker();
 
         let datatable_orders = $('#datatable_orders').DataTable({
-            pageLength: 25,
+            ordering: false,
+            pageLength: 25
         });
 
         $('#orders-tab').on('click', function(e) {
