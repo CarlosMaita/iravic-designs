@@ -23,6 +23,22 @@
                             </div>
                         </div>
                     </div>
+                    @php
+                        $roles_name = Auth::user()->roles->flatten()->pluck('name');
+                    @endphp
+                    @if($roles_name->contains('superadmin') || $roles_name->contains('admin'))
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="role-map">Tipo</label>
+                                <select class="form-control" id="role-map" multiple>
+                                    <option value="Camión">Camión</option>
+                                    <option value="Moto">Moto</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-4 mt-2">
                             <img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="Bueno">

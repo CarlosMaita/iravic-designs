@@ -41,7 +41,7 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     /**
      * @return Collection
      */
-    public function allBySchedule($schedule_id, $zones = null): Collection
+    public function allBySchedule($schedule_id, $zones = null, $roles = null): Collection
     {
         $user = Auth::user();
         $user_roles = $user->roles->flatten()->pluck('name');
@@ -52,6 +52,11 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
         $query->joinCustomers();
         $query->joinZones();
         $query->whereScheduleId($schedule_id);
+
+        if ($roles) {
+            $roles_name = explode(',', $roles);
+            $query->whereResponsableByRoleName($roles_name);
+        }
 
         if ($zones) {
             $zones_id = explode(',', $zones);

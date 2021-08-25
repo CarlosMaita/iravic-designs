@@ -76,7 +76,7 @@ class ScheduleController extends Controller
         $this->authorize('view', $agenda);
 
         if ($request->ajax() || isset($request->axios)) {
-            $visits = $this->visitRepository->allBySchedule($agenda->id, $request->zones);
+            $visits = $this->visitRepository->allBySchedule($agenda->id, $request->zones, $request->roles);
             return response()->json([
                 'schedule' => $agenda,
                 'visits' => $visits

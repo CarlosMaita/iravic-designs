@@ -98,4 +98,15 @@ class Visit extends Model
     {
         return $query->whereIn('zone_id', $zones_id);
     }
+
+    public function scopeWhereResponsableByRoleName($query, $roles_name)
+    {
+        return $query->where(function ($q) use ($roles_name) {
+            $q->whereHas('responsable', function ($q) use ($roles_name) {
+                $q->whereHas('roles', function ($q) use ($roles_name) {
+                    $q->whereIn('name', $roles_name);
+                });
+            });
+        });
+    }
 }

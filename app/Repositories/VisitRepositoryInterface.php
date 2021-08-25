@@ -9,7 +9,7 @@ interface VisitRepositoryInterface
 {
     public function all($params = null): Collection;
 
-    public function allBySchedule($schedule_id, $zones = null): Collection;
+    public function allBySchedule($schedule_id, $zones = null, $roles = null): Collection;
 
     public function completeByDateUser($customer_id, $date): bool;
 }

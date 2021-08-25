@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var geocoder = new google.maps.Geocoder;
 
-    function ScheduleMap(map_id, schedule, url_schedule, zone_select) {
+    function ScheduleMap(map_id, schedule, url_schedule, zone_select, role_select) {
         this.infowindow = new google.maps.InfoWindow();
         this.lat = -34.889052;
         this.lng = -56.164012;
@@ -10,6 +10,7 @@
         this.map_coords = null;
         this.markers = [];
         this.schedule = schedule;
+        this.role_select = role_select;
         this.zone_select = zone_select;
         this.showed = false;
         this.url_schedule = url_schedule;
@@ -134,8 +135,9 @@
     }
 
     ScheduleMap.prototype.httpGetVisits = function() {
-        var params = this.getHttpZonesParams(),
-            url = `${this.url_schedule}?axios=1&zones=${params}`,
+        var params_roles = this.getHttpRolesParams(),
+            params_zones = this.getHttpZonesParams(),
+            url = `${this.url_schedule}?axios=1&${params_zones}${params_roles}`,
             that = this;
 
         axios.get(url)
@@ -157,7 +159,25 @@
 
     ScheduleMap.prototype.getHttpZonesParams = function() {
         var zones = this.zone_select.val(),
-            params = zones.join();
+            params = '';
+
+        if (zones.length) {
+            params = zones.join(),
+            params = `zones=${zones}`;
+        }
+    
+        return params;
+    }
+
+    ScheduleMap.prototype.getHttpRolesParams = function() {
+        var params = null,
+            roles = '';
+
+        if (this.role_select.length) {
+            roles = this.role_select.val(),
+            params = roles.join();
+            params = `&roles=${params}`;
+        }
 
         return params;
     }

@@ -9,9 +9,10 @@
             modal_visits = $('#modal-visits'),
             modal_map = $('#modal-map'),
             visit_editing_id = null,
+            role_select = $('#role-map'),
             zone_select = $('#zones-map'),
             update_markers = false,
-            schedule_map = new ScheduleMap('map-schedule', $schedule, URL_RESOURCE, zone_select);
+            schedule_map = new ScheduleMap('map-schedule', $schedule, URL_RESOURCE, zone_select, role_select);
 
         initDataTable();
         schedule_map.setMap();
@@ -20,7 +21,13 @@
             dropdownParent: modal_visits
         });
         
-        $('#zones-map').select2({
+        zone_select.select2({
+            allowClear: true,
+            placeholder: "Seleccionar",
+            dropdownParent: modal_map
+        });
+
+        role_select.select2({
             allowClear: true,
             placeholder: "Seleccionar",
             dropdownParent: modal_map
@@ -179,6 +186,14 @@
                     }
                 }
             });
+        });
+
+        /*
+        *
+        */
+        role_select.on('change', function(e) {
+            schedule_map.removeMarkers();
+            schedule_map.httpGetVisits();
         });
 
         /*
