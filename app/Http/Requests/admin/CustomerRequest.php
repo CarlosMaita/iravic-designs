@@ -48,19 +48,18 @@ class CustomerRequest extends FormRequest
     {
         $rules = [
             'address' => 'required',
-            'contact_name' => 'required',
-            'contact_telephone' => 'required',
-            'contact_dni' => 'required',
+            // 'contact_name' => 'required',
+            // 'contact_telephone' => 'required',
+            // 'contact_dni' => 'required',
             'dni' => 'required',
-            // 'dni_picture.required' => '',
             'max_credit' => 'required|numeric',
             'name' => 'required|min:2',
-            // 'receipt_picture' => '',
             'qualification' => ['required', Rule::in(['Bueno', 'Malo', 'Muy Malo'])],
             'telephone' => 'required',
             'zone_id' => 'required|exists:zones,id'
         ];
 
+        /*
         if ($this->isMethod('POST')) {
             $rules['dni_picture'] = 'required|file';
             $rules['receipt_picture'] = 'required|file';
@@ -73,6 +72,7 @@ class CustomerRequest extends FormRequest
                 $rules['receipt_picture'] = 'required|file';
             }
         }
+        */
 
         return $rules;
     }
