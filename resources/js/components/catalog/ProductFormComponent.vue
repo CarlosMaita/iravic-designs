@@ -289,6 +289,14 @@
             sizes: {
                 type: Array,
                 default: []
+            },
+            urlProducts: {
+                type: String,
+                default: ''
+            },
+            urlProductsCombinations: {
+                type: String,
+                default: ''
             }
         },
         data: () => ({
@@ -473,19 +481,19 @@
             async httpDeleteCombinationSize(index, index_combination, product_combination_id) {
                 try {
                     $('body').append('<div class="loading">Loading&#8230;</div>');
-                    var url = `/zapatos/public/admin/catalogo/productos/${product_combination_id}`;
+                    var url = `${this.urlProducts}/${product_combination_id}`;
                     var response = await this.$axios.delete(url);
                     
                     if (response.data.success) {
                         this.combinations[index_combination].sizes.splice(index, 1);
 
                         new Noty({
-                            text: 'La talla ha sido eliminada con éxito',
+                            text: 'La talla ha sido eliminada con éxito.',
                             type: 'success'
                         }).show();
                     } else {
                         new Noty({
-                            text: 'La talla no ha podido ser eliminada en este momento',
+                            text: 'La talla no ha podido ser eliminada en este momento.',
                             type: 'error'
                         }).show();
                     }
@@ -495,7 +503,7 @@
                     $('.loading').remove();
 
                     new Noty({
-                            text: 'La talla no ha podido ser eliminada en este momento',
+                            text: 'La talla no ha podido ser eliminada en este momento.',
                             type: 'error'
                         }).show();
                 }
@@ -504,19 +512,19 @@
                 try {
                     $('body').append('<div class="loading">Loading&#8230;</div>');
                     var products_params = this.getProductIdsToDeleteCombination(combination);
-                    var url = `/zapatos/public/admin/catalogo/productos-combinaciones?products=${products_params}`;
+                    var url = `${this.urlProductsCombinations}?products=${products_params}`;
                     var response = await this.$axios.delete(url);
 
                     if (response.data.success) {
                         this.combinations.splice(index, 1);
 
                         new Noty({
-                            text: 'La combinación ha sido eliminada con éxito',
+                            text: 'La combinación ha sido eliminada con éxito.',
                             type: 'success'
                         }).show();
                     } else {
                         new Noty({
-                            text: 'La combinación no ha podido ser eliminada en este momento',
+                            text: 'La combinación no ha podido ser eliminada en este momento.',
                             type: 'error'
                         }).show();
                     }
@@ -526,7 +534,7 @@
                     $('.loading').remove();
 
                     new Noty({
-                            text: 'La combinación no ha podido ser eliminada en este momento',
+                            text: 'La combinación no ha podido ser eliminada en este momento.',
                             type: 'error'
                         }).show();
                 }

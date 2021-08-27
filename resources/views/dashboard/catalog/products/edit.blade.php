@@ -19,6 +19,8 @@
                                 v-bind:colors="{{ json_encode($colors) }}"
                                 v-bind:genders="{{ json_encode(array('F','M')) }}"
                                 v-bind:sizes="{{ json_encode($sizes) }}"
+                                url-products="{{ route('productos.index') }}"
+                                url-products-combinations="{{ route('productos.delete_combinations') }}"
                             ></product-form>
                             {{--  --}}
                             <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>

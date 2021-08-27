@@ -38,7 +38,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('productos', 'ProductController');
         #
-        Route::delete('productos-combinaciones', 'ProductController@destroyCombinations');
+        Route::delete('productos-combinaciones', 'ProductController@destroyCombinations')->name('productos.delete_combinations');
         #
         Route::resource('productos-stock-history', 'ProductStockHistoryController')->only('index');
         #

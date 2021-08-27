@@ -2252,6 +2252,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sizes: {
       type: Array,
       "default": []
+    },
+    urlProducts: {
+      type: String,
+      "default": ''
+    },
+    urlProductsCombinations: {
+      type: String,
+      "default": ''
     }
   },
   data: function data() {
@@ -2387,7 +2395,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // setCombinationSizeSelected(value, index) {
     setCombinationSizeSelected: function setCombinationSizeSelected(value, index, index_size) {
       this.combinations[index].sizes[index_size].size_id = value ? value.id : null;
-      console.log(this.combinations[index].sizes[index_size].size_id);
     },
     // setCombinationSizeSelected(value, index) {
     //     // this.combinations[index].size_prop = value;
@@ -2454,47 +2461,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.prev = 0;
                 $('body').append('<div class="loading">Loading&#8230;</div>');
-                url = "/zapatos/public/admin/catalogo/productos/".concat(product_combination_id);
+                url = "".concat(_this2.urlProducts, "/").concat(product_combination_id);
                 _context2.next = 5;
                 return _this2.$axios["delete"](url);
 
               case 5:
                 response = _context2.sent;
-                console.log(response);
 
                 if (response.data.success) {
                   _this2.combinations[index_combination].sizes.splice(index, 1);
 
                   new Noty({
-                    text: 'La talla ha sido eliminada con éxito',
+                    text: 'La talla ha sido eliminada con éxito.',
                     type: 'success'
                   }).show();
                 } else {
                   new Noty({
-                    text: 'La talla no ha podido ser eliminada en este momento',
+                    text: 'La talla no ha podido ser eliminada en este momento.',
                     type: 'error'
                   }).show();
                 }
 
                 $('.loading').remove();
-                _context2.next = 15;
+                _context2.next = 14;
                 break;
 
-              case 11:
-                _context2.prev = 11;
+              case 10:
+                _context2.prev = 10;
                 _context2.t0 = _context2["catch"](0);
                 $('.loading').remove();
                 new Noty({
-                  text: 'La talla no ha podido ser eliminada en este momento',
+                  text: 'La talla no ha podido ser eliminada en este momento.',
                   type: 'error'
                 }).show();
 
-              case 15:
+              case 14:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 11]]);
+        }, _callee2, null, [[0, 10]]);
       }))();
     },
     httpDeleteCombination: function httpDeleteCombination(index, combination) {
@@ -2509,7 +2515,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context3.prev = 0;
                 $('body').append('<div class="loading">Loading&#8230;</div>');
                 products_params = _this3.getProductIdsToDeleteCombination(combination);
-                url = "/zapatos/public/admin/catalogo/productos-combinaciones?products=".concat(products_params);
+                url = "".concat(_this3.urlProductsCombinations, "?products=").concat(products_params);
                 _context3.next = 6;
                 return _this3.$axios["delete"](url);
 
@@ -2520,12 +2526,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this3.combinations.splice(index, 1);
 
                   new Noty({
-                    text: 'La combinación ha sido eliminada con éxito',
+                    text: 'La combinación ha sido eliminada con éxito.',
                     type: 'success'
                   }).show();
                 } else {
                   new Noty({
-                    text: 'La combinación no ha podido ser eliminada en este momento',
+                    text: 'La combinación no ha podido ser eliminada en este momento.',
                     type: 'error'
                   }).show();
                 }
@@ -2539,7 +2545,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context3.t0 = _context3["catch"](0);
                 $('.loading').remove();
                 new Noty({
-                  text: 'La combinación no ha podido ser eliminada en este momento',
+                  text: 'La combinación no ha podido ser eliminada en este momento.',
                   type: 'error'
                 }).show();
 
