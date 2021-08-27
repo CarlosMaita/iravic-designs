@@ -24,6 +24,12 @@ interface ProductRepositoryInterface
     public function updateByRequest($id, $request): void;
 
     /**
+    * @param $ids
+    * @return void
+    */
+    public function deleteByIds($ids): bool;
+
+    /**
     * @param $product
     * @param $files
     * @return void

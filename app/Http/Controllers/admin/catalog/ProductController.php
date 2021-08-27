@@ -109,8 +109,6 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-            return $request->all();
-            
             $this->authorize('create', 'App\Models\Product');
             DB::beginTransaction();
             $this->productRepository->createByRequest($request);
@@ -130,7 +128,7 @@ class ProductController extends Controller
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
                     'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
+                    'trace' => $e->getTrace()
                 ]
             ]);
         }
@@ -237,6 +235,39 @@ class ProductController extends Controller
                 'error' => [
                     'e' => $e->getMessage(),
                     'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * 
+     */
+    public function destroyCombinations(Request $request)
+    {
+        try {
+            $ids = explode(',', $request->products);
+            if (count($ids)) {
+                DB::beginTransaction();
+                $this->productRepository->deleteByIds($ids);
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se ha indicado tallas a eliminar.'
+                ]);
+            }
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'message' => __('dashboard.general.operation_error'),
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getTrace()
                 ]
             ]);
         }

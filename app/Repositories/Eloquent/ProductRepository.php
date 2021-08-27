@@ -78,22 +78,26 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $product = $this->create($attributes);
 
         // Create new combinations
-        if ((!isset($request->is_regular) || !$request->is_regular )) {
-            if (isset($request->combinations) && count($request->combinations)) {
-                foreach ($request->combinations as $combination) {
-                    $attributes = array_merge(
-                        array('product_id' => $product->id),
-                        array('code' => $request->codes[$combination]),
-                        array('color_id' => $request->colors[$combination]),
-                        array('size_id' => $request->sizes[$combination]),
-                        array('price' => $request->prices[$combination]),
-                        array('stock_depot' => $request->stocks_depot[$combination]),
-                        array('stock_local' => $request->stocks_local[$combination]),
-                        array('stock_truck' => $request->stocks_truck[$combination]),
-                        $request->only('brand_id', 'category_id', 'code', 'gender', 'name')
-                    );
-        
-                    $this->create($attributes);
+        if ((!isset($request->is_regular) || !$request->is_regular ) && isset($request->combinations_group)) {
+            foreach(array_keys($request->combinations_group) as $key) {
+                if (isset($request->combinations[$key])) {
+                    foreach (array_keys($request->combinations[$key]) as $key_new_combination) {
+                        $attributes = array_merge(
+                            array(
+                                'product_id' => $product->id,
+                                'code' => $request->codes[$key][$key_new_combination],
+                                'color_id' => $request->colors[$key][$key_new_combination],
+                                'size_id' => $request->sizes[$key][$key_new_combination],
+                                'price' => $request->prices[$key][$key_new_combination],
+                                'stock_depot' => $request->stocks_depot[$key][$key_new_combination],
+                                'stock_local' => $request->stocks_local[$key][$key_new_combination],
+                                'stock_truck' => $request->stocks_truck[$key][$key_new_combination]
+                            ),
+                            $request->only('brand_id', 'category_id', 'gender', 'name')
+                        );
+                        
+                        $this->create($attributes);
+                    }
                 }
             }
         }
@@ -125,44 +129,51 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         if ($product->is_regular) {
             $product->product_combinations()->delete();
-        } else if (!$product->is_regular) {
-            // New combinations
-            if (isset($request->combinations) && count($request->combinations)) {
-                foreach ($request->combinations as $combination) {
-                    $attributes = array_merge(
-                        array('product_id' => $product->id),
-                        array('code' => $request->codes[$combination]),
-                        array('color_id' => $request->colors[$combination]),
-                        array('size_id' => $request->sizes[$combination]),
-                        array('price' => $request->prices[$combination]),
-                        array('stock_depot' => $request->stocks_depot[$combination]),
-                        array('stock_local' => $request->stocks_local[$combination]),
-                        array('stock_truck' => $request->stocks_truck[$combination]),
-                        $request->only('brand_id', 'category_id', 'gender', 'name')
-                    );
-        
-                    $this->create($attributes);
+        }else if (!$product->is_regular && isset($request->combinations_group)) {
+            foreach(array_keys($request->combinations_group) as $key) {
+                if (isset($request->product_combinations[$key])) {
+                    foreach ($request->product_combinations[$key] as $product_combination_id) {
+                        $product_combination = $product->product_combinations()->find($product_combination_id);
+
+                        if ($product_combination) {
+                            $attributes = array_merge(
+                                array(
+                                    'code' => $request->codes_existing[$key][$product_combination_id],
+                                    'color_id' => $request->colors_existing[$key][$product_combination_id],
+                                    'size_id' => $request->sizes_existing[$key][$product_combination_id],
+                                    'price' => $request->prices_existing[$key][$product_combination_id],
+                                    'stock_depot' => $request->stocks_depot_existing[$key][$product_combination_id],
+                                    'stock_local' => $request->stocks_local_existing[$key][$product_combination_id],
+                                    'stock_truck' => $request->stocks_truck_existing[$key][$product_combination_id]
+                                ),
+                                $request->only('brand_id', 'category_id', 'gender', 'name')
+                            );
+
+                            $this->update($product_combination->id, $attributes);
+                        }
+                    }
                 }
-            }
-
-            // Existing combinations
-            if (isset($request->product_combinations) && is_array($request->product_combinations)) {
-                foreach ($request->product_combinations as $product_combination_id) {
-                    $product_combination = $product->product_combinations()->find($product_combination_id);
-
-                    if ($product_combination) {
+                
+                if (isset($request->combinations[$key])) {
+                    $total_existing = isset($request->product_combinations[$key]) && is_array($request->product_combinations[$key]) 
+                                        ? count($request->product_combinations[$key]) 
+                                        : 0;
+                    foreach (array_keys($request->combinations[$key]) as $key_new_combination) {
                         $attributes = array_merge(
-                            array('code' => $request->codes_existing[$product_combination_id]),
-                            array('color_id' => $request->colors_existing[$product_combination_id]),
-                            array('size_id' => $request->sizes_existing[$product_combination_id]),
-                            array('price' => $request->prices_existing[$product_combination_id]),
-                            array('stock_depot' => $request->stocks_depot_existing[$product_combination_id]),
-                            array('stock_local' => $request->stocks_local_existing[$product_combination_id]),
-                            array('stock_truck' => $request->stocks_truck_existing[$product_combination_id]),
+                            array(
+                                'product_id' => $product->id,
+                                'code' => $request->codes[$key][($key_new_combination + $total_existing)],
+                                'color_id' => $request->colors[$key][($key_new_combination + $total_existing)],
+                                'size_id' => $request->sizes[$key][($key_new_combination + $total_existing)],
+                                'price' => $request->prices[$key][($key_new_combination + $total_existing)],
+                                'stock_depot' => $request->stocks_depot[$key][($key_new_combination + $total_existing)],
+                                'stock_local' => $request->stocks_local[$key][($key_new_combination + $total_existing)],
+                                'stock_truck' => $request->stocks_truck[$key][($key_new_combination + $total_existing)]
+                            ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
 
-                        $this->update($product_combination->id, $attributes);
+                        $this->create($attributes);
                     }
                 }
             }
@@ -172,6 +183,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if (isset($request->file)) {
             $this->saveImages($product, $request->file);
         }
+    }
+
+    /**
+    * @param $ids
+    * @return void
+    */
+    public function deleteByIds($ids): bool
+    {
+        return $this->model->whereIn('id', $ids)->delete();
     }
 
     /**

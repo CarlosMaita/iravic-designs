@@ -2184,6 +2184,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {
@@ -2236,7 +2271,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _this = this;
 
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var i, combination, new_combination;
+      var i, combination, index, new_combination, new_size;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -2244,8 +2279,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.mounted = true;
 
               if (_this.product.id) {
-                console.log(_this.product);
-
                 if (!_this.product.is_regular) {
                   _this.is_regular = 0;
                 }
@@ -2256,7 +2289,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.brand = _this.product.brand.name;
                 _this.category = _this.product.category.name;
-                _this.gender = _this.product.gender; // if (this.combinations) {
+                _this.gender = _this.product.gender;
 
                 if (_this.product.product_combinations) {
                   // this.combinations.forEach(function(item, index) {
@@ -2266,23 +2299,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   // });
                   for (i = 0; i < _this.product.product_combinations.length; i++) {
                     combination = _this.product.product_combinations[i];
-                    new_combination = {
-                      code: combination.code,
-                      color_id: combination.color_id,
-                      color_prop: combination.color,
-                      id: combination.id,
-                      product_id: combination.product_id,
-                      size_id: combination.size_id,
-                      size_prop: combination.size,
-                      // size_prop: combination.sizes.map(item => item.size),
-                      // size_values: combination.sizes.map(item => item.size_id).toString(),
-                      price: combination.price,
-                      stock_depot: combination.stock_depot,
-                      stock_local: combination.stock_local,
-                      stock_truck: combination.stock_truck
-                    };
+                    index = _this.getIndex(combination.color_id);
 
-                    _this.combinations.push(new_combination);
+                    if (index < 0) {
+                      new_combination = {
+                        code: combination.code,
+                        color_id: combination.color_id,
+                        color_prop: combination.color,
+                        sizes: [{
+                          id: combination.id,
+                          product_id: combination.product_id,
+                          size_id: combination.size_id,
+                          size_prop: combination.size,
+                          price: combination.price,
+                          stock_depot: combination.stock_depot,
+                          stock_local: combination.stock_local,
+                          stock_truck: combination.stock_truck
+                        }]
+                      };
+
+                      _this.combinations.push(new_combination);
+                    } else {
+                      new_size = {
+                        id: combination.id,
+                        product_id: combination.product_id,
+                        size_id: combination.size_id,
+                        size_prop: combination.size,
+                        price: combination.price,
+                        stock_depot: combination.stock_depot,
+                        stock_local: combination.stock_local,
+                        stock_truck: combination.stock_truck
+                      };
+
+                      _this.combinations[index].sizes.push(new_size);
+                    }
+                    /*
+                        let new_combination = {
+                            code: combination.code,
+                            color_id: combination.color_id,
+                            color_prop: combination.color,
+                            id: combination.id,
+                            product_id: combination.product_id,
+                            size_id: combination.size_id,
+                            size_prop: combination.size,
+                            // size_prop: combination.sizes.map(item => item.size),
+                            // size_values: combination.sizes.map(item => item.size_id).toString(),
+                            price: combination.price,
+                            stock_depot: combination.stock_depot,
+                            stock_local: combination.stock_local,
+                            stock_truck: combination.stock_truck
+                        };
+                         this.combinations.push(new_combination);
+                    */
+
                   }
                 }
               }
@@ -2296,6 +2365,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   methods: {
+    getIndex: function getIndex(color_id) {
+      // var index = this.combinations.map(function(e) { return e.color_id; }).indexOf(color_id);
+      var index = this.combinations.map(function (e) {
+        return e.color_id;
+      }).indexOf(color_id);
+      return index;
+    },
     setBrandSelected: function setBrandSelected(value) {
       this.product.brand_id = value ? value.id : null;
     },
@@ -2308,8 +2384,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setCombinationColorSelected: function setCombinationColorSelected(value, index) {
       this.combinations[index].color_id = value ? value.id : null;
     },
-    setCombinationSizeSelected: function setCombinationSizeSelected(value, index) {
-      this.combinations[index].size_id = value ? value.id : null;
+    // setCombinationSizeSelected(value, index) {
+    setCombinationSizeSelected: function setCombinationSizeSelected(value, index, index_size) {
+      this.combinations[index].sizes[index_size].size_id = value ? value.id : null;
+      console.log(this.combinations[index].sizes[index_size].size_id);
     },
     // setCombinationSizeSelected(value, index) {
     //     // this.combinations[index].size_prop = value;
@@ -2324,6 +2402,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         code: null,
         color_prop: null,
         color_id: null,
+        sizes: [{
+          id: null,
+          product_id: null,
+          color_id: null,
+          size_id: null,
+          size_prop: null,
+          code: null,
+          price: null,
+          stock_depot: null,
+          stock_local: null,
+          stock_truck: null
+        }]
+      };
+      this.combinations.push(new_combination);
+    },
+    addSize: function addSize(combination) {
+      var combination_size = {
+        color_prop: null,
+        color_id: null,
         id: null,
         product_id: null,
         size_id: null,
@@ -2333,48 +2430,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         stock_local: null,
         stock_truck: null
       };
-      this.combinations.push(new_combination);
+      combination.sizes.push(combination_size);
     },
-    getCombinationInputName: function getCombinationInputName(input, index, product_combination) {
+    getCombinationInputName: function getCombinationInputName(input, product_combination, index, index_size) {
       var input_name = '';
 
       if (product_combination.product_id) {
-        input_name = "".concat(input, "_existing[").concat(product_combination.id, "]");
+        input_name = "".concat(input, "_existing[").concat(index, "][").concat(product_combination.id, "]");
       } else {
-        input_name = "".concat(input, "[").concat(index, "]");
-      }
-
-      return input_name;
-
-      switch (input) {
-        case 'color':
-          input_name = product_combination.product_id ? "colors_existing[".concat(product_combination.id, "]") : "colors[".concat(index, "]");
-          break;
-
-        case 'price':
-          input_name = product_combination.product_id ? "prices_existing[".concat(product_combination.id, "]") : "prices[".concat(index, "]");
-          break;
-
-        case 'size':
-          input_name = product_combination.product_id ? "sizes_existing[".concat(product_combination.id, "]") : "sizes[".concat(index, "]");
-          break;
-
-        case 'stock_depot':
-          input_name = product_combination.product_id ? "stocks_depot_existing[".concat(product_combination.id, "]") : "stocks_depot[".concat(index, "]");
-          break;
-
-        case 'stock_local':
-          input_name = product_combination.product_id ? "stocks_local_existing[".concat(product_combination.id, "]") : "stocks_local[".concat(index, "]");
-          break;
-
-        case 'stock_truck':
-          input_name = product_combination.product_id ? "stocks_truck_existing[".concat(product_combination.id, "]") : "stocks_truck[".concat(index, "]");
-          break;
+        input_name = "".concat(input, "[").concat(index, "][").concat(index_size, "]");
       }
 
       return input_name;
     },
-    httpDeleteCombination: function httpDeleteCombination(index, producto_id) {
+    httpDeleteCombinationSize: function httpDeleteCombinationSize(index, index_combination, product_combination_id) {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -2385,15 +2454,70 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.prev = 0;
                 $('body').append('<div class="loading">Loading&#8230;</div>');
-                url = "/zapatos/public//admin/catalogo/productos/".concat(producto_id);
+                url = "/zapatos/public/admin/catalogo/productos/".concat(product_combination_id);
                 _context2.next = 5;
                 return _this2.$axios["delete"](url);
 
               case 5:
                 response = _context2.sent;
+                console.log(response);
 
                 if (response.data.success) {
-                  _this2.combinations.splice(index, 1);
+                  _this2.combinations[index_combination].sizes.splice(index, 1);
+
+                  new Noty({
+                    text: 'La talla ha sido eliminada con éxito',
+                    type: 'success'
+                  }).show();
+                } else {
+                  new Noty({
+                    text: 'La talla no ha podido ser eliminada en este momento',
+                    type: 'error'
+                  }).show();
+                }
+
+                $('.loading').remove();
+                _context2.next = 15;
+                break;
+
+              case 11:
+                _context2.prev = 11;
+                _context2.t0 = _context2["catch"](0);
+                $('.loading').remove();
+                new Noty({
+                  text: 'La talla no ha podido ser eliminada en este momento',
+                  type: 'error'
+                }).show();
+
+              case 15:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 11]]);
+      }))();
+    },
+    httpDeleteCombination: function httpDeleteCombination(index, combination) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var products_params, url, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                $('body').append('<div class="loading">Loading&#8230;</div>');
+                products_params = _this3.getProductIdsToDeleteCombination(combination);
+                url = "/zapatos/public/admin/catalogo/productos-combinaciones?products=".concat(products_params);
+                _context3.next = 6;
+                return _this3.$axios["delete"](url);
+
+              case 6:
+                response = _context3.sent;
+
+                if (response.data.success) {
+                  _this3.combinations.splice(index, 1);
 
                   new Noty({
                     text: 'La combinación ha sido eliminada con éxito',
@@ -2407,14 +2531,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 $('.loading').remove();
-                _context2.next = 15;
+                _context3.next = 15;
                 break;
 
-              case 10:
-                _context2.prev = 10;
-                _context2.t0 = _context2["catch"](0);
+              case 11:
+                _context3.prev = 11;
+                _context3.t0 = _context3["catch"](0);
                 $('.loading').remove();
-                console.log(_context2.t0);
                 new Noty({
                   text: 'La combinación no ha podido ser eliminada en este momento',
                   type: 'error'
@@ -2422,30 +2545,66 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 15:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, null, [[0, 10]]);
+        }, _callee3, null, [[0, 11]]);
       }))();
     },
-    removeCombination: function removeCombination(index) {
-      var product_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    hasCombinationExistingProduct: function hasCombinationExistingProduct(combination) {
+      if (combination.sizes.filter(function (e) {
+        return e.product_id > 0;
+      }).length > 0) {
+        return true;
+      }
+
+      return false;
+    },
+    getProductIdsToDeleteCombination: function getProductIdsToDeleteCombination(combination) {
+      var ids = combination.sizes.filter(function (obj) {
+        return obj.id > 0;
+      }).map(function (obj) {
+        return obj.id;
+      });
+      return ids.join();
+    },
+    removeCombination: function removeCombination(index, combination) {
       if (index < 0) return;
       var self = this;
 
-      if (product_id) {
+      if (this.hasCombinationExistingProduct(combination)) {
         swal({
           title: '',
-          text: "Seguro desea eliminar esta combinación?",
+          text: "¿Seguro desea eliminar esta combinación?",
           type: 'question',
           showCancelButton: true,
           confirmButtonText: 'Si',
           cancelButtonText: 'No'
         }).then(function () {
-          self.httpDeleteCombination(index, product_id);
+          self.httpDeleteCombination(index, combination);
         })["catch"](swal.noop);
       } else {
         self.combinations.splice(index, 1);
+      }
+    },
+    removeSize: function removeSize(index, index_combination) {
+      var product_combination_id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      if (index < 0) return;
+      var self = this;
+
+      if (product_combination_id) {
+        swal({
+          title: '',
+          text: "¿Seguro desea eliminar esta talla?",
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No'
+        }).then(function () {
+          self.httpDeleteCombinationSize(index, index_combination, product_combination_id);
+        })["catch"](swal.noop);
+      } else {
+        self.combinations[index_combination].sizes.splice(index, 1);
       }
     }
   }
@@ -39996,7 +40155,7 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "row mt-3" }, [
-            _c("div", { staticClass: "col-4" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", { attrs: { for: "stock-depot" } }, [
                   _vm._v("Stock Depósito")
@@ -40030,7 +40189,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-4" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", { attrs: { for: "stock-local" } }, [
                   _vm._v("Stock Local")
@@ -40064,7 +40223,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-4" }, [
+            _c("div", { staticClass: "col-md-4" }, [
               _c("div", { staticClass: "form-group" }, [
                 _c("label", { attrs: { for: "stock-truck" } }, [
                   _vm._v("Stock Camioneta")
@@ -40130,392 +40289,618 @@ var render = function() {
           _vm._l(_vm.combinations, function(combination, index) {
             return _c("div", { key: "combination-" + index }, [
               _c("div", [
-                !combination.product_id
-                  ? _c("input", {
-                      attrs: { type: "hidden", name: "combinations[]" },
-                      domProps: { value: index }
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                combination.product_id
-                  ? _c("input", {
-                      attrs: { type: "hidden", name: "product_combinations[]" },
-                      domProps: { value: combination.id }
-                    })
-                  : _vm._e()
+                _c("input", {
+                  attrs: { type: "hidden", name: "combinations_group[]" },
+                  domProps: { value: index }
+                })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-12" }, [
-                  _c("p", [
-                    _c("b", [_vm._v("Combinación #" + _vm._s(index + 1))]),
+              _c("div", { staticClass: "card p-3" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-12" }, [
+                    _c("p", [
+                      _c("b", [_vm._v("Combinación #" + _vm._s(index + 1))]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-danger",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.removeCombination(index, combination)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash-alt" })]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "color-" + index } }, [
+                          _vm._v("Color")
+                        ]),
+                        _vm._v(" "),
+                        _c("v-select", {
+                          attrs: {
+                            placeholder: "Seleccionar",
+                            options: _vm.colors,
+                            label: "name"
+                          },
+                          on: {
+                            input: function($event) {
+                              return _vm.setCombinationColorSelected(
+                                _vm.combinations[index].color_prop,
+                                index
+                              )
+                            }
+                          },
+                          model: {
+                            value: _vm.combinations[index].color_prop,
+                            callback: function($$v) {
+                              _vm.$set(
+                                _vm.combinations[index],
+                                "color_prop",
+                                $$v
+                              )
+                            },
+                            expression: "combinations[index].color_prop"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.combinations[index].color_id,
+                              expression: "combinations[index].color_id"
+                            }
+                          ],
+                          attrs: {
+                            type: "hidden",
+                            name: "combinations_group_colors[" + index + "]"
+                          },
+                          domProps: { value: _vm.combinations[index].color_id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.combinations[index],
+                                "color_id",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "name" } }, [
+                        _vm._v("Código")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: combination.code,
+                            expression: "combination.code"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "code-" + index, type: "text" },
+                        domProps: { value: combination.code },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(combination, "code", $event.target.value)
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  [
+                    _vm._l(combination.sizes, function(size, index_size) {
+                      return _c("div", { key: "combination-" + index_size }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-12" }, [
+                            !size.product_id
+                              ? _c("input", {
+                                  attrs: {
+                                    type: "hidden",
+                                    name: "combinations[" + index + "][]"
+                                  },
+                                  domProps: { value: index_size }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            size.product_id
+                              ? _c("input", {
+                                  attrs: {
+                                    type: "hidden",
+                                    name:
+                                      "product_combinations[" + index + "][]"
+                                  },
+                                  domProps: { value: size.id }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: combination.color_id,
+                                  expression: "combination.color_id"
+                                }
+                              ],
+                              attrs: {
+                                type: "hidden",
+                                name: _vm.getCombinationInputName(
+                                  "colors",
+                                  size,
+                                  index,
+                                  index_size
+                                )
+                              },
+                              domProps: { value: combination.color_id },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    combination,
+                                    "color_id",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: combination.code,
+                                  expression: "combination.code"
+                                }
+                              ],
+                              attrs: {
+                                type: "hidden",
+                                name: _vm.getCombinationInputName(
+                                  "codes",
+                                  size,
+                                  index,
+                                  index_size
+                                )
+                              },
+                              domProps: { value: combination.code },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    combination,
+                                    "code",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c(
+                              "div",
+                              { staticClass: "form-group" },
+                              [
+                                _c(
+                                  "label",
+                                  {
+                                    attrs: {
+                                      for: "size-" + index + "-" + index_size
+                                    }
+                                  },
+                                  [
+                                    _vm._v("Talla "),
+                                    _c("b", [
+                                      _vm._v("#" + _vm._s(index_size + 1))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-sm btn-danger",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.removeSize(
+                                              index_size,
+                                              index,
+                                              size.id
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fas fa-trash-alt"
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("v-select", {
+                                  attrs: {
+                                    placeholder: "Seleccionar",
+                                    options: _vm.sizes,
+                                    label: "name"
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      return _vm.setCombinationSizeSelected(
+                                        _vm.combinations[index].sizes[
+                                          index_size
+                                        ].size_prop,
+                                        index,
+                                        index_size
+                                      )
+                                    }
+                                  },
+                                  model: {
+                                    value:
+                                      _vm.combinations[index].sizes[index_size]
+                                        .size_prop,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        _vm.combinations[index].sizes[
+                                          index_size
+                                        ],
+                                        "size_prop",
+                                        $$v
+                                      )
+                                    },
+                                    expression:
+                                      "combinations[index].sizes[index_size].size_prop"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value:
+                                        _vm.combinations[index].sizes[
+                                          index_size
+                                        ].size_id,
+                                      expression:
+                                        "combinations[index].sizes[index_size].size_id"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "hidden",
+                                    name: _vm.getCombinationInputName(
+                                      "sizes",
+                                      size,
+                                      index,
+                                      index_size
+                                    )
+                                  },
+                                  domProps: {
+                                    value:
+                                      _vm.combinations[index].sizes[index_size]
+                                        .size_id
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.combinations[index].sizes[
+                                          index_size
+                                        ],
+                                        "size_id",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  attrs: {
+                                    for: "price-" + index + "-" + index_size
+                                  }
+                                },
+                                [_vm._v("Precio")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: combination.sizes[index_size].price,
+                                    expression:
+                                      "combination.sizes[index_size].price"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  id: "price-" + index + "-" + index_size,
+                                  type: "number",
+                                  min: "0",
+                                  step: "any",
+                                  name: _vm.getCombinationInputName(
+                                    "prices",
+                                    size,
+                                    index,
+                                    index_size
+                                  )
+                                },
+                                domProps: {
+                                  value: combination.sizes[index_size].price
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      combination.sizes[index_size],
+                                      "price",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  attrs: {
+                                    for:
+                                      "stock-depot-" + index + "-" + index_size
+                                  }
+                                },
+                                [_vm._v("Stock Depósito")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
+                                      combination.sizes[index_size].stock_depot,
+                                    expression:
+                                      "combination.sizes[index_size].stock_depot"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  id: "stock-depot-" + index + "-" + index_size,
+                                  type: "number",
+                                  min: "0",
+                                  step: "any",
+                                  name: _vm.getCombinationInputName(
+                                    "stocks_depot",
+                                    size,
+                                    index,
+                                    index_size
+                                  )
+                                },
+                                domProps: {
+                                  value:
+                                    combination.sizes[index_size].stock_depot
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      combination.sizes[index_size],
+                                      "stock_depot",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  attrs: {
+                                    for:
+                                      "stock-local-" + index + "-" + index_size
+                                  }
+                                },
+                                [_vm._v("Stock Local")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
+                                      combination.sizes[index_size].stock_local,
+                                    expression:
+                                      "combination.sizes[index_size].stock_local"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  id: "stock-local-" + index + "-" + index_size,
+                                  type: "number",
+                                  min: "0",
+                                  step: "any",
+                                  name: _vm.getCombinationInputName(
+                                    "stocks_local",
+                                    size,
+                                    index,
+                                    index_size
+                                  )
+                                },
+                                domProps: {
+                                  value:
+                                    combination.sizes[index_size].stock_local
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      combination.sizes[index_size],
+                                      "stock_local",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c(
+                                "label",
+                                {
+                                  attrs: {
+                                    for:
+                                      "stock-truck-" + index + "-" + index_size
+                                  }
+                                },
+                                [_vm._v("Stock Camioneta")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value:
+                                      combination.sizes[index_size].stock_truck,
+                                    expression:
+                                      "combination.sizes[index_size].stock_truck"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  id: "stock-truck-" + index + "-" + index_size,
+                                  type: "number",
+                                  min: "0",
+                                  step: "any",
+                                  name: _vm.getCombinationInputName(
+                                    "stocks_truck",
+                                    size,
+                                    index,
+                                    index_size
+                                  )
+                                },
+                                domProps: {
+                                  value:
+                                    combination.sizes[index_size].stock_truck
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      combination.sizes[index_size],
+                                      "stock_truck",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("hr")
+                      ])
+                    }),
                     _vm._v(" "),
                     _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-sm btn-danger",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.removeCombination(index, combination.id)
-                          }
-                        }
-                      },
-                      [_c("i", { staticClass: "fas fa-trash-alt" })]
+                      "div",
+                      { staticClass: "d-flex justify-content-end my-3" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-light",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.addSize(combination)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fas fa-plus" }),
+                            _vm._v(" Agregar otra Talla")
+                          ]
+                        )
+                      ]
                     )
-                  ])
-                ])
+                  ],
+                  2
+                )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c("label", { attrs: { for: "color-" + index } }, [
-                        _vm._v("Color")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-select", {
-                        attrs: {
-                          placeholder: "Seleccionar",
-                          options: _vm.colors,
-                          label: "name"
-                        },
-                        on: {
-                          input: function($event) {
-                            return _vm.setCombinationColorSelected(
-                              _vm.combinations[index].color_prop,
-                              index
-                            )
-                          }
-                        },
-                        model: {
-                          value: _vm.combinations[index].color_prop,
-                          callback: function($$v) {
-                            _vm.$set(_vm.combinations[index], "color_prop", $$v)
-                          },
-                          expression: "combinations[index].color_prop"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.combinations[index].color_id,
-                            expression: "combinations[index].color_id"
-                          }
-                        ],
-                        attrs: {
-                          type: "hidden",
-                          name: _vm.getCombinationInputName(
-                            "colors",
-                            index,
-                            combination
-                          )
-                        },
-                        domProps: { value: _vm.combinations[index].color_id },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.combinations[index],
-                              "color_id",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c("label", { attrs: { for: "size-" + index } }, [
-                        _vm._v("Talla")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-select", {
-                        attrs: {
-                          placeholder: "Seleccionar",
-                          options: _vm.sizes,
-                          label: "name"
-                        },
-                        on: {
-                          input: function($event) {
-                            return _vm.setCombinationSizeSelected(
-                              _vm.combinations[index].size_prop,
-                              index
-                            )
-                          }
-                        },
-                        model: {
-                          value: _vm.combinations[index].size_prop,
-                          callback: function($$v) {
-                            _vm.$set(_vm.combinations[index], "size_prop", $$v)
-                          },
-                          expression: "combinations[index].size_prop"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.combinations[index].size_id,
-                            expression: "combinations[index].size_id"
-                          }
-                        ],
-                        attrs: {
-                          type: "hidden",
-                          name: _vm.getCombinationInputName(
-                            "sizes",
-                            index,
-                            combination
-                          )
-                        },
-                        domProps: { value: _vm.combinations[index].size_id },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.combinations[index],
-                              "size_id",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "name" } }, [_vm._v("Código")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: combination.code,
-                          expression: "combination.code"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        id: "code-" + index,
-                        type: "text",
-                        name: _vm.getCombinationInputName(
-                          "codes",
-                          index,
-                          combination
-                        )
-                      },
-                      domProps: { value: combination.code },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(combination, "code", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "name" } }, [_vm._v("Precio")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: combination.price,
-                          expression: "combination.price"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        id: "price-" + index,
-                        type: "number",
-                        min: "0",
-                        step: "any",
-                        name: _vm.getCombinationInputName(
-                          "prices",
-                          index,
-                          combination
-                        )
-                      },
-                      domProps: { value: combination.price },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(combination, "price", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-4" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "stock-depot-" + index } }, [
-                      _vm._v("Stock Depósito")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: combination.stock_depot,
-                          expression: "combination.stock_depot"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        id: "stock-depot-" + index,
-                        type: "number",
-                        min: "0",
-                        step: "any",
-                        name: _vm.getCombinationInputName(
-                          "stocks_depot",
-                          index,
-                          combination
-                        )
-                      },
-                      domProps: { value: combination.stock_depot },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            combination,
-                            "stock_depot",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-4" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "stock-local-" + index } }, [
-                      _vm._v("Stock Local")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: combination.stock_local,
-                          expression: "combination.stock_local"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        id: "stock-local-" + index,
-                        type: "number",
-                        min: "0",
-                        step: "any",
-                        name: _vm.getCombinationInputName(
-                          "stocks_local",
-                          index,
-                          combination
-                        )
-                      },
-                      domProps: { value: combination.stock_local },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            combination,
-                            "stock_local",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-4" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "stock-truck-" + index } }, [
-                      _vm._v("Stock Camioneta")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: combination.stock_truck,
-                          expression: "combination.stock_truck"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        id: "stock-truck-" + index,
-                        type: "number",
-                        min: "0",
-                        step: "any",
-                        name: _vm.getCombinationInputName(
-                          "stocks_truck",
-                          index,
-                          combination
-                        )
-                      },
-                      domProps: { value: combination.stock_truck },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            combination,
-                            "stock_truck",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("hr")
+              _c("br")
             ])
           })
         ],
