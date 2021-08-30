@@ -209,7 +209,7 @@
             </div>
         </div>
     </div>
-
+    {{--  --}}
     @include('dashboard.catalog.products._modal_stock_history')
 @endsection
 

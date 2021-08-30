@@ -50,6 +50,10 @@ class ProductController extends Controller
                         $btn = '';
 
                         if (Auth::user()->can('view', $row)) {
+                            $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
+                        }
+
+                        if (Auth::user()->can('view', $row)) {
                             $btn .= '<a href="'. route('productos.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
@@ -146,6 +150,11 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             $producto->load('brand', 'category', 'color', 'size');
+
+            if (isset($request->stocks)) {
+                $producto->load('product_combinations.color', 'product_combinations.size');
+            }
+
             return response()->json($producto);
         }
 

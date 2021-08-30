@@ -97,7 +97,7 @@ class Product extends Model
 
     public function product_combinations()
     {
-        return $this->hasMany('App\Models\Product');
+        return $this->hasMany('App\Models\Product')->orderBy('color_id');
     }
 
     public function product_parent()

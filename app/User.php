@@ -89,4 +89,10 @@ class User extends Authenticatable
 
         return null;
     }
+
+    public function isAdmin()
+    {
+        $roles_name = $this->roles->flatten()->pluck('name');
+        return $roles_name->contains('superadmin') || $roles_name->contains('admin');
+    }
 }

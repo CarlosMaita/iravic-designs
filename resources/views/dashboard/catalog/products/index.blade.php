@@ -39,7 +39,7 @@
                                                 <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.products.brand') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.products.category') }}</th>
-                                                <th scope="col">{{ __('dashboard.form.fields.products.combinations') }}</th>
+                                                {{-- <th scope="col">{{ __('dashboard.form.fields.products.combinations') }}</th> --}}
                                                 <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
                                                 <th></th>
                                             </tr>
@@ -54,6 +54,8 @@
             </div>
         </div>
     </div>
+    {{--  --}}
+    @include('dashboard.catalog.products._modal_stock_qty')
 @endsection
 
 @push('js')
