@@ -1,5 +1,368 @@
 @extends('dashboard.base')
 
+@push('css')
+    <style>
+        @media screen and (min-width: 767px){
+            .css-g4fmj2 {
+                padding-bottom: 24px;
+                overflow-y: visible;
+            }
+        }
+        .css-g4fmj2 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            font-size: 14px;
+            line-height: 20px;
+            position: relative;
+            height: 100%;
+            /* padding: 0px 0px 176px; */
+            scroll-behavior: smooth;
+            overflow-y: auto;
+        }
+        .css-pmqufv {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            padding-top: 24px;
+        }
+        .css-oxzfpw {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+        .css-7tkdw6 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            padding: 24px;
+            border-style: solid;
+            border-width: 0px 0px 1px;
+            border-color: rgb(234, 236, 239);
+        }
+        .css-1kzpntp {
+            box-sizing: border-box;
+            margin: 20px 8px 0px 0px;
+            min-width: 0px;
+            display: flex;
+        }
+        .css-vwdmr0 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            width: 32px;
+            position: relative;
+            padding-top: 24px;
+            padding-bottom: 24px;
+            flex-direction: column;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            align-items: center;
+        }
+        .css-13zymhf {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            width: 5px;
+            height: 5px;
+            border-radius: 100%;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(14, 203, 129);
+        }
+        .css-11mpmlu {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            flex: 1 1 0%;
+            width: 0px;
+            border-width: 0px 1px 0px 0px;
+            border-style: dashed;
+            border-color: rgb(234, 236, 239);
+        }
+        .css-1a1w98z {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            width: 5px;
+            height: 5px;
+            border-radius: 100%;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(246, 70, 93);
+        }
+        .css-38fup1 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            cursor: pointer;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 32px;
+            background-color: rgb(245, 245, 245);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+        .css-124czaz {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            color: rgb(112, 122, 138);
+            font-size: 16px;
+            fill: rgb(112, 122, 138);
+            width: 1em;
+            height: 1em;
+        }
+        .css-1pysja1 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            flex: 1 1 0%;
+        }
+        .css-bz1qgm {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        @media screen and (min-width: 767px) {
+            .css-1efkrz1 {
+                flex: 1 1 0%;
+                width: auto;
+            }
+        }
+        .css-1efkrz1 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            flex: 0 0 auto;
+            width: 100%;
+        }
+        .css-yc6oq3 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+        }
+        .css-51ezhr {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            width: 100%;
+            -webkit-box-align: center;
+            align-items: center;
+            color: rgb(71, 77, 87);
+            font-size: 14px;
+        }
+        .css-1xcjeua {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            width: 100%;
+            height: 48px;
+            background-color: rgb(245, 245, 245);
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: 4px;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            align-items: center;
+        }
+        .css-1pysja1 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            flex: 1 1 0%;
+        }
+        .css-oxzfpw {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+        .css-1pxm4lx {
+            box-sizing: border-box;
+            margin: 24px 0px 0px;
+            min-width: 0px;
+        }
+        .css-51ezhr {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            width: 100%;
+            -webkit-box-align: center;
+            align-items: center;
+            color: rgb(71, 77, 87);
+            font-size: 14px;
+        }
+        .css-13mjbma {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            position: relative;
+            outline: none;
+        }
+        .css-1mxpxp {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: inline-flex;
+            position: relative;
+            -webkit-box-align: center;
+            align-items: center;
+            line-height: 1.6;
+            background-color: rgb(245, 245, 245);
+            border-radius: 4px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent;
+            height: 48px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .css-1mxpxp input {
+            color: rgb(30, 35, 41);
+            font-size: 14px;
+            border-radius: 4px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        .css-1jpgac0 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            outline: none;
+            border: none;
+            opacity: 1;
+            visibility: hidden;
+            cursor: pointer;
+            background-color: transparent;
+        }
+        .css-cr60ng {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: flex;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .css-vurnku {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+        }
+        .css-19gx5t6 {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            font-size: 14px;
+            color: rgb(112, 122, 138);
+            line-height: 20px;
+        }
+        .css-6hm6tl {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            color: rgb(30, 35, 41);
+        }
+        .css-p1qrqm {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+        .css-17mzxiv {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            display: inline-flex;
+            position: relative;
+            -webkit-box-align: center;
+            align-items: center;
+            line-height: 1.6;
+            background-color: rgb(245, 245, 245);
+            border-radius: 4px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent;
+            font-size: 14px;
+            width: 100%;
+            height: 48px;
+        }
+
+        .css-17mzxiv input {
+            color: rgb(30, 35, 41);
+            font-size: 14px;
+            border-radius: 4px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        .css-16fg16t {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            outline: none;
+            border: none;
+            background-color: inherit;
+            opacity: 1;
+        }
+        .css-17mzxiv .bn-input-suffix {
+            flex-shrink: 0;
+            margin-left: 4px;
+            margin-right: 4px;
+            font-size: 14px;
+        }
+        .css-vurnku {
+            box-sizing: border-box;
+            margin: 0px;
+            min-width: 0px;
+        }
+        .css-1ii0qmr {
+            box-sizing: border-box;
+            margin: 0px 8px 0px 0px;
+            min-width: 0px;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+        }
+        .css-3bhv7e {
+            box-sizing: border-box;
+            margin: 0px 0px 0px 8px;
+            min-width: 0px;
+            font-size: 16px;
+            color: rgb(201, 148, 0);
+            line-height: 24px;
+            cursor: pointer;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="animated fadeIn">
@@ -101,13 +464,21 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Local <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button></label>
+                                                        <label>Stock Local 
+                                                            <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button>
+
+                                                            <button class="btn btn-sm link view-transfer-stock" data-id="{{ $product->id }}" data-stock-name="stock_local" data-stock="{{ $product->stock_local }}"><i class="fas fa-exchange-alt"></i></button>
+                                                        </label>
                                                         <input class="form-control" value="{{ $product->stock_local }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Camioneta <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button></label>
+                                                        <label>Stock Camioneta 
+                                                            <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button>
+
+                                                            <button class="btn btn-sm link view-transfer-stock" data-id="{{ $product->id }}" data-stock-name="stock_truck" data-stock="{{ $product->stock_truck }}"><i class="fas fa-exchange-alt"></i></button>
+                                                        </label>
                                                         <input class="form-control" value="{{ $product->stock_truck }}" readOnly>
                                                     </div>
                                                 </div>
@@ -165,13 +536,21 @@
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Local <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button></label>
+                                                                <label>Stock Local 
+                                                                    <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button>
+                                                                    
+                                                                    <button class="btn btn-sm link view-transfer-stock" data-id="{{ $product_combination->id }}" data-stock-name="stock_local" data-stock="{{ $product_combination->stock_local }}"><i class="fas fa-exchange-alt"></i></button>
+                                                                </label>
                                                                 <input class="form-control" value="{{ $product_combination->stock_local }}" readOnly>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Camioneta <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button></label>
+                                                                <label>Stock Camioneta 
+                                                                    <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button>
+                                                                
+                                                                    <button class="btn btn-sm link view-transfer-stock" data-id="{{ $product_combination->id }}" data-stock-name="stock_truck" data-stock="{{ $product_combination->stock_truck }}"><i class="fas fa-exchange-alt"></i></button>
+                                                                </label>
                                                                 <input class="form-control" value="{{ $product_combination->stock_truck }}" readOnly>
                                                             </div>
                                                         </div>
@@ -211,6 +590,7 @@
     </div>
     {{--  --}}
     @include('dashboard.catalog.products._modal_stock_history')
+    @include('dashboard.catalog.products._modal_stock_transfer')
 @endsection
 
 @push('js')

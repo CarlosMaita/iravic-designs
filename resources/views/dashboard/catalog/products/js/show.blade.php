@@ -6,6 +6,7 @@
 
         let datatable_history = $('#datatable_history'),
             modal_stock_history = $('#modal-history-stock'),
+            modal_stock_transfer = $('#modal-stock-transfer'),
             product_viewing = null,
             stock_column_viewing = null;
 
@@ -35,6 +36,16 @@
         /**
         *
         */
+        modal_stock_transfer.on('hidden.coreui.modal', function(e) {
+            modal_stock_transfer.find('input').attr('max', 0);
+            modal_stock_transfer.find('#stock-available').text('');
+            modal_stock_transfer.find('#stock-origin').text('');
+            modal_stock_transfer.find('#stock-destination').text('');
+        });
+
+        /**
+        *
+        */
         $('.view-stock-history').on('click', function(e) {
             var product_id = $(this).data('id'),
                 stock_column = $(this).data('stock'),
@@ -45,6 +56,24 @@
             product_viewing = product_id;
             stock_column_viewing = stock_column;
             datatable_history.DataTable().ajax.reload();
+        });
+
+        /**
+        *
+        */
+        $('.view-transfer-stock').on('click', function(e) {
+            var product_id = $(this).data('id'),
+                stock = Number($(this).data('stock')),
+                stock_column = $(this).data('stock-name'),
+                stock_name_origin = getStockName(stock_column),
+                stock_name_destination = getStockNameDestination(stock_column);
+
+            
+            modal_stock_transfer.find('input').attr('max', stock);
+            modal_stock_transfer.find('#stock-available').text(stock);
+            modal_stock_transfer.find('#stock-origin').text(stock_name_origin);
+            modal_stock_transfer.find('#stock-destination').text(stock_name_destination);
+            modal_stock_transfer.modal('show');
         });
 
         /**
@@ -107,6 +136,9 @@
             });
         }
 
+        /**
+        *
+        */
         function getStockName(stock_column) {
             var stock_name = '';
 
@@ -119,6 +151,26 @@
                     break;
                 case 'stock_truck':
                     stock_name = 'Camioneta';
+                    break;
+                default:
+                    break;
+            }
+
+            return stock_name;
+        }
+
+        /**
+        *
+        */
+        function getStockNameDestination(stock_column) {
+            var stock_name = '';
+
+            switch (stock_column) {
+                case 'stock_local':
+                    stock_name = 'Camioneta';
+                    break;
+                case 'stock_truck':
+                    stock_name = 'Local';
                     break;
                 default:
                     break;

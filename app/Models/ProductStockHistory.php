@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductStockHistory extends Model
 {
     public $table = 'products_stock_history';
+    
     public $fillable = [
         'product_id',
         'order_product_id',
@@ -17,6 +18,7 @@ class ProductStockHistory extends Model
         'qty',
         'stock'
     ];
+
     public $appends = [
         'action',
         'date',
