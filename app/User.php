@@ -76,7 +76,7 @@ class User extends Authenticatable
         $roles_name = $this->roles->flatten()->pluck('name');
 
         if ($roles_name->contains('superadmin') || $roles_name->contains('admin')) {
-            return 'stock_depot';
+            return 'stock_local';
         }
 
         if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {

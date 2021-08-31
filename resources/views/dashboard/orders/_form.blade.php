@@ -118,9 +118,11 @@
                                                                     data-brand="{{ $product->brand->name }}"
                                                                     data-category="{{ $product->category->name }}"
                                                                     data-code="{{ $product->code }}"
+
                                                                     @if($product->stock_user < 1) disabled @endif
                                                                 >
-                                                                    {{ $product->name }} - Cod:{{ $product->code }} @if($product->stock_user < 1) (SIN STOCK) @endif
+                                                                    {{ $product->name }} - Cod:{{ $product->code }} 
+                                                                    @if($product->stock_user < 1) (SIN STOCK) @endif
                                                                 </option>
                                                             @elseif($product->product_id)
                                                                 <option value="{{ $product->id }}" 
@@ -130,7 +132,8 @@
                                                                     data-code="{{ $product->code }}"
                                                                     @if($product->stock_user < 1) disabled @endif
                                                                 >
-                                                                    {{ $product->name }} (T: {{ optional($product->size)->name }} - Color: {{ optional($product->color)->name }}) - Cod: {{ $product->real_code }} @if($product->stock_user < 1) (SIN STOCK) @endif
+                                                                    {{ $product->name }} (T: {{ optional($product->size)->name }} - Color: {{ optional($product->color)->name }}) - Cod: {{ $product->real_code }} 
+                                                                    @if($product->stock_user < 1) (SIN STOCK) @endif
                                                                 </option>
                                                             @endif
                                                         @endforeach

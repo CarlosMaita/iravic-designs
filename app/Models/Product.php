@@ -48,7 +48,7 @@ class Product extends Model
     {
         parent::boot();
 
-        static::saved(function($product) {
+        static::saved(function ($product) {
             $user = Auth::user();
 
             if ($product->isDirty('stock_depot')) {
@@ -183,6 +183,20 @@ class Product extends Model
     }
 
     # Methods
+    public function addStockHistoryRecord($user_id, $new_stock, $old_stock, $qty, $stock, $order_product_id = null)
+    {
+        $attributes = array(
+            'user_id' => $user_id,
+            'order_product_id' => $order_product_id,
+            'new_stock' => $new_stock,
+            'old_stock' => $old_stock,
+            'qty' => $qty,
+            'stock' => $stock
+        );
+
+        $this->stocks_history()->create($attributes);
+    }
+
     public function getRegularPrice()
     {
         $parent = $this->product_parent;
@@ -198,7 +212,7 @@ class Product extends Model
     {
         $user = Auth::user();
         $column_stock = $user->getColumnStock();
-        $old_stock = $this->stock_user;    
+        $old_stock = $this->stock_user;
         $new_stock = ($old_stock - $qty);
 
         if ($column_stock) {
@@ -216,19 +230,5 @@ class Product extends Model
 
             $this->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, $column_stock, $order_product_id);
         }
-    }
-
-    public function addStockHistoryRecord($user_id, $new_stock, $old_stock, $qty, $stock, $order_product_id = null)
-    {
-        $attributes = array(
-            'user_id' => $user_id,
-            'order_product_id' => $order_product_id,
-            'new_stock' => $new_stock,
-            'old_stock' => $old_stock,
-            'qty' => $qty,
-            'stock' => $stock
-        );
-
-        $this->stocks_history()->create($attributes);
     }
 }

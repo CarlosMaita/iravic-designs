@@ -46,6 +46,12 @@
         datatable_products = datatable_products.DataTable();
         datatable_products_resume = datatable_products_resume.DataTable();
 
+
+        $('body').on('click', '#btn-stocks-close', function(e) {
+            var collapse = $('#stocks-collapse');
+            collapse.collapse('hide');
+        });
+
         /**
         *
         */
@@ -265,9 +271,59 @@
         function handleShowProductForm(product) {
             setProductModalHeaderInfo(product);
             addProductModalTable(product);
+            addAllStocksToShow(product);
             modal_product.modal('show');
+
+            $('#datatable_stocks').DataTable({
+                responsive: true
+            });
         }
         
+        function addAllStocksToShow(product) {
+            @if (Auth::user()->isAdmin())
+                var html = `<p class="text-right">
+                                <button id="btn-stocks-collapse" class="btn btn-link" type="button" data-toggle="collapse" data-target="#stocks-collapse" aria-expanded="false" aria-controls="stocks-collapse">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> Ver todos los stocks
+                                </button>
+                            </p>
+                            <div class="collapse" id="stocks-collapse">
+                                <div class="card card-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table id="datatable_stocks" class="table" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" class="text-center">Depósito</th>
+                                                                <th scope="col" class="text-center">Local</th>
+                                                                <th scope="col" class="text-center">Camión</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center">${product.stock_depot}</td>
+                                                                <td class="text-center">${product.stock_local}</td>
+                                                                <td class="text-center">${product.stock_truck}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 text-right">
+                                                <button id="btn-stocks-close" class="btn btn-link">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+
+                modal_product_product_stocks.append(html);
+            @endif
+        }
+
         /**
         * 
         */
