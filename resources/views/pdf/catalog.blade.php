@@ -32,7 +32,8 @@
             margin-left: 15px;
         }
         .information {
-            background-color: #60A7A6;
+            /* background-color: #60A7A6; */
+            background: #3c4b64;
             color: #FFF;
         }
         .information .logo {
@@ -158,17 +159,18 @@
         <table width="100%">
             <tr>
                 <td align="left" style="width: 40%;">
-                    {{-- <h3></h3> --}}
+                    {{-- <h3>{{ config('app.name') }}</h3> --}}
                     <pre>
-                        Street 15
-                        123456 City
-                        United Kingdom
+                        <b>{{ config('app.name') }}</b>
+                        cel: 097506073
+                        tel: 2347 75 97
+                        Local: av. Río de la plata 14
                     </pre>
                 </td>
                 <td align="center">
                 </td>
                 <td align="right" style="width: 40%;">
-                    <img src="{{ asset('img/no_image.jpg') }}" alt="Logo" width="64" class="logo"/>
+                    <img src="{{ asset('img/logo-white.png') }}" alt="Logo" width="64" class="logo"/>
                 </td>
             </tr>
         </table>
@@ -257,7 +259,7 @@
                     &copy; {{ date('Y') }} {{ config('app.name') }}
                 </td>
                 <td align="right" style="width: 50%;">
-                    Company Slogan
+                    Desarrollado por <a href="https://brocsoft.com" target="_blank">Brocsoft</a>
                 </td>
             </tr>
         </table>
