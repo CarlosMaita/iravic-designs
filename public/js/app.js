@@ -2219,6 +2219,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {
@@ -40338,7 +40340,14 @@ var render = function() {
                           attrs: {
                             placeholder: "Seleccionar",
                             options: _vm.colors,
-                            label: "name"
+                            label: "name",
+                            selectable: function(option) {
+                              return !_vm.combinations
+                                .map(function(combination) {
+                                  return combination.color_id
+                                })
+                                .includes(option.id)
+                            }
                           },
                           on: {
                             input: function($event) {
@@ -40569,7 +40578,14 @@ var render = function() {
                                   attrs: {
                                     placeholder: "Seleccionar",
                                     options: _vm.sizes,
-                                    label: "name"
+                                    label: "name",
+                                    selectable: function(option) {
+                                      return !combination.sizes
+                                        .map(function(size) {
+                                          return size.size_id
+                                        })
+                                        .includes(option.id)
+                                    }
                                   },
                                   on: {
                                     input: function($event) {

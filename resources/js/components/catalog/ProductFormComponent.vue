@@ -159,6 +159,7 @@
                                                 :options="colors" 
                                                 label="name" 
                                                 v-model="combinations[index].color_prop"
+                                                :selectable="(option) => !combinations.map(function(combination) {return combination.color_id;}).includes(option.id)"
                                                 @input="setCombinationColorSelected(combinations[index].color_prop, index)">
                                     </v-select>
                                     <!-- <input type="hidden" :name="getCombinationInputName('colors', combination, index)" v-model="combinations[index].color_id"> -->
@@ -192,6 +193,7 @@
                                                         :options="sizes" 
                                                         label="name" 
                                                         v-model="combinations[index].sizes[index_size].size_prop"
+                                                        :selectable="(option) => !combination.sizes.map(function(size) {return size.size_id;}).includes(option.id)"
                                                         @input="setCombinationSizeSelected(combinations[index].sizes[index_size].size_prop, index, index_size)">
                                             </v-select>
                                             <input type="hidden" :name="getCombinationInputName('sizes', size, index, index_size)" v-model="combinations[index].sizes[index_size].size_id">
@@ -313,7 +315,7 @@
 	    },
         async mounted() {
             this.mounted = true;
-
+            
             if (this.product.id) {
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
