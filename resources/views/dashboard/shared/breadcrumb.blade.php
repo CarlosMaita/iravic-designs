@@ -1,5 +1,5 @@
 <ol class="breadcrumb border-0 m-0">
-  <li class="breadcrumb-item"><a href="/">{{ __('dashboard.breadcrumb.home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">{{ __('dashboard.breadcrumb.home') }}</a></li>
   <?php $segments = ''; ?>
   @for($i = 1; $i <= count(Request::segments()); $i++)
       <?php $segments .= '/'. Request::segment($i); ?>

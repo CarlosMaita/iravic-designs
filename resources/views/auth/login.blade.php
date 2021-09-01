@@ -1,11 +1,29 @@
 @extends('auth.base')
 
+@push('css')
+  <style>
+    @media only screen and (max-width: 500px) {
+      h1 {
+        font-size: 16px;
+      }
+    }
+    @media only screen and (min-height: 670px) {
+      #form-wrap {
+        margin-bottom: 150px;
+      }
+    }
+  </style>
+@endpush
+
 @section('content')
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div id="form-wrap" class="col-md-8">
+          <div class="mb-3 text-center">
+            <img class="img-fluid" src="{{ asset('img/logo-black.png') }}" alt="Logo" width="120">
+          </div>
           <div class="card-group">
-            <div class="card p-4">
+            <div class="card p-2">
               <div class="card-body">
                 <h1>{{ __('auth.login') }}</h1>
                 <form method="POST" action="{{ route('login') }}">
