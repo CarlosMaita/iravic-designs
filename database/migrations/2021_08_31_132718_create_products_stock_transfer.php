@@ -18,8 +18,10 @@ class CreateProductsStockTransfer extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('user_creator_id')->nullable();
             $table->unsignedBigInteger('user_responsable_id')->nullable();
-            $table->string('stock')->nullable();
+            $table->string('stock_origin')->nullable();
+            $table->string('stock_destination')->nullable();
             $table->string('qty')->nullable();
+            $table->tinyInteger('is_accepted')->default(0);
             $table->timestamps();
 
             $table->foreign('product_id')

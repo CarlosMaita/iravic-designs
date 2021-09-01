@@ -12,7 +12,9 @@ class Product extends Model
     use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
     
     protected $table = 'products';
+    
     protected $guarded = [];
+
     public $fillable = [
         'brand_id',
         'category_id',
@@ -55,21 +57,21 @@ class Product extends Model
                 $old_stock = (int) $product->getRawOriginal('stock_depot');
                 $new_stock = $product->stock_depot;
                 $qty = $new_stock - $old_stock;
-                $product->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, 'stock_depot');
+                $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_depot');
             }
 
             if ($product->isDirty('stock_local')) {
                 $old_stock = (int) $product->getRawOriginal('stock_local');
                 $new_stock = $product->stock_local;
                 $qty = $new_stock - $old_stock;
-                $product->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, 'stock_local');
+                $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_local');
             }
 
             if ($product->isDirty('stock_truck')) {
                 $old_stock = (int) $product->getRawOriginal('stock_truck');
                 $new_stock = $product->stock_truck;
                 $qty = $new_stock - $old_stock;
-                $product->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, 'stock_truck');
+                $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_truck');
             }
         });
     }
@@ -183,11 +185,12 @@ class Product extends Model
     }
 
     # Methods
-    public function addStockHistoryRecord($user_id, $new_stock, $old_stock, $qty, $stock, $order_product_id = null)
+    public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null)
     {
         $attributes = array(
             'user_id' => $user_id,
             'order_product_id' => $order_product_id,
+            'action' => $action,
             'new_stock' => $new_stock,
             'old_stock' => $old_stock,
             'qty' => $qty,
@@ -208,7 +211,7 @@ class Product extends Model
         return $this->price ? $this->price : 0;
     }
 
-    public function subtractStockUser($order_product_id, $qty)
+    public function subtractStockUser($order_product_id, $qty, $action)
     {
         $user = Auth::user();
         $column_stock = $user->getColumnStock();
@@ -216,8 +219,17 @@ class Product extends Model
         $new_stock = ($old_stock - $qty);
 
         if ($column_stock) {
-            $this->$column_stock = $new_stock;
-            $this->save();
+            // $this->$column_stock = $new_stock;
+            // $this->save();
+            
+            $product = $this;
+            Product::withoutEvents(function () use ($product, $column_stock, $new_stock) {
+                $product = Product::find($product->id);
+                $product->$column_stock = $new_stock;
+                $product->save();
+
+                return $product;
+            });
 
             // $this->stocks_history()->create([
             //     'order_product_id' => $order_product_id,
@@ -228,7 +240,7 @@ class Product extends Model
             //     'stock' => $column_stock
             // ]);
 
-            $this->addStockHistoryRecord($user->id, $new_stock, $old_stock, $qty, $column_stock, $order_product_id);
+            $this->addStockHistoryRecord($user->id, $action, $new_stock, $old_stock, $qty, $column_stock, $order_product_id);
         }
     }
 }

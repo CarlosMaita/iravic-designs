@@ -109,6 +109,7 @@ return [
         'developed by' => 'Desarrollado por'
     ],
     'form' => [
+        'accept'        => 'Aceptar',
         'back'          => 'Atrás',
         'back to list'  => 'Ir al listado',
         'cancel'        => 'Cancelar',

@@ -18,6 +18,7 @@ class CreateProductStockHistoryTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('order_product_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('action')->nullable();
             $table->string('stock')->nullable();
             $table->string('qty')->nullable();
             $table->string('old_stock')->nullable();

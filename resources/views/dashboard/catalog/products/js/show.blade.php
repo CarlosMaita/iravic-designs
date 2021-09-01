@@ -5,6 +5,7 @@
         const URL_HISTORY_STOCK = "{{ route('productos-stock-history.index') }}";
 
         let datatable_history = $('#datatable_history'),
+            form_transfer = $('#stock-transfer-form'),
             modal_stock_history = $('#modal-history-stock'),
             modal_stock_transfer = $('#modal-stock-transfer'),
             product_viewing = null,
@@ -12,6 +13,73 @@
 
         initDatatableImages();
         initDatatableHistory();
+
+        form_transfer.on('submit', function(e) {
+            e.preventDefault();
+            var form = $('#stock-transfer-form')[0];
+            var formData = new FormData(form);
+            
+            $.ajax({
+                    url: form_transfer.attr('action'),
+                    type: form_transfer.attr('method'),
+                    enctype: 'multipart/form-data',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        var product = response.data.product_stock_transfer.product;
+                        $(`#product_${product.id}_stock_local`).val(product.stock_local);
+                        $(`#product_${product.id}_stock_truck`).val(product.stock_truck);
+                        $(`#btn_${product.id}_stock_local`).data('stock', product.stock_local);
+                        $(`#btn_${product.id}_stock_truck`).data('stock', product.stock_truck);
+                        modal_stock_transfer.modal('hide');
+
+                        new Noty({
+                            text: "La solicitud de transferencia se ha realizado con éxito.",
+                            type: 'success'
+                        }).show();
+                    } else if (response.error) {
+                        new Noty({
+                            text: response.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    } else if (e.responseJSON.error){
+                        new Noty({
+                            text: e.responseJSON.error,
+                            type: 'error'
+                        }).show();
+                    } else if (e.responseJSON.message){
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        });
 
         /**
         *
@@ -37,7 +105,12 @@
         *
         */
         modal_stock_transfer.on('hidden.coreui.modal', function(e) {
-            modal_stock_transfer.find('input').attr('max', 0);
+            modal_stock_transfer.find('input[name="product_id"]').val('');
+            modal_stock_transfer.find('input[name="stock_origin"]').val('');
+            modal_stock_transfer.find('input[name="stock_destination"]').val('');
+            modal_stock_transfer.find('input[name="qty"]').val('');
+            modal_stock_transfer.find('input[name="qty"]').attr('max', 0);
+            modal_stock_transfer.find('#btn-max').attr('stock', 0);
             modal_stock_transfer.find('#stock-available').text('');
             modal_stock_transfer.find('#stock-origin').text('');
             modal_stock_transfer.find('#stock-destination').text('');
@@ -64,16 +137,28 @@
         $('.view-transfer-stock').on('click', function(e) {
             var product_id = $(this).data('id'),
                 stock = Number($(this).data('stock')),
-                stock_column = $(this).data('stock-name'),
-                stock_name_origin = getStockName(stock_column),
-                stock_name_destination = getStockNameDestination(stock_column);
+                stock_origin = $(this).data('stock-origin'),
+                stock_destination = $(this).data('stock-destination'),
+                stock_name_origin = getStockName(stock_origin),
+                stock_name_destination = getStockName(stock_destination);
 
-            
-            modal_stock_transfer.find('input').attr('max', stock);
+            modal_stock_transfer.find('input[name="product_id"]').val(product_id);
+            modal_stock_transfer.find('input[name="stock_origin"]').val(stock_origin);
+            modal_stock_transfer.find('input[name="stock_destination"]').val(stock_destination);
+            modal_stock_transfer.find('input[type="number"]').attr('max', stock);
             modal_stock_transfer.find('#stock-available').text(stock);
+            modal_stock_transfer.find('#btn-max').attr('stock', stock);
             modal_stock_transfer.find('#stock-origin').text(stock_name_origin);
             modal_stock_transfer.find('#stock-destination').text(stock_name_destination);
             modal_stock_transfer.modal('show');
+        });
+
+        /**
+        *
+        */
+        $('#btn-max').on('click', function(e) {
+            var max = Number($(this).attr('stock'));
+            modal_stock_transfer.find('input[name="qty"]').val(max);
         });
 
         /**
@@ -151,26 +236,6 @@
                     break;
                 case 'stock_truck':
                     stock_name = 'Camioneta';
-                    break;
-                default:
-                    break;
-            }
-
-            return stock_name;
-        }
-
-        /**
-        *
-        */
-        function getStockNameDestination(stock_column) {
-            var stock_name = '';
-
-            switch (stock_column) {
-                case 'stock_local':
-                    stock_name = 'Camioneta';
-                    break;
-                case 'stock_truck':
-                    stock_name = 'Local';
                     break;
                 default:
                     break;

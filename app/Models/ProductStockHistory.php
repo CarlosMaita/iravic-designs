@@ -13,6 +13,7 @@ class ProductStockHistory extends Model
         'product_id',
         'order_product_id',
         'user_id',
+        'action',
         'new_stock',
         'old_stock',
         'qty',
@@ -20,7 +21,6 @@ class ProductStockHistory extends Model
     ];
 
     public $appends = [
-        'action',
         'date',
         'stock_column'
     ];
@@ -42,11 +42,6 @@ class ProductStockHistory extends Model
     }
 
     # Appends
-    public function getActionAttribute()
-    {
-        return $this->order_product ? 'Venta' : 'Actualización producto';
-    }
-
     public function getDateAttribute()
     {
         if ($this->created_at) {

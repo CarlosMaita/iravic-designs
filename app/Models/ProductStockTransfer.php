@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ProductStockTransfer extends Model
 {
@@ -12,14 +14,44 @@ class ProductStockTransfer extends Model
         'product_id',
         'user_creator_id',
         'user_responsable_id',
+        'is_accepted',
         'qty',
-        'stock'
+        'stock_origin',
+        'stock_destination'
     ];
 
     public $appends = [
-        'date',
-        'stock_column'
+        'date'
     ];
+
+    # Boot
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($product_stock_transfer) {
+            $user = Auth::user();
+            $product = Product::withoutEvents(function () use ($product_stock_transfer) {
+                $product = Product::find($product_stock_transfer->product_id);
+                return $product;
+            });
+
+            $qty = $product_stock_transfer->qty;
+            $stock_name_origin = $product_stock_transfer->stock_origin;
+            $stock_name_destination = $product_stock_transfer->stock_destination;
+            $old_stock_origin = $product->$stock_name_origin;
+            $old_stock_destination = $product->$stock_name_destination;
+            $new_stock_origin = ($old_stock_origin - $qty);
+            $new_stock_destination = ($old_stock_destination + $qty);
+
+            $product->$stock_name_origin = $new_stock_origin;
+            $product->$stock_name_destination = $new_stock_destination;
+            $product->save();
+
+            $product->addStockHistoryRecord($user->id, 'Transferencia', $new_stock_origin, $old_stock_origin, $qty, $stock_name_origin);
+            $product->addStockHistoryRecord($user->id, 'Transferencia', $new_stock_destination, $old_stock_destination, $qty, $stock_name_destination);
+        });
+    }
 
     # Relationships
     public function product()
@@ -35,5 +67,15 @@ class ProductStockTransfer extends Model
     public function responsable()
     {
         return $this->belongsTo('App\User', 'user_responsable_id', 'id');
+    }
+
+    # Appends
+    public function getDateAttribute()
+    {
+        if ($this->created_at) {
+            return Carbon::parse($this->created_at)->format('d-m-Y h:i:s');
+        }
+
+        return '';
     }
 }
