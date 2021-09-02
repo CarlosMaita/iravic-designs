@@ -467,7 +467,8 @@
                                                         <label>Stock Local 
                                                             <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button>
 
-                                                            @can('create', App\Models\ProductStockTransfer::class)
+                                                            @can('create', App\Models\ProductStockTransfer::class, 'stock_local')
+                                                            @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
                                                             <button class="btn btn-sm link view-transfer-stock" 
                                                                     id="btn_{{ $product->id }}_stock_local"
                                                                     data-id="{{ $product->id }}" 
@@ -476,6 +477,7 @@
                                                                     data-stock="{{ $product->stock_local }}">
                                                                     <i class="fas fa-exchange-alt"></i>
                                                             </button>
+                                                            @endif
                                                             @endcan
                                                         </label>
                                                         <input id="product_{{ $product_combination->id }}_stock_local" class="form-control" value="{{ $product->stock_local }}" readOnly>
@@ -486,7 +488,8 @@
                                                         <label>Stock Camioneta 
                                                             <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button>
 
-                                                            @can('create', App\Models\ProductStockTransfer::class)
+                                                            @can('create', App\Models\ProductStockTransfer::class, 'stock_truck')
+                                                            @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
                                                             <button class="btn btn-sm link view-transfer-stock"
                                                                     id="btn_{{ $product->id }}_stock_truck"
                                                                     data-id="{{ $product->id }}"
@@ -495,6 +498,7 @@
                                                                     data-stock="{{ $product->stock_truck }}">
                                                                     <i class="fas fa-exchange-alt"></i>
                                                             </button>
+                                                            @endif
                                                             @endcan
                                                         </label>
                                                         <input id="product_{{ $product->id }}_stock_truck" class="form-control" value="{{ $product->stock_truck }}" readOnly>
@@ -557,7 +561,8 @@
                                                                 <label>Stock Local 
                                                                     <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button>
                                                                     
-                                                                    @can('create', App\Models\ProductStockTransfer::class)
+                                                                    @can('create', App\Models\ProductStockTransfer::class, 'stock_local')
+                                                                    @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
                                                                     <button class="btn btn-sm link view-transfer-stock" 
                                                                             id="btn_{{ $product_combination->id }}_stock_local"
                                                                             data-id="{{ $product_combination->id }}" 
@@ -566,6 +571,7 @@
                                                                             data-stock="{{ $product_combination->stock_local }}">
                                                                             <i class="fas fa-exchange-alt"></i>
                                                                     </button>
+                                                                    @endif
                                                                     @endcan
                                                                 </label>
                                                                 <input id="product_{{ $product_combination->id }}_stock_local" class="form-control" value="{{ $product_combination->stock_local }}" readOnly>
@@ -577,6 +583,7 @@
                                                                     <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button>
                                                                     
                                                                     @can('create', App\Models\ProductStockTransfer::class)
+                                                                    @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
                                                                     <button class="btn btn-sm link view-transfer-stock"
                                                                             id="btn_{{ $product_combination->id }}_stock_truck"
                                                                             data-id="{{ $product_combination->id }}" 
@@ -585,6 +592,7 @@
                                                                             data-stock="{{ $product_combination->stock_truck }}">
                                                                             <i class="fas fa-exchange-alt"></i>
                                                                     </button>
+                                                                    @endif
                                                                     @endcan
                                                                 </label>
                                                                 <input id="product_{{ $product_combination->id }}_stock_truck" class="form-control" value="{{ $product_combination->stock_truck }}" readOnly>

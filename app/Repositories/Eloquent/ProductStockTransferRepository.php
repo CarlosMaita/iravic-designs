@@ -3,8 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\ProductStockTransfer;
-use Illuminate\Support\Collection;
 use App\Repositories\ProductStockTransferRepositoryInterface;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class ProductStockTransferRepository extends BaseRepository implements ProductStockTransferRepositoryInterface
 {
@@ -23,15 +24,16 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
      */
     public function all($criteria = null): Collection
     {
+        $roles_name = Auth::user()->roles->flatten()->pluck('name');
         $query = $this->model->with(['product', 'creator', 'responsable']);
-        
-        // if (isset($criteria['product'])) {
-        //     $query->whereProduct($criteria['product']);
-        // }
 
-        // if (isset($criteria['stock_column'])) {
-        //     $query->whereStock($criteria['stock_column']);
-        // }
+        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
+            $query->whereUserStock(Auth::user()->id, 'stock_truck');
+        }
+
+        if ($roles_name->contains('Local')) {
+            $query->whereUserStock(Auth::user()->id, 'stock_local');
+        }
 
         return $query->orderBy('created_at', 'DESC')->get();
     }
