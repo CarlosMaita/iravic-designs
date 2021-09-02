@@ -118,6 +118,11 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductStockHistory');
     }
 
+    public function stocks_transfers()
+    {
+        return $this->hasMany('App\Models\ProductStockTransfer');
+    }
+
     # Appends
     public function getNameFullAttribute()
     {
