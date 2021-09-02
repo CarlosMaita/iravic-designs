@@ -181,6 +181,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Products Transfers
+            [
+                'name'         => 'view-transfer',
+                'display_name' => 'Transferencias Ver',
+                'description'  => 'Transferencias Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-transfer',
+                'display_name' => 'Transferencias Crear',
+                'description'  => 'Transferencias Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-transfer',
+                'display_name' => 'Transferencias Editar',
+                'description'  => 'Transferencias Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-transfer',
+                'display_name' => 'Transferencias Eliminar',
+                'description'  => 'Transferencias Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Zones
             [
                 'name'         => 'view-zone',

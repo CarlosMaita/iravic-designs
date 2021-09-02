@@ -41,7 +41,8 @@
     @if (
         Auth::user()->can('viewany', App\Models\Brand::class) || 
         Auth::user()->can('viewany', App\Models\Category::class) || 
-        Auth::user()->can('viewany', App\Models\Product::class)
+        Auth::user()->can('viewany', App\Models\Product::class) || 
+        Auth::user()->can('viewany', App\Models\ProductStockTransfer::class)
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
@@ -65,7 +66,13 @@
                 {{-- Productos --}}
                 @can('viewany', App\Models\Product::class)
                     <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/productos")}}" href="{{ route('productos.index') }}"></span>{{ __('dashboard.sidebar.poducts') }}</a>
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/productos")}}" href="{{ route('productos.index') }}"></span>{{ __('dashboard.sidebar.products') }}</a>
+                    </li>
+                @endcan
+                {{-- Transferencias Stock --}}
+                @can('viewany', App\Models\ProductStockTransfer::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/stocks-transferencias")}}" href="{{ route('stock-transferencias.index') }}"></span>{{ __('dashboard.sidebar.products_transfers') }}</a>
                     </li>
                 @endcan
             </ul>

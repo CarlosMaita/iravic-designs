@@ -14,20 +14,21 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Models\Box'            => 'App\Policies\BoxPolicy',
-        'App\Models\Brand'          => 'App\Policies\BrandPolicy',
-        'App\Models\Category'       => 'App\Policies\CategoryPolicy',
-        'App\Models\Customer'       => 'App\Policies\CustomerPolicy',
-        'App\Models\Order'          => 'App\Policies\OrderPolicy',
-        'App\Models\Payment'        => 'App\Policies\PaymentPolicy',
-        'App\Models\Permission'     => 'App\Policies\PermissionPolicy',
-        'App\Models\Product'        => 'App\Policies\ProductPolicy',
-        'App\Models\ProductImage'   => 'App\Policies\ProductImagePolicy',
-        'App\Models\Role'           => 'App\Policies\RolePolicy',
-        'App\Models\Schedule'       => 'App\Policies\SchedulePolicy',
-        'App\Models\Visit'          => 'App\Policies\VisitPolicy',
-        'App\Models\Zone'           => 'App\Policies\ZonePolicy',
-        'App\User'                  => 'App\Policies\UserPolicy'
+        'App\Models\Box'                    => 'App\Policies\BoxPolicy',
+        'App\Models\Brand'                  => 'App\Policies\BrandPolicy',
+        'App\Models\Category'               => 'App\Policies\CategoryPolicy',
+        'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
+        'App\Models\Order'                  => 'App\Policies\OrderPolicy',
+        'App\Models\Payment'                => 'App\Policies\PaymentPolicy',
+        'App\Models\Permission'             => 'App\Policies\PermissionPolicy',
+        'App\Models\Product'                => 'App\Policies\ProductPolicy',
+        'App\Models\ProductImage'           => 'App\Policies\ProductImagePolicy',
+        'App\Models\ProductStockTransfer'   => 'App\Policies\ProductStockTransferPolicy',
+        'App\Models\Role'                   => 'App\Policies\RolePolicy',
+        'App\Models\Schedule'               => 'App\Policies\SchedulePolicy',
+        'App\Models\Visit'                  => 'App\Policies\VisitPolicy',
+        'App\Models\Zone'                   => 'App\Policies\ZonePolicy',
+        'App\User'                          => 'App\Policies\UserPolicy'
     ];
 
     /**

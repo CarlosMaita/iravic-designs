@@ -17,4 +17,22 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
     {
         parent::__construct($model);
     }
+
+    /**
+     * @return Collection
+     */
+    public function all($criteria = null): Collection
+    {
+        $query = $this->model->with(['product', 'creator', 'responsable']);
+        
+        // if (isset($criteria['product'])) {
+        //     $query->whereProduct($criteria['product']);
+        // }
+
+        // if (isset($criteria['stock_column'])) {
+        //     $query->whereStock($criteria['stock_column']);
+        // }
+
+        return $query->orderBy('created_at', 'DESC')->get();
+    }
 }

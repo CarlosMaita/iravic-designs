@@ -28,17 +28,18 @@
                     contentType: false,
                 success: function (response) {
                     if (response.success) {
-                        var product = response.data.product_stock_transfer.product;
-                        $(`#product_${product.id}_stock_local`).val(product.stock_local);
-                        $(`#product_${product.id}_stock_truck`).val(product.stock_truck);
-                        $(`#btn_${product.id}_stock_local`).data('stock', product.stock_local);
-                        $(`#btn_${product.id}_stock_truck`).data('stock', product.stock_truck);
+                        // var product = response.data.product_stock_transfer.product;
+                        // $(`#product_${product.id}_stock_local`).val(product.stock_local);
+                        // $(`#product_${product.id}_stock_truck`).val(product.stock_truck);
+                        // $(`#btn_${product.id}_stock_local`).data('stock', product.stock_local);
+                        // $(`#btn_${product.id}_stock_truck`).data('stock', product.stock_truck);
                         modal_stock_transfer.modal('hide');
+                        location.reload();
 
-                        new Noty({
-                            text: "La solicitud de transferencia se ha realizado con éxito.",
-                            type: 'success'
-                        }).show();
+                        // new Noty({
+                        //     text: "La solicitud de transferencia se ha realizado con éxito.",
+                        //     type: 'success'
+                        // }).show();
                     } else if (response.error) {
                         new Noty({
                             text: response.error,
@@ -192,6 +193,7 @@
                 processing: false,
                 responsive: true,
                 serverSide: true,
+                ordering: false,
                 ajax: {
                     url: `${URL_HISTORY_STOCK}`,
                     dataType: "json",
@@ -207,15 +209,7 @@
                     {data: 'qty'},
                     {data: 'old_stock'},
                     {data: 'new_stock'},
-                    {
-                        render: function (data, type, row) {
-                            if (row.order_product_id) {
-                                return `Pedido: #${row.product_order.order_id}`;
-                            }
-
-                            return 'Actualización Stock';
-                        }
-                    },
+                    {data: 'action'},
                     {data: 'user.name'},
                 ]
             });

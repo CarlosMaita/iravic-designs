@@ -42,7 +42,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('productos-stock-history', 'ProductStockHistoryController')->only('index');
         #
-        Route::resource('productos-stock-transferencia', 'ProductStockTransferController')->except('create');
+        Route::resource('stock-transferencias', 'ProductStockTransferController')->except('create');
         #
         Route::resource('producto-imagen', 'ProductImageController')->only('index', 'destroy');
         #

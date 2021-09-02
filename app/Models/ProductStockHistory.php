@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Catalog\StockService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,8 +11,9 @@ class ProductStockHistory extends Model
     public $table = 'products_stock_history';
     
     public $fillable = [
-        'product_id',
         'order_product_id',
+        'product_id',
+        'product_stock_transfer_id',
         'user_id',
         'action',
         'new_stock',
@@ -45,7 +47,7 @@ class ProductStockHistory extends Model
     public function getDateAttribute()
     {
         if ($this->created_at) {
-            return Carbon::parse($this->created_at)->format('d-m-Y h:i:s');
+            return Carbon::parse($this->created_at)->format('d-m-Y h:i');
         }
 
         return '';
@@ -53,26 +55,7 @@ class ProductStockHistory extends Model
 
     public function getStockColumnAttribute()
     {
-        $stock = '';
-
-        switch ($this->stock) {
-            case 'stock_depot':
-                $stock = 'Depósito';
-                break;
-
-            case 'stock_local':
-                $stock = 'Local';
-                break;
-
-            case 'stock_truck':
-                $stock = 'Camión';
-                break;
-            
-            default:
-                break;
-        }
-
-        return $stock;
+        return StockService::getStockName($this->stock);
     }
 
     # Scopes

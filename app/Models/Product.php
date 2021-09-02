@@ -39,6 +39,7 @@ class Product extends Model
     ];
 
     public $appends = [
+        'name_full',
         'real_code',
         'regular_price',
         'regular_price_str',
@@ -118,6 +119,21 @@ class Product extends Model
     }
 
     # Appends
+    public function getNameFullAttribute()
+    {
+        $name = $this->name;
+
+        if ($this->color) {
+            $name .= ' - Color: ' . $this->color->name;
+        }
+
+        if ($this->size) {
+            $name .= ' - Talla: ' . $this->size->name;
+        }
+
+        return $name;
+    }
+
     public function getRealCodeAttribute()
     {
         if ($this->code) {
