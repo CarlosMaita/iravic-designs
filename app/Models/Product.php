@@ -201,11 +201,12 @@ class Product extends Model
     }
 
     # Methods
-    public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null)
+    public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null, $product_stock_transfer_id = null)
     {
         $attributes = array(
             'user_id' => $user_id,
             'order_product_id' => $order_product_id,
+            'product_stock_transfer_id' => $product_stock_transfer_id,
             'action' => $action,
             'new_stock' => $new_stock,
             'old_stock' => $old_stock,

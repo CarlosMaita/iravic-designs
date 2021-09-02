@@ -14,7 +14,7 @@ class AddTransferIdToHistoryTable extends Migration
     public function up()
     {
         Schema::table('products_stock_history', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_stock_transfer_id')->nullable();
+            $table->unsignedBigInteger('product_stock_transfer_id')->nullable()->after('order_product_id');
             
             $table->foreign('product_stock_transfer_id')
                 ->references('id')
