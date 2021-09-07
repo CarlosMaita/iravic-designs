@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('code')->nullable();
             $table->string('cover')->nullable();
             $table->tinyInteger('is_regular')->default(0);
-            $table->enum('gender', ['M', 'F'])->nullable();
+            $table->enum('gender', ['M', 'F', 'Niño', 'Niña'])->nullable();
             $table->tinyInteger('is_price_generic')->default(0);
             $table->string('price')->nullable();
             $table->string('stock_depot')->default(0);

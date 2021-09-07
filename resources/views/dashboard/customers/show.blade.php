@@ -49,8 +49,22 @@
                                             </div>
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="form-group">
+                                                    <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
+                                                    <input class="form-control" type="text" value="{{ $customer->qualification }}" readOnly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
                                                     <label>{{ __('dashboard.form.fields.customers.telephone') }}</label>
                                                     <input class="form-control" type="text" value="{{ $customer->telephone }}" readOnly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label>{{ __('dashboard.form.fields.customers.cellphone') }}</label>
+                                                    <input class="form-control" type="text" value="{{ $customer->cellphone }}" readOnly>
                                                 </div>
                                             </div>
                                         </div>
@@ -69,20 +83,6 @@
                                                         <img id="img-dni_picture" class="mt-3 img-fluid" src="{{ $customer->url_dni }}" alt="{{ __('dashboard.form.fields.customers.dni_picture') }}" />
                                                     </div>
                                                     {{-- @endif --}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label>{{ __('dashboard.form.fields.customers.zone') }}</label>
-                                                    <input class="form-control" type="text" value="{{ optional($customer->zone)->name }}" readOnly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
-                                                    <input class="form-control" type="text" value="{{ $customer->qualification }}" readOnly>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,6 +151,14 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.form.fields.customers.zone') }}</label>
+                                                        <input class="form-control" type="text" value="{{ optional($customer->zone)->name }}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.address') }}:</label>
@@ -158,7 +166,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row mb-5">
+                                            <div class="row mb-5 mt-3">
                                                 <div class="col-md-12">
                                                     <div id="map-customer" style="height: 300px;"></div>
                                                 </div>  

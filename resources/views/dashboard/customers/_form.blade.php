@@ -13,8 +13,28 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
+                <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
+                <select id="qualification" class="form-control" name="qualification">
+                    <option selected disabled>Seleccionar</option>
+                    <option value="Muy Bueno" @if($customer->qualification == "Muy Bueno") selected @endif>Muy Bueno</option>
+                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
+                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
+                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
                 <label for="telephone">{{ __('dashboard.form.fields.customers.telephone') }}</label>
                 <input class="form-control" id="telephone" name="telephone" type="text" value="{{ old("telephone", $customer->telephone) }}">
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="telephone">{{ __('dashboard.form.fields.customers.cellphone') }}</label>
+                <input class="form-control" id="telephone" name="cellphone" type="text" value="{{ old("cellphone", $customer->cellphone) }}">
             </div>
         </div>
     </div>
@@ -39,30 +59,6 @@
                         <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
                     @endif
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-                <label for="zone">{{ __('dashboard.form.fields.customers.zone') }}</label>
-                <select id="zone" class="form-control" name="zone_id">
-                    <option selected disabled>Seleccionar</option>
-                    @foreach ($zones as $zone)
-                        <option value="{{ $zone->id }}" @if($customer->zone_id == $zone->id) selected @endif>{{ $zone->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-                <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
-                <select id="qualification" class="form-control" name="qualification">
-                    <option selected disabled>Seleccionar</option>
-                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
-                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
-                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
-                </select>
             </div>
         </div>
     </div>
@@ -134,6 +130,19 @@
     <div class="row mb-4">
         <div class="col-12">
             <small class="form-text text-muted font-weight-bold text-success">{{ __('dashboard.form.labels.customer_address_info') }}</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="zone">{{ __('dashboard.form.fields.customers.zone') }}</label>
+                <select id="zone" class="form-control" name="zone_id">
+                    <option selected disabled>Seleccionar</option>
+                    @foreach ($zones as $zone)
+                        <option value="{{ $zone->id }}" @if($customer->zone_id == $zone->id) selected @endif>{{ $zone->name }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
     <div class="row">

@@ -43,6 +43,8 @@
                                 <select class="form-control" id="gender" name="gender[]" multiple>
                                     <option value="F">F</option>
                                     <option value="M">M</option>
+                                    <option value="Niño">Niño</option>
+                                    <option value="Niña">Niña</option>
                                 </select>
                             </div>
                         </div>

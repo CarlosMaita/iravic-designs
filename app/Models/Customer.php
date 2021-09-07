@@ -13,7 +13,9 @@ class Customer extends Model
     use SoftDeletes;
 
     protected $table = 'customers';
+    
     protected $guarded = [];
+
     public $fillable = [
         'zone_id',
         'address',
@@ -28,7 +30,8 @@ class Customer extends Model
         'name',
         'receipt_picture',
         'qualification',
-        'telephone'
+        'telephone',
+        'cellphone'
     ];
 
     public $appends = [

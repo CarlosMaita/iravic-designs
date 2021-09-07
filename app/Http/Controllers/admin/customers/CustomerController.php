@@ -95,7 +95,7 @@ class CustomerController extends Controller
             $attributes = array_merge(
                 array('dni_picture' => ImageService::save($this->disk_dni, $request->file('dni_picture'))),
                 array('receipt_picture' => ImageService::save($this->disk_receipt, $request->file('receipt_picture'))),
-                $request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $customer = $this->customerRepository->create($attributes);
             DB::commit();
@@ -170,7 +170,7 @@ class CustomerController extends Controller
             $attributes = array_merge(
                 array('dni_picture' => $cliente->updateImage($this->disk_dni, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
                 array( 'receipt_picture' => $cliente->updateImage($this->disk_receipt, $cliente->receipt_picture, $request->receipt_picture, $request->delete_receipt_picture)),
-                $request->only('address', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();

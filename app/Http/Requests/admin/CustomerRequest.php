@@ -54,7 +54,7 @@ class CustomerRequest extends FormRequest
             'dni' => 'required',
             'max_credit' => 'required|numeric',
             'name' => 'required|min:2',
-            'qualification' => ['required', Rule::in(['Bueno', 'Malo', 'Muy Malo'])],
+            'qualification' => ['required', Rule::in(['Muy Bueno', 'Bueno', 'Malo', 'Muy Malo'])],
             'telephone' => 'required',
             'zone_id' => 'required|exists:zones,id'
         ];

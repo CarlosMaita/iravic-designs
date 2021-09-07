@@ -132,7 +132,8 @@ return [
                 'name' => 'Nombre',
                 'qualification' => 'Calificación',
                 'receipt_picture' => 'Foto recibo',
-                'telephone' => 'Teléfono ',
+                'cellphone' => 'Teléfono celular',
+                'telephone' => 'Teléfono',
                 'zone' => 'Zona'
             ],
             'general' => [

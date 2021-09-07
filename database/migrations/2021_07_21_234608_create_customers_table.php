@@ -21,6 +21,7 @@ class CreateCustomersTable extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('telephone')->nullable();
+            $table->string('cellphone')->nullable();
             $table->string('dni')->nullable();
             $table->text('dni_picture')->nullable();
             $table->text('receipt_picture')->nullable();
@@ -28,7 +29,7 @@ class CreateCustomersTable extends Migration
             $table->string('contact_name')->nullable();
             $table->string('contact_telephone')->nullable();
             $table->string('contact_dni')->nullable();
-            $table->enum('qualification', ['Bueno', 'Malo', 'Muy Malo']);
+            $table->enum('qualification', ['Muy Bueno', 'Bueno', 'Malo', 'Muy Malo']);
             $table->timestamps();
             $table->softDeletes();
 

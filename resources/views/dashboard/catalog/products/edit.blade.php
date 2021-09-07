@@ -17,7 +17,7 @@
                                 v-bind:brands="{{ json_encode($brands) }}"
                                 v-bind:categories="{{ json_encode($categories) }}"
                                 v-bind:colors="{{ json_encode($colors) }}"
-                                v-bind:genders="{{ json_encode(array('F','M')) }}"
+                                v-bind:genders="{{ json_encode(array('F', 'M', 'Niño', 'Niña')) }}"
                                 v-bind:sizes="{{ json_encode($sizes) }}"
                                 url-products="{{ route('productos.index') }}"
                                 url-products-combinations="{{ route('productos.delete_combinations') }}"
