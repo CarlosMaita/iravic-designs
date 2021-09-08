@@ -37,6 +37,20 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="price-from">{{ __('dashboard.form.fields.products.price-from') }}</label>
+                                <input id="price-from" name="price_from" type="number" min="0" step="any" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="price-to">{{ __('dashboard.form.fields.products.price-to') }}</label>
+                                <input id="price-to" name="price_to" type="number" min="0" step="any" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="gender">{{ __('dashboard.form.fields.products.gender') }}</label>

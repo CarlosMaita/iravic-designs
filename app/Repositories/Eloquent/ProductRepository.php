@@ -56,6 +56,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $query->whereInSize($criteria['size']);
         }
 
+        if (!empty($criteria['price_from'])) {
+            $query->wherePrice($criteria['price_from'], '>=');
+        }
+
+        if (!empty($criteria['price_to'])) {
+            $query->wherePrice($criteria['price_to'], '<=');
+        }
+
         return $query->orderBy('name')->get();
     }
 

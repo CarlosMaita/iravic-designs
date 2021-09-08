@@ -201,11 +201,13 @@
                 ajax: {
                     url: URL_RESOURCE,
                     data: function(d) {
-                        d.brand     = $("#brand").val() ? $("#brand").val() : null;
-                        d.category  = $("#category").val() ? $("#category").val() : null;
-                        d.gender    = $("#gender").val() ? $("#gender").val() : null;
-                        d.color     = $("#color").val() ? $("#color").val() : null;
-                        d.size      = $("#size").val() ? $("#size").val() : null;
+                        d.brand      = $("#brand").val() ? $("#brand").val() : null;
+                        d.category   = $("#category").val() ? $("#category").val() : null;
+                        d.gender     = $("#gender").val() ? $("#gender").val() : null;
+                        d.color      = $("#color").val() ? $("#color").val() : null;
+                        d.size       = $("#size").val() ? $("#size").val() : null;
+                        d.price_from = $("#price-from").val() ? $("#price-from").val() : null;
+                        d.price_to   = $("#price-to").val() ? $("#price-to").val() : null;
                     },
                 },
                 pageLength: 25,

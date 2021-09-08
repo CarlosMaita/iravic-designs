@@ -205,6 +205,19 @@ class Product extends Model
         });
     }
 
+    public function scopeWherePrice($query, $price, $operator)
+    {
+        return $query->where(function ($q) use ($operator, $price) {
+            $q->whereHas('product_combinations', function ($q) use ($operator, $price) {
+                $q->where('price', $operator, $price);
+            })
+            ->orWhere(function($q) use ($operator, $price) {
+                $q->doesntHave('product_combinations')
+                    ->where('price', $operator, $price);
+            });
+        });
+    }
+
     # Methods
     public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null, $product_stock_transfer_id = null)
     {

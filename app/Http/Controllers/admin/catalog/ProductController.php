@@ -42,7 +42,7 @@ class ProductController extends Controller
         $this->authorize('viewany', 'App\Models\Product');
 
         if ($request->ajax()) {
-            $criteria = $request->only('brand', 'category', 'color', 'gender', 'size');
+            $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
             $products = $this->productRepository->onlyPrincipals($criteria);
             return Datatables::of($products)
                     ->addIndexColumn()
@@ -290,7 +290,7 @@ class ProductController extends Controller
      */
     public function download(Request $request)
     {
-        $criteria = $request->only('brand', 'category', 'color', 'gender', 'size');
+        $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
         $products = $this->productRepository->onlyPrincipals($criteria);
         $categories = array();
         $category_id = null;
@@ -308,14 +308,30 @@ class ProductController extends Controller
 
                 foreach ($product->product_combinations as $product_combination) {
                     if (
-                        (isset($criteria['color']) && isset($criteria['size']) && (in_array($product_combination->color_id, $criteria['color']) || in_array($product_combination->size_id, $criteria['size']))) ||
-                        (isset($criteria['color']) && in_array($product_combination->color_id, $criteria['color'])) ||
-                        (isset($criteria['size']) && in_array($product_combination->size_id, $criteria['size'])) ||
-                        (!isset($criteria['color']) && !isset($criteria['size']) &&
-                        ($product_combination->stock_depot >0 || $product_combination->stock_local >0 || $product_combination->stock_truck >0))
+                        $product_combination->stock_depot == 0 
+                        && $product_combination->stock_local == 0 
+                        && $product_combination->stock_truck == 0
                     ) {
-                        array_push($combinations, $product_combination);
+                        break;
                     }
+
+                    if (isset($criteria['color']) && !in_array($product_combination->color_id, $criteria['color'])) {
+                        break;
+                    }
+
+                    if (isset($criteria['size']) && !in_array($product_combination->size_id, $criteria['size'])) {
+                        break;
+                    }
+
+                    if (!empty($criteria['price_from']) && $product_combination->getRegularPrice() >= $criteria['price_from']) {
+                        break;
+                    }
+
+                    if (!empty($criteria['price_to']) && $product_combination->getRegularPrice() >= $criteria['price_to']) {
+                        break;
+                    }
+                    
+                    array_push($combinations, $product_combination);
                 }
 
                 if (count($combinations)) {
