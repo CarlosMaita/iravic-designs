@@ -20,10 +20,6 @@ class CustomerController extends Controller
 
     public $zoneRepository;
 
-    private $disk_dni = 'customers_dni';
-
-    private $disk_receipt = 'customers_receipt';
-
     public function __construct(CustomerRepository $customerRepository, ZoneRepository $zoneRepository)
     {
         $this->customerRepository = $customerRepository;
@@ -93,8 +89,9 @@ class CustomerController extends Controller
             $this->authorize('create', 'App\Models\Customer');
             DB::beginTransaction();
             $attributes = array_merge(
-                array('dni_picture' => ImageService::save($this->disk_dni, $request->file('dni_picture'))),
-                array('receipt_picture' => ImageService::save($this->disk_receipt, $request->file('receipt_picture'))),
+                array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
+                array('dni_picture' => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
+                array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
                 $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $customer = $this->customerRepository->create($attributes);
@@ -168,8 +165,17 @@ class CustomerController extends Controller
             $this->authorize('update', $cliente);
             DB::beginTransaction();
             $attributes = array_merge(
-                array('dni_picture' => $cliente->updateImage($this->disk_dni, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
-                array( 'receipt_picture' => $cliente->updateImage($this->disk_receipt, $cliente->receipt_picture, $request->receipt_picture, $request->delete_receipt_picture)),
+                array('address_picture' => $cliente->updateImage(Customer::DISK_ADDRESS, $cliente->address_picture, $request->address_picture, $request->delete_address_picture)),
+                array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
+                array('receipt_picture' => $cliente->updateImage(Customer::DISK_RECEIPT, $cliente->receipt_picture, $request->receipt_picture, 
+                $request->delete_receipt_picture)),
+
+
+                array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
+                array('dni_picture' => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
+                array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
+
+
                 $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $this->customerRepository->update($cliente->id, $attributes);

@@ -171,6 +171,16 @@
                                                     <div id="map-customer" style="height: 300px;"></div>
                                                 </div>  
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.form.fields.customers.address_picture') }}</label>
+                                                        <div class="img-wrapper mt-3 mx-auto text-center" style="max-width: 320px;">
+                                                            <img class="mt-3 img-fluid" src="{{ $customer->url_address }}" alt="{{ __('dashboard.form.fields.customers.address_picture') }}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <!--  -->

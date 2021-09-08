@@ -19,6 +19,7 @@ class Customer extends Model
     public $fillable = [
         'zone_id',
         'address',
+        'address_picture',
         'contact_name',
         'contact_telephone',
         'contact_dni',
@@ -41,13 +42,16 @@ class Customer extends Model
         'total_credit',
         'total_debt',
         'total_payments',
+        'url_address',
         'url_dni',
         'url_receipt'
     ];
 
-    private $disk_dni = 'customers_dni';
+    const DISK_ADDRESS = 'customers_address';
 
-    private $disk_receipt = 'customers_receipt';
+    const DISK_DNI = 'customers_dni';
+
+    const DISK_RECEIPT = 'customers_receipt';
 
     # Boot
     protected static function boot()
@@ -126,10 +130,19 @@ class Customer extends Model
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    public function getUrlAddressAttribute()
+    {
+        if (Storage::disk(self::DISK_ADDRESS)->exists($this->address_picture)) {
+            return Storage::disk(self::DISK_ADDRESS)->url($this->address_picture);
+        }
+
+        return url("/img/no_image.jpg");
+    }
+
     public function getUrlDniAttribute()
     {
-        if (Storage::disk($this->disk_dni)->exists($this->dni_picture)) {
-            return Storage::disk($this->disk_dni)->url($this->dni_picture);
+        if (Storage::disk(self::DISK_DNI)->exists($this->dni_picture)) {
+            return Storage::disk(self::DISK_DNI)->url($this->dni_picture);
         }
 
         return url("/img/no_image.jpg");
@@ -137,8 +150,8 @@ class Customer extends Model
 
     public function getUrlReceiptAttribute()
     {
-        if (Storage::disk($this->disk_receipt)->exists($this->receipt_picture)) {
-            return Storage::disk($this->disk_receipt)->url($this->receipt_picture);
+        if (Storage::disk(self::DISK_RECEIPT)->exists($this->receipt_picture)) {
+            return Storage::disk(self::DISK_RECEIPT)->url($this->receipt_picture);
         }
 
         return url("/img/no_image.jpg");

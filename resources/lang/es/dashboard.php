@@ -122,19 +122,20 @@ return [
                 'cash_initial' => 'Efectivo inicial'
             ],
             'customers' => [
-                'address' => 'Dirección',
-                'contact_name' => 'Nombre de contacto',
+                'address'           => 'Dirección',
+                'address_picture'   => 'Foto del frente de la casa',
+                'contact_name'      => 'Nombre de contacto',
                 'contact_telephone' => 'Teléfono de contacto',
-                'contact_dni' => 'C.I de contacto',
-                'dni' => 'C.I',
-                'dni_picture' => 'Foto C.I',
-                'max_credit' => 'Crédito máximo',
-                'name' => 'Nombre',
-                'qualification' => 'Calificación',
-                'receipt_picture' => 'Foto recibo',
-                'cellphone' => 'Teléfono celular',
-                'telephone' => 'Teléfono',
-                'zone' => 'Zona'
+                'contact_dni'       => 'C.I de contacto',
+                'dni'               => 'C.I',
+                'dni_picture'       => 'Foto C.I',
+                'max_credit'        => 'Crédito máximo',
+                'name'              => 'Nombre',
+                'qualification'     => 'Calificación',
+                'receipt_picture'   => 'Foto recibo',
+                'cellphone'         => 'Teléfono celular',
+                'telephone'         => 'Teléfono',
+                'zone'              => 'Zona'
             ],
             'general' => [
                 'name' => 'Nombre',

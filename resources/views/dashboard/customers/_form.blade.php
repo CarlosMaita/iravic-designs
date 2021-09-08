@@ -160,4 +160,22 @@
             <input id="longitude" name="longitude" type="hidden" value='{{old("longitude", $customer->longitude)}}'>
         </div>  
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="address_picture">{{ __('dashboard.form.fields.customers.address_picture') }}</label>
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="address_picture" name="address_picture" lang="es">
+                    <label class="custom-file-label" for="address_picture">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-address_picture" class="mt-3 img-fluid @if(!$customer->address_picture) d-none @endif" src="{{ $customer->url_address }}" alt="{{ __('dashboard.form.fields.customers.address_picture') }}" />
+                    @if($customer->address_picture) 
+                        <span class="delete-img position-absolute" type="button" data-target="address_picture"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 </fieldset>

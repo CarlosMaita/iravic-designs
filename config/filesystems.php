@@ -64,6 +64,13 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'customers_address' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/img/customers/address'),
+            'url' => env('APP_URL').'/storage/img/customers/address',
+            'visibility' => 'public',
+        ],
+
         'customers_dni' => [
             'driver' => 'local',
             'root' => storage_path('app/public/img/customers/dni'),
