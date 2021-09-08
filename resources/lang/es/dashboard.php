@@ -135,6 +135,7 @@ return [
                 'receipt_picture'   => 'Foto recibo',
                 'cellphone'         => 'Teléfono celular',
                 'telephone'         => 'Teléfono',
+                'total_debt'        => 'Deuda total',
                 'zone'              => 'Zona'
             ],
             'general' => [

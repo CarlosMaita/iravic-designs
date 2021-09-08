@@ -46,7 +46,6 @@
         datatable_products = datatable_products.DataTable();
         datatable_products_resume = datatable_products_resume.DataTable();
 
-
         $('body').on('click', '#btn-stocks-close', function(e) {
             var collapse = $('#stocks-collapse');
             collapse.collapse('hide');
@@ -222,6 +221,7 @@
             var container       = $('#customer-selected-container'),
                 selected        = $('#customer').find(':selected'),
                 address         = selected.data('address'),
+                debt            = selected.data('debt'),
                 dni             = selected.data('dni'),
                 maxcredit       = selected.data('max-credit'),
                 maxcredit_str   = selected.data('max-credit-str'),
@@ -230,6 +230,7 @@
                 telephone       = selected.data('telephone');
 
             container.find('#selected-customer-address').val(address);
+            container.find('#selected-customer-debt').val(debt);
             container.find('#selected-customer-dni').val(dni);
             container.find('#selected-customer-maxcredit').val(maxcredit_str);
             container.find('#selected-customer-name').val(name);
@@ -239,6 +240,7 @@
 
             $customer_max_credit = maxcredit;
             $('.max-credit').text('$ ' + maxcredit_str);
+            $('.total-debt').text(debt);
         });
 
         /**
