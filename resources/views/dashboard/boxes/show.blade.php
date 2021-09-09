@@ -25,7 +25,11 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="orders" aria-selected="true">Pagos/Cobros</a>
+                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
+                                    </li>
+                                    <!--  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="spendings-tab" data-toggle="tab" href="#spendings" role="tab" aria-controls="spendings" aria-selected="true">Gastos</a>
                                     </li>
                                 </ul>
                                 <!--  -->
@@ -89,6 +93,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_spent') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_spent}}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <!--  -->
@@ -103,40 +115,46 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.boxes.cash_in_box') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_cash_in_box}}" readOnly>
+                                                        <label>{{ __('dashboard.boxes.total_spent') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_spent}}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.cash_in_box') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_cash_in_box}}" readOnly>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_cash') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_cash}}" readOnly>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_card') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_card}}" readOnly>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_bankwire') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_bankwire}}" readOnly>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_credit') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_credit}}" readOnly>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_payed') }}</label>
@@ -166,6 +184,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  -->
+                                    <div class="tab-pane fade" id="spendings" role="tabpanel" aria-labelledby="spendings-tab">
+                                        @can('create', App\Models\Spending::class)
+                                            @if (!$box->closed)
+                                            <div class="row"> 
+                                                <a id="btn-create-spending" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                            </div>
+                                            <br>
+                                            @endif
+                                        @endcan
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.spendings._datatable')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
@@ -176,6 +212,8 @@
             </div>
         </div>
     </div>
+
+    @include('dashboard.spendings.modal_form')
 @endsection
 
 @push('js')
@@ -215,4 +253,5 @@
     @include('plugins.show_bind')
     @include('plugins.sweetalert')
     @include('dashboard.payments.js.index')
+    @include('dashboard.spendings.js.index')
 @endpush

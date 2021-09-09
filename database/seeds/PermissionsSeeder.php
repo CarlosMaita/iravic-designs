@@ -355,6 +355,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Spendings
+            [
+                'name'         => 'view-spending',
+                'display_name' => 'Gastos Ver',
+                'description'  => 'Gastos Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-spending',
+                'display_name' => 'Gastos Crear',
+                'description'  => 'Gastos Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-spending',
+                'display_name' => 'Gastos Editar',
+                'description'  => 'Gastos Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-spending',
+                'display_name' => 'Gastos Eliminar',
+                'description'  => 'Gastos Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Visits
             [
                 'name'         => 'view-visit',

@@ -169,13 +169,6 @@ class CustomerController extends Controller
                 array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
                 array('receipt_picture' => $cliente->updateImage(Customer::DISK_RECEIPT, $cliente->receipt_picture, $request->receipt_picture, 
                 $request->delete_receipt_picture)),
-
-
-                array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
-                array('dni_picture' => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
-                array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
-
-
                 $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $this->customerRepository->update($cliente->id, $attributes);

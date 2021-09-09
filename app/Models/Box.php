@@ -24,7 +24,8 @@ class Box extends Model
         'total_cash',
         'total_cash_in_box',
         'total_credit',
-        'total_payed'
+        'total_payed',
+        'total_spent'
     ];
 
     # Relationships
@@ -38,9 +39,20 @@ class Box extends Model
         return $this->hasMany('App\Models\Payment');
     }
 
+    public function spendings()
+    {
+        return $this->hasMany('App\Models\Spending');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    # Scopes
+    public function scopeWhereUser($query, $user_id)
+    {
+        return $query->where('user_id', $user_id);
     }
 
     # Accessors
@@ -71,12 +83,6 @@ class Box extends Model
         return null;
     }
 
-    # Scopes
-    public function scopeWhereUser($query, $user_id)
-    {
-        return $query->where('user_id', $user_id);
-    }
-
     # Appends
     public function getTotalBankwireAttribute()
     {
@@ -100,6 +106,7 @@ class Box extends Model
     {
         $total = $this->getTotalByPaymentMethod('cash');
         $total += $this->getOriginal('cash_initial');
+        $total -= $this->getTotalSpent();
         return '$ ' . number_format($total, 2, '.', ','); 
     }
     
@@ -112,6 +119,12 @@ class Box extends Model
     public function getTotalPayedAttribute()
     {
         $total = $this->getTotalPayed();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
+    public function getTotalSpentAttribute()
+    {
+        $total = $this->getTotalSpent();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
@@ -148,5 +161,10 @@ class Box extends Model
         }
 
         return $payments->sum('amount');
+    }
+
+    public function getTotalSpent()
+    {
+        return $this->spendings()->sum('amount');
     }
 }

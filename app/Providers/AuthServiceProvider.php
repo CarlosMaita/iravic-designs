@@ -26,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\ProductStockTransfer'   => 'App\Policies\ProductStockTransferPolicy',
         'App\Models\Role'                   => 'App\Policies\RolePolicy',
         'App\Models\Schedule'               => 'App\Policies\SchedulePolicy',
+        'App\Models\Spending'               => 'App\Policies\SpendingPolicy',
         'App\Models\Visit'                  => 'App\Policies\VisitPolicy',
         'App\Models\Zone'                   => 'App\Policies\ZonePolicy',
         'App\User'                          => 'App\Policies\UserPolicy'

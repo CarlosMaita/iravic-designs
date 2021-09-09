@@ -22,6 +22,26 @@ class ImageService
 
         return null;
     }
+
+    /**
+     * 
+     */
+    public static function updateImage($disk, $old_image, $new_file, $delete)
+    {
+        $url = null;
+
+        if ($delete || $new_file) {
+            self::delete($disk, $old_image);
+        }
+
+        if ($new_file) {
+            $url = self::save($disk, $new_file);
+        } else if (!$delete) {
+            $url = $old_image;
+        }
+
+        return $url;
+    }
     
     /**
      * 

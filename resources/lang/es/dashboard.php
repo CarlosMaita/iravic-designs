@@ -22,27 +22,7 @@ return [
         'total_cash'        => 'Total Efectivo',
         'total_credit'      => 'Total Crédito',
         'total_payed'       => 'Total Pagado',
-        'user'              => 'Usuario'
-    ],
-    'orders' => [
-        'index'             => 'Listado de Pedidos',
-        'create'            => 'Crear nuevo Pedido',
-        'edit'              => 'Editar Pedido',
-        'order'             => 'Pedido',
-        'id'                => 'ID',
-        'box_id'            => 'ID Caja',
-        'customer'          => 'Cliente',
-        'date'              => 'Fecha',
-        'payment_method'    => 'Método de pago',
-        'products'          => [
-            'index'         => 'Productos',
-            'name'          => 'Nombre',
-            'color'         => 'Color',
-            'qty'           => 'Cant.',
-            'size'          => 'Talla',
-            'total'         => 'Total'
-        ],
-        'total'             => 'Total',
+        'total_spent'       => 'Total Gastado',
         'user'              => 'Usuario'
     ],
     'breadcrumb' => [
@@ -177,6 +157,13 @@ return [
                 'available'         => 'Disponible',
                 'qty'               => 'Cantidad'
             ],
+            'spendings' => [
+                'id'      => 'ID',
+                'date'    => 'Fecha',
+                'amount'  => 'Monto',
+                'comment' => 'Comentario',
+                'picture' => 'Foto'
+            ],
             'users' => [
                 'email' => 'Correo electrónico',
                 'name'  => 'Nombre',
@@ -220,6 +207,27 @@ return [
         'enter-current-password'    => 'Ingresa tu contraseña actual',
         'info-password'             => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.'
     ],
+    'orders' => [
+        'index'             => 'Listado de Pedidos',
+        'create'            => 'Crear nuevo Pedido',
+        'edit'              => 'Editar Pedido',
+        'order'             => 'Pedido',
+        'id'                => 'ID',
+        'box_id'            => 'ID Caja',
+        'customer'          => 'Cliente',
+        'date'              => 'Fecha',
+        'payment_method'    => 'Método de pago',
+        'products'          => [
+            'index'         => 'Productos',
+            'name'          => 'Nombre',
+            'color'         => 'Color',
+            'qty'           => 'Cant.',
+            'size'          => 'Talla',
+            'total'         => 'Total'
+        ],
+        'total'             => 'Total',
+        'user'              => 'Usuario'
+    ],
     'payments' => [
         'id'                => 'ID',
         'amount'            => 'Monto',
@@ -254,6 +262,13 @@ return [
         'permissions'           => 'Permisos',
         'privileges'            => 'Privilegios',
         'zones'                 => 'Zonas'
+    ],
+    'spendings' => [
+        'id'      => 'ID',
+        'date'    => 'Fecha',
+        'amount'  => 'Monto',
+        'comment' => 'Comentario',
+        'picture' => 'Foto'
     ],
     'visits' => [
         'id'            => 'ID',

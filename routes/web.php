@@ -72,9 +72,11 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('cajas', 'BoxController');
         #
-        Route::resource('pedidos', 'OrderController')->except('destroy');
+        Route::resource('gastos', 'SpendingController')->except('create');
         #
         Route::resource('pagos', 'PaymentController')->except('create');
+        #
+        Route::resource('pedidos', 'OrderController')->except('destroy');
     });
 
     # Config Routes

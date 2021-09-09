@@ -91,6 +91,13 @@ return [
             'url' => env('APP_URL').'/storage/img/products',
             'visibility' => 'public',
         ],
+
+        'spendings' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/img/spendings'),
+            'url' => env('APP_URL').'/storage/img/spendings',
+            'visibility' => 'public',
+        ],
     ],
 
 ];
