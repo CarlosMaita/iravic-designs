@@ -10,6 +10,7 @@
                     <th>{{ __('dashboard.visits.comment') }}</th>
                     <th>{{ __('dashboard.visits.responsable') }}</th>
                     <th>{{ __('dashboard.visits.completed') }}</th>
+                    <th>{{ __('dashboard.visits.whatsapp') }}</th>
                 </tr>
             </thead>
             </table>

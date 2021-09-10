@@ -89,6 +89,18 @@
 
                             return html;
                         }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            var content = '';
+
+                            if (row.customer.cellphone) {
+                                content = `<a class="whatsapp-link" href="https://wa.me/${row.customer.cellphone}?text=Probando mensaje desde js" target='_blank'><i class="fab fa-whatsapp"></i></a>`;
+                            }
+
+                            return content;
+                        },
+                        class: 'text-center'
                     }
                 ],
                 pageLength: 25,

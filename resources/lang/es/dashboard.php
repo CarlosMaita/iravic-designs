@@ -286,6 +286,7 @@ return [
         'date'          => 'Fecha',
         'responsable'   => 'Responsable',
         'schedule'      => 'Agenda',
+        'whatsapp'      => 'Whatsapp',
         'zone'          => 'Zona'
     ],
     'zones' => [
