@@ -23,8 +23,8 @@ class PermissionsSeeder extends Seeder
             ],
             [
                 'name'         => 'create-configuration',
-                'display_name' => 'Configuraciones Ver',
-                'description'  => 'Configuraciones Ver',
+                'display_name' => 'Configuraciones Crear',
+                'description'  => 'Configuraciones Crear',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
