@@ -121,6 +121,7 @@ class Customer extends Model
     public function getTotalDebtAttribute()
     {
         $total = $this->getTotalDebt();
+        $total *= -1;
         return '$ ' . number_format($total, 2, '.', ',');
     }
 

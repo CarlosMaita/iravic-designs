@@ -59,7 +59,7 @@ class PaymentRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        
+        /*
         if (isset($this->customer_id) && isset($this->amount) && $customer = Customer::find($this->customer_id)) {
             if ($this->isMethod('POST') && $this->amount > $customer->getTotalDebt()) {
                 $validator->after(function ($validator) {
@@ -77,7 +77,8 @@ class PaymentRequest extends FormRequest
                 }
             }
         }
-
+        */
+        
         if ($this->isMethod('POST')) {
             if (!$this->box_id) {
                 $validator->after(function ($validator) {
