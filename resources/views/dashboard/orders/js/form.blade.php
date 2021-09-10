@@ -2,11 +2,15 @@
     $(function(){
         const FORM_RESOURCE_ORDERS = $("#form-orders");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
+        const URL_ORDER_DISCOUNT = "{{ route('pedidos.discount') }}";
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');
+        const btn_apply_discount = $('#btn-apply-discount');
+        const btn_open_modal_discount = $('#open-modal-discount');
         const btn_cancel_new_customer = $('#btn-cancel-new-customer');
         const container_new_customer = $('#container-new-customer');
+        const modal_discount = $('#modal-discount');
         const modal_new_customer = $('#modal-new-customer');
         const modal_product = $('#modal-product');
         const modal_product_product_stocks = $('#product-add-stocks');
@@ -16,6 +20,7 @@
         let $customer_max_credit = 0;
         let datatable_products = $('#datatable_products');
         let datatable_products_resume = $('#datatable_products_resume');
+        let discount_to_apply = 0;
 
         $('select').select2({
             matcher: function(params, data) {
@@ -56,6 +61,10 @@
         */
         FORM_RESOURCE_ORDERS.on('submit', function (e) {
             e.preventDefault();
+            if (modal_discount.hasClass('show')) return;
+
+            $('#discount-input').val(discount_to_apply);
+
             var form = $('#form-orders')[0];
             var formData = new FormData(form);
             
@@ -173,13 +182,6 @@
                 addProductToDatatable(product_id, value);
                 updateOrderTotal();
             }
-
-            // $('.modal-product-input').each(function(index, item) {
-            //     var elem = $(item),
-            //         id = elem.data('id'),
-            //         type = elem.data('type'),
-            //         value = elem.val();
-            // });
         });
 
         /**
@@ -203,6 +205,19 @@
         /**
         *
         */
+        btn_open_modal_discount.on('click', function(e) {
+            modal_discount.modal('show');
+        });
+
+        /**
+        *
+        */
+        btn_apply_discount.on('click', function(e) {
+            e.preventDefault();
+            httpCalculateDiscount();
+        });
+
+        
         modal_new_customer.on('hidden.coreui.modal', function(e) {
             select_customer.attr('disabled', false);
         });
@@ -239,7 +254,7 @@
             container.removeClass('d-none');
 
             $customer_max_credit = maxcredit;
-            $('.max-credit').text('$ ' + maxcredit_str);
+            $('.max-credit').text(maxcredit_str);
             $('.total-debt').text(debt);
         });
 
@@ -247,14 +262,20 @@
         *
         */
         function getOrderTotal() {
-            var total = 0;
+            var subtotal = 0,
+                total = 0;
 
             $('.input-product-qty').not("tr.child .input-product-qty").each(function(index, item) {
                 var price = Number($(item).data('price')),
                     val = Number(item.value);
 
-                total += (price * val);
+                subtotal += (price * val);
             });
+
+            return {
+                'subtotal': subtotal,
+                'total': subtotal - discount_to_apply
+            };
 
             return total;
         }
@@ -263,8 +284,9 @@
         * 
         */
         function updateOrderTotal() {
-            var total = getOrderTotal();
-            $('.total').text(`$ ${total}`);
+            var totals = getOrderTotal();
+            $('.subtotal').text(`$ ${replaceNumberWithCommas(totals.subtotal)}`);
+            $('.total').text(`$ ${replaceNumberWithCommas(totals.total)}`);
         }
 
         /**
@@ -542,6 +564,67 @@
             datatable_products_resume.row(tr).data(data).draw();
         }
 
+        /**
+        *
+        */
+        function httpCalculateDiscount() {
+            var data = FORM_RESOURCE_ORDERS.serialize();
+            $.ajax({
+                url: `${URL_ORDER_DISCOUNT}`,
+                type: "GET",
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if (res.success) {
+                        modal_discount.modal('hide');
+                        discount_to_apply = res.data.discount;
+                        $('.discount').text(res.data.discount_format);
+                        $('.subtotal').text(res.data.subtotal);
+                        $('.total').text(res.data.total);
+                    } else {
+                        discount_to_apply = 0;
+                        updateOrderTotal();
+
+                        new Noty({
+                            text: "No se ha podido aplicar el descuento al total de la compra.",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function(e) {
+                    discount_to_apply = 0;
+                    updateOrderTotal();
+
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    } else if (e.responseJSON.message) {
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else if (e.responseJSON.error) {
+                        new Noty({
+                            text: e.responseJSON.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "No se ha podido aplicar el descuento al total de la compra.",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        }
+
         // Add event listener for opening and closing details + Update child input with parent (Original input-product-qty) value
         datatable_products.on('click', 'tr', function () {
             var tr = $(this).closest('tr');
@@ -606,6 +689,16 @@
                     type: 'success'
                 }).show();
         });
+
+        // Utilities
+        function replaceNumberWithCommas(number) {
+            //Seperates the components of the number
+            var n= number.toString().split(".");
+            //Comma-fies the first part
+            n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            //Combines the two sections
+            return n.join(",");
+        }
     });
 
     /**

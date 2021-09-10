@@ -61,6 +61,7 @@ return [
         'zone'                  => 'Zona',
     ],
     'config' => [
+        'index' => 'Listado de configuraciones',
         'roles' => [
             'index'             => 'Listado de Roles',
             'create'            => 'Crear nuevo rol',
@@ -101,6 +102,9 @@ return [
             'boxes' => [
                 'cash_initial' => 'Efectivo inicial'
             ],
+            'config' => [
+                'discount_password' => 'Contraseña para descuentos'
+            ],
             'customers' => [
                 'address'           => 'Dirección',
                 'address_picture'   => 'Foto del frente de la casa',
@@ -119,7 +123,7 @@ return [
                 'zone'              => 'Zona'
             ],
             'general' => [
-                'name' => 'Nombre',
+                'name' => 'Nombre'
             ],
             'orders' => [
                 'customer'  => 'Cliente',
@@ -225,6 +229,8 @@ return [
             'size'          => 'Talla',
             'total'         => 'Total'
         ],
+        'discount'          => 'Descuento',
+        'subtotal'          => 'Subtotal',
         'total'             => 'Total',
         'user'              => 'Usuario'
     ],
@@ -252,6 +258,7 @@ return [
         'categories'            => 'Categorías',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
+        'general'               => 'General',
         'orders'                => 'Pedidos',
         'products'              => 'Productos',
         'products_transfers'    => 'Productos Transferencias',

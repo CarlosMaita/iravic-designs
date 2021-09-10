@@ -81,6 +81,21 @@ class OrderRequest extends FormRequest
                 $validator->errors()->add('box', 'El usuario no tiene una caja abierta en este momento.');
             });
         }
+
+        if (!$validator->fails()) {
+            $totals = $this->getTotal();
+
+            $this->merge([
+                'date'              => now(),
+                'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
+                'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0, 
+                'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
+                'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0,
+                'discount'          => $totals['discount'],
+                'subtotal'          => $totals['subtotal'],
+                'total'             => $totals['total']
+            ]);
+        }
     }
 
     /**
@@ -95,13 +110,7 @@ class OrderRequest extends FormRequest
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,
-            'date'              => now(),
-            'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
-            'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0, 
-            'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
-            'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0,
             'stock_type'        => $user->getColumnStock(),
-            'total'             => $this->getTotal(),
             'user_id'           => $user->id
         ]);
     }
@@ -111,16 +120,21 @@ class OrderRequest extends FormRequest
      */
     public function getTotal()
     {
-        $total = 0;
+        $discount = isset($this->discount) && is_numeric($this->discount) ? $this->discount : 0;
+        $subtotal = 0;
 
         foreach ($this->products as $product_id) {
             if ($product = $this->productRepository->find($product_id)) {
                 if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
-                    $total += ($product->regular_price * $this->qtys[$product_id]);
+                    $subtotal += ($product->regular_price * $this->qtys[$product_id]);
                 }
             }
         }
 
-        return $total;
+        return [
+            'discount' => $discount,
+            'subtotal' => $subtotal,
+            'total' => $subtotal - $discount
+        ];
     }
 }

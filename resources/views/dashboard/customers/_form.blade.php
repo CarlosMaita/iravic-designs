@@ -33,8 +33,8 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="telephone">{{ __('dashboard.form.fields.customers.cellphone') }}</label>
-                <input class="form-control" id="telephone" name="cellphone" type="text" value="{{ old("cellphone", $customer->cellphone) }}">
+                <label for="cellphone">{{ __('dashboard.form.fields.customers.cellphone') }}</label>
+                <input class="form-control" id="cellphone" name="cellphone" type="text" value="{{ old("cellphone", $customer->cellphone) }}">
             </div>
         </div>
     </div>

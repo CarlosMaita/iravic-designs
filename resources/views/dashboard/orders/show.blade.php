@@ -49,6 +49,22 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label>{{ __('dashboard.orders.subtotal') }}</label>
+                                            <input class="form-control" type="text" value="{{ $order->subtotal }}" readOnly>
+                                        </div>
+                                    </div>
+                                    {{--  --}}
+                                    @if ($order->getRawOriginal('discount'))
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ __('dashboard.orders.discount') }}</label>
+                                            <input class="form-control" type="text" value="{{ $order->discount }}" readOnly>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    {{--  --}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label>{{ __('dashboard.orders.total') }}</label>
                                             <input class="form-control" type="text" value="{{ $order->total }}" readOnly>
                                         </div>
@@ -113,6 +129,5 @@
 @endsection
 
 @push('js')
-    @include('plugins.datatable')
     @include('dashboard.orders.js.show')
 @endpush

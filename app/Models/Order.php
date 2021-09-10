@@ -16,6 +16,8 @@ class Order extends Model
         'customer_id',
         'user_id',
         'date',
+        'discount',
+        'subtotal',
         'total',
         'payed_bankwire',
         'payed_card',
@@ -58,6 +60,16 @@ class Order extends Model
         return null;
     }
 
+    public function getDiscountAttribute($value)
+    {
+        return $this->getAmountFormated($value);
+    }
+
+    public function getSubtotalAttribute($value)
+    {
+        return $this->getAmountFormated($value);
+    }
+
     public function getTotalAttribute($value)
     {
         if ($value) {
@@ -87,5 +99,15 @@ class Order extends Model
         }
 
         return '';
+    }
+
+    # Methods
+    public function getAmountFormated($value)
+    {
+        if ($value) {
+            return '$ ' . number_format($value, 2, '.', ',');
+        }
+
+        return '$ 0,00';
     }
 }

@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Box'                    => 'App\Policies\BoxPolicy',
         'App\Models\Brand'                  => 'App\Policies\BrandPolicy',
         'App\Models\Category'               => 'App\Policies\CategoryPolicy',
+        'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
         'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
         'App\Models\Order'                  => 'App\Policies\OrderPolicy',
         'App\Models\Payment'                => 'App\Policies\PaymentPolicy',

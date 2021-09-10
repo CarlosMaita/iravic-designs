@@ -25,6 +25,7 @@
                             <input type="hidden" name="customer_param" value="{{ $customerParam->id }}">
                           @endif
                           @include('dashboard.orders._form')
+                          @include('dashboard.orders._modal_discount')
                           <hr>
                           <div class="container-fluid">
                             <div class="row">
@@ -41,6 +42,8 @@
           </div>
       </div>
   </div>
+  
+  {{-- @include('dashboard.orders._modal_discount') --}}
   @include('dashboard.orders._modal_new_costumer', ['customer' => new App\Models\Customer])
   @include('dashboard.orders._modal_product')
 @endsection

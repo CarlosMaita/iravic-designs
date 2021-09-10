@@ -217,18 +217,18 @@
                                         <br>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: <span class="max-credit">$ 0.00</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
                                             <p class="font-weight-bold text-dark mb-1">Deuda Total: <span class="total-debt">$ 0.00</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="font-weight-bold text-dark">Total: <span class="total">$ 0.00</span></p>
+                                            <hr>
+                                            <div>
+                                                <span>Quiere aplicar algun descuento?</span>
+                                                <button id="open-modal-discount" class="btn btn-light" type="button">Aplicar Descuento</button>
+                                            </div>
+                                            <hr>
+                                            <p class="font-weight-bold text-dark mb-1">Subtotal: <span class="subtotal">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark mb-1">Descuento: <span class="discount">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark mb-1">Total: <span class="total">$ 0.00</span></p>
                                         </div>
                                     </div>
                                 </div> 

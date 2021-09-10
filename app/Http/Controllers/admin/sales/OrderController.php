@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\sales;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\OrderRequest;
+use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
@@ -110,10 +111,10 @@ class OrderController extends Controller
         try {
             $this->authorize('create', 'App\Models\Order');
             DB::beginTransaction();
-            $attributes = $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'total');
+            $attributes = $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'discount' ,'subtotal', 'total');
             $order = $this->orderRepository->create($attributes);
 
-            foreach ($request->products as $key => $product_id) {
+            foreach ($request->products as $product_id) {
                 if ($product = $this->productRepository->find($product_id)) {
                     if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
                         $attributes = array(
@@ -145,6 +146,48 @@ class OrderController extends Controller
             ]);
         } catch (Exception $e) {
             DB::rollback();
+            return response()->json([
+                'message' => __('dashboard.general.operation_error'),
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
+
+
+    /**
+     * Calculate totals.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calculateDiscount(OrderDiscountRequest $request)
+    {
+        try {
+            $discount = $request->discount;
+            $subtotal = 0;
+
+            foreach ($request->products as $product_id) {
+                if ($product = $this->productRepository->find($product_id)) {
+                    if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
+                        $subtotal += ($product->regular_price * $request->qtys[$product_id]);
+                    }
+                }
+            }
+            
+            $total = $subtotal - $discount;
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'discount' => $discount,
+                    'discount_format' => '$ ' . number_format($discount, 2, '.', ','),
+                    'subtotal' =>  '$ ' . number_format($subtotal, 2, '.', ','),
+                    'total' => '$ ' . number_format($total, 2, '.', ',')
+                ]
+            ]);
+        } catch (Exception $e) {
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [

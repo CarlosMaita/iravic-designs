@@ -13,6 +13,21 @@ class PermissionsSeeder extends Seeder
     public function run()
     {
         $permissions = [
+            # Configuration
+            [
+                'name'         => 'view-configuration',
+                'display_name' => 'Configuraciones Ver',
+                'description'  => 'Configuraciones Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-configuration',
+                'display_name' => 'Configuraciones Ver',
+                'description'  => 'Configuraciones Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Permissions
             [
                 'name'         => 'view-permission',

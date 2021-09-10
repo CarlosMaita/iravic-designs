@@ -77,10 +77,14 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('pagos', 'PaymentController')->except('create');
         #
         Route::resource('pedidos', 'OrderController')->except('destroy');
+        #
+        Route::get('pedidos-descuento', 'OrderController@calculateDiscount')->name('pedidos.discount');
     });
 
     # Config Routes
     Route::group(['prefix' => 'config', 'namespace' => 'config'], function () {
+        # 
+        Route::resource('general', 'ConfigController')->only(['index', 'store']);
         # 
         Route::resource('usuarios', 'UserController')->except('show');
         #
