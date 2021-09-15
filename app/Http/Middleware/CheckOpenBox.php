@@ -6,7 +6,7 @@ use App\Repositories\Eloquent\BoxRepository;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckForCreateOrder
+class CheckOpenBox
 {
     public $boxRepository;
 
@@ -14,7 +14,7 @@ class CheckForCreateOrder
     {
         $this->boxRepository = $boxRepository;
     }
-    
+
     /**
      * Handle an incoming request.
      *
@@ -27,8 +27,8 @@ class CheckForCreateOrder
         $user = Auth::user();
         
         if (!$this->boxRepository->getOpenByUserId($user->id)) {
-            flash("Usted no tiene una caja abierta para registrar pedidos.")->warning();
-            return redirect()->route('pedidos.index');
+            flash("Usted no tiene una caja abiertas.")->warning();
+            return redirect()->route('box.index');
         }
 
         return $next($request);

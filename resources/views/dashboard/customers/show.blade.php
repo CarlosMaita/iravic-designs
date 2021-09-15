@@ -23,6 +23,12 @@
                                         <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
                                     </li>
                                     <!--  -->
+                                    @if (count($customer->orders))
+                                    <li class="nav-item">
+                                        <a class="nav-link @if($showRefundsTab) active @endif" id="refunds-tab" data-toggle="tab" href="#refunds" role="tab" aria-controls="refunds" aria-selected="true">Devoluciones</a>
+                                    </li>
+                                    @endif
+                                    <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
                                     </li>
@@ -232,6 +238,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  -->
+                                    @if (count($customer->orders))
+                                    <div class="tab-pane fade @if($showRefundsTab) show active @endif" id="refunds" role="tabpanel" aria-labelledby="refunds-tab">
+                                        @can('create', App\Models\Refund::class)
+                                            <div class="row"> 
+                                                <a href="{{ route('devoluciones.create') }}?cliente={{ $customer->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
+                                            </div>
+                                            <br>
+                                        @endcan
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.refunds._datatable', ['refunds' => $refunds])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                     <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                                         @can('create', App\Models\Payment::class)

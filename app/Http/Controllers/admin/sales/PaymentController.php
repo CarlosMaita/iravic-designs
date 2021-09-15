@@ -23,6 +23,7 @@ class PaymentController extends Controller
     {
         $this->paymentRepository = $paymentRepository;
         $this->visitRepository = $visitRepository;
+        $this->middleware('box.open')->only('create');
     }
 
     /**

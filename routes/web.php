@@ -72,6 +72,10 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('cajas', 'BoxController');
         #
+        Route::resource('devoluciones', 'RefundController', ['parameters' => [
+            'devoluciones' => 'devolucion'
+        ]])->except('edit', 'update', 'destroy');
+        #
         Route::resource('gastos', 'SpendingController')->except('create');
         #
         Route::resource('pagos', 'PaymentController')->except('create');

@@ -19,19 +19,19 @@
                   <div class="card">
                       <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.orders.create') }}</div>
                       <div class="card-body px-2">
-                        <form id="form-orders" method="POST" action="{{ route('pedidos.store') }}">
+                        <form id="form-refunds" method="POST" action="{{ route('devoluciones.store') }}">
                           @csrf
                           @if (!empty($customerParam))
                             <input type="hidden" name="customer_param" value="{{ $customerParam->id }}">
                           @endif
-                          @include('dashboard.orders._form')
-                          @include('dashboard.orders._modal_discount')
+                          @include('dashboard.refunds._form')
+                          @include('dashboard.refunds._modal_discount')
                           <hr>
                           <div class="container-fluid">
                             <div class="row">
                               <div class="col-md-12 justify-content-end">
                                 {{-- <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button> --}}
-                                <a href="{{ route('pedidos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                                <a href="{{ route('devoluciones.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                               </div>
                             </div>
                           </div>
@@ -43,22 +43,20 @@
       </div>
   </div>
   
-  @include('dashboard.orders._modal_new_costumer', ['customer' => new App\Models\Customer])
-  @include('dashboard.orders._modal_product')
+  @include('dashboard.refunds._modal_product')
+  @include('dashboard.refunds._modal_product_refund')
 @endsection
 
 @push('js')
   <script>
     const $customer = null;
-    const is_creating_order = true;
+    const is_creating_refund = true;
     const $products = @json($products);
+    
+    var $productsForRefund = @json($productsForRefund);
   </script>
-  <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
 
-  @include('plugins.google-maps')
   @include('plugins.select2')
   @include('plugins.sweetalert')
-  @include('dashboard.customers.js.customer-map')
-  @include('dashboard.customers.js.form')
-  @include('dashboard.orders.js.form')
+  @include('dashboard.refunds.js.form')
 @endpush

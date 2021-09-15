@@ -14,6 +14,7 @@ class Order extends Model
     public $fillable = [
         'box_id',
         'customer_id',
+        'refund_id',
         'user_id',
         'date',
         'discount',
@@ -72,11 +73,7 @@ class Order extends Model
 
     public function getTotalAttribute($value)
     {
-        if ($value) {
-            return '$ ' . number_format($value, 2, '.', ',');
-        }
-
-        return '$ 0,00';
+        return $this->getAmountFormated($value);
     }
 
     # Appends

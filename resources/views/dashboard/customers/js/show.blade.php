@@ -9,9 +9,22 @@
             pageLength: 25
         });
 
+        let datatable_refunds = $('#datatable_refunds').DataTable({
+            ordering: false,
+            pageLength: 25
+        });
+
         $('#orders-tab').on('click', function(e) {
             setTimeout(function(e) {
                 datatable_orders
+                .columns.adjust()
+                .responsive.recalc();
+            }, 1000);
+        });
+
+        $('#refunds-tab').on('click', function(e) {
+            setTimeout(function(e) {
+                datatable_refunds
                 .columns.adjust()
                 .responsive.recalc();
             }, 1000);

@@ -341,6 +341,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Returns
+            [
+                'name'         => 'view-refund',
+                'display_name' => 'Cambios/Devoluciones Ver',
+                'description'  => 'Cambios/Devoluciones Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-refund',
+                'display_name' => 'Cambios/Devoluciones Crear',
+                'description'  => 'Cambios/Devoluciones Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-refund',
+                'display_name' => 'Cambios/Devoluciones Editar',
+                'description'  => 'Cambios/Devoluciones Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-refund',
+                'display_name' => 'Cambios/Devoluciones Eliminar',
+                'description'  => 'Cambios/Devoluciones Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Payments
             [
                 'name'         => 'view-payment',

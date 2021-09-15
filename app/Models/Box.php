@@ -34,6 +34,11 @@ class Box extends Model
         return $this->hasMany('App\Models\Order');
     }
 
+    public function refunds()
+    {
+        return $this->hasMany('App\Models\Refund');
+    }
+
     public function payments()
     {
         return $this->hasMany('App\Models\Payment');

@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify" aria-hidden="true"></i> {{ __('dashboard.orders.order') }} - #{{ $order->id }} </div>
                         <div class="card-body">
-                            <div class="container-fluid mb-3">
+                            <div class="container-fluid mb-3 px-0">
                                 <!--  -->
                                 <div class="row">
                                     <div class="col-md-12">
@@ -71,6 +71,14 @@
                                     </div>
                                 </div>
                                 <!--  -->
+                                @if (Auth::user()->can('viewany', App\Models\Refund::class))
+                                    <br>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <a href="{{ route('devoluciones.show', [$order->refund_id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de devolución (origen) del cuál se realizó este pedido.</a>
+                                        </div>
+                                    </div>
+                                @endif
                                 <br>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">

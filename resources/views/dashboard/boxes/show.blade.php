@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-0">
                     <div class="card">
                         <div class="card-header">@if($box->closed) <i class="fa fa-lock" aria-hidden="true"></i> @else <i class="fa fa-unlock" aria-hidden="true"></i> @endif {{ __('dashboard.boxes.box') }} - #{{ $box->id }} </div>
                         <div class="card-body">
@@ -23,6 +23,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
                                     </li>
+                                    <!--  -->
+                                    @if (count($box->orders))
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="refunds-tab" data-toggle="tab" href="#refunds" role="tab" aria-controls="refunds" aria-selected="true">Devoluciones</a>
+                                    </li>
+                                    @endif
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
@@ -175,6 +181,26 @@
                                         </div>
                                     </div>
                                     <!--  -->
+                                    @if (count($box->orders))
+                                    <div class="tab-pane fade" id="refunds" role="tabpanel" aria-labelledby="refunds-tab">
+                                        @can('create', App\Models\Refund::class)
+                                            @if (!$box->closed)
+                                            <div class="row"> 
+                                                <a href="{{ route('devoluciones.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
+                                            </div>
+                                            <br>
+                                            @endif
+                                        @endcan
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.refunds._datatable', ['refunds' => $box->refunds])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                                         <div class="row mt-3">
                                             <div class="col-12">
@@ -221,11 +247,6 @@
         const $box = @json($box);
         
         $(function() {
-            $('#datatable_orders').DataTable({
-                ordering: false,
-                pageLength: 25,
-            });
-
             // $('#orders')
             // // .bind('beforeShow', function() {
             // // }) 
@@ -240,9 +261,27 @@
             // })
             // .show();
 
+            let datatable_orders = $('#datatable_orders').DataTable({
+                ordering: false,
+                pageLength: 25
+            });
+
+            let datatable_refunds = $('#datatable_refunds').DataTable({
+                ordering: false,
+                pageLength: 25
+            });
+
             $('#orders-tab').on('click', function(e) {
                 setTimeout(function(e) {
-                    DATATABLE_RESOURCE.DataTable()
+                    datatable_orders
+                    .columns.adjust()
+                    .responsive.recalc();
+                }, 1000);
+            });
+
+            $('#refunds-tab').on('click', function(e) {
+                setTimeout(function(e) {
+                    datatable_refunds
                     .columns.adjust()
                     .responsive.recalc();
                 }, 1000);

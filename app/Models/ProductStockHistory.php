@@ -14,6 +14,7 @@ class ProductStockHistory extends Model
         'order_product_id',
         'product_id',
         'product_stock_transfer_id',
+        'refund_product_id',
         'user_id',
         'action',
         'new_stock',

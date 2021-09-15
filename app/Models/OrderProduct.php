@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderProduct extends Model
 {
     protected $table = 'orders_products';
-    protected $guarded = [];
+    
     public $fillable = [
         'color_id',
         'order_id',
@@ -18,6 +18,11 @@ class OrderProduct extends Model
         'size_id',
         'stock_type',
         'total'
+    ];
+
+    public $appends = [
+        'available_for_refund',
+        'product_price_str',
     ];
 
     # Boot
@@ -47,6 +52,11 @@ class OrderProduct extends Model
         return $this->belongsTo('App\Models\Product')->withTrashed();
     }
     
+    public function refunds_products()
+    {
+        return $this->hasMany('App\Models\RefundProduct');
+    }
+
     public function size()
     {
         return $this->belongsTo('App\Models\Size');
@@ -56,5 +66,18 @@ class OrderProduct extends Model
     public function getTotalAttribute($value)
     {
         return '$ ' . number_format($value, 2, '.', ',');
+    }
+
+    # Appends
+    public function getAvailableForRefundAttribute()
+    {
+        $qty_refunded = $this->refunds_products()->sum('qty');
+        return $this->qty - $qty_refunded;
+    }
+
+    
+    public function getProductPriceStrAttribute()
+    {
+        return '$ ' . number_format($this->product_price, 2, '.', ',');
     }
 }

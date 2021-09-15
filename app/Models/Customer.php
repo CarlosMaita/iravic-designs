@@ -13,8 +13,6 @@ class Customer extends Model
     use SoftDeletes;
 
     protected $table = 'customers';
-    
-    protected $guarded = [];
 
     public $fillable = [
         'zone_id',
@@ -72,6 +70,11 @@ class Customer extends Model
     public function payments()
     {
         return $this->hasMany('App\Models\Payment');
+    }
+
+    public function refunds()
+    {
+        return $this->hasMany('App\Models\Refund');
     }
 
     public function visits()

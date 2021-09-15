@@ -39,7 +39,7 @@ class OrderController extends Controller
         $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
         $this->zoneRepository = $zoneRepository;
-        $this->middleware('order.create')->only('create');
+        $this->middleware('box.open')->only('create');
     }
 
     /**
@@ -155,7 +155,6 @@ class OrderController extends Controller
             ]);
         }
     }
-
 
     /**
      * Calculate totals.

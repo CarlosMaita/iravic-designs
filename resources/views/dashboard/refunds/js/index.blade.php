@@ -1,12 +1,13 @@
 <script>
     $(function () {
-        const URL_RESOURCE = "{{ route('pedidos.index') }}";
-        const DATATABLE_RESOURCE = $("#datatable_orders");
+        const URL_RESOURCE = "{{ route('devoluciones.index') }}";
+        
+        let datatable_resource = $("#datatable_refunds");
 
         initDataTable();
 
         function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
+            datatable_resource.DataTable({
                 fixedHeader: true,
                 processing: false,
                 responsive: true,
@@ -18,8 +19,6 @@
                     {data: 'id'},
                     {data: 'customer.name'},
                     {data: 'date'},
-                    {data: 'payment_method'},
-                    {data: 'total'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
@@ -28,7 +27,7 @@
         /**
         *
         */
-        $('body').on('click', 'tbody .delete-box', function (e) {
+        $('body').on('click', 'tbody .delete-refund', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
             let token = $("input[name=_token]").val();
@@ -49,7 +48,7 @@
                     datatype: 'json',
                     success: function (response) {
                         if (response.success) {
-                            DATATABLE_RESOURCE.DataTable().ajax.reload();
+                            datatable_resource.DataTable().ajax.reload();
                             new Noty({
                                 text: response.message,
                                 type: 'success'
@@ -66,7 +65,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar el pedido en este momento.",
+                                text: "No se puede eliminar la devolución en este momento.",
                                 type: 'error'
                             }).show();
                         }
@@ -88,7 +87,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar el pedido en este momento.",
+                                text: "No se puede eliminar la devolución en este momento.",
                                 type: 'error'
                             }).show();
                         }
@@ -96,6 +95,5 @@
                 });
             }).catch(swal.noop);
         });
-
     });
 </script>

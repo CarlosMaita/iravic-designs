@@ -108,6 +108,11 @@ class Product extends Model
         return $this->belongsTo('App\Models\Product', 'product_id', 'id');
     }
 
+    public function products_ordered()
+    {
+        return $this->hasMany('App\Models\OrderProduct', 'product_id', 'id');
+    }
+
     public function size()
     {
         return $this->belongsTo('App\Models\Size');
@@ -219,12 +224,13 @@ class Product extends Model
     }
 
     # Methods
-    public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null, $product_stock_transfer_id = null)
+    public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null, $product_stock_transfer_id = null, $refund_product_id = null)
     {
         $attributes = array(
             'user_id' => $user_id,
             'order_product_id' => $order_product_id,
             'product_stock_transfer_id' => $product_stock_transfer_id,
+            'refund_product_id' => $refund_product_id,
             'action' => $action,
             'new_stock' => $new_stock,
             'old_stock' => $old_stock,
@@ -244,6 +250,27 @@ class Product extends Model
         }
 
         return $this->price ? $this->price : 0;
+    }
+
+    public function addStockUser($refund_product_id, $qty, $action)
+    {
+        $user = Auth::user();
+        $column_stock = $user->getColumnStock();
+        $old_stock = $this->stock_user;
+        $new_stock = ($old_stock - $qty);
+
+        if ($column_stock) {
+            $product = $this;
+            Product::withoutEvents(function () use ($product, $column_stock, $new_stock) {
+                $product = Product::find($product->id);
+                $product->$column_stock = $new_stock;
+                $product->save();
+
+                return $product;
+            });
+
+            $this->addStockHistoryRecord($user->id, $action, $new_stock, $old_stock, $qty, $column_stock, null, null, $refund_product_id);
+        }
     }
 
     public function subtractStockUser($order_product_id, $qty, $action)

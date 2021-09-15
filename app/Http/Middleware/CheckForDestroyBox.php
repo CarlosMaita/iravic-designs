@@ -18,7 +18,7 @@ class CheckForDestroyBox
     {
         $box = $request->route('caja');
 
-        if ($box->ventas()->count()) {
+        if ($box->orders()->count()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No puede eliminar una caja que ya posea ventas registradas.'

@@ -130,11 +130,16 @@ class CustomerController extends Controller
     {
         $this->authorize('view', $cliente);
         $orders = $cliente->orders()->orderBy('date', 'desc')->get();
+        $refunds = $cliente->refunds()->orderBy('date', 'desc')->get();
         $showOrdersTab = isset($request->pedidos) ? true : false;
+        $showRefundsTab = isset($request->devoluciones) ? true : false;
+
         return view('dashboard.customers.show')
                 ->withCustomer($cliente)
                 ->withOrders($orders)
-                ->withShowOrdersTab($showOrdersTab);
+                ->withRefunds($refunds)
+                ->withShowOrdersTab($showOrdersTab)
+                ->withShowRefundsTab($showRefundsTab);
     }
 
     /**

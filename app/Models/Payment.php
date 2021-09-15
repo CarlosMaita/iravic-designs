@@ -12,6 +12,7 @@ class Payment extends Model
     public $fillable = [
         'box_id',
         'customer_id',
+        'refund_id',
         'user_id',
         'amount',
         'comment',
@@ -36,6 +37,11 @@ class Payment extends Model
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer');
+    }
+    
+    public function refund()
+    {
+        return $this->belongsTo('App\Models\Refund');
     }
 
     public function user()

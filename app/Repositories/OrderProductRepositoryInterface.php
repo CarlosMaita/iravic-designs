@@ -2,8 +2,12 @@
 
 namespace App\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 interface OrderProductRepositoryInterface
 {
+    /**
+     * 
+     */
+    public function availableForRefund($customer_id): Collection;
 }
