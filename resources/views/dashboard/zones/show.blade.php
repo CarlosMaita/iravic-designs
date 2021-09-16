@@ -10,15 +10,19 @@
                         <div class="card-body">
                             <div class="container-fluid px-0">
                                 <div class="row">
-                                    <div class="col-sm-4 mt-2">
+                                    <div class="col-sm-3 col-6 mt-2">
+                                        <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="Bueno">
+                                        <span class="mr-4">Muy Bueno</span>
+                                    </div>
+                                    <div class="col-sm-3 col-6 mt-2">
                                         <img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="Bueno">
                                         <span class="mr-4">Bueno</span>
                                     </div>
-                                    <div class="col-sm-4 mt-2">
+                                    <div class="col-sm-3 col-6 mt-2">
                                         <img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" alt="Malo">
                                         <span class="mr-4">Malo</span>
                                     </div>
-                                    <div class="col-sm-4 mt-2">
+                                    <div class="col-sm-3 col-6 mt-2">
                                         <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Muy Malo">
                                         <span>Muy Malo</span>
                                     </div>

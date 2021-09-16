@@ -55,6 +55,9 @@
         var icon = '';
 
         switch (customer.qualification) {
+            case 'Muy Bueno':
+                icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+                break;
             case 'Bueno':
                 icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
                 break;

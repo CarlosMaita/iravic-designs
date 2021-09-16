@@ -1,5 +1,5 @@
 <div id="modal-map" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Agenda {{ $schedule->date }}</h5>
@@ -40,15 +40,19 @@
                     </div>
                     @endif
                     <div class="row">
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-3 col-6 mt-2">
+                            <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="Bueno">
+                            <span class="mr-4">Muy Bueno</span>
+                        </div>
+                        <div class="col-md-3 col-6 mt-2">
                             <img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="Bueno">
                             <span class="mr-4">Bueno</span>
                         </div>
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-3 col-6 mt-2">
                             <img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" alt="Malo">
                             <span class="mr-4">Malo</span>
                         </div>
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-3 col-6 mt-2">
                             <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Muy Malo">
                             <span>Muy Malo</span>
                         </div>
