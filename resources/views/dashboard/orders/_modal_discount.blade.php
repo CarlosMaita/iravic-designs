@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="btn-apply-discount" class="btn btn-primary" type="button">Calcular</button>
+                <button id="btn-apply-discount" class="btn btn-primary" type="button">Aplicar</button>
                 <button class="btn btn-danger" type="button" data-dismiss="modal">{{ __('dashboard.form.cancel') }}</button>
             </div>
         </div>
