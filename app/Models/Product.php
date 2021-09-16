@@ -257,7 +257,7 @@ class Product extends Model
         $user = Auth::user();
         $column_stock = $user->getColumnStock();
         $old_stock = $this->stock_user;
-        $new_stock = ($old_stock - $qty);
+        $new_stock = ($old_stock + $qty);
 
         if ($column_stock) {
             $product = $this;
