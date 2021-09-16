@@ -34,81 +34,6 @@
         });
 
         /**
-        * Init Datatable
-        */
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
-                ajax: {
-                    url: URL_RESOURCE,
-                    dataSrc: function(data) {
-                        return data.visits ? data.visits : [];
-                    },
-                },
-                columns: [
-                    {
-                        render: function (data, type, row) {
-                            var html = '<div class="d-flex align-items-start">',
-                                url = "{{ route('clientes.index') }}";
-
-                            @if (Auth::user()->can('viewany', App\Models\Customer::class))
-                                html += `<a href="${url}/${row.customer_id}" class="link"><span>${row.customer.name}</span></a>`;
-                            @else
-                                html += `<span>${row.customer.name}</span>`;
-                            @endif
-
-                            html += `</div>`;
-
-                            return html;
-                        }
-                    },
-                    {data: 'customer.address'},
-                    {data: 'customer.zone.name'},
-                    {data: 'comment'},
-                    {
-                        render: function (data, type, row) {
-                            var html = row.responsable ? `<span>${row.responsable.name}</span>` : '<span>Por asignar</span>';
-
-                            @if (Auth::user()->can('updateResponsable', App\Models\Visit::class))
-                                html += `<button data-id="${row.id}"  class="btn btn-sm btn-success btn-action-icon btn-edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>`;
-                            @endif
-
-                            return html;
-                        }
-                    },
-                    {
-                        render: function (data, type, row) {
-                            var html = row.is_completed ? '<span>Si</span>' : '<span>No</span>';
-
-                            @if (Auth::user()->can('complete', App\Models\Visit::class))
-                                if (row.is_completed) {
-                                    html += `<button data-id="${row.id}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-times"></i></button>`;
-                                } else {
-                                    html += `<button data-id="${row.id}" data-to-complete="1" class="btn btn-sm btn-success btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-check"></i></button>`;
-                                }
-                            @endif
-
-                            return html;
-                        }
-                    },
-                    {
-                        render: function (data, type, row) {
-                            var content = '';
-
-                            if (row.customer.cellphone) {
-                                content = `<a class="whatsapp-link" href="https://wa.me/${row.customer.cellphone}?text=Probando mensaje desde js" target='_blank'><i class="fab fa-whatsapp"></i></a>`;
-                            }
-
-                            return content;
-                        },
-                        class: 'text-center'
-                    }
-                ],
-                pageLength: 25,
-                responsive: true
-            });
-        }
-
-        /**
         *
         */
         btn_open_map.on('click', function(e) {
@@ -351,5 +276,103 @@
                 }
             });
         });
+
+
+        /**
+        * Init Datatable
+        */
+        function initDataTable() {
+            DATATABLE_RESOURCE.DataTable({
+                ajax: {
+                    url: URL_RESOURCE,
+                    dataSrc: function(data) {
+                        return data.visits ? data.visits : [];
+                    },
+                },
+                columns: [
+                    {
+                        render: function (data, type, row) {
+                            var html = '<div class="d-flex align-items-start">',
+                                url = "{{ route('clientes.index') }}";
+
+                            @if (Auth::user()->can('viewany', App\Models\Customer::class))
+                                html += `<a href="${url}/${row.customer_id}" class="link"><span>${row.customer.name}</span></a>`;
+                            @else
+                                html += `<span>${row.customer.name}</span>`;
+                            @endif
+
+                            html += `</div>`;
+
+                            return html;
+                        }
+                    },
+                    {data: 'customer.address'},
+                    {data: 'customer.zone.name'},
+                    {data: 'comment'},
+                    {
+                        render: function (data, type, row) {
+                            var html = row.responsable ? `<span>${row.responsable.name}</span>` : '<span>Por asignar</span>';
+
+                            @if (Auth::user()->can('updateResponsable', App\Models\Visit::class))
+                                html += `<button data-id="${row.id}"  class="btn btn-sm btn-success btn-action-icon btn-edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>`;
+                            @endif
+
+                            return html;
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            var html = row.is_completed ? '<span>Si</span>' : '<span>No</span>';
+
+                            @if (Auth::user()->can('complete', App\Models\Visit::class))
+                                if (row.is_completed) {
+                                    html += `<button data-id="${row.id}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-times"></i></button>`;
+                                } else {
+                                    html += `<button data-id="${row.id}" data-to-complete="1" class="btn btn-sm btn-success btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-check"></i></button>`;
+                                }
+                            @endif
+
+                            return html;
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            var content = '';
+
+                            if (row.customer.cellphone) {
+                                content = getCustomerWhatsappLink(row.customer);
+                            }
+
+                            return content;
+                        },
+                    }
+                ],
+                pageLength: 25,
+                responsive: true
+            });
+        }
+
+        function getCustomerForWhatsappNumber(cellphone) {
+            cellphone = cellphone.replace('+','');
+            cellphone = cellphone.replace(' ','');
+
+            if (cellphone.charAt(0) == 0) {
+                cellphone = cellphone.substring(1)
+            }
+
+            return cellphone;
+        }
+
+        function getCustomerWhatsappMessage(customer) {
+            return `Hola ${customer.name}, te escribirmos desde MN Calzados. Tenemos una visita agendada contigo para el día de hoy. Podrías confirmarnos que estarás?`;
+        }
+
+        function getCustomerWhatsappLink(customer) {
+            var cellphone = getCustomerForWhatsappNumber(customer.cellphone);
+            var message = getCustomerWhatsappMessage(customer);
+            console.log(cellphone)
+            console.log(message)
+            return `<a class="whatsapp-link" href="https://wa.me/${cellphone}?text=${message}" target='_blank'><i class="fab fa-whatsapp"></i></a>`;
+        }
     });
 </script>
