@@ -364,14 +364,13 @@
         }
 
         function getCustomerWhatsappMessage(customer) {
-            return `Hola ${customer.name}, te escribirmos desde MN Calzados. Tenemos una visita agendada contigo para el día de hoy. Podrías confirmarnos que estarás?`;
+            return `Hola buenos días, te escribirmos desde MN Calzados. Tenemos agendado para pasar a cobrar hoy. Te queda bien?`;
         }
 
         function getCustomerWhatsappLink(customer) {
             var cellphone = getCustomerForWhatsappNumber(customer.cellphone);
             var message = getCustomerWhatsappMessage(customer);
-            console.log(cellphone)
-            console.log(message)
+            
             return `<a class="whatsapp-link" href="https://wa.me/${cellphone}?text=${message}" target='_blank'><i class="fab fa-whatsapp"></i></a>`;
         }
     });
