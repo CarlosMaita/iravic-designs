@@ -343,9 +343,6 @@ class ProductController extends Controller
             }
         }
 
-        // return view('pdf.catalog')
-        //         ->withDate(now()->format('d-m-Y'))
-        //         ->withcategories($categories);
 
         // $customPaper = array(0, 0, 5000, 1440);
         $customPaper = array(0, 0, 5000, 650);
@@ -356,6 +353,6 @@ class ProductController extends Controller
         ])
         ->setPaper($customPaper, 'landscape');
 
-        return $pdf->stream('catalogo.pdf');
+        return $pdf->download('catalogo.pdf');
     }
 }
