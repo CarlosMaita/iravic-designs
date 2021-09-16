@@ -215,6 +215,14 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <label>{{ __('dashboard.customers.total_refund_credit') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $customer->total_refund_credit }}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
                                                         <label>{{ __('dashboard.customers.total_debt') }}</label>
                                                         <input class="form-control" type="text" value="{{ $customer->total_debt }}" readOnly>
                                                     </div>

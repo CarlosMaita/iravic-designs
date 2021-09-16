@@ -56,6 +56,7 @@ return [
         'total_buyed'           => 'Total comprado',
         'total_credit_give_for' => 'Total crédito dado',
         'total_payments'        => 'Total pagos',
+        'total_refund_credit'   => 'Total crédito devuelto',
         'total_debt'            => 'Total deuda',
         'qualification'         => 'Calificación',
         'zone'                  => 'Zona',

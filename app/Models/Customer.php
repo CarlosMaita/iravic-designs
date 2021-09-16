@@ -40,6 +40,7 @@ class Customer extends Model
         'total_credit',
         'total_debt',
         'total_payments',
+        'total_refund_credit',
         'url_address',
         'url_dni',
         'url_receipt'
@@ -134,6 +135,12 @@ class Customer extends Model
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    public function getTotalRefundCreditAttribute()
+    {
+        $total = $this->getTotalRefundCredit();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
     public function getUrlAddressAttribute()
     {
         if (Storage::disk(self::DISK_ADDRESS)->exists($this->address_picture)) {
@@ -195,11 +202,27 @@ class Customer extends Model
         return $this->payments()->sum('amount');
     }
 
+    public function getTotalRefundCredit()
+    {
+        $total = 0;
+
+        foreach ($this->refunds as $refund) {
+            foreach ($refund->products as $refund_product) {
+                if ($refund_product->order_product->order->payed_credit) {
+                    $total += ($refund_product->product_price * $refund_product->qty);
+                }
+            }
+        }
+        
+        return $total;
+    }
+
     public function getTotalDebt()
     {
         $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
+        $total_credit_refund = $this->getTotalRefundCredit();
         $total_payments = $this->payments()->sum('amount');
-
-        return ($total_credit - $total_payments);
+    
+        return ($total_payments + $total_credit_refund - $total_credit);
     }
 }

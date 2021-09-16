@@ -51,13 +51,4 @@ class Refund extends Model
 
         return null;
     }
-
-    public function getTotalAttribute($value)
-    {
-        if ($value) {
-            return '$ ' . number_format($value, 2, '.', ',');
-        }
-
-        return '$ 0,00';
-    }
 }
