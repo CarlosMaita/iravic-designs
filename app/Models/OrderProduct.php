@@ -22,7 +22,8 @@ class OrderProduct extends Model
 
     public $appends = [
         'available_for_refund',
-        'product_price_str',
+        'is_by_credit',
+        'product_price_str'
     ];
 
     # Boot
@@ -75,7 +76,11 @@ class OrderProduct extends Model
         return $this->qty - $qty_refunded;
     }
 
-    
+    public function getIsByCreditAttribute()
+    {
+        return $this->order->payed_credit;
+    }
+
     public function getProductPriceStrAttribute()
     {
         return '$ ' . number_format($this->product_price, 2, '.', ',');

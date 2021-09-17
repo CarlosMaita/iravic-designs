@@ -156,6 +156,7 @@
                                                             <th scope="col">{{ __('dashboard.form.fields.products.color') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.size') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
+                                                            <th scope="col">Pagado a Credito</th>
                                                             <th scope="col">Disponible</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.qty') }}</th>
                                                             <th></th>
@@ -169,6 +170,8 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-12">
+                                            <p class="font-weight-bold text-dark">Total pagado en Crédito: <span class="total-refund-credit">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark">Total pagado otros: <span class="total-refund-others">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark">Total en devolución: <span class="total-refund">$ 0.00</span></p>
                                         </div>
                                     </div>

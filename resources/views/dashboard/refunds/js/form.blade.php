@@ -910,6 +910,7 @@
                     product.color ? product.color.name : '-',
                     product.size ? product.size.name : '-',
                     product.product_price_str,
+                    product.is_by_credit ? 'Si' : 'No',
                     product.available_for_refund,
                     // product.stock_user,
                     `<input name="qtys_refund[${product.id}]" 
@@ -921,6 +922,7 @@
                             data-id="${product.id}" 
                             data-name="${product.product_name}" 
                             data-price="${product.product_price}" 
+                            data-is-by-credit="${product.is_by_credit}" 
                             value="${value}">`,
 
                     `<input id="input-product-refund-${product.id}" 
@@ -1013,21 +1015,35 @@
         * 
         */
         function updateRefundTotal() {
-            var total = getRefundTotals();
-            $('.total-refund').text(`$ ${replaceNumberWithCommas(total)}`);
+            var totals = getRefundTotals();
+            $('.total-refund-credit').text(`$ ${replaceNumberWithCommas(totals.total_credit)}`);
+            $('.total-refund-others').text(`$ ${replaceNumberWithCommas(totals.total_others)}`);
+            $('.total-refund').text(`$ ${replaceNumberWithCommas(totals.total)}`);
         }
 
         function getRefundTotals() {
-            var total = 0;
+            var total_credit = 0,
+                total_others = 0,
+                total = 0;
 
             $('.input-product-refund-qty').not("tr.child .input-product-refund-qty").each(function(index, item) {
                 var price = Number($(item).data('price')),
-                    val = Number(item.value);
+                    val = Number(item.value),
+                    is_by_credit = $(item).data('is-by-credit'),
+                    total_product = (price * val);
 
-                    total += (price * val);
+                if (is_by_credit) {
+                    total_credit += total_product;
+                } else {
+                    total_others += total_product;
+                }
             });
 
-            return total;
+            return {
+                total_credit: total_credit,
+                total_others: total_others,
+                total: total_credit + total_others
+            }
         }
     });
 
