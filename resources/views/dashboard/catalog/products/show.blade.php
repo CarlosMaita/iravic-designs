@@ -367,10 +367,10 @@
     <div class="container-fluid">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-0">
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> Producto: {{ $product->name }} (Cod: {{$product->code}})</div>
-                        <div class="card-body">
+                        <div class="card-body px-0">
                             <!--  -->
                             <div class="container-fluid mb-3">
                                 <div class="row">
@@ -458,48 +458,69 @@
                                             <div class="row mt-3">
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Depósito <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_depot"><i class="fas fa-history"></i></button></label>
+                                                        <label>Stock Depósito 
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    Opciones
+                                                                </button>
+                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                    <li class="dropdown-item border-bottom view-stock-history" data-id="{{ $product->id }}" data-stock="stock_depot">Historial</li>
+                                                                </ul>
+                                                            </div>
+                                                        </label>
                                                         <input class="form-control" value="{{ $product->stock_depot }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Local 
-                                                            <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button>
-
-                                                            @can('create', App\Models\ProductStockTransfer::class, 'stock_local')
-                                                            @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
-                                                            <button class="btn btn-sm link view-transfer-stock" 
-                                                                    id="btn_{{ $product->id }}_stock_local"
-                                                                    data-id="{{ $product->id }}" 
-                                                                    data-stock-origin="stock_local"  
-                                                                    data-stock-destination="stock_truck" 
-                                                                    data-stock="{{ $product->stock_local }}">
-                                                                    <i class="fas fa-exchange-alt"></i>
-                                                            </button>
-                                                            @endif
-                                                            @endcan
+                                                        <label>Stock Local
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    Opciones
+                                                                </button>
+                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                    <li class="dropdown-item border-bottom view-stock-history" data-id="{{ $product->id }}" data-stock="stock_local">Historial</li>
+                                                                    
+                                                                    @can('create', App\Models\ProductStockTransfer::class)
+                                                                    @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
+                                                                        <li class="dropdown-item view-transfer-stock"
+                                                                            id="btn_{{ $product->id }}_stock_local"
+                                                                            data-id="{{ $product->id }}" 
+                                                                            data-stock-origin="stock_local"  
+                                                                            data-stock-destination="stock_truck" 
+                                                                            data-stock="{{ $product->stock_local }}">
+                                                                        Transferir</li>
+                                                                    @endif
+                                                                    @endcan
+                                                                </ul>
+                                                            </div>
                                                         </label>
-                                                        <input id="product_{{ $product_combination->id }}_stock_local" class="form-control" value="{{ $product->stock_local }}" readOnly>
+                                                        <input id="product_{{ $product->id }}_stock_local" class="form-control" value="{{ $product->stock_local }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label>Stock Camioneta 
-                                                            <button class="btn btn-sm link view-stock-history" data-id="{{ $product->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button>
-
-                                                            @can('create', App\Models\ProductStockTransfer::class, 'stock_truck')
-                                                            @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
-                                                            <button class="btn btn-sm link view-transfer-stock"
-                                                                    id="btn_{{ $product->id }}_stock_truck"
-                                                                    data-id="{{ $product->id }}"
-                                                                    data-stock-origin="stock_truck"
-                                                                    data-stock-destination="stock_local"
-                                                                    data-stock="{{ $product->stock_truck }}">
-                                                                    <i class="fas fa-exchange-alt"></i>
-                                                            </button>
-                                                            @endif
-                                                            @endcan
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    Opciones
+                                                                </button>
+                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                    <li class="dropdown-item border-bottom view-stock-history" data-id="{{ $product->id }}" data-stock="stock_truck">Historial</li>
+                                                                    
+                                                                    @can('create', App\Models\ProductStockTransfer::class, 'stock_truck')
+                                                                    @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
+                                                                        <li class="dropdown-item view-transfer-stock"
+                                                                            id="btn_{{ $product->id }}_stock_truck"
+                                                                            data-id="{{ $product->id }}"
+                                                                            data-stock-origin="stock_truck"
+                                                                            data-stock-destination="stock_local"
+                                                                            data-stock="{{ $product->stock_truck }}">
+                                                                        Transferir</li>
+                                                                    @endif
+                                                                    @endcan
+                                                                </ul>
+                                                            </div>
                                                         </label>
                                                         <input id="product_{{ $product->id }}_stock_truck" class="form-control" value="{{ $product->stock_truck }}" readOnly>
                                                     </div>
@@ -513,7 +534,7 @@
                                             <br>
                                             <!--  -->
                                             @foreach ($product->product_combinations as $key => $product_combination)
-                                                <div class="container-fluid">
+                                                <div class="container-fluid px-0">
                                                     <!--  -->
                                                     <div class="row">
                                                         <div class="col-12">
@@ -552,48 +573,67 @@
                                                     <div class="row">
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Depósito <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_depot"><i class="fas fa-history"></i></button></label>
+                                                                <label class="d-flex justify-content-between">Stock Depósito
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            Opciones
+                                                                        </button>
+                                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                            <li class="dropdown-item border-bottom view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_depot">Historial</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </label>
                                                                 <input class="form-control" value="{{ $product_combination->stock_depot }}" readOnly>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Local 
-                                                                    <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_local"><i class="fas fa-history"></i></button>
-                                                                    
-                                                                    @can('create', App\Models\ProductStockTransfer::class, 'stock_local')
-                                                                    @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
-                                                                    <button class="btn btn-sm link view-transfer-stock" 
-                                                                            id="btn_{{ $product_combination->id }}_stock_local"
-                                                                            data-id="{{ $product_combination->id }}" 
-                                                                            data-stock-origin="stock_local"  
-                                                                            data-stock-destination="stock_truck" 
-                                                                            data-stock="{{ $product_combination->stock_local }}">
-                                                                            <i class="fas fa-exchange-alt"></i>
-                                                                    </button>
-                                                                    @endif
-                                                                    @endcan
+                                                                <label class="d-flex justify-content-between">Stock Local
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            Opciones
+                                                                        </button>
+                                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                            <li class="dropdown-item border-bottom view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_local">Historial</li>
+                                                                            
+                                                                            @can('create', App\Models\ProductStockTransfer::class, 'stock_local')
+                                                                            @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
+                                                                                <li class="dropdown-item view-transfer-stock"
+                                                                                    id="btn_{{ $product_combination->id }}_stock_local"
+                                                                                    data-id="{{ $product_combination->id }}" 
+                                                                                    data-stock-origin="stock_local"  
+                                                                                    data-stock-destination="stock_truck" 
+                                                                                    data-stock="{{ $product_combination->stock_local }}">Transferir</li>
+                                                                            @endif
+                                                                            @endcan
+                                                                        </ul>
+                                                                    </div>
                                                                 </label>
                                                                 <input id="product_{{ $product_combination->id }}_stock_local" class="form-control" value="{{ $product_combination->stock_local }}" readOnly>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Stock Camioneta 
-                                                                    <button class="btn btn-sm link view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_truck"><i class="fas fa-history"></i></button>
-                                                                    
-                                                                    @can('create', App\Models\ProductStockTransfer::class)
-                                                                    @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
-                                                                    <button class="btn btn-sm link view-transfer-stock"
-                                                                            id="btn_{{ $product_combination->id }}_stock_truck"
-                                                                            data-id="{{ $product_combination->id }}" 
-                                                                            data-stock-origin="stock_truck"  
-                                                                            data-stock-destination="stock_local" 
-                                                                            data-stock="{{ $product_combination->stock_truck }}">
-                                                                            <i class="fas fa-exchange-alt"></i>
-                                                                    </button>
-                                                                    @endif
-                                                                    @endcan
+                                                                <label class="d-flex justify-content-between">Stock Camioneta
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            Opciones
+                                                                        </button>
+                                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                            <li class="dropdown-item border-bottom view-stock-history" data-id="{{ $product_combination->id }}" data-stock="stock_truck">Historial</li>
+                                                                            
+                                                                            @can('create', App\Models\ProductStockTransfer::class)
+                                                                            @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
+                                                                                <li class="dropdown-item view-transfer-stock"
+                                                                                    id="btn_{{ $product_combination->id }}_stock_truck"
+                                                                                    data-id="{{ $product_combination->id }}" 
+                                                                                    data-stock-origin="stock_truck"  
+                                                                                    data-stock-destination="stock_local" 
+                                                                                    data-stock="{{ $product_combination->stock_truck }}">Transferir</li>
+                                                                            @endif
+                                                                            @endcan
+                                                                        </ul>
+                                                                    </div>
                                                                 </label>
                                                                 <input id="product_{{ $product_combination->id }}_stock_truck" class="form-control" value="{{ $product_combination->stock_truck }}" readOnly>
                                                             </div>
