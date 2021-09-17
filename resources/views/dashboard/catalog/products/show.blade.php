@@ -458,7 +458,7 @@
                                             <div class="row mt-3">
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Depósito 
+                                                        <label class="d-flex justify-content-between">Stock Depósito 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     Opciones
@@ -473,7 +473,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Local
+                                                        <label class="d-flex justify-content-between">Stock Local
                                                             <div class="dropdown">
                                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     Opciones
@@ -500,7 +500,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label>Stock Camioneta 
+                                                        <label class="d-flex justify-content-between">Stock Camioneta 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     Opciones
