@@ -152,6 +152,10 @@
             modal_stock_transfer.find('#stock-origin').text(stock_name_origin);
             modal_stock_transfer.find('#stock-destination').text(stock_name_destination);
             modal_stock_transfer.modal('show');
+            // modal_stock_transfer.find('form').css('display', 'flex');
+            setInterval(function() {
+                // modal_stock_transfer.find('form').css('display', 'flex');
+            }, 1000)
         });
 
         /**

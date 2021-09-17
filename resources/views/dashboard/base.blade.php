@@ -49,7 +49,7 @@
 
     @stack('css')
 </head>
-<body class="c-app">
+<body class="c-app pb-0">
     <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
         @include('dashboard.shared.sidebar')
         @include('dashboard.shared.header')
@@ -61,6 +61,7 @@
                     @yield('content') 
                 </div>
             </main>
+            @yield('modals')
             @include('dashboard.shared.footer')
         </div>
     </div>

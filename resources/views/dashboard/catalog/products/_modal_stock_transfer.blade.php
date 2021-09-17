@@ -1,5 +1,5 @@
 <div id="modal-stock-transfer" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <form id="stock-transfer-form" action="{{ route('stock-transferencias.store') }}" method='POST'>
             <div class="modal-content">
                 <div class="modal-header">
