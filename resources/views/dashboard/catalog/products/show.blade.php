@@ -509,7 +509,7 @@
                                                             {{--  --}}
                                                             <div class="btn-group dropleft">
                                                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                  Dropleft
+                                                                    Opciones
                                                                 </button>
                                                                 <div class="dropdown-menu">
                                                                     <span class="dropdown-item border-bottom view-stock-history" data-id="{{ $product->id }}" data-stock="stock_truck">Historial</span>
