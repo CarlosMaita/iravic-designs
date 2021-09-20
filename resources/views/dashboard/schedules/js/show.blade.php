@@ -364,7 +364,7 @@
         }
 
         function getCustomerWhatsappMessage(customer) {
-            return `Hola buenos días, te escribirmos desde MN Calzados. Tenemos agendado para pasar a cobrar hoy. Te queda bien?`;
+            return `Hola buenos días, te escribimos desde {{ config('app.name') }}. Tenemos agendado para pasar a cobrar hoy. Te queda bien?`;
         }
 
         function getCustomerWhatsappLink(customer) {

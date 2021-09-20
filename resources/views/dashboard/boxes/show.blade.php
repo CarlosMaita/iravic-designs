@@ -13,7 +13,7 @@
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                        <a class="nav-link @if(!$showOrdersTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
@@ -21,7 +21,7 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
+                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
                                     </li>
                                     <!--  -->
                                     @if (count($box->orders))
@@ -41,7 +41,7 @@
                                 <!--  -->
                                 <div class="tab-content" id="myTabContent">
                                     <!--  -->
-                                    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                    <div class="tab-pane fade @if(!$showOrdersTab) show active @endif" id="info" role="tabpanel" aria-labelledby="info-tab">
                                         <div class="container-fluid mt-3">
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -171,8 +171,14 @@
                                         </div>
                                     </div>
                                     <!--  -->
-                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                        <div class="row mt-3">
+                                    <div class="tab-pane fade @if($showOrdersTab) show active @endif" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        @can('create', App\Models\Order::class)
+                                            <div class="row"> 
+                                                <a href="{{ route('pedidos.create') }}?box={{ $box->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                            </div>
+                                            <br>
+                                        @endcan
+                                        <div class="row">
                                             <div class="col-12">
                                                 <div class="table-responsive">
                                                     @include('dashboard.orders._datatable', ['orders' => $orders])
@@ -191,7 +197,7 @@
                                             <br>
                                             @endif
                                         @endcan
-                                        <div class="row mt-3">
+                                        <div class="row">
                                             <div class="col-12">
                                                 <div class="table-responsive">
                                                     @include('dashboard.refunds._datatable', ['refunds' => $box->refunds])

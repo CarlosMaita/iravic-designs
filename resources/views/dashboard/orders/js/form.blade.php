@@ -322,6 +322,7 @@
                                                                 <th scope="col" class="text-center">Depósito</th>
                                                                 <th scope="col" class="text-center">Local</th>
                                                                 <th scope="col" class="text-center">Camión</th>
+                                                                <th scope="col" class="text-center">Total</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -329,6 +330,7 @@
                                                                 <td class="text-center">${product.stock_depot}</td>
                                                                 <td class="text-center">${product.stock_local}</td>
                                                                 <td class="text-center">${product.stock_truck}</td>
+                                                                <td class="text-center">${product.stock_total}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

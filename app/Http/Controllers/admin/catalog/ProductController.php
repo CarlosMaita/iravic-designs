@@ -353,6 +353,6 @@ class ProductController extends Controller
         ])
         ->setPaper($customPaper, 'landscape');
 
-        return $pdf->download('catalogo.pdf');
+        return $pdf->download(config('app.name') . ' - catalogo.pdf');
     }
 }

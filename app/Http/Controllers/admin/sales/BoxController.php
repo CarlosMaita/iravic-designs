@@ -111,13 +111,15 @@ class BoxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Box $caja)
+    public function show(Request $request, Box $caja)
     {
         $this->authorize('view', $caja);
         $orders = $caja->orders()->orderBy('date', 'desc')->get();
+        $showOrdersTab = isset($request->pedidos) ? true : false;
         return view('dashboard.boxes.show')
                 ->withBox($caja)
-                ->withOrders($orders);
+                ->withOrders($orders)
+                ->withShowOrdersTab($showOrdersTab);
     }
 
     /**

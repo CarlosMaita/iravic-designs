@@ -43,7 +43,8 @@ class Product extends Model
         'real_code',
         'regular_price',
         'regular_price_str',
-        'stock_user'
+        'stock_user',
+        'stock_total'
     ];
 
     # Boot
@@ -174,6 +175,11 @@ class Product extends Model
         }
 
         return 0;
+    }
+
+    public function getStockTotalAttribute()
+    {
+        return ($this->stock_depot + $this->stock_local + $this->stock_truck);
     }
 
     # Scopes

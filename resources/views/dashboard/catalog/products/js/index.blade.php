@@ -269,6 +269,7 @@
                                                         <th scope="col">Depósito</th>
                                                         <th scope="col">Local</th>
                                                         <th scope="col">Camión</th>
+                                                        <th scope="col">Total</th>
                                                     @else
                                                         <th scope="col">Stock</th>
                                                     @endif
@@ -280,6 +281,7 @@
                                                         <td>${product.stock_depot}</td>
                                                         <td>${product.stock_local}</td>
                                                         <td>${product.stock_truck}</td>
+                                                        <td>${product.stock_total}</td>
                                                     @else
                                                         <td>${product.stock_user}</td>
                                                     @endif
@@ -311,6 +313,7 @@
                                                     <th scope="col">Depósito</th>
                                                     <th scope="col">Local</th>
                                                     <th scope="col">Camión</th>
+                                                    <th scope="col">Total</th>
                                                 @else
                                                     <th scope="col">Stock</th>
                                                 @endif
@@ -324,8 +327,9 @@
 
                 @if (Auth::user()->isAdmin())
                     html += `<td>${combination.stock_depot}</td>
-                        <td>${combination.stock_local}</td>
-                        <td>${combination.stock_truck}</td>`;
+                            <td>${combination.stock_local}</td>
+                            <td>${combination.stock_truck}</td>
+                            <td>${combination.stock_total}</td>`;
                 @else
                     html += `<td>${combination.stock_user}</td>`;
                 @endif

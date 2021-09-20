@@ -11,6 +11,7 @@
                 processing: false,
                 responsive: true,
                 serverSide: true,
+                ordering: false,
                 ajax: URL_RESOURCE,
                 pageLength: 25,
                 columns: [

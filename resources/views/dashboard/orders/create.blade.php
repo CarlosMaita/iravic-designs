@@ -24,6 +24,9 @@
                           @if (!empty($customerParam))
                             <input type="hidden" name="customer_param" value="{{ $customerParam->id }}">
                           @endif
+                          @if (!empty($boxParam))
+                            <input type="hidden" name="box_param" value="{{ $boxParam->id }}">
+                          @endif
                           @include('dashboard.orders._form')
                           @include('dashboard.orders._modal_discount')
                           <hr>

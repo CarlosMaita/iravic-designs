@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
+use App\Repositories\Eloquent\BoxRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public $boxRepository;
+
     public $customerRepository;
     
     public $orderRepository;
@@ -32,8 +35,9 @@ class OrderController extends Controller
     /**
      * Construct
      */
-    public function __construct(CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, ZoneRepository $zoneRepository)
+    public function __construct(BoxRepository $boxRepository, CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, ZoneRepository $zoneRepository)
     {
+        $this->boxRepository = $boxRepository;
         $this->customerRepository = $customerRepository;
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
@@ -87,12 +91,14 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $this->authorize('create', 'App\Models\Order');
+        $boxParam = $this->boxRepository->findOnly($request->box);
         $customers = $this->customerRepository->all();
         $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();
 
         return view('dashboard.orders.create')
+                ->withBoxParam($boxParam)
                 ->withCustomers($customers)
                 ->withCustomerParam($customerParam)
                 ->withOrder(new Order())
@@ -133,11 +139,16 @@ class OrderController extends Controller
                 }
             }
             DB::commit();
-            flash("El pedido ha sido creado con éxito")->success();
-            $redirect = !isset($request->customer_param) 
-                        ? route('pedidos.index') 
-                        : route('clientes.show', [$request->customer_param]) . '?pedidos=true';
 
+            if (isset($request->customer_param)) {
+                $redirect = route('clientes.show', [$request->customer_param]) . '?pedidos=true';
+            } else if (isset($request->box_param)) {
+                $redirect = route('cajas.show', [$request->box_param]) . '?pedidos=true';
+            } else {
+                $redirect = route('pedidos.index');
+            }
+
+            flash("El pedido ha sido creado con éxito")->success();
             return response()->json([
                     'success' => true,
                     'data' => [
