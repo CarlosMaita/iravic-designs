@@ -22,6 +22,7 @@
             placeholder: "Seleccionar"
         });
 
+        initAdvanceFilterData();
         initDataTable();   
 
         /**
@@ -140,6 +141,14 @@
          */
         form_advanced_search.on('submit', function(e) {
             e.preventDefault();
+            
+            localStorage.setItem('brand', $('#brand').val());
+            localStorage.setItem('category', $('#category').val()),
+            localStorage.setItem('color', $('#color').val()),
+            localStorage.setItem('gender', $('#gender').val()),
+            localStorage.setItem('size', $('#size').val()),
+            localStorage.setItem('price_from', $('#price-from').val()),
+            localStorage.setItem('price_to', $('#price-to').val());
             DATATABLE_RESOURCE.DataTable().ajax.reload();
         });
 
@@ -188,6 +197,28 @@
             modal_stocks_qty.find('.modal-title span').text('');
             modal_stocks_qty.find('.modal-body').empty();
         });
+
+
+        /**
+        *
+        */
+        function initAdvanceFilterData() {
+            var brand = localStorage.getItem('brand'),
+                category = localStorage.getItem('category'),
+                color = localStorage.getItem('color'),
+                gender = localStorage.getItem('gender'),
+                size = localStorage.getItem('size'),
+                price_from = localStorage.getItem('price_from'),
+                price_to = localStorage.getItem('price_to');
+
+            select_brand.val(brand ? brand.split(',') : 'Todas').trigger('change');
+            select_category.val(category ? category.split(',') : 'Todas').trigger('change');
+            select_color.val(color ? color.split(',') : 'Todos').trigger('change');
+            select_gender.val(gender ? gender.split(',') : 'Todos').trigger('change');
+            select_size.val(size ? size.split(',') : 'Todas').trigger('change');
+            form_advanced_search.find("input[name='price_from']").val(price_from);
+            form_advanced_search.find("input[name='price_to']").val(price_to);
+        }
 
         /**
          * 

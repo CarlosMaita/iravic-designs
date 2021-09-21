@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Product;
-use Illuminate\Support\Collection;
 use App\Repositories\ProductRepositoryInterface;
 use App\Services\Images\ImageService;
+use Illuminate\Support\Collection;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
