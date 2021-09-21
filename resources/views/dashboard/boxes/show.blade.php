@@ -208,6 +208,14 @@
                                     @endif
                                     <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+                                        @can('create', App\Models\Payment::class)
+                                            @if (!$box->closed)
+                                            <div class="row"> 
+                                                <a id="btn-create-payment" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                            </div>
+                                            <br>
+                                            @endif
+                                        @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <div class="table-responsive">
@@ -245,6 +253,7 @@
         </div>
     </div>
 
+    @include('dashboard.payments.modal_form', ['customers' => $customers])
     @include('dashboard.spendings.modal_form')
 @endsection
 
@@ -294,7 +303,8 @@
             });
         });
     </script>
-
+    
+    @include('plugins.select2')
     @include('plugins.show_bind')
     @include('plugins.sweetalert')
     @include('dashboard.payments.js.index')

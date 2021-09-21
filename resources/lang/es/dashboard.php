@@ -146,6 +146,7 @@ return [
             'payments' => [
                 'amount'            => 'Monto',
                 'comment'           => 'Comentario',
+                'customer'          => 'Cliente',
                 'payment_method'    => 'Método de pago'
             ],
             'products' => [
@@ -270,7 +271,7 @@ return [
     ],
     'sidebar' => [
         'boxes'                 => 'Cajas',
-        'boxes-sales'           => 'Cajas y Ventas',
+        'boxes-orders'          => 'Cajas y Pedidos',
         'brands'                => 'Marcas',
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',

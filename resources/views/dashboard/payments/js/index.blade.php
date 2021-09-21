@@ -22,6 +22,7 @@
         // })
         // .show();
 
+        form_payments.find('select').select2();
 
         $('#payments-tab').on('click', function(e) {
             setTimeout(function(e) {
@@ -62,6 +63,7 @@
                             type: 'success'
                         }).show();
                         
+                        clearModalForm();
                         modal_payments.modal('hide');
                         DATATABLE_RESOURCE.DataTable().ajax.reload();
                     } else if (response.error) {
@@ -177,7 +179,6 @@
         });
 
         $('body').on('click', 'tbody .edit-payment', function (e) {
-
             var id = $(this).data('id'),
                 url = `${URL_RESOURCE}/${id}`;
 
@@ -237,6 +238,12 @@
             form_payments.find('#comment').val('');
             modal_payments.find('.modal-title').text('');
         });
+
+        function clearModalForm() {
+            form_payments.find('amount').val('');
+            form_payments.find('comment').val('');
+            form_payments.find('select').val('Seleccionar').trigger('change');
+        }
 
         function initDataTable() {
             var url_params = getUrlPaymentParams();

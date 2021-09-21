@@ -335,6 +335,7 @@
     
     @include('plugins.datepicker')
     @include('plugins.google-maps')
+    @include('plugins.select2')
     @include('plugins.show_bind')
     @include('plugins.sweetalert')
     @include('dashboard.customers.js.customer-map')

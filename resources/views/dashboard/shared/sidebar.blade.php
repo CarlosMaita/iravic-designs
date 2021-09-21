@@ -11,7 +11,7 @@
         <a class="c-sidebar-nav-link" href="{{ route('agendas.index') }}"><i class="cil-calendar-check c-sidebar-nav-icon"></i> {{ __('dashboard.sidebar.schedules') }}</a>
     </li>
     @endif
-    {{-- Sales Management links --}}
+    {{-- Orders Management links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Box::class) ||
         Auth::user()->can('viewany', App\Models\Order::class) ||
@@ -22,7 +22,7 @@
             $menuService->isActive($url,"/admin/cajas-ventas/pedidos", false, true) . " " .
             $menuService->isActive($url,"/admin/cajas-ventas/devoluciones", false, true)
         }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-sales') }}</a>
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-orders') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 {{-- Boxes --}}
                 @can('viewany', App\Models\Box::class)

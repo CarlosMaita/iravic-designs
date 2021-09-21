@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\BoxRequest;
 use App\Models\Box;
 use App\Repositories\Eloquent\BoxRepository;
+use App\Repositories\Eloquent\CustomerRepository;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,9 +16,12 @@ class BoxController extends Controller
 {
     public $boxRepository;
 
-    public function __construct(BoxRepository $boxRepository)
+    public $customerRepository;
+
+    public function __construct(BoxRepository $boxRepository, CustomerRepository $customerRepository)
     {
         $this->boxRepository = $boxRepository;
+        $this->customerRepository = $customerRepository;
         $this->middleware('box.create')->only('create');
         $this->middleware('box.destroy')->only('destroy');
     }
@@ -114,9 +118,11 @@ class BoxController extends Controller
     public function show(Request $request, Box $caja)
     {
         $this->authorize('view', $caja);
+        $customers = $this->customerRepository->all();
         $orders = $caja->orders()->orderBy('date', 'desc')->get();
         $showOrdersTab = isset($request->pedidos) ? true : false;
         return view('dashboard.boxes.show')
+                ->withCustomers($customers)
                 ->withBox($caja)
                 ->withOrders($orders)
                 ->withShowOrdersTab($showOrdersTab);
