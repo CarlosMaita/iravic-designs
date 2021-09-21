@@ -24,7 +24,6 @@ class Product extends Model
         'name',
         'code',
         'cover',
-        'is_price_generic',
         'is_regular',
         'gender',
         'price',
@@ -249,13 +248,7 @@ class Product extends Model
 
     public function getRegularPrice()
     {
-        $parent = $this->product_parent;
-
-        if ($parent && ($parent->is_price_generic || !$this->price)) {
-            return $parent->regular_price;
-        }
-
-        return $this->price ? $this->price : 0;
+        return $this->price ? $this->price : $this->product_parent->price;
     }
 
     public function addStockUser($refund_product_id, $qty, $action)

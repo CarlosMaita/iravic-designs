@@ -73,7 +73,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function createByRequest($request): void
     {
-        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_price_generic', 'is_regular', 'name', 
+        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name', 
         'price');
 
         if (isset($request->is_regular) && $request->is_regular) {
@@ -122,7 +122,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function updateByRequest($id, $request): void
     {
-        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_price_generic', 'is_regular', 'name', 
+        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name', 
         'price');
 
         if (isset($request->is_regular) && $request->is_regular) {

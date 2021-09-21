@@ -2214,13 +2214,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {
@@ -2269,7 +2262,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       brand: null,
       category: null,
       gender: null,
-      is_price_generic: 0,
       is_regular: 1,
       combinations: [],
       loading: false,
@@ -2291,10 +2283,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               if (_this.product.id) {
                 if (!_this.product.is_regular) {
                   _this.is_regular = 0;
-                }
-
-                if (_this.product.is_price_generic) {
-                  _this.is_price_generic = 1;
                 }
 
                 _this.brand = _this.product.brand.name;
@@ -40069,63 +40057,6 @@ var render = function() {
                     }
                   }
                 })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-6" }, [
-              _c("div", { staticClass: "form-check form-check-inline my-4" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.is_price_generic,
-                      expression: "is_price_generic"
-                    }
-                  ],
-                  staticClass: "form-check-input",
-                  attrs: {
-                    type: "checkbox",
-                    name: "is_price_generic",
-                    id: "is_price_generic",
-                    value: "1"
-                  },
-                  domProps: {
-                    checked: Array.isArray(_vm.is_price_generic)
-                      ? _vm._i(_vm.is_price_generic, "1") > -1
-                      : _vm.is_price_generic
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$a = _vm.is_price_generic,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = "1",
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 && (_vm.is_price_generic = $$a.concat([$$v]))
-                        } else {
-                          $$i > -1 &&
-                            (_vm.is_price_generic = $$a
-                              .slice(0, $$i)
-                              .concat($$a.slice($$i + 1)))
-                        }
-                      } else {
-                        _vm.is_price_generic = $$c
-                      }
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  {
-                    staticClass: "form-check-label",
-                    attrs: { for: "is_price_generic" }
-                  },
-                  [_vm._v("Activar Precio Base.")]
-                )
               ])
             ])
           ])

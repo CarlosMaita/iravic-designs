@@ -311,7 +311,6 @@ class ProductRequest extends FormRequest
         }
 
         $this->merge([
-            'is_price_generic'  => isset($this->is_price_generic) ? 1 : 0,
             'is_regular'        => isset($this->is_regular) ? 1 : 0
         ]);
     }

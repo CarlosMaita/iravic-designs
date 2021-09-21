@@ -89,13 +89,6 @@
                             <input class="form-control" name="price" type="number" min="0" step="any" v-model="product.price">
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-check form-check-inline my-4">
-                            <input class="form-check-input" type="checkbox" name="is_price_generic" id="is_price_generic" value="1" 
-                            v-model="is_price_generic">
-                            <label class="form-check-label" for="is_price_generic">Activar Precio Base.</label>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!--  -->
@@ -305,7 +298,6 @@
             brand: null,
             category: null,
             gender: null,
-            is_price_generic: 0,
             is_regular: 1,
             combinations: [],
             loading: false,
@@ -319,10 +311,6 @@
             if (this.product.id) {
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
-                }
-
-                if (this.product.is_price_generic) {
-                    this.is_price_generic = 1;
                 }
 
                 this.brand = this.product.brand.name;

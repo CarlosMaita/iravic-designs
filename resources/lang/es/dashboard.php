@@ -157,7 +157,6 @@ return [
                 'combinations'      => 'Combinaciones',
                 'gender'            => 'Género',
                 'is_regular'        => 'Es un producto regular?',
-                'is_price_generic'  => 'Precio genérico',
                 'price'             => 'Precio',
                 'price-from'        => 'Precio desde',
                 'price-to'          => 'Precio hasta',
