@@ -531,6 +531,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <p><b>Total stock:</b> {{ $product->stock_total }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     @endif
                                     <!--  -->
@@ -647,6 +652,11 @@
                                                                 </label>
                                                                 <input id="product_{{ $product_combination->id }}_stock_truck" class="form-control" value="{{ $product_combination->stock_truck }}" readOnly>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <p><b>Total stock:</b> {{ $product_combination->stock_total }}</p>
                                                         </div>
                                                     </div>
                                                     <hr>
