@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\admin\Catalog;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -16,6 +17,7 @@ class ProductRequest extends FormRequest
             'code.required' => 'El campo código es obligatorio.',
             'code.min' => 'El campo código debe tener un mínimo  de :min caracteres.',
             'code.max' => 'El campo código debe tener un máximo de :max caracteres.',
+            'code.unique' => 'Ya existe un producto con el código ingresado.',
             // 'color_id.required' => 'El campo color es obligatorio.',
             // 'color_id.exists' => 'El color seleccionado no existe en nuestra BD.',
             'colors.required' => 'Debe seleccionar un color para cada combinación.',
@@ -118,12 +120,17 @@ class ProductRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|min:3|max:155',
-            'code' => 'required|min:1|max:100',
             'gender' => 'required',
             'brand_id' => 'required|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0'
         ];
+
+        if ($this->isMethod('POST')) {
+            $rules['code'] = 'required|min:1|max:100|unique:products,code,NULL,id,deleted_at,NULL';
+        } else {
+            $rules['code'] = 'required||min:1|max:100|unique:products,code,' . $this->route('producto')->id;
+        }
         
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
             if ($this->isMethod('POST')) {
@@ -171,8 +178,6 @@ class ProductRequest extends FormRequest
                 }
             }
         } else {
-            // $rules['color_id'] = 'required|exists:colors,id';
-            // $rules['size_id'] = 'required|exists:sizes,id';
             $rules['stock_depot'] = 'integer|min:0|nullable';
             $rules['stock_local'] = 'integer|min:0|nullable';
             $rules['stock_truck'] = 'integer|min:0|nullable';
@@ -186,7 +191,7 @@ class ProductRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        if (isset($this->combinations_group)) {
+        if (!$this->is_regular && isset($this->combinations_group)) {
             foreach(array_keys($this->combinations_group) as $key) {
                 $combination_num = ($key + 1);
 
@@ -221,6 +226,26 @@ class ProductRequest extends FormRequest
                                 });
                             }
                         }
+                    }
+                }
+
+                if (!empty($this->combinations_group_code[$key])) {
+                    if ($this->isMethod('POST')) {
+                        $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
+                    } else {
+                        $product_id_route = $this->route('producto')->id;
+                        $product_with_code = Product::where('code', $this->combinations_group_code[$key])
+                                                    ->where(function($q) use($product_id_route) {
+                                                        $q->where('id', '<>', $product_id_route)
+                                                            ->orWhere('product_id', '<>', $product_id_route);
+                                                    })
+                                                    ->count();
+                    }
+
+                    if ($product_with_code) {
+                        $validator->after(function ($validator) use($combination_num) {
+                            $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
+                        });
                     }
                 }
             }

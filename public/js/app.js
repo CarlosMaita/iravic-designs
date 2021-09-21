@@ -40418,7 +40418,11 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { id: "code-" + index, type: "text" },
+                        attrs: {
+                          id: "code-" + index,
+                          name: "combinations_group_code[" + index + "]",
+                          type: "text"
+                        },
                         domProps: { value: combination.code },
                         on: {
                           input: function($event) {

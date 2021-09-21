@@ -143,11 +143,11 @@
             e.preventDefault();
             
             localStorage.setItem('brand', $('#brand').val());
-            localStorage.setItem('category', $('#category').val()),
-            localStorage.setItem('color', $('#color').val()),
-            localStorage.setItem('gender', $('#gender').val()),
-            localStorage.setItem('size', $('#size').val()),
-            localStorage.setItem('price_from', $('#price-from').val()),
+            localStorage.setItem('category', $('#category').val());
+            localStorage.setItem('color', $('#color').val());
+            localStorage.setItem('gender', $('#gender').val());
+            localStorage.setItem('size', $('#size').val());
+            localStorage.setItem('price_from', $('#price-from').val());
             localStorage.setItem('price_to', $('#price-to').val());
             DATATABLE_RESOURCE.DataTable().ajax.reload();
         });
@@ -172,6 +172,14 @@
             select_gender.val('Todos').trigger('change');
             select_color.val('Todos').trigger('change');
             select_size.val('Todas').trigger('change');
+
+            localStorage.setItem('brand', null);
+            localStorage.setItem('category', null);
+            localStorage.setItem('color', null);
+            localStorage.setItem('gender', null);
+            localStorage.setItem('size', null);
+            localStorage.setItem('price_from', null);
+            localStorage.setItem('price_to', null);
         });
 
         /**

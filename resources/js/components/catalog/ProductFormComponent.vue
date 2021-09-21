@@ -170,7 +170,7 @@
                                 <div class="form-group">
                                     <label for="name">Código</label>
                                     <!-- <input class="form-control" :id="`code-${index}`" type="text" :name="getCombinationInputName('codes', combination, index)" v-model="combination.code"> -->
-                                    <input class="form-control" :id="`code-${index}`" type="text" v-model="combination.code">
+                                    <input class="form-control" :id="`code-${index}`" :name="`combinations_group_code[${index}]`" type="text" v-model="combination.code">
                                 </div>
                             </div>
                         </div>
