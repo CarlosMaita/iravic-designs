@@ -38,6 +38,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('productos', 'ProductController');
         #
+        Route::post('productos-stock', 'ProductController@updateStock')->name('productos.stock.update');
+        #
         Route::delete('productos-combinaciones', 'ProductController@destroyCombinations')->name('productos.delete_combinations');
         #
         Route::resource('productos-stock-history', 'ProductStockHistoryController')->only('index');

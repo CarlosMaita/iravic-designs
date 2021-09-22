@@ -6,14 +6,21 @@
 
         let datatable_history = $('#datatable_history'),
             form_transfer = $('#stock-transfer-form'),
+            form_modify = $('#stock-modify-stock-form'),
             modal_stock_history = $('#modal-history-stock'),
+            modal_stock_modify = $('#modal-stock-modify'),
             modal_stock_transfer = $('#modal-stock-transfer'),
+            product_modifying = null,
             product_viewing = null,
+            stock_column_modifying = null,
             stock_column_viewing = null;
 
         initDatatableImages();
         initDatatableHistory();
 
+        /**
+        *
+        */
         form_transfer.on('submit', function(e) {
             e.preventDefault();
             var form = $('#stock-transfer-form')[0];
@@ -85,6 +92,67 @@
         /**
         *
         */
+        form_modify.on('submit', function(e) {
+            e.preventDefault();
+            var form = $('#stock-modify-stock-form')[0];
+            var formData = new FormData(form);
+            
+            $.ajax({
+                    url: form_modify.attr('action'),
+                    type: form_modify.attr('method'),
+                    enctype: 'multipart/form-data',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        modal_stock_modify.modal('hide');
+                        location.reload();
+                    } else if (response.error) {
+                        new Noty({
+                            text: response.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    } else if (e.responseJSON.error){
+                        new Noty({
+                            text: e.responseJSON.error,
+                            type: 'error'
+                        }).show();
+                    } else if (e.responseJSON.message){
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        });
+
+        /**
+        *
+        */
         modal_stock_history.on('shown.coreui.modal', function(e) {
             datatable_history.DataTable({
                 responsive: true
@@ -105,6 +173,17 @@
         /**
         *
         */
+        modal_stock_modify.on('hidden.coreui.modal', function(e) {
+            form_modify.find("input[name='product_id']").val('');
+            form_modify.find("input[name='stock_column']").val('');
+            form_modify.find("input[name='stock_name']").val('');
+            form_modify.find("input[name='stock']").val('');
+            modal_stock_history.find('.stock-origin').text('');
+        });
+
+        /**
+        *
+        */
         modal_stock_transfer.on('hidden.coreui.modal', function(e) {
             modal_stock_transfer.find('input[name="product_id"]').val('');
             modal_stock_transfer.find('input[name="stock_origin"]').val('');
@@ -112,9 +191,9 @@
             modal_stock_transfer.find('input[name="qty"]').val('');
             modal_stock_transfer.find('input[name="qty"]').attr('max', 0);
             modal_stock_transfer.find('#btn-max').attr('stock', 0);
-            modal_stock_transfer.find('#stock-available').text('');
-            modal_stock_transfer.find('#stock-origin').text('');
-            modal_stock_transfer.find('#stock-destination').text('');
+            modal_stock_transfer.find('.stock-available').text('');
+            modal_stock_transfer.find('.stock-origin').text('');
+            modal_stock_transfer.find('.stock-destination').text('');
         });
 
         /**
@@ -135,6 +214,23 @@
         /**
         *
         */
+        $('.modify-stock').on('click', function(e) {
+            var product_id = $(this).data('id'),
+                stock_qty = $(this).data('qty'),
+                stock_column = $(this).data('stock-column'),
+                stock_name = getStockName(stock_column);
+
+            form_modify.find("input[name='product_id']").val(product_id);
+            form_modify.find("input[name='stock_column']").val(stock_column);
+            form_modify.find("input[name='stock_name']").val(stock_name);
+            form_modify.find("input[name='stock']").val(stock_qty);
+            modal_stock_modify.modal('show');
+            modal_stock_modify.find('.stock-origin').text(stock_name);
+        });
+
+        /**
+        *
+        */
         $('.view-transfer-stock').on('click', function(e) {
             var product_id = $(this).data('id'),
                 stock = Number($(this).data('stock')),
@@ -147,10 +243,10 @@
             modal_stock_transfer.find('input[name="stock_origin"]').val(stock_origin);
             modal_stock_transfer.find('input[name="stock_destination"]').val(stock_destination);
             modal_stock_transfer.find('input[type="number"]').attr('max', stock);
-            modal_stock_transfer.find('#stock-available').text(stock);
+            modal_stock_transfer.find('.stock-available').text(stock);
             modal_stock_transfer.find('#btn-max').attr('stock', stock);
-            modal_stock_transfer.find('#stock-origin').text(stock_name_origin);
-            modal_stock_transfer.find('#stock-destination').text(stock_name_destination);
+            modal_stock_transfer.find('.stock-origin').text(stock_name_origin);
+            modal_stock_transfer.find('.stock-destination').text(stock_name_destination);
             modal_stock_transfer.modal('show');
         });
 

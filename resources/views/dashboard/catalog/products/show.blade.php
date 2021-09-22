@@ -458,32 +458,40 @@
                                                                     Opciones
                                                                 </button>
                                                                 <div class="dropdown-menu">
-                                                                    <span class="dropdown-item view-stock-history" 
+                                                                    <span class="dropdown-item border-bottom view-stock-history" 
+                                                                    type="button" 
+                                                                    data-id="{{ $product->id }}" 
+                                                                    data-stock="stock_depot">Historial</span>
+                                                                    {{--  --}}
+                                                                    @can('update', $product)
+                                                                        <span class="dropdown-item border-bottom modify-stock" 
                                                                         type="button" 
                                                                         data-id="{{ $product->id }}" 
-                                                                        data-stock="stock_depot">Historial</span>
+                                                                        data-stock-column="stock_depot"
+                                                                        data-qty="{{ $product->stock_depot }}">Modificar</span>
+                                                                    @endcan
+                                                                    {{--  --}}
+                                                                    @if (Auth::user()->isAdmin())
+                                                                        <span class="dropdown-item border-bottom view-transfer-stock"
+                                                                        type="button" 
+                                                                        id="btn_{{ $product->id }}_stock_depot_2"
+                                                                        data-id="{{ $product->id }}" 
+                                                                        data-stock-origin="stock_depot"  
+                                                                        data-stock-destination="stock_local" 
+                                                                        data-stock="{{ $product->stock_depot }}">
+                                                                            Transferir a Local
+                                                                        </span>
                                                                         {{--  --}}
-                                                                        @if (Auth::user()->isAdmin())
-                                                                            <span class="dropdown-item view-transfer-stock"
-                                                                            type="button" 
-                                                                            id="btn_{{ $product->id }}_stock_depot_2"
-                                                                            data-id="{{ $product->id }}" 
-                                                                            data-stock-origin="stock_depot"  
-                                                                            data-stock-destination="stock_local" 
-                                                                            data-stock="{{ $product->stock_depot }}">
-                                                                                Transferir a Local
-                                                                            </span>
-                                                                            {{--  --}}
-                                                                            <span class="dropdown-item view-transfer-stock"
-                                                                            type="button" 
-                                                                            id="btn_{{ $product->id }}_stock_depot_1"
-                                                                            data-id="{{ $product->id }}" 
-                                                                            data-stock-origin="stock_depot"  
-                                                                            data-stock-destination="stock_truck" 
-                                                                            data-stock="{{ $product->stock_depot }}">
-                                                                                Transferir a Camión
-                                                                            </span>
-                                                                        @endif
+                                                                        <span class="dropdown-item view-transfer-stock"
+                                                                        type="button" 
+                                                                        id="btn_{{ $product->id }}_stock_depot_1"
+                                                                        data-id="{{ $product->id }}" 
+                                                                        data-stock-origin="stock_depot"  
+                                                                        data-stock-destination="stock_truck" 
+                                                                        data-stock="{{ $product->stock_depot }}">
+                                                                            Transferir a Camión
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </label>
@@ -503,8 +511,16 @@
                                                                     <span class="dropdown-item border-bottom view-stock-history"
                                                                         type="button" 
                                                                         data-id="{{ $product->id }}" 
-                                                                        data-stock="stock_local">Historial</span>
-                                                                    
+                                                                        data-stock-column="stock_local">Historial</span>
+                                                                    {{--  --}}
+                                                                    @can('update', $product)
+                                                                        <span class="dropdown-item border-bottom modify-stock" 
+                                                                        type="button" 
+                                                                        data-id="{{ $product->id }}" 
+                                                                        data-stock="stock_local"
+                                                                        data-qty="{{ $product->stock_local }}">Modificar</span>
+                                                                    @endcan
+                                                                    {{--  --}}
                                                                     @can('create', App\Models\ProductStockTransfer::class)
                                                                     @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
                                                                         <span class="dropdown-item view-transfer-stock"
@@ -534,9 +550,18 @@
                                                                 </button>
                                                                 <div class="dropdown-menu">
                                                                     <span class="dropdown-item border-bottom view-stock-history"
-                                                                        type="button"  
+                                                                    type="button"  
+                                                                    data-id="{{ $product->id }}" 
+                                                                    data-stock="stock_truck">Historial</span>
+                                                                    {{--  --}}
+                                                                    @can('update', $product)
+                                                                        <span class="dropdown-item border-bottom modify-stock" 
+                                                                        type="button" 
                                                                         data-id="{{ $product->id }}" 
-                                                                        data-stock="stock_truck">Historial</span>
+                                                                        data-stock-column="stock_truck"
+                                                                        data-qty="{{ $product->stock_truck }}">Modificar</span>
+                                                                    @endcan
+                                                                    {{--  --}}
                                                                     @can('create', App\Models\ProductStockTransfer::class)
                                                                     @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
                                                                         <span class="dropdown-item view-transfer-stock"
@@ -616,13 +641,21 @@
                                                                             Opciones
                                                                         </button>
                                                                         <div class="dropdown-menu">
-                                                                            <span class="dropdown-item view-stock-history" 
+                                                                            <span class="dropdown-item border-bottom view-stock-history" 
                                                                             type="button" 
                                                                             data-id="{{ $product_combination->id }}" 
                                                                             data-stock="stock_depot">Historial</span>
                                                                             {{--  --}}
+                                                                            @can('update', $product)
+                                                                                <span class="dropdown-item border-bottom modify-stock" 
+                                                                                type="button" 
+                                                                                data-id="{{ $product_combination->id }}" 
+                                                                                data-stock-column="stock_depot"
+                                                                                data-qty="{{ $product_combination->stock_depot }}">Modificar</span>
+                                                                            @endcan
+                                                                            {{--  --}}
                                                                             @if (Auth::user()->isAdmin())
-                                                                                <span class="dropdown-item view-transfer-stock"
+                                                                                <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                 type="button" 
                                                                                 id="btn_{{ $product_combination->id }}_stock_truck"
                                                                                 data-id="{{ $product_combination->id }}" 
@@ -632,7 +665,6 @@
                                                                                     Transferir a Local
                                                                                 </span>
                                                                                 {{--  --}}
-                                                                                
                                                                                 <span class="dropdown-item view-transfer-stock"
                                                                                 type="button" 
                                                                                 id="btn_{{ $product_combination->id }}_stock_truck"
@@ -662,6 +694,14 @@
                                                                             <span class="dropdown-item border-bottom view-stock-history" 
                                                                             type="button" 
                                                                             data-id="{{ $product_combination->id }}" data-stock="stock_local">Historial</span>
+                                                                            {{--  --}}
+                                                                            @can('update', $product)
+                                                                                <span class="dropdown-item border-bottom modify-stock" 
+                                                                                type="button" 
+                                                                                data-id="{{ $product_combination->id }}" 
+                                                                                data-stock-column="stock_local"
+                                                                                data-qty="{{ $product_combination->stock_local }}">Modificar</span>
+                                                                            @endcan
                                                                             {{--  --}}
                                                                             @can('create', App\Models\ProductStockTransfer::class, 'stock_local')
                                                                             @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_local')
@@ -693,6 +733,15 @@
                                                                             <span class="dropdown-item border-bottom view-stock-history" 
                                                                             type="button" 
                                                                             data-id="{{ $product_combination->id }}" data-stock="stock_truck">Historial</span>
+                                                                            {{--  --}}
+                                                                            @can('update', $product)
+                                                                                <span class="dropdown-item border-bottom modify-stock" 
+                                                                                type="button" 
+                                                                                data-id="{{ $product_combination->id }}" 
+                                                                                data-stock-column="stock_truck"
+                                                                                data-qty="{{ $product_combination->stock_truck }}">Modificar</span>
+                                                                            @endcan
+                                                                            {{--  --}}
                                                                             @can('create', App\Models\ProductStockTransfer::class)
                                                                             @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
                                                                                 <span class="dropdown-item view-transfer-stock"
@@ -751,6 +800,7 @@
     </div>
     {{--  --}}
     @include('dashboard.catalog.products._modal_stock_history')
+    @include('dashboard.catalog.products._modal_stock_modify')
     @include('dashboard.catalog.products._modal_stock_transfer')
 @endsection
 

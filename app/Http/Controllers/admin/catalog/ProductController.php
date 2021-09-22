@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\catalog;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductRequest;
+use App\Http\Requests\admin\Catalog\ProductStockRequest;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Size;
@@ -205,6 +206,39 @@ class ProductController extends Controller
                 'success' => 'true',
                 'data' => [
                     'redirect' => route('productos.edit', $producto->id)
+                ]
+            ]);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'message' => __('dashboard.general.operation_error'),
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getTrace()
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * Update the stock
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStock(ProductStockRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $this->productRepository->update($request->product_id, array($request->stock_column => $request->stock));
+            DB::commit();
+            flash("El stock <b>$request->stock_name</b> ha sido actualizado con éxito")->success();
+
+            return response()->json([
+                'success' => 'true',
+                'data' => [
+                    'redirect' => route('productos.edit', $request->product_id)
                 ]
             ]);
         } catch (Exception $e) {

@@ -33,7 +33,7 @@
                                         <div class="css-yc6oq3">
                                             <label class="css-51ezhr">De</label>
                                             <div class="css-1xcjeua">
-                                                <div id="stock-origin" class="css-1pysja1"></div>
+                                                <div class="css-1pysja1 stock-origin"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -43,7 +43,7 @@
                                         <div class="css-1pxm4lx">
                                             <label class="css-51ezhr">A</label>
                                             <div class="css-1xcjeua">
-                                                <div id="stock-destination" class="css-1pysja1"></div>
+                                                <div class="css-1pysja1 stock-destination"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -56,7 +56,7 @@
                                     <div class="css-cr60ng">
                                         <div data-bn-type="text" class="css-vurnku"><label for="Stock">Stock</label></div>
                                         <div class="css-19gx5t6">
-                                            <span id="stock-available" data-bn-type="text" class="css-6hm6tl">0</span>
+                                            <span data-bn-type="text" class="css-6hm6tl stock-available">0</span>
                                             disponibles
                                         </div>
                                     </div>
