@@ -26,6 +26,7 @@ class ProductStockTransferRequest extends FormRequest
             'product_id.exists' => 'El producto no existe en nuestra BD.',
             'qty.required' => 'La cantidad a transferir es obligatoria.',
             'qty.numeric' => 'La cantidad debe ser un valor numérico.',
+            'qty.min' => 'La cantidad mínima a transferir es de :min unidad.',
             'stock_origin.required' => 'El tipo de stock es obligatorio.',
             'stock_origin.in' => 'Solo se pueden transferir stocks de Local y Camión.',
             'stock_destination.required' => 'El tipo de stock es obligatorio.',
@@ -52,9 +53,9 @@ class ProductStockTransferRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'qty' => 'required|numeric',
-            'stock_origin' => ['required', Rule::in(['stock_local', 'stock_truck'])],
-            'stock_destination' => ['required', Rule::in(['stock_local', 'stock_truck'])],
+            'qty' => 'required|numeric|min:1',
+            'stock_origin' => ['required', Rule::in(['stock_depot', 'stock_local', 'stock_truck'])],
+            'stock_destination' => ['required', Rule::in(['stock_depot', 'stock_local', 'stock_truck'])],
         ];
     }
 
