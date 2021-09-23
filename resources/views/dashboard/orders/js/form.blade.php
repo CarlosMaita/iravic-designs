@@ -22,7 +22,8 @@
         let datatable_products_resume = $('#datatable_products_resume');
         let discount_to_apply = 0;
 
-        $('select').select2({
+        select_customer.select2();
+        select_product.select2({
             matcher: function(params, data) {
                 if ($.trim(params.term) === '') {
                     return data;
@@ -138,8 +139,21 @@
                     processData: false,
                     contentType: false,
                     success: function(res) {
-                        if (res) {
-                            handleShowProductForm(res);
+                        var product = res;
+
+                        if (product && product.stock_user > 0) {
+                            handleShowProductForm(product);
+                        } else if (product) {
+                            swal({
+                                title: 'Sin stock asociado',
+                                html: `<div class="d-inline-flex flex-column text-left">
+                                            <p class="mb-0">Depósito: ${product.stock_depot}</p>
+                                            <p class="mb-0">Local: ${product.stock_local}</p>
+                                            <p class="mb-0">Camión: ${product.stock_truck}</p>
+                                        </div>`,
+                                type: 'info',
+                            }).then(function () {
+                            }).catch(swal.noop);
                         } else {
                             new Noty({
                                 text: "No se ha podido obtener la información del producto en este momento.",
