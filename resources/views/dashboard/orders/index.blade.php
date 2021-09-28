@@ -10,7 +10,7 @@
                         <div class="card-body">
                             @can('create', App\Models\Order::class)
                                 <div class="row"> 
-                                    <a href="{{ route('pedidos.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                    <a href="{{ route('ventas.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                 </div>
                                 <br>
                             @endcan

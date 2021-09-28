@@ -262,7 +262,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h2 class="fs-title text-center mt-4">Confirmar pedido</h2>
+                                    <h2 class="fs-title text-center mt-4">Confirmar venta</h2>
                                     <div class="row mt-3 mb-4">
                                         <div class="col-12">
                                             <p class="font-weight-bold text-dark text-center mb-0">Total: <span class="total">$ 0.00</span></p>

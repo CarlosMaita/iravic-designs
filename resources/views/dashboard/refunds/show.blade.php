@@ -60,7 +60,7 @@
                                                     <table id="datatable_refund_products" class="table" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">ID Pedido</th>
+                                                            <th scope="col">ID venta</th>
                                                             <th scope="col">{{ __('dashboard.orders.products.name') }}</th>
                                                             <th>{{ __('dashboard.orders.products.color') }}</th>
                                                             <th>{{ __('dashboard.orders.products.size') }}</th>
@@ -92,7 +92,7 @@
                                         <br>
                                         <div class="row mb-3">
                                             <div class="col-12">
-                                                <a href="{{ route('pedidos.show', [$refund->order->id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de pedido realizado en esta devolución.</a>
+                                                <a href="{{ route('ventas.show', [$refund->order->id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de venta realizado en esta devolución.</a>
                                             </div>
                                         </div>
                                         @endif

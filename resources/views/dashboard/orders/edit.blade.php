@@ -8,12 +8,12 @@
                   <div class="card">
                       <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.orders.edit') }} - #{{ $order->id }}</div>
                       <div class="card-body">
-                        <form id="form-orders" method="POST" action="{{ route('pedidos.update', [$order->id]) }}">
+                        <form id="form-orders" method="POST" action="{{ route('ventas.update', [$order->id]) }}">
                           @csrf
                           @method('PUT')
                           @include('dashboard.orders._form')
                           <button class="btn btn-success" type="submit">{{ __('dashboard.form.update') }}</button>
-                          <a href="{{ route('pedidos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                          <a href="{{ route('ventas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                         </form>
                       </div>
                   </div>

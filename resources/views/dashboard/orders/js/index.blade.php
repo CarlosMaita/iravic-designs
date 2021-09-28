@@ -1,6 +1,6 @@
 <script>
     $(function () {
-        const URL_RESOURCE = "{{ route('pedidos.index') }}";
+        const URL_RESOURCE = "{{ route('ventas.index') }}";
         const DATATABLE_RESOURCE = $("#datatable_orders");
 
         initDataTable();

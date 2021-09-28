@@ -28,7 +28,7 @@ class RefundProduct extends Model
 
         RefundProduct::saved(function($refund_product) {
             $qty = $refund_product->qty;
-            $refund_product->product->addStockUser($refund_product->id, $qty, 'Devolución (# ' . $refund_product->refund_id . ') - Pedido #' . $refund_product->order_product->order_id . ' ');
+            $refund_product->product->addStockUser($refund_product->id, $qty, 'Devolución (# ' . $refund_product->refund_id . ') - venta #' . $refund_product->order_product->order_id . ' ');
         });
     }
 

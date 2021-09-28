@@ -120,7 +120,7 @@ class BoxController extends Controller
         $this->authorize('view', $caja);
         $customers = $this->customerRepository->all();
         $orders = $caja->orders()->orderBy('date', 'desc')->get();
-        $showOrdersTab = isset($request->pedidos) ? true : false;
+        $showOrdersTab = isset($request->ventas) ? true : false;
         return view('dashboard.boxes.show')
                 ->withCustomers($customers)
                 ->withBox($caja)

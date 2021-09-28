@@ -2,7 +2,7 @@
     $(function(){
         const FORM_RESOURCE_REFUNDS = $("#form-refunds");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
-        const URL_ORDER_DISCOUNT = "{{ route('pedidos.discount') }}";
+        const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
         const URL_REFUND_PRODUCTS = "{{ route('devoluciones.create') }}";
         const btn_add_product = $('#add-product');
         const btn_add_product_refund = $('#add-product-refund');
@@ -859,7 +859,7 @@
         function getHtmlTableHeaderProductStocksRefund() {
             return `<thead>
                             <tr>
-                                <th scope="col" style="width: 20%;">ID Pedido</th>
+                                <th scope="col" style="width: 20%;">ID venta</th>
                                 <th scope="col" style="width: 20%;">Color</th>
                                 <th scope="col" style="width: 20%;">Talla</th>
                                 <th scope="col" style="width: 20%;">Puede Devolver</th>

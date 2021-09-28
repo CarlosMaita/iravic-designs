@@ -2,7 +2,7 @@
     $(function(){
         const FORM_RESOURCE_ORDERS = $("#form-orders");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
-        const URL_ORDER_DISCOUNT = "{{ route('pedidos.discount') }}";
+        const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');

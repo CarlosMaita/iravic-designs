@@ -33,7 +33,7 @@ class OrderProduct extends Model
 
         OrderProduct::saved(function($order_product) {
             $qty = $order_product->qty;
-            $order_product->product->subtractStockUser($order_product->id, $qty, 'Pedido');
+            $order_product->product->subtractStockUser($order_product->id, $qty, 'venta');
         });
     }
 

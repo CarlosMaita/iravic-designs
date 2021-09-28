@@ -20,7 +20,7 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Pedidos</a>
+                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">ventas</a>
                                     </li>
                                     <!--  -->
                                     @if (count($customer->orders))
@@ -234,7 +234,7 @@
                                     <div class="tab-pane fade @if($showOrdersTab) show active @endif" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                                         @can('create', App\Models\Order::class)
                                             <div class="row"> 
-                                                <a href="{{ route('pedidos.create') }}?cliente={{ $customer->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                                <a href="{{ route('ventas.create') }}?cliente={{ $customer->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
                                             <br>
                                         @endcan

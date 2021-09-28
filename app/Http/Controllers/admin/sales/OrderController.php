@@ -63,11 +63,11 @@ class OrderController extends Controller
                         $btn = '';
 
                         if (Auth::user()->can('view', $row)) {
-                            $btn .= '<a href="'. route('pedidos.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                            $btn .= '<a href="'. route('ventas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
                         // if (Auth::user()->can('update', $row)) {
-                        //     $btn .= '<a href="'. route('pedidos.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
+                        //     $btn .= '<a href="'. route('ventas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         // }
 
                         // if (Auth::user()->can('delete', $row)) {
@@ -141,14 +141,14 @@ class OrderController extends Controller
             DB::commit();
 
             if (isset($request->customer_param)) {
-                $redirect = route('clientes.show', [$request->customer_param]) . '?pedidos=true';
+                $redirect = route('clientes.show', [$request->customer_param]) . '?ventas=true';
             } else if (isset($request->box_param)) {
-                $redirect = route('cajas.show', [$request->box_param]) . '?pedidos=true';
+                $redirect = route('cajas.show', [$request->box_param]) . '?ventas=true';
             } else {
-                $redirect = route('pedidos.index');
+                $redirect = route('ventas.index');
             }
 
-            flash("El pedido ha sido creado con éxito")->success();
+            flash("El venta ha sido creado con éxito")->success();
             return response()->json([
                     'success' => true,
                     'data' => [
@@ -214,11 +214,11 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $pedido)
+    public function show(Order $venta)
     {
-        $this->authorize('view', $pedido);
+        $this->authorize('view', $venta);
         return view('dashboard.orders.show')
-                ->withOrder($pedido);
+                ->withOrder($venta);
     }
 
     /**
@@ -227,11 +227,11 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $pedido)
+    public function edit(Order $venta)
     {
-        $this->authorize('update', $pedido);
+        $this->authorize('update', $venta);
         return view('dashboard.orders.edit')
-                ->withOrder($pedido);
+                ->withOrder($venta);
     }
 
     /**
@@ -241,17 +241,17 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderRequest $request, Order $pedido)
+    public function update(OrderRequest $request, Order $venta)
     {
         try {
-            $this->authorize('update', $pedido);
-            // $this->orderRepository->update($pedido->id, $request->only('cash_initial'));
-            flash("El pedido <b>$pedido->id</b> ha sido actualizado con éxito")->success();
+            $this->authorize('update', $venta);
+            // $this->orderRepository->update($venta->id, $request->only('cash_initial'));
+            flash("El venta <b>$venta->id</b> ha sido actualizado con éxito")->success();
 
             return response()->json([
                 'success' => 'true',
                 'data' => [
-                    'redirect' => route('pedidos.edit', $pedido->id)
+                    'redirect' => route('ventas.edit', $venta->id)
                 ]
             ]);
         } catch (Exception $e) {

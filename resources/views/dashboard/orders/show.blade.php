@@ -75,7 +75,7 @@
                                     <br>
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <a href="{{ route('devoluciones.show', [$order->refund_id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de devolución (origen) del cuál se realizó este pedido.</a>
+                                            <a href="{{ route('devoluciones.show', [$order->refund_id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de devolución (origen) del cuál se realizó este venta.</a>
                                         </div>
                                     </div>
                                 @endif
@@ -124,7 +124,7 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <a href="{{ route('pedidos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                                        <a href="{{ route('ventas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                                     </div>
                                 </div>
                             </div>

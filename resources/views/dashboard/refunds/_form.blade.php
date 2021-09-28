@@ -325,7 +325,7 @@
                                                 <table id="datatable_products_resume_refund" class="table" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">Pedido</th>
+                                                            <th scope="col">venta</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.code') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
@@ -381,7 +381,7 @@
                                     <div class="row mt-3 mb-4">
                                         <div class="col-12">
                                             <p class="font-weight-bold text-dark text-center mb-0">Total Devolución: <span class="total-refund">$ 0.00</span></p>
-                                            <p class="font-weight-bold text-dark text-center mb-0">Total Nuevo Pedido: <span class="total-order">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark text-center mb-0">Total Nuevo venta: <span class="total-order">$ 0.00</span></p>
                                         </div>
                                     </div>
                                 </div>
