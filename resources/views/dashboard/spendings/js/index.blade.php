@@ -23,20 +23,13 @@
                 img_target = document.getElementById('img-' + id),
                 img_wrapper = document.getElementById('img-' + id + '-wrapper'),
                 [file] = this.files;
-                
-            console.log('Entra');
-            console.log(img_target);
 
             if (img_target) {
-                console.log('Entra en img target');
-
                 if (file) {
-                    console.log(1);
                     img_target.src = URL.createObjectURL(file)
                     img_target.classList.remove('d-none');
                     $(img_wrapper).find('.delete-img').removeClass('d-none');
                 } else {
-                    console.log(2);
                     img_target.src = '';
                     img_target.classList.add('d-none');
                     $(img_wrapper).find('.delete-img').addClass('d-none');

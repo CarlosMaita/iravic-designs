@@ -149,9 +149,6 @@
                         }
                     },
                     error: function (e) {
-                        
-                        console.log(e);
-                        
                         if (e.responseJSON.errors) {
                             $.each(e.responseJSON.errors, function (index, element) {
                                 if ($.isArray(element)) {
