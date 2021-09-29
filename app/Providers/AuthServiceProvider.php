@@ -49,8 +49,8 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        // Gate::define('create-user', function ($user) {
-        //     return $user->permissions()->contains('create-user');
-        // });
+        Gate::define('view-customers-debtors', function ($user) {
+            return $user->permissions()->contains('view-customers-debtors');
+        });
     }
 }

@@ -283,6 +283,13 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            [
+                'name'         => 'view-customers-debtors',
+                'display_name' => 'Clientes morosos Listar',
+                'description'  => 'Clientes morosos Listar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Boxes
             [
                 'name'         => 'view-box',

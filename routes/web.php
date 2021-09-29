@@ -56,7 +56,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('clientes', 'CustomerController');
         #
-        Route::get('clientes-morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
+        Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
         #
         Route::resource('zonas', 'ZoneController');
     });

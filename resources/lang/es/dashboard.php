@@ -283,6 +283,7 @@ return [
         'categories'            => 'Categorías',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
+        'debtors'               => 'Morosos',
         'refunds'               => 'Devoluciones',
         'general'               => 'General',
         'orders'                => 'Ventas',

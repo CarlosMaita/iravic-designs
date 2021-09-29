@@ -10,6 +10,7 @@ use App\Repositories\Eloquent\ZoneRepository;
 use App\Services\Images\ImageService;
 use DataTables;
 use Exception;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -70,7 +71,7 @@ class CustomerController extends Controller
      */
     public function indexDebtors(Request $request)
     {
-        $this->authorize('viewany', 'App\Models\Customer');
+        Gate::authorize('view-customers-debtors');
 
         if ($request->ajax()) {
             $customers = $this->customerRepository->debtorsToNotify();
