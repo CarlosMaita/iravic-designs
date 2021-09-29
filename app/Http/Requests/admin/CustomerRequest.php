@@ -15,6 +15,8 @@ class CustomerRequest extends FormRequest
             'contact_name.required' => 'El campo Nombre de contacto es obligatorio.',
             'contact_telephone.required' => 'El campo teléfono de contacto es obligatorio.',
             'contact_dni.required' => 'El campo C.I de contacto es obligatorio.',
+            'days_to_notify_debt.integer' => 'La cantidad de días después del último pago para salir en listado de morosos debe ser un número entero.',
+            'days_to_notify_debt.min' => 'La cantidad mínima de días después del último pago para salir en listado de morosos es de :min .',
             'dni.required' => 'El campo C.I es obligatorio.',
             'dni_picture.required' => 'La foto de la C.I es obligatoria.',
             'max_credit.required' => 'El campo Crédito Máximo es obligatorio.',
@@ -58,6 +60,10 @@ class CustomerRequest extends FormRequest
             'telephone' => 'required',
             'zone_id' => 'required|exists:zones,id'
         ];
+
+        if (!empty($this->days_to_notify_debt)) {
+            $rules['days_to_notify_debt'] = 'integer|min:0';
+        }
 
         /*
         if ($this->isMethod('POST')) {

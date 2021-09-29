@@ -33,7 +33,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewany', 'App\Models\Zone');
+        $this->authorize('viewany', 'App\Models\Customer');
 
         if ($request->ajax()) {
             $customers = $this->customerRepository->all();
@@ -51,7 +51,7 @@ class CustomerController extends Controller
                         }
 
                         if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-customer" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-customer" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
 
                         return $btn;
@@ -61,6 +61,35 @@ class CustomerController extends Controller
         }
 
         return view('dashboard.customers.index');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexDebtors(Request $request)
+    {
+        $this->authorize('viewany', 'App\Models\Customer');
+
+        if ($request->ajax()) {
+            $customers = $this->customerRepository->debtorsToNotify();
+            return Datatables::of($customers)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '';
+
+                        if (Auth::user()->can('view', $row)) {
+                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        }
+
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('dashboard.customers.index_debtors');
     }
 
     /**
@@ -92,7 +121,7 @@ class CustomerController extends Controller
                 array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
                 array('dni_picture' => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
                 array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
-                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $customer = $this->customerRepository->create($attributes);
             DB::commit();
@@ -174,7 +203,7 @@ class CustomerController extends Controller
                 array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
                 array('receipt_picture' => $cliente->updateImage(Customer::DISK_RECEIPT, $cliente->receipt_picture, $request->receipt_picture, 
                 $request->delete_receipt_picture)),
-                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
             );
             $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();

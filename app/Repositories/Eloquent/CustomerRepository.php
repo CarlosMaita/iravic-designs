@@ -26,4 +26,19 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     {
         return $this->model->with('zone')->orderBy('name')->get();
     }
+
+    /**
+     * @return Collection
+     */
+    public function debtorsToNotify(): Collection
+    {
+        $customers = $this->model->with('zone')
+                            ->whereHas('debts')
+                            ->orWhereHas('orders', function($q) {
+                                $q->where('payed_credit', 1);
+                            })
+                            ->get();
+
+        return $customers->filter->needsToNotifyDebt()->values();
+    }
 }

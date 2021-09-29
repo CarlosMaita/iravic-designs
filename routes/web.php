@@ -56,6 +56,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('clientes', 'CustomerController');
         #
+        Route::get('clientes-morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
+        #
         Route::resource('zonas', 'ZoneController');
     });
 
@@ -69,7 +71,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::put('visitas/{visita}/complete', 'VisitController@complete');
     });
 
-    # Customers Routes
+    # Box && Orders Routes
     Route::group(['prefix' => 'cajas-ventas', 'namespace' => 'sales'], function () {
         #
         Route::resource('cajas', 'BoxController');

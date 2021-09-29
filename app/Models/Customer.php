@@ -21,6 +21,7 @@ class Customer extends Model
         'contact_name',
         'contact_telephone',
         'contact_dni',
+        'days_to_notify_debt',
         'dni',
         'dni_picture',
         'latitude',
@@ -241,5 +242,33 @@ class Customer extends Model
     public function getTotalDebt()
     {
         return $this->debts()->sum('amount');
+    }
+
+    public function needsToNotifyDebt()
+    {
+        if ($this->getBalance() < 0) {
+            $now = now();
+            $days_to_notify = is_int($this->days_to_notify_debt) ? $this->days_to_notify_debt : 0;
+            $date_last_payment = $this->getLastDateForDebtNotification();
+
+            if ($date_last_payment->addDays($days_to_notify)->diffInDays($now, false) <= 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public function getLastDateForDebtNotification()
+    {
+        if ($payment = $this->payments()->latest()->first()) {
+            return Carbon::parse($payment->date);
+        }
+
+        if ($debt = $this->debts()->latest()->first()) {
+            return Carbon::parse($debt->date);
+        }
+
+        return now();
     }
 }

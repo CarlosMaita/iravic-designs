@@ -103,6 +103,12 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/clientes")}}" href="{{ route('clientes.index') }}"></span>{{ __('dashboard.sidebar.customers') }}</a>
                     </li>
                 @endcan
+                {{-- debtors customers --}}
+                @can('viewany', App\Models\Customer::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/clientes-morosos")}}" href="{{ route('clientes.debtors') }}"></span>{{ __('dashboard.sidebar.debtors') }}</a>
+                    </li>
+                @endcan
                 {{-- Zones --}}
                 @can('viewany', App\Models\Zone::class)
                     <li class="c-sidebar-nav-item">

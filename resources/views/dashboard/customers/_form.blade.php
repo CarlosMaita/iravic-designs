@@ -79,6 +79,14 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
+                <label for="days_to_notify_debt">{{ __('dashboard.form.fields.customers.days_to_notify_debt') }}</label>
+                <input class="form-control" id="days_to_notify_debt" name="days_to_notify_debt" type="number" step="1" value="{{ old("days_to_notify_debt", $customer->days_to_notify_debt) }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
                 <label for="receipt_picture">{{ __('dashboard.form.fields.customers.receipt_picture') }}</label>
                 <div class="custom-file">
                     <input accept="image/*" type="file" class="custom-file-input" id="receipt_picture" name="receipt_picture" lang="es">
