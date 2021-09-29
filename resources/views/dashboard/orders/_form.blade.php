@@ -35,6 +35,7 @@
                                                                     data-telephone="{{ $customer->telephone }}"
                                                                     data-qualification="{{ $customer->qualification }}"
                                                                     data-debt="{{ $customer->total_debt }}"
+                                                                    data-balance="{{ $customer->balance }}"
                                                                     @if(!empty($customerParam) && $customerParam->id == $customer->id) selected @endif
                                                             >{{ $customer->name }}</option>
                                                         @endforeach
@@ -90,8 +91,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.form.fields.customers.total_debt') }}</label>
-                                                        <input id="selected-customer-debt" class="form-control" type="text" readOnly>
+                                                        <label>{{ __('dashboard.customers.balance') }}</label>
+                                                        <input id="selected-customer-balance" class="form-control" type="text" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,6 +216,7 @@
                                         <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: <span class="max-credit">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Deuda Total: <span class="total-debt">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark mb-1">Saldo: <span class="customer-balance">$ 0.00</span></p>
                                             <hr>
                                             <div>
                                                 <span>Quiere aplicar algun descuento?</span>

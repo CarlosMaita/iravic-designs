@@ -20,7 +20,7 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">ventas</a>
+                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Ventas</a>
                                     </li>
                                     <!--  -->
                                     @if (count($customer->orders))
@@ -31,6 +31,10 @@
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
+                                    </li>
+                                    <!--  -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="debts-tab" data-toggle="tab" href="#debts" role="tab" aria-controls="debts" aria-selected="true">Deudas</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
@@ -223,8 +227,14 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.customers.total_debt') }}</label>
+                                                        <label>{{ __('dashboard.customers.total_debts') }}</label>
                                                         <input class="form-control" type="text" value="{{ $customer->total_debt }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.customers.balance') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $customer->balance }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,6 +291,22 @@
                                         </div>
                                     </div>
                                     <!--  -->
+                                    <div class="tab-pane fade" id="debts" role="tabpanel" aria-labelledby="debts-tab">
+                                        @can('create', App\Models\Debt::class)
+                                            <div class="row"> 
+                                                <a id="btn-create-debt" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
+                                            </div>
+                                            <br>
+                                        @endcan
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    @include('dashboard.debts._datatable')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
                                     <div class="tab-pane fade" id="visits" role="tabpanel" aria-labelledby="visits-tab">
                                         @can('create', App\Models\Visit::class)
                                             <div class="row"> 
@@ -308,6 +334,7 @@
         </div>
     </div>
 
+    @include('dashboard.debts.modal_form')
     @include('dashboard.payments.modal_form')
     @include('dashboard.visits.modal_form')
 @endsection
@@ -340,6 +367,7 @@
     @include('plugins.sweetalert')
     @include('dashboard.customers.js.customer-map')
     @include('dashboard.customers.js.show')
+    @include('dashboard.debts.js.index')
     @include('dashboard.payments.js.index')
     @include('dashboard.visits.js.index')
 @endpush

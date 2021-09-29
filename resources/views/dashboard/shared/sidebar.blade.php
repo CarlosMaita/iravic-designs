@@ -30,16 +30,16 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/cajas")}}" href="{{ route('cajas.index') }}"></span>{{ __('dashboard.sidebar.boxes') }}</a>
                     </li>
                 @endcan
-                {{-- Orders --}}
-                @can('viewany', App\Models\Order::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/ventas")}}" href="{{ route('ventas.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
-                    </li>
-                @endcan
                 {{-- Refunds --}}
                 @can('viewany', App\Models\Refund::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/devoluciones")}}" href="{{ route('devoluciones.index') }}"></span>{{ __('dashboard.sidebar.refunds') }}</a>
+                    </li>
+                @endcan
+                {{-- Orders --}}
+                @can('viewany', App\Models\Order::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/ventas")}}" href="{{ route('ventas.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
                     </li>
                 @endcan
             </ul>

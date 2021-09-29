@@ -34,6 +34,7 @@ class Customer extends Model
     ];
 
     public $appends = [
+        'balance',
         'date_next_visit',
         'max_credit_str',
         'total_buyed',
@@ -63,6 +64,11 @@ class Customer extends Model
     }
 
     # Relationships
+    public function debts()
+    {
+        return $this->hasMany('App\Models\Debt');
+    }
+
     public function orders()
     {
         return $this->hasMany('App\Models\Order');
@@ -89,6 +95,12 @@ class Customer extends Model
     }
     
     # Attributes
+    public function getBalanceAttribute()
+    {
+        $total = $this->getBalance();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
     public function getMaxCreditStrAttribute()
     {
         if ($this->max_credit) {
@@ -125,8 +137,7 @@ class Customer extends Model
     public function getTotalDebtAttribute()
     {
         $total = $this->getTotalDebt();
-        $total *= -1;
-        return '$ ' . number_format($total, 2, '.', ',');
+        return '$ -' . number_format($total, 2, '.', ',');
     }
 
     public function getTotalPaymentsAttribute()
@@ -187,6 +198,16 @@ class Customer extends Model
         return $url;
     }
 
+    public function getBalance()
+    {
+        $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
+        $total_credit_refund = $this->getTotalRefundCredit();
+        $total_debts = $this->getTotalDebt();
+        $total_payments = $this->payments()->sum('amount');
+    
+        return ($total_payments + $total_credit_refund - $total_credit - $total_debts);
+    }
+    
     public function getTotalBuyed()
     {
         return $this->orders()->sum('total');
@@ -219,10 +240,6 @@ class Customer extends Model
 
     public function getTotalDebt()
     {
-        $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
-        $total_credit_refund = $this->getTotalRefundCredit();
-        $total_payments = $this->payments()->sum('amount');
-    
-        return ($total_payments + $total_credit_refund - $total_credit);
+        return $this->debts()->sum('amount');
     }
 }

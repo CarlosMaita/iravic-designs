@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\admin;
 
-use App\Models\Customer;
 use App\Repositories\Eloquent\BoxRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;

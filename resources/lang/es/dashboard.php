@@ -47,6 +47,7 @@ return [
     ],
     'customers' => [
         'index'                 => 'Listado de Clientes',
+        'balance'               => 'Saldo',
         'create'                => 'Crear nuevo cliente',
         'details'               => 'Detalle cliente',
         'edit'                  => 'Editar cliente',
@@ -57,7 +58,7 @@ return [
         'total_credit_give_for' => 'Total crédito dado',
         'total_payments'        => 'Total pagos',
         'total_refund_credit'   => 'Total crédito devuelto',
-        'total_debt'            => 'Total deuda',
+        'total_debts'           => 'Total deudas',
         'qualification'         => 'Calificación',
         'zone'                  => 'Zona',
     ],
@@ -122,6 +123,11 @@ return [
                 'telephone'         => 'Teléfono',
                 'total_debt'        => 'Deuda total',
                 'zone'              => 'Zona'
+            ],
+            'debts' => [
+                'amount'            => 'Monto',
+                'comment'           => 'Comentario',
+                'customer'          => 'Cliente'
             ],
             'general' => [
                 'name' => 'Nombre'
@@ -218,7 +224,7 @@ return [
         'index'             => 'Listado de ventas',
         'create'            => 'Crear nueva venta',
         'edit'              => 'Editar venta',
-        'order'             => 'venta',
+        'order'             => 'Venta',
         'id'                => 'ID',
         'box_id'            => 'ID Caja',
         'customer'          => 'Cliente',
@@ -250,7 +256,7 @@ return [
         'index'             => 'Listado de devoluciones',
         'create'            => 'Crear nueva venta',
         'edit'              => 'Editar venta',
-        'order'             => 'venta',
+        'order'             => 'Venta',
         'id'                => 'ID',
         'box_id'            => 'ID Caja',
         'customer'          => 'Cliente',
@@ -278,7 +284,7 @@ return [
         'customers'             => 'Clientes',
         'refunds'               => 'Devoluciones',
         'general'               => 'General',
-        'orders'                => 'ventas',
+        'orders'                => 'Ventas',
         'products'              => 'Productos',
         'products_transfers'    => 'Productos Transferencias',
         'settings'              => 'Configuración',

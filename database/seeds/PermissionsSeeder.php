@@ -399,6 +399,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            # Debts
+            [
+                'name'         => 'view-debt',
+                'display_name' => 'Deudas Ver',
+                'description'  => 'Deudas Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-debt',
+                'display_name' => 'Deudas Crear',
+                'description'  => 'Deudas Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-debt',
+                'display_name' => 'Deudas Editar',
+                'description'  => 'Deudas Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-debt',
+                'display_name' => 'Deudas Eliminar',
+                'description'  => 'Deudas Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
             # Spendings
             [
                 'name'         => 'view-spending',
