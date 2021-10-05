@@ -3,11 +3,25 @@
 namespace App\Http\Requests\admin;
 
 use App\Models\Customer;
+use App\Repositories\Eloquent\ZoneRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class CustomerRequest extends FormRequest
 {
+    public $max_customers_per_zone;
+
+    public $zoneRepository;
+
+    public function __construct(ZoneRepository $zoneRepository)
+    {
+        $this->max_customers_per_zone = 25;
+        $this->zoneRepository = $zoneRepository;
+    }
+
+    /**
+     * 
+     */
     public function messages()
     {
         return [
@@ -137,5 +151,18 @@ class CustomerRequest extends FormRequest
             });
         }
         */
+
+        /**
+         * 
+         */
+        if (!$validator->fails() && !empty($this->zone_id)) {
+            $zone = $this->zoneRepository->find($this->zone_id);
+
+            if ($zone->customers()->count() >= $this->max_customers_per_zone) {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('zone', 'La zona ya posee 25 clientes registrados.');
+                });
+            }
+        }
     }
 }

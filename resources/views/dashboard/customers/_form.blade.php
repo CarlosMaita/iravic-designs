@@ -13,14 +13,8 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
-                <select id="qualification" class="form-control" name="qualification">
-                    <option selected disabled>Seleccionar</option>
-                    <option value="Muy Bueno" @if($customer->qualification == "Muy Bueno") selected @endif>Muy Bueno</option>
-                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
-                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
-                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
-                </select>
+                <label for="dni">{{ __('dashboard.form.fields.customers.dni') }}</label>
+                <input class="form-control" id="dni" name="dni" type="text" value="{{ old("dni", $customer->dni) }}">
             </div>
         </div>
     </div>
@@ -41,8 +35,14 @@
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="dni">{{ __('dashboard.form.fields.customers.dni') }}</label>
-                <input class="form-control" id="dni" name="dni" type="text" value="{{ old("dni", $customer->dni) }}">
+                <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
+                <select id="qualification" class="form-control" name="qualification">
+                    <option selected disabled>Seleccionar</option>
+                    <option value="Muy Bueno" @if($customer->qualification == "Muy Bueno") selected @endif>Muy Bueno</option>
+                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
+                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
+                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
+                </select>
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
