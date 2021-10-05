@@ -10,6 +10,7 @@ use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ZoneController extends Controller
 {
@@ -25,36 +26,12 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('viewany', 'App\Models\Zone');
-
-        if ($request->ajax()) {
-            $zones = $this->zoneRepository->all();
-            return Datatables::of($zones)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $btn = '';
-
-                        if (Auth::user()->can('view', $row)) {
-                            $btn .= '<a href="'. route('zonas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        }
-
-                        if (Auth::user()->can('update', $row)) {
-                            $btn .= '<a href="'. route('zonas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        }
-
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-zone" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
-
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-        }
-
-        return view('dashboard.zones.index');
+        $zones = $this->zoneRepository->all();
+        return view('dashboard.zones.index')
+                ->withZones($zones);
     }
 
     /**
@@ -79,7 +56,7 @@ class ZoneController extends Controller
     {
         try {
             $this->authorize('create', 'App\Models\Zone');
-            $this->zoneRepository->create($request->only('name'));
+            $this->zoneRepository->create($request->only('name', 'position', 'address_destination', 'latitude_destination', 'longitude_destination'));
             flash("La zona <b>$request->name</b> ha sido creada con éxito")->success();
 
             return response()->json([
@@ -137,7 +114,7 @@ class ZoneController extends Controller
     {
         try {
             $this->authorize('update', $zona);
-            $this->zoneRepository->update($zona->id, $request->only('name'));
+            $this->zoneRepository->update($zona->id, $request->only('name', 'position', 'address_destination', 'latitude_destination', 'longitude_destination'));
             flash("La zona <b>$request->name</b> ha sido actualizada con éxito")->success();
 
             return response()->json([
@@ -168,10 +145,43 @@ class ZoneController extends Controller
         try {
             $this->authorize('delete', $zona);
             $zona->delete();
+            flash("La zona <b>$zona->name</b> ha sido eliminada con éxito")->success();
             
             return response()->json([
                 'success' => true,
                 'message' => "La zona ha sido eliminada con éxito"
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('dashboard.general.operation_error'),
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * Update all zones position.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sort(Request $request)
+    {
+        try {
+            Gate::check('sort-zones');
+            
+            foreach ($request->zones as $key => $zone_id) {
+                $params = array('position' => ($key + 1));
+                $this->zoneRepository->update($zone_id, $params);
+            }
+            
+            flash("Las zonas han sido ordenadas con éxito")->success();
+            
+            return response()->json([
+                'success' => true
             ]);
         } catch (Exception $e) {
             return response()->json([

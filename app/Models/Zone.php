@@ -10,9 +10,15 @@ class Zone extends Model
     use SoftDeletes;
 
     protected $table = 'zones';
+
     protected $guarded = [];
+
     public $fillable = [
-        'name'
+        'name',
+        'position',
+        'address_destination',
+        'latitude_destination',
+        'longitude_destination'
     ];
 
     # Relationships

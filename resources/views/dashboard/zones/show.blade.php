@@ -10,6 +10,21 @@
                         <div class="card-body">
                             <div class="container-fluid px-0">
                                 <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>{{ __('dashboard.zones.position') }}</label>
+                                            <input class="form-control" type="text" value="{{ $zone->position }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>{{ __('dashboard.zones.address_destination') }}</label>
+                                            <input class="form-control" type="text" value="{{ $zone->address_destination }}" readOnly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
                                     <div class="col-sm-3 col-6 mt-2">
                                         <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="Bueno">
                                         <span class="mr-4">Muy Bueno</span>

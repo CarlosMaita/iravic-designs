@@ -2,6 +2,18 @@
     $(function(){
         const FORM_RESOURCE = $("#form-zones");
 
+        let zone_map = $zone 
+                        ? new ZoneMap('map-zone', $zone.destination_latitude, $zone.destination_longitude, $zone.destination_address, true) 
+                        : new ZoneMap('map-zone');
+        zone_map.setMap();
+        zone_map.setInitialMarker();
+
+        $("#address").keypress(_.debounce( function(){
+            if (zone_map.canGeocoding) {
+                zone_map.geocoding();
+            }
+        }, 700));
+
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-zones')[0];

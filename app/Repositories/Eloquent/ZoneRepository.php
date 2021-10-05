@@ -24,6 +24,6 @@ class ZoneRepository extends BaseRepository implements ZoneRepositoryInterface
      */
     public function all(): Collection
     {
-        return $this->model->orderBy('name')->get();
+        return $this->model->orderBy('position')->get();
     }
 }

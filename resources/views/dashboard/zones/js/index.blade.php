@@ -1,27 +1,12 @@
 <script>
     $(function () {
         const URL_RESOURCE = "{{ route('zonas.index') }}";
-        const DATATABLE_RESOURCE = $("#datatable_zones");
+        const URL_SORT_ZONES = "{{ route('zonas.sort') }}";
+        let sortableJs = new SortableJs('zonas-container', '.btn-move-zone');
 
-        initDataTable();
+        sortableJs.create(sortZones);
 
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
-                fixedHeader: true,
-                processing: false,
-                responsive: true,
-                serverSide: true,
-                ajax: URL_RESOURCE,
-                pageLength: 25,
-                columns: [
-                    {data: 'name'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
-            });
-        }
-
-
-        $('body').on('click', 'tbody .delete-zone', function (e) {
+        $('body').on('click', '.delete-zone', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
             let token = $("input[name=_token]").val();
@@ -42,11 +27,7 @@
                     datatype: 'json',
                     success: function (response) {
                         if (response.success) {
-                            DATATABLE_RESOURCE.DataTable().ajax.reload();
-                            new Noty({
-                                text: response.message,
-                                type: 'success'
-                            }).show();
+                            location.reload();
                         } else if (response.message) {
                             new Noty({
                                 text: response.message,
@@ -89,5 +70,72 @@
                 });
             }).catch(swal.noop);
         });
+
+        function sortZones() {
+            var zones = [];
+
+            $('.zone-item').each((index, item) => {
+                zones.push(item.dataset.id);
+            });
+
+            httpSortZones(zones);
+        }
+
+        function httpSortZones(zones) {
+            var token = $("input[name=_token]").val();
+
+            $.ajax({
+                url: URL_SORT_ZONES,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                data: {
+                    zones: zones
+                },
+                dataType:'json',
+                enctype: 'multipart/form-data',
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else if (response.message) {
+                        new Noty({
+                            text: response.message,
+                            type: 'error'
+                        }).show();
+                    } else if (response.error) {
+                        new Noty({
+                            text: response.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "No se ha podido actualizar las posiciones de las zonas en este momento.",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    } else if (e.responseJSON.message) {
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "No se ha podido actualizar las posiciones de las zonas en este momento.",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        }
     });
 </script>

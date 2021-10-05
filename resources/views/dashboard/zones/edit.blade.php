@@ -24,5 +24,12 @@
 @endsection
 
 @push('js')
+  <script>
+    const $zone = @json($zone);
+  </script>
+  <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
+
+  @include('plugins.google-maps')
+  @include('dashboard.zones.js.zone_form_map')
   @include('dashboard.zones.js.form')
 @endpush

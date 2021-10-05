@@ -14,20 +14,13 @@
                                 </div>
                                 <br>
                             @endcan
-                            {{-- Datatable --}}
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table id="datatable_zones" class="table" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        </table>
-                                    </div>
-                                </div>
+                            <div id="zonas-container" class="list-group">
+                                @foreach ($zones as $zone)
+                                    @include('dashboard.zones._partials.sortable_item', [
+                                        'customers_qty' => count($zone->customers),
+                                        'zone' => $zone
+                                    ])
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -37,7 +30,17 @@
     </div>
 @endsection
 
+@push('css')
+    <style>
+        .dataTables_length {
+            display: none;
+        }
+    </style>
+@endpush
+
 @push('js')
     @include('plugins.sweetalert')
+    @include('plugins.sortablejs')
+    @include('dashboard.zones.js.sortablejs')
     @include('dashboard.zones.js.index')
 @endpush

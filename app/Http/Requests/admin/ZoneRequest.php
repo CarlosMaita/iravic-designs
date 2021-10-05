@@ -9,6 +9,7 @@ class ZoneRequest extends FormRequest
     public function messages()
     {
         return [
+            'address_destination.required' => 'El campo dirección destino es obligatorio.',
             'name.required' => 'El campo nombre es obligatorio.',
             'name.max' => 'El campo nombre no puede tener mas de :max caracteres.',
             'name.unique' => 'Ya existe una zona con el nombre ingresado.'
@@ -32,7 +33,9 @@ class ZoneRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = array();
+        $rules = [
+            'address_destination' => 'required'
+        ];
 
         if ($this->isMethod('POST')) {
             $rules['name'] = 'required|max:100|unique:zones,name,NULL,id,deleted_at,NULL';
@@ -41,5 +44,20 @@ class ZoneRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * 
+     */
+    public function withValidator($validator)
+    {
+        /**
+         * Request should have latitude and longitude from address
+         */
+        if ($this->address_destination && (!$this->latitude_destination || !$this->longitude_destination)) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('coords', 'No se ha encontrado latitud y longitud para la dirección destino.');
+            });
+        }
     }
 }

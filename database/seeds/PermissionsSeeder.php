@@ -254,6 +254,13 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            [
+                'name'         => 'sort-zones',
+                'display_name' => 'Zonas Ordenar',
+                'description'  => 'Zonas Ordenar',
+                'created_at'   => now(),
+                'updated_at'   => now()
+            ],
             # Customers
             [
                 'name'         => 'view-customer',

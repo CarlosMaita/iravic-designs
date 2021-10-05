@@ -317,8 +317,11 @@ return [
         'zone'          => 'Zona'
     ],
     'zones' => [
-        'index'     => 'Listado de Zonas',
-        'create'    => 'Crear nueva zona',
-        'edit'      => 'Editar zona'
+        'index'                 => 'Listado de Zonas',
+        'create'                => 'Crear nueva zona',
+        'edit'                  => 'Editar zona',
+        'address_destination'   => 'Dirección destino',
+        'name'                  => 'Nombre',
+        'position'              => 'Posición'
     ]
 ];
