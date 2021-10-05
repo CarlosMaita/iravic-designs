@@ -59,9 +59,9 @@ class Customer extends Model
     {
         parent::boot();
         Customer::deleting(function ($model) {
-            ImageService::delete($model->disk_dni, $model->dni_picture);
-            ImageService::delete($model->disk_receipt, $model->receipt_picture);
-            ImageService::delete($model->disk_address, $model->address_picture);
+            ImageService::delete($model::DISK_DNI, $model->dni_picture);
+            ImageService::delete($model::DISK_RECEIPT, $model->receipt_picture);
+            ImageService::delete($model::DISK_ADDRESS, $model->address_picture);
         });
     }
 
