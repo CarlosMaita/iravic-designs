@@ -16,6 +16,7 @@ class Visit extends Model
         'user_responsable_id',
         'comment',
         'date',
+        'position',
         'is_completed',
         'completed_date'
     ];

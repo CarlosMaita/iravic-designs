@@ -14,8 +14,13 @@
             update_markers = false,
             schedule_map = new ScheduleMap('map-schedule', $schedule, URL_RESOURCE, zone_select, role_select);
 
-        initDataTable();
         schedule_map.setMap();
+
+        $('.datatable-zone').DataTable();
+
+        $('.btn-collapse-zone').on('click', function(e) {
+            $(this).parents('.zone-customers').collapse('hide');
+        });
 
         $('#visit-responsable').select2({
             dropdownParent: modal_visits
@@ -276,102 +281,5 @@
                 }
             });
         });
-
-
-        /**
-        * Init Datatable
-        */
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
-                ajax: {
-                    url: URL_RESOURCE,
-                    dataSrc: function(data) {
-                        return data.visits ? data.visits : [];
-                    },
-                },
-                columns: [
-                    {
-                        render: function (data, type, row) {
-                            var html = '<div class="d-flex align-items-start">',
-                                url = "{{ route('clientes.index') }}";
-
-                            @if (Auth::user()->can('viewany', App\Models\Customer::class))
-                                html += `<a href="${url}/${row.customer_id}" class="link"><span>${row.customer.name}</span></a>`;
-                            @else
-                                html += `<span>${row.customer.name}</span>`;
-                            @endif
-
-                            html += `</div>`;
-
-                            return html;
-                        }
-                    },
-                    {data: 'customer.address'},
-                    {data: 'customer.zone.name'},
-                    {data: 'comment'},
-                    {
-                        render: function (data, type, row) {
-                            var html = row.responsable ? `<span>${row.responsable.name}</span>` : '<span>Por asignar</span>';
-
-                            @if (Auth::user()->can('updateResponsable', App\Models\Visit::class))
-                                html += `<button data-id="${row.id}"  class="btn btn-sm btn-success btn-action-icon btn-edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>`;
-                            @endif
-
-                            return html;
-                        }
-                    },
-                    {
-                        render: function (data, type, row) {
-                            var html = row.is_completed ? '<span>Si</span>' : '<span>No</span>';
-
-                            @if (Auth::user()->can('complete', App\Models\Visit::class))
-                                if (row.is_completed) {
-                                    html += `<button data-id="${row.id}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-times"></i></button>`;
-                                } else {
-                                    html += `<button data-id="${row.id}" data-to-complete="1" class="btn btn-sm btn-success btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-check"></i></button>`;
-                                }
-                            @endif
-
-                            return html;
-                        }
-                    },
-                    {
-                        render: function (data, type, row) {
-                            var content = '';
-
-                            if (row.customer.cellphone) {
-                                content = getCustomerWhatsappLink(row.customer);
-                            }
-
-                            return content;
-                        },
-                    }
-                ],
-                pageLength: 25,
-                responsive: true
-            });
-        }
-
-        function getCustomerForWhatsappNumber(cellphone) {
-            cellphone = cellphone.replace('+','');
-            cellphone = cellphone.replace(' ','');
-
-            if (cellphone.charAt(0) == 0) {
-                cellphone = cellphone.substring(1)
-            }
-
-            return cellphone;
-        }
-
-        function getCustomerWhatsappMessage(customer) {
-            return `Hola buenos días, te escribimos desde {{ config('app.name') }}. Tenemos agendado para pasar a cobrar hoy. Te queda bien?`;
-        }
-
-        function getCustomerWhatsappLink(customer) {
-            var cellphone = getCustomerForWhatsappNumber(customer.cellphone);
-            var message = getCustomerWhatsappMessage(customer);
-            
-            return `<a class="whatsapp-link" href="https://wa.me/${cellphone}?text=${message}" target='_blank'><i class="fab fa-whatsapp"></i></a>`;
-        }
     });
 </script>

@@ -86,7 +86,7 @@ class ScheduleController extends Controller
         $agenda->load('visits.customer.zone');
         $employees = $this->userRepository->allEmployees();
         $visits = $this->visitRepository->allBySchedule($agenda->id);
-        $zones = $this->zoneRepository->all();
+        $zones = $agenda->getZones();
         return view('dashboard.schedules.show')
                 ->withEmployees($employees)
                 ->withSchedule($agenda)

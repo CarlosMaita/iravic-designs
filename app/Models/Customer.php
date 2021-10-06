@@ -45,7 +45,8 @@ class Customer extends Model
         'total_refund_credit',
         'url_address',
         'url_dni',
-        'url_receipt'
+        'url_receipt',
+        'whatsapp_number'
     ];
 
     const DISK_ADDRESS = 'customers_address';
@@ -181,6 +182,22 @@ class Customer extends Model
         return url("/img/no_image.jpg");
     }
     
+    public function getWhatsappNumberAttribute()
+    {
+        if ($this->cellphone) {
+            $cellphone = str_replace('+', '', $this->cellphone);
+            $cellphone = str_replace(' ', '', $this->cellphone);
+            
+            if ($cellphone[0] == 0) {
+                $cellphone = substr($cellphone, 1);
+            }
+
+            return $cellphone;
+            return `<a class="whatsapp-link" href="https://wa.me/{{ $this->cellphone }}?text=Hola buenos días, te escribimos desde {{ config('app.name') }}. Tenemos agendado para pasar a cobrar hoy. Te queda bien?" target='_blank'><i class="fab fa-whatsapp"></i></a>`;
+        }
+
+        return null;
+    }
 
     # Methods
     public function updateImage($disk, $old_image, $new_file, $delete)
