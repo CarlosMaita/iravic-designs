@@ -40,7 +40,12 @@ class Schedule extends Model
     }
 
     # Methods
-    public function getZones()
+    public function hasVisitsWithoutPosition()
+    {
+        return $this->visits()->whereNull('position')->count();
+    }
+
+    public function getZones($sort_asc = 'asc')
     {
         $zones = collect();
 
@@ -51,7 +56,11 @@ class Schedule extends Model
             }
         }
 
-        return $zones->sortBy('position')->values()->all();
+        if ($sort_asc == 'asc') {
+            return $zones->sortBy('position')->values()->all();
+        } else {
+            return $zones->sortByDesc('position')->values()->all();
+        }
     }
 
     public function getVisitsByCustomersZone($zone_id)

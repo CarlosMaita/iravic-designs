@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                     @foreach ($visits as $visit)
-                        <tr>
+                        <tr @if($visit->is_completed) style="background: lightgray; color: #000;" @endif>
                             <td>
                                 @if (Auth::user()->can('viewany', App\Models\Customer::class))
                                     <a href="{{ route('clientes.show', [$visit->customer_id]) }}" class="link"><span>{{ $visit->customer->name }}</span></a>

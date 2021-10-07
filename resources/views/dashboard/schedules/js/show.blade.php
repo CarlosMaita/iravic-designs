@@ -22,6 +22,10 @@
             $(this).parents('.zone-customers').collapse('hide');
         });
 
+        $('.btn-sort-schedule').on('click', function(e) {
+            route.calcZonesRoute($zones);
+        });
+
         $('#visit-responsable').select2({
             dropdownParent: modal_visits
         });
@@ -176,7 +180,7 @@
                     success: function (response) {
                         if (response.success) {
                             update_markers = true;
-                            DATATABLE_RESOURCE.DataTable().ajax.reload();
+                            location.reload();
                             new Noty({
                                 text: response.message,
                                 type: 'success'

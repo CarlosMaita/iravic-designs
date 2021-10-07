@@ -15,6 +15,16 @@
                                     </div>
                                 </div>
                                 <br>
+                                @if ($schedule->hasVisitsWithoutPosition())
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="alert alert-warning" role="alert">
+                                                Hay clientes que no tienen su posicion ordenada. Haz click <button class="btn-sort-schedule btn btn-link p-0" type="button">aqui <i class="fas fa-sync"></i></button> para ordenar los clientes de la agenda por zonas.
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <br>
                                 <!--  -->
                                 @foreach ($zones as $zone)
                                     @include('dashboard.schedules._partials.zone', ['zone' => $zone])
@@ -22,6 +32,12 @@
                             </div>
                             {{--  --}}
                             <a href="{{ route('agendas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn-sort-schedule btn btn-warning text-white">Ordenar</button>
+                            @if ($sortBy == 'asc')
+                            <a href="{{ route('agendas.show', [$schedule->id]) }}?sort=desc" class="btn btn-dark text-white">Listar Orden Descendiente</a>
+                            @else
+                            <a href="{{ route('agendas.show', [$schedule->id]) }}?sort=asc" class="btn btn-dark text-white">Listar Orden Ascendiente</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -36,36 +52,15 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        let $schedule = @json($schedule);
-        let $visits = @json($visits);
-
-        /*
-        var collapse_element = $('#collapseExample');
-
-        $('.zone-item').on('click', function(e) {
-            var expanded = this.getAttribute('aria-expanded');
-            var target_id = this.dataset.target;
-            var target = $(target_id);
-            
-            if (expanded == 'false') {
-                target.collapse('hide');
-                collapse_element.collapse('hide');
-
-                setTimeout(function() { 
-                    collapse_element.collapse('hide');
-                }, 500);
-            } 
-        });
-
-        $('#test').on('click', function(e) {
-            collapse_element.collapse('hide');
-        });
-        */
+        let $schedule = @json($schedule),
+            $visits = @json($visits),
+            $zones = @json($zones);
     </script>
 
     @include('plugins.google-maps')
     @include('plugins.select2')
     @include('plugins.sweetalert')
+    @include('dashboard.schedules.js.routes')
     @include('dashboard.schedules.js.schedule_map')
     @include('dashboard.schedules.js.show')
 @endpush

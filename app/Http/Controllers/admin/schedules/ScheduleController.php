@@ -85,11 +85,13 @@ class ScheduleController extends Controller
 
         $agenda->load('visits.customer.zone');
         $employees = $this->userRepository->allEmployees();
+        $sortBy = empty($request->sort) || $request->sort != 'desc' ? 'asc' : 'desc';
         $visits = $this->visitRepository->allBySchedule($agenda->id);
-        $zones = $agenda->getZones();
+        $zones = $agenda->getZones($sortBy);
         return view('dashboard.schedules.show')
                 ->withEmployees($employees)
                 ->withSchedule($agenda)
+                ->withSortBy($sortBy)
                 ->withVisits($visits)
                 ->withZones($zones);
     }

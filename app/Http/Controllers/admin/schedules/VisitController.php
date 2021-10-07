@@ -229,4 +229,40 @@ class VisitController extends Controller
             ]);
         }
     }
+
+    /**
+     * 
+     */
+    public function sort(Request $request)
+    {
+        try {
+            if (!empty($request->visits)) {
+                foreach ($request->visits as $key => $id) {
+                    if ($visit = $this->visitRepository->find($id)) {
+                        $visit->position = ($key + 1);
+                        $visit->save();
+                    }
+                }
+
+                flash("La agenda ha sido ordenada")->success();
+
+                return response()->json([
+                    'success' => true
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No se ha podido actualizar las posiciones de las visitas.'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'No se ha podido actualizar las posiciones de las visitas.',
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
 }
