@@ -196,8 +196,8 @@
             return {
                     is_cliente: false,
                     location: {
-                        lat: -34.857234,
-                        lng: -56.047327
+                        lat: -34.740506,
+                        lng: -56.449882
                     }
                 };
         },

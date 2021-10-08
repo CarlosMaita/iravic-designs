@@ -34,9 +34,9 @@
                             <a href="{{ route('agendas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                             <button class="btn-sort-schedule btn btn-warning text-white">Ordenar</button>
                             @if ($sortBy == 'asc')
-                            <a href="{{ route('agendas.show', [$schedule->id]) }}?sort=desc" class="btn btn-dark text-white">Listar Orden Descendiente</a>
+                            <a href="{{ route('agendas.show', [$schedule->id]) }}?sort=desc" class="btn btn-dark text-white">Recorrido de Vuelta</a>
                             @else
-                            <a href="{{ route('agendas.show', [$schedule->id]) }}?sort=asc" class="btn btn-dark text-white">Listar Orden Ascendiente</a>
+                            <a href="{{ route('agendas.show', [$schedule->id]) }}?sort=asc" class="btn btn-dark text-white">Recorrido de Ida</a>
                             @endif
                         </div>
                     </div>
