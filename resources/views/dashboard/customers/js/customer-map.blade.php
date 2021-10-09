@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var geocoder = new google.maps.Geocoder;
+    const geocoder = new google.maps.Geocoder;
 
     function CustomerMap(map_id, lat = null, lng = null, address = '', updatable = false) {
         this.address = address;
@@ -34,11 +34,7 @@
     	$('#address').after(content);
     }
 
-    CustomerMap.prototype.createMarkerPopup = function(marker, content){
-        // var address_val = $('#address').val();
-        // this.marker.infowindow = new google.maps.InfoWindow({
-        //     content: address_val
-        // });
+    CustomerMap.prototype.createMarkerPopup = function(marker, content) {
         this.marker.infowindow = new google.maps.InfoWindow({
             content: content
         });
@@ -56,6 +52,8 @@
 	CustomerMap.prototype.updateLatLngInputs = function(lat, lng) {
 	    $('#latitude').val(lat);
 		$('#longitude').val(lng);
+        $('#latitude_search').val(lat);
+		$('#longitude_search').val(lng);
     }
 
     CustomerMap.prototype.validateAddressLength = function(direction) {
@@ -131,6 +129,7 @@
     };  
 
     CustomerMap.prototype.setMap = function() {
+        var self = this;
         var map_element = this.getMapElement();
         
         if (map_element) {
@@ -140,22 +139,20 @@
                 zoomControl: true
             });
 
-            var that = this;
-
-            if (that.updatable) {
-                google.maps.event.addListener(that.map, 'click', function(event) {
+            if (self.updatable) {
+                google.maps.event.addListener(self.map, 'click', function(event) {
                     var data =  {
                             lat: event.latLng.lat(),
                             lng: event.latLng.lng()
                         };
                     
-                    if (that.canGeocodingReverse()) {
-                        that.geocodingReverse(event.latLng);
+                    if (self.canGeocodingReverse()) {
+                        self.geocodingReverse(data);
                     }
 
-                    that.addMarker(data);
-                    that.removeErrorAddress();
-                    that.marker_created_after_click = true;
+                    self.addMarker(data);
+                    self.removeErrorAddress();
+                    self.marker_created_after_click = true;
                 });
             }
         }
@@ -207,8 +204,13 @@
 		}
 	}
 
-    CustomerMap.prototype.geocodingReverse = function(data) {
+    CustomerMap.prototype.geocodingReverse = function(data = null) {
         var that = this;
+
+        if (!data) {
+            data = this.getSearchCoords();
+        }
+
 		geocoder.geocode( { 'location': data}, function(results, status) {
 			if (status == 'OK') {
 				if (results.length == 0) {
@@ -216,12 +218,13 @@
 					toastr.error("No se encuentran resultados para la ubicación seleccionada");
 				} else {
                     var coords =  {
-		              	lat: data.lat(),
-		              	lng: data.lng()
+		              	lat: data.lat,
+		              	lng: data.lng
 		            };
 					var result = results[0];
 					var address = result.formatted_address;
                     
+                    that.addMarker(coords);
                     that.marker_created_after_search = false;
                     $("#address").val(address);
 					$('#error-address').remove();
@@ -232,6 +235,13 @@
 			}
 		});
 	}
+
+    CustomerMap.prototype.getSearchCoords = function() {
+        return {
+            lat: parseFloat($('#latitude_search').val()),
+            lng: parseFloat($('#longitude_search').val())
+        }
+    }
 
     CustomerMap.prototype.getFormatedAddress = function() {
     	var value = $("#address").val();

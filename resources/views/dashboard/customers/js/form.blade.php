@@ -58,9 +58,34 @@
 
         $('select').select2();
 
+        $('#location-switch').on('change', function(e) {
+            if ($(this).is(':checked')) {
+                $("#address").attr('readOnly', true);
+                $("#latitude_search").attr('disabled', false);
+                $("#longitude_search").attr('disabled', false);
+            } else {
+                $("#address").attr('readOnly', false);
+                $("#latitude_search").attr('disabled', true);
+                $("#longitude_search").attr('disabled', true);
+            }
+        });
+
         $("#address").keypress( _.debounce( function(){
             if (customer_map.canGeocoding) {
                 customer_map.geocoding();
+            }
+        }, 700));
+
+
+        $("#latitude_search").keypress( _.debounce( function() {
+            if (customer_map.canGeocodingReverse && $('#latitude_search').val() && $('#longitude_search').val()) {
+                customer_map.geocodingReverse();
+            }
+        }, 700));
+
+        $("#longitude_search").keypress( _.debounce( function() {
+            if (customer_map.canGeocodingReverse && $('#latitude_search').val() && $('#longitude_search').val()) {
+                customer_map.geocodingReverse();
             }
         }, 700));
 

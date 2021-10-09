@@ -154,10 +154,32 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-12 mt-5 col-md-offset-3 text-center">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="location-switch">
+                <label class="custom-control-label" for="location-switch">Buscar Ubicación por Latitud y Longitud</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="form-group">
                 <label class="control-label" for="address">{{ __('dashboard.form.fields.customers.address') }}:</label>
                 <textarea id="address" name="address" rows="2" cols="1" class="form-control">{{ old("address", $customer->address)}}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="latitude_search">Latitud</label>
+                <input class="form-control" id="latitude_search" type="text" value="{{ $customer->latitude }}" disabled>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="longitude_search">Longitud</label>
+                <input class="form-control" id="longitude_search" type="text" value="{{ $customer->longitude }}" disabled>
             </div>
         </div>
     </div>
