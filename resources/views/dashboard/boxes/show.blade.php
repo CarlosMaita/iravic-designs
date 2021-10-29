@@ -21,7 +21,7 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">ventas</a>
+                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Ventas</a>
                                     </li>
                                     <!--  -->
                                     @if (count($box->orders))
@@ -94,16 +94,30 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.boxes.total_payed') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_payed}}" readOnly>
+                                                        <label>{{ __('dashboard.boxes.total_spent') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_spent }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.boxes.total_spent') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_spent}}" readOnly>
+                                                        <label>{{ __('dashboard.boxes.total_payed') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_payed }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_refunded') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_refunded }}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_final_sales') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_final_sales }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -122,7 +136,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_spent') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_spent}}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->total_spent }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,7 +150,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_cash') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_cash}}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->total_cash }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,13 +158,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_card') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_card}}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->total_card }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_bankwire') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_bankwire}}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->total_bankwire }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,13 +172,27 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_credit') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_credit}}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->total_credit }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_payed') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->total_payed}}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->total_payed }}" readOnly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_refunded') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_refunded }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_final_sales') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_final_sales }}" readOnly>
                                                     </div>
                                                 </div>
                                             </div>

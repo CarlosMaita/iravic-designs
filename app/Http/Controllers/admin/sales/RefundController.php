@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\RefundRequest;
 use App\Models\Refund;
 use App\Repositories\Eloquent\CustomerRepository;
+use App\Repositories\Eloquent\DebtRepository;
+use App\Repositories\Eloquent\DebtOrderProductRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\RefundRepository;
 use App\Repositories\Eloquent\RefundProductRepository;
+use App\Services\Orders\OrderService;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,6 +23,10 @@ use Illuminate\Support\Facades\DB;
 class RefundController extends Controller
 {
     public $customerRepository;
+
+    public $debtRepository;
+
+    public $debtOrderProductRepository;
 
     public $orderRepository;
 
@@ -34,9 +41,11 @@ class RefundController extends Controller
     /**
      * Construct
      */
-    public function __construct(CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, RefundRepository $refundRepository, RefundProductRepository $refundProductRepository)
+    public function __construct(CustomerRepository $customerRepository, DebtRepository $debtRepository, DebtOrderProductRepository $debtOrderProductRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, RefundRepository $refundRepository, RefundProductRepository $refundProductRepository)
     {
         $this->customerRepository = $customerRepository;
+        $this->debtRepository = $debtRepository;
+        $this->debtOrderProductRepository = $debtOrderProductRepository;
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
@@ -111,8 +120,20 @@ class RefundController extends Controller
         try {
             $this->authorize('create', 'App\Models\Refund');
             DB::beginTransaction();
+            $is_credit_shared = isset($request->is_credit_shared) ? 1 : 0;
+            $productsRefund = array();
+            $productsOrder = array();
+            $totals = OrderService::getOrderTotalsByRefund($request->only('discount', 'products', 'qtys', 'products_refund', 'qtys_refund', 'payment_method', 'is_credit_shared'), $this->productRepository, $this->orderProductRepository);
+
             /** Refund **/
-            $attributes = $request->only('box_id', 'customer_id', 'user_id', 'date');
+            $attributes = array_merge(
+                array(
+                    'total' => $totals['total_refund'],
+                    'total_refund_credit' => $totals['total_refund_credit'],
+                    'total_refund_debit' => $totals['total_refund_debit']
+                ),
+                $request->only('box_id', 'customer_id', 'user_id', 'date')
+            );
             $refund = $this->refundRepository->create($attributes);
             foreach ($request->products_refund as $product_id) {
                 if ($product = $this->orderProductRepository->find($product_id)) {
@@ -130,18 +151,31 @@ class RefundController extends Controller
                             'stock_type'        => $request->stock_type,
                             'total'             => ($product->product_price * $request->qtys_refund[$product_id])
                         );
-                        $this->refundProductRepository->create($attributes);
+                        $refundProduct = $this->refundProductRepository->create($attributes);
+                        array_push($productsRefund, $refundProduct);
                     }
                 }
             }
 
-            /** Order **/
+            /** Order && Previous Debt**/
             if (!empty($request->products)) {
-                $attributes =  array_merge(
-                    $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'discount', 'subtotal', 'total'),
-                    array('refund_id' => $refund->id)
+                $attributesOrder = array_merge(
+                    array(
+                        'customer_id' => $request->customer_id_new_credit,
+                        'refund_id' => $refund->id,
+                        'discount' => $totals['discount'],
+                        'subtotal' => $totals['subtotal'],
+                        'total_real' => $totals['total_order'],
+                        'total' => $totals['total_cancel'],
+                        'total_refund_credit' => $totals['total_refund_credit'],
+                        'total_refund_debit' => $totals['total_refund_debit'],
+                        'is_credit_shared' => $is_credit_shared
+                    ),
+                    $request->only('box_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit')
                 );
-                $order = $this->orderRepository->create($attributes);
+
+                $order = $this->orderRepository->create($attributesOrder);
+
                 foreach ($request->products as $product_id) {
                     if ($product = $this->productRepository->find($product_id)) {
                         if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
@@ -156,8 +190,47 @@ class RefundController extends Controller
                                 'stock_type'        => $request->stock_type,
                                 'total'             => ($product->regular_price * $request->qtys[$product_id])
                             );
-                            $this->orderProductRepository->create($attributes);
+                            $orderProduct = $this->orderProductRepository->create($attributes);
+                            array_push($productsOrder, $orderProduct);
                         }
+                    }
+                }
+
+                if ($is_credit_shared) {
+                    $attributes = array_merge(
+                        array(
+                            'amount' => $totals['total_refund'],
+                            'comment' => 'Devolución #' . $refund->id . ' y Venta #' . $order->id
+                        ),
+                        $request->only('box_id', 'customer_id', 'user_id', 'date')
+                    );
+                    $debt = $this->debtRepository->create($attributes);
+
+                    foreach ($productsRefund as $productRefund) {
+                        $attributes = array(
+                            'debt_id' => $debt->id,
+                            'type' => 'refund',
+                            'refund_product_id' => $productRefund->id,
+                            'order_product_id' => $productRefund->order_product_id,
+                            'product_name' => $productRefund->product_name,
+                            'product_price' => $productRefund->product_price,
+                            'qty' => $productRefund->qty,
+                            'total' =>  $productRefund->total
+                        ); 
+                        $this->debtOrderProductRepository->create($attributes);
+                    }
+
+                    foreach ($productsOrder as $productOrder) {
+                        $attributes = array(
+                            'debt_id' => $debt->id,
+                            'type' => 'order',
+                            'order_product_id' => $productOrder->id,
+                            'product_name' => $productOrder->product_name,
+                            'product_price' => $productOrder->product_price,
+                            'qty' => $productOrder->qty,
+                            'total' =>  $productOrder->total
+                        ); 
+                        $this->debtOrderProductRepository->create($attributes);
                     }
                 }
             }

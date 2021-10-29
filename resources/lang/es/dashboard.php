@@ -22,7 +22,9 @@ return [
         'total_cash'        => 'Total Efectivo',
         'total_credit'      => 'Total Crédito',
         'total_payed'       => 'Total Pagado',
+        'total_refunded'    => 'Total Devuelto',
         'total_spent'       => 'Total Gastado',
+        'total_final_sales' => 'Total Final Ventas',
         'user'              => 'Usuario'
     ],
     'breadcrumb' => [
@@ -277,7 +279,7 @@ return [
     ],
     'sidebar' => [
         'boxes'                 => 'Cajas',
-        'boxes-orders'          => 'Cajas y ventas',
+        'boxes-orders'          => 'Cajas y Ventas',
         'brands'                => 'Marcas',
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',

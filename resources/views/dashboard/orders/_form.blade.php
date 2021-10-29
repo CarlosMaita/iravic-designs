@@ -410,6 +410,11 @@
             cursor: pointer;
             margin: 8px 2px
         }
+        @media(max-width: 500px) {
+            .radio {
+                width: 48%;
+            }
+        }
         .radio label {
             align-items: center;
             color: #fff;

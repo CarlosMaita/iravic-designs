@@ -25,7 +25,9 @@ class Box extends Model
         'total_cash_in_box',
         'total_credit',
         'total_payed',
-        'total_spent'
+        'total_refunded',
+        'total_spent',
+        'total_final_sales'
     ];
 
     # Relationships
@@ -127,9 +129,23 @@ class Box extends Model
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    public function getTotalRefundedAttribute()
+    {
+        $total = $this->getTotalRefunded();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
     public function getTotalSpentAttribute()
     {
         $total = $this->getTotalSpent();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
+    public function getTotalFinalSalesAttribute()
+    {
+        $total_payed = $this->getTotalPayed();
+        $total_refunded = $this->getTotalRefunded();
+        $total = $total_payed - $total_refunded;
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
@@ -166,6 +182,11 @@ class Box extends Model
         }
 
         return $payments->sum('amount');
+    }
+
+    public function getTotalRefunded()
+    {
+        return $this->refunds()->sum('total');
     }
 
     public function getTotalSpent()

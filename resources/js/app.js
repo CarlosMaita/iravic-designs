@@ -10,9 +10,14 @@ import vSelect from 'vue-select'
 
 import 'vue-select/dist/vue-select.css';
 
+// import vueble from 'vueble'
+
 window.Vue = require('vue');
 
 Vue.prototype.$axios = window.axios;
+
+
+// Vue.use(vueble)
 
 /**
  * The following block of code may be used to automatically register your
@@ -28,8 +33,15 @@ Vue.prototype.$axios = window.axios;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 Vue.component('product-form', require('./components/catalog/ProductFormComponent.vue').default);
+Vue.component('devolution-form', require('./components/orders/Devolution.vue').default);
+Vue.component('modal-discount', require('./components/orders/ModalDiscount.vue').default);
+Vue.component('modal-add-producto-stock', require('./components/orders/ModalProductStocks.vue').default);
+Vue.component('modal-producto-to-refund', require('./components/orders/ModalProductToRefund.vue').default);
+Vue.component('product-item-to-refund', require('./components/orders/ProductItemToRefund.vue').default);
+Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
 
 Vue.component('v-select', vSelect)
+// Vue.component('vueble', vueble)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,6 +49,17 @@ Vue.component('v-select', vSelect)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ Vue.filter('toCurrency', function (value) {
+    if (typeof value !== "number") {
+        return value;
+    }
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
+    return formatter.format(value);
+});
 
 const app = new Vue({
     el: '#app',

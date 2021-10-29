@@ -117,7 +117,10 @@ class OrderController extends Controller
         try {
             $this->authorize('create', 'App\Models\Order');
             DB::beginTransaction();
-            $attributes = $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'discount' ,'subtotal', 'total');
+            $attributes = array_merge(
+                array('total_real' => $request->total),
+                $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'discount' ,'subtotal', 'total')
+            );
             $order = $this->orderRepository->create($attributes);
 
             foreach ($request->products as $product_id) {

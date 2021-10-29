@@ -21,7 +21,7 @@ class OrderDiscountRequest extends FormRequest
             'discount.required' => 'El monto del descuento es obligatorio.',
             'discount.numeric' => 'El monto del descuento debe ser un valor numérico.',
             'discount.min' => 'El descuento no puede ser menor que :min.',
-            'discount_password' => 'La contraseña para descuentos es obligatoria.',
+            'discount_password.required' => 'La contraseña para descuentos es obligatoria.',
             'products.required' => 'Debe seleccionar por lo menos 1 producto.',
             'products.array' => 'Los productos deben ser enviados en array.',
             'products.min' => 'Debe seleccionar por lo menos 1 producto.',

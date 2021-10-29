@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\config;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\DiscountPasswordRequest;
 use App\Models\Config;
 use Illuminate\Http\Request;
 
@@ -41,5 +42,12 @@ class ConfigController extends Controller
         flash('La configuracion ha sido actualizada con exito.' )->success();
 
         return redirect('admin/config/general');
+    }
+
+    public function validateDiscountPassword(DiscountPasswordRequest $request)
+    {
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

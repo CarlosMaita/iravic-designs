@@ -98,6 +98,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     Route::group(['prefix' => 'config', 'namespace' => 'config'], function () {
         # 
         Route::resource('general', 'ConfigController')->only(['index', 'store']);
+        #
+        Route::get('validate-descuento-password', 'ConfigController@validateDiscountPassword')->name('config.discount');
         # 
         Route::resource('usuarios', 'UserController')->except('show');
         #

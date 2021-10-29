@@ -13,7 +13,10 @@ class Refund extends Model
         'box_id',
         'customer_id',
         'user_id',
-        'date'
+        'date',
+        'total',
+        'total_refund_credit',
+        'total_refund_debit'
     ];
 
     # Relationships

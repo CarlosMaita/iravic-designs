@@ -12,6 +12,7 @@ class Debt extends Model
     public $fillable = [
         'box_id',
         'customer_id',
+        'order_product_id',
         'user_id',
         'amount',
         'comment',
@@ -33,6 +34,11 @@ class Debt extends Model
         return $this->belongsTo('App\Models\Customer');
     }
 
+    public function order_product()
+    {
+        return $this->belongsTo('App\Models\OrderProduct');
+    }
+    
     public function user()
     {
         return $this->belongsTo('App\User');

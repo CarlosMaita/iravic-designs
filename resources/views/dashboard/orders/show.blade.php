@@ -3,6 +3,15 @@
 @section('content')
     <div class="container-fluid">
         <div class="animated fadeIn">
+            @if ($order->refund)
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-warning" role="alert">
+                        Esta venta es un <b>cambio</b> originada de la devolucion <a href="{{ route('devoluciones.show', [$order->refund->id]) }}">#{{ $order->refund->id }}</a>
+                    </div>
+                </div>
+            </div>
+            @endif
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
@@ -71,11 +80,11 @@
                                     </div>
                                 </div>
                                 <!--  -->
-                                @if (Auth::user()->can('viewany', App\Models\Refund::class))
+                                @if ($order->refund && Auth::user()->can('viewany', App\Models\Refund::class))
                                     <br>
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <a href="{{ route('devoluciones.show', [$order->refund_id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de devolución (origen) del cuál se realizó este venta.</a>
+                                            <a href="{{ route('devoluciones.show', [$order->refund_id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de devolución (origen) del cuál se realizó este cambio.</a>
                                         </div>
                                     </div>
                                 @endif

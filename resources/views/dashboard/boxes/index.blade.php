@@ -25,6 +25,8 @@
                                                 <th scope="col">{{ __('dashboard.boxes.user') }}</th>
                                                 <th scope="col">{{ __('dashboard.boxes.closed') }}</th>
                                                 <th scope="col">{{ __('dashboard.boxes.total_payed') }}</th>
+                                                <th scope="col">{{ __('dashboard.boxes.total_refunded') }}</th>
+                                                <th scope="col">{{ __('dashboard.boxes.total_final_sales') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

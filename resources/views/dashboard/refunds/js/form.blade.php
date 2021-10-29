@@ -736,8 +736,6 @@
         modal_product_refund.on('hidden.coreui.modal', function(e) {
             modal_product_product_refund_qty.empty();
         });
-
-
         
         /**
         *

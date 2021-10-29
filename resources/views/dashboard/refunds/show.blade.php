@@ -92,7 +92,7 @@
                                         <br>
                                         <div class="row mb-3">
                                             <div class="col-12">
-                                                <a href="{{ route('ventas.show', [$refund->order->id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de venta realizado en esta devolución.</a>
+                                                <a href="{{ route('ventas.show', [$refund->order->id]) }}"><i class="fa fa-eye" aria-hidden="true"></i> Ver detalles de venta realizada en esta devolución.</a>
                                             </div>
                                         </div>
                                         @endif

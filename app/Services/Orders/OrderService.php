@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Services\Orders;
+
+class OrderService
+{
+    public static function getOrderTotalsByRefund($params, $productRepository, $orderProductRepository)
+    {
+        $discount = isset($params['discount']) && is_numeric($params['discount']) ? $params['discount'] : 0;
+        $subtotal = self::getSubtotalOrder($productRepository, $params['products'], $params['qtys']);
+        $totalCancel = 0;
+        $totalsRefund = self::getTotalsToRefund($orderProductRepository, $params['products_refund'], $params['qtys_refund']);
+        $totalRefund = $totalsRefund['total'];
+        $totalRefundDebit = $totalsRefund['total_by_debit'];
+        $totalRefundCredit = $totalsRefund['total_by_credit'];
+        $totalOrder = $subtotal - $discount;
+
+        if ($params['payment_method'] == 'credit' && $totalOrder > $totalRefundCredit && isset($params['is_credit_shared'])) {
+            $totalCancel = $totalOrder - $totalRefundDebit - $totalRefundCredit;
+        } else {
+            $totalCancel = $totalOrder;
+        }
+
+        return [
+            'discount' => $discount,
+            'subtotal' => $subtotal,
+            'total_order' => $totalOrder,
+            'total_cancel' => $totalCancel,
+            'total_refund' => $totalRefund,
+            'total_refund_debit' => $totalRefundDebit,
+            'total_refund_credit' => $totalRefundCredit
+        ];
+    }
+
+    public static function getSubtotalOrder($productRepository, $products, $qtys)
+    {
+        $subtotal = 0;
+
+        foreach ($products as $product_id) {
+            if ($product = $productRepository->find($product_id)) {
+                if (isset($qtys[$product_id]) && $qtys[$product_id] > 0) {
+                    $subtotal += ($product->regular_price * $qtys[$product_id]);
+                }
+            }
+        }
+
+        return $subtotal;
+    }
+
+    public static function getTotalsToRefund($orderProductRepository, $products, $qtys)
+    {
+        $total_by_credit = 0;
+        $total_by_debit = 0;
+
+        foreach ($products as $product_id) {
+            if ($product = $orderProductRepository->find($product_id)) {
+                if (isset($qtys[$product_id]) && $qtys[$product_id] > 0) {
+                    $total_product = ($product->product_price * $qtys[$product_id]);
+                    if ($product->order->payed_credit == 1) {
+                        $total_by_credit += $total_product;
+                    } else {
+                        $total_by_debit += $total_product;
+                    }
+                }
+            }
+        }
+
+        return [
+            'total' => ($total_by_credit + $total_by_debit),
+            'total_by_credit' => $total_by_credit,
+            'total_by_debit' => $total_by_debit
+        ];
+    }
+}

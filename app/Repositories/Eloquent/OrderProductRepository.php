@@ -25,7 +25,10 @@ class OrderProductRepository extends BaseRepository implements OrderProductRepos
         $products = new Collection;
         $orders_products = $this->model->with('color', 'product', 'size')
                             ->whereHas('order', function ($q) use ($customer_id) {
-                                $q->where('customer_id', $customer_id);
+                                $q->whereDoesntHave('refund', function($q) use ($customer_id) {
+                                    $q->where('customer_id', '<>', $customer_id);
+                                })
+                                ->where('customer_id', $customer_id);
                             })
                             ->where(function($q) {
                                 $q->whereHas('refunds_products', function ($query){

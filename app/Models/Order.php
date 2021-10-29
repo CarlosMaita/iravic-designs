@@ -17,9 +17,13 @@ class Order extends Model
         'refund_id',
         'user_id',
         'date',
+        'is_credit_shared',
+        'total_refund_credit',
+        'total_refund_debit',
         'discount',
         'subtotal',
         'total',
+        'total_real',
         'payed_bankwire',
         'payed_card',
         'payed_cash',
@@ -49,6 +53,11 @@ class Order extends Model
     public function products()
     {
         return $this->hasMany('App\Models\OrderProduct');
+    }
+
+    public function refund()
+    {
+        return $this->belongsTo('App\Models\Refund');
     }
 
     # Accessors

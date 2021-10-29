@@ -223,8 +223,21 @@ class Customer extends Model
         $total_credit_refund = $this->getTotalRefundCredit();
         $total_debts = $this->getTotalDebt();
         $total_payments = $this->payments()->sum('amount');
+        $total_debit_refunded_balance = $this->getTotalDebitRefundedBalance();
     
-        return ($total_payments + $total_credit_refund - $total_credit - $total_debts);
+        return ($total_payments + $total_credit_refund - $total_credit - $total_debts + $total_debit_refunded_balance);
+    }
+
+    public function getTotalDebitRefundedBalance()
+    {
+        $refunded = $this->refunds()->has('order')->sum('total_refund_debit');
+        $ordered = $this->orders()->whereHas('refund', function($q) {
+            $q->where('total_refund_debit', '>', 0);
+        })
+        ->where('payed_credit', 0)
+        ->sum('total');
+        
+        return $refunded - $ordered;;
     }
     
     public function getTotalBuyed()

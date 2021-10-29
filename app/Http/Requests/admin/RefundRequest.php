@@ -19,20 +19,22 @@ class RefundRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'customer_id.required'      => 'El cliente es obligatorio.',
-            'customer_id.exists'        => 'El cliente seleccionado no existe en nuestra BD.',
-            'payment_method.required'   => 'El método de pago es obligatorio.',
-            'payment_method.in'         => 'El método de pago seleccionado no es válido.',
-            'products.required'         => 'Debe seleccionar por lo menos 1 producto a llevar.',
-            'products.array'            => 'Los productos a llevarse deben ser enviados en array.',
-            'products.min'              => 'Debe seleccionar por lo menos 1 producto para llevarse.',
-            'products_refund.required'  => 'Debe seleccionar por lo menos 1 producto a llevar.',
-            'products_refund.array'     => 'Los productos a llevarse deben ser enviados en array.',
-            'products_refund.min'       => 'Debe seleccionar por lo menos 1 producto para llevarse.',
-            'qtys.required'             => 'Las cantidades de los productos a llevarse es requerida.',
-            'qtys.array'                => 'Las cantidades de los productos a llevarse debe ser enviado en array.',
-            'qtys_refund.required'      => 'Las cantidades de los productos a devolver es requerida',
-            'qtys_refund.array'         => 'array'
+            'customer_id.required'              => 'El cliente es obligatorio.',
+            'customer_id.exists'                => 'El cliente seleccionado no existe en nuestra BD.',
+            'payment_method.required'           => 'El método de pago es obligatorio.',
+            'payment_method.in'                 => 'El método de pago seleccionado no es válido.',
+            'products.required'                 => 'Debe seleccionar por lo menos 1 producto a llevar.',
+            'products.array'                    => 'Los productos a llevarse deben ser enviados en array.',
+            'products.min'                      => 'Debe seleccionar por lo menos 1 producto para llevarse.',
+            'products_refund.required'          => 'Debe seleccionar por lo menos 1 producto a llevar.',
+            'products_refund.array'             => 'Los productos a llevarse deben ser enviados en array.',
+            'products_refund.min'               => 'Debe seleccionar por lo menos 1 producto para llevarse.',
+            'qtys.required'                     => 'Las cantidades de los productos a llevarse es requerida.',
+            'qtys.array'                        => 'Las cantidades de los productos a llevarse debe ser enviado en array.',
+            'qtys_refund.required'              => 'Las cantidades de los productos a devolver es requerida.',
+            'qtys_refund.array'                 => 'Las cantidades de los productos deben ser enviadas en array.',
+            'customer_id_new_credit.required'   => 'El cliente para compartir deuda es obligatorio.',
+            'customer_id_new_credit.exists'     => 'El cliente para compartir deuda seleccionado no existe en nuestra BD.'
         ];
 
         if (isset($this->products) && is_array($this->products)) {
@@ -89,7 +91,10 @@ class RefundRequest extends FormRequest
             $rules['products.*'] = 'exists:products,id';
             $rules['qtys'] = 'required|array';
             $rules['qtys.*'] = 'numeric';
+        }
 
+        if (isset($this->needs_customer_debt)) {
+            $rules['customer_id_new_credit'] = 'required|exists:customers,id';
         }
 
         return $rules;
@@ -112,16 +117,11 @@ class RefundRequest extends FormRequest
             ]);
 
             if (!empty($this->products)) {
-                $totals = $this->getTotal();
-
                 $this->merge([
                     'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
                     'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0,
                     'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
-                    'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0,
-                    'discount'          => $totals['discount'],
-                    'subtotal'          => $totals['subtotal'],
-                    'total'             => $totals['total']
+                    'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0
                 ]);
             }
         }
@@ -142,28 +142,5 @@ class RefundRequest extends FormRequest
             'stock_type'        => $user->getColumnStock(),
             'user_id'           => $user->id
         ]);
-    }
-
-    /**
-     * 
-     */
-    public function getTotal()
-    {
-        $discount = isset($this->discount) && is_numeric($this->discount) ? $this->discount : 0;
-        $subtotal = 0;
-
-        foreach ($this->products as $product_id) {
-            if ($product = $this->productRepository->find($product_id)) {
-                if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
-                    $subtotal += ($product->regular_price * $this->qtys[$product_id]);
-                }
-            }
-        }
-
-        return [
-            'discount' => $discount,
-            'subtotal' => $subtotal,
-            'total' => $subtotal - $discount
-        ];
     }
 }

@@ -23,6 +23,8 @@
                         }
                     },
                     {data: 'total_payed'},
+                    {data: 'total_refunded'},
+                    {data: 'total_final_sales'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
