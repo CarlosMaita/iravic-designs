@@ -74,20 +74,25 @@ class VisitRequest extends FormRequest
     public function withValidator($validator)
     {
         if (!$validator->fails()) {
-            $customer = $this->customerRepository->find($this->customer_id);
-            $customersCount = $this->visitRepository->getCountCustomersFromZone($this->date, $customer->id, $customer->zone_id);
-            $hasCustomerVisit = $this->visitRepository->hasCustomerVisitForDate($this->date, $customer->id);
-            
-            if ($hasCustomerVisit) {
-                $validator->after(function ($validator) {
-                    $validator->errors()->add('customer_visit', 'El cliente ya tiene una visita pautada para el día seleccionado.');
-                });
-            }
 
-            if ($customersCount >= $this->max_customers_per_zone) {
-                $validator->after(function ($validator) {
-                    $validator->errors()->add('zone', 'La zona ya posee 25 clientes a visitar para el día seleccionado.');
-                });
+            $customer = $this->customerRepository->find($this->customer_id);
+            $visita = $this->route('visita');
+
+            if (!$visita || $visita->getRawOriginal('date') != $this->date) {  
+                $customersCount = $this->visitRepository->getCountCustomersFromZone($this->date, $customer->id, $customer->zone_id);
+                $hasCustomerVisit = $this->visitRepository->hasCustomerVisitForDate($this->date, $customer->id);
+
+                if ($hasCustomerVisit) {
+                    $validator->after(function ($validator) {
+                        $validator->errors()->add('customer_visit', 'El cliente ya tiene una visita pautada para el día seleccionado.');
+                    });
+                }
+
+                if ($customersCount >= $this->max_customers_per_zone) {
+                    $validator->after(function ($validator) {
+                        $validator->errors()->add('zone', 'La zona ya posee 25 clientes a visitar para el día seleccionado.');
+                    });
+                }
             }
         }
     }
