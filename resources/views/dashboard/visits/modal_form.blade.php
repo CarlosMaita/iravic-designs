@@ -1,5 +1,5 @@
 <div id="modal-visits" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <form id="form-visits">
             @csrf
             @if (isset($customer))

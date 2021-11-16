@@ -339,6 +339,14 @@
     @include('dashboard.visits.modal_form')
 @endsection
 
+@push('css')
+    <style>
+        .datepicker-dropdown {
+            max-width: 300px;
+        }
+    </style>
+@endpush
+
 @push('js')
     <script>
         const $customer = @json($customer);
@@ -359,7 +367,7 @@
             // .show();
         });
     </script>
-    
+
     @include('plugins.datepicker')
     @include('plugins.google-maps')
     @include('plugins.select2')

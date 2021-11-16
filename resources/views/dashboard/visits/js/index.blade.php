@@ -232,7 +232,7 @@
                 ajax: URL_RESOURCE + url_params,
                 pageLength: 25,
                 columns: [
-                    {data: 'id'},
+                    {data: 'date'},
                     {
                         render: function (data, type, row) {
                             if (typeof $customer !== 'undefined') {
@@ -246,8 +246,11 @@
                             return '';
                         }
                     },
-                    {data: 'responsable.name'},
-                    {data: 'date'},
+                    {
+                        render: function (data, type, row) {
+                            return row.responsable ? row.responsable.name : '';
+                        }
+                    },
                     {
                         render: function (data, type, row) {
                             return row.is_completed ? 'Si' : 'No'
@@ -273,6 +276,14 @@
         }
 
         function setDatePicker() {
+            // $('.datepicker-form').datepicker({
+            //     uiLibrary: 'bootstrap4'
+            // });
+
+            // return;
+            // .gj-picker-bootstrap
+            // max-width: 300px;
+
             var inputs = $('.datepicker-form');
 
             inputs.each((index, element) => {
@@ -292,7 +303,7 @@
                     autoclose: true,
                     todayHighlight: true,
                     showOnFocus: true,
-                }).datepicker("setDate",date)
+                }).datepicker("setDate", date)
                 .end().on('keypress paste', function (e) {
                     // e.preventDefault();
                     // return false;

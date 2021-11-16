@@ -16,7 +16,6 @@ Auth::routes(['register' => false]);
 // Route::get('/', 'HomeController@index')->name('homepage');
 Route::get('/', function () { return redirect('/login'); });
 
-
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/', function () { 
         return view('dashboard.homepage');

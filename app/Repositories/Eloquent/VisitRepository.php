@@ -80,4 +80,28 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
                             ->update(['is_completed' => 1]);
     }
 
+    /**
+     * 
+     */
+    public function hasCustomerVisitForDate($date, $customer_id): int
+    {
+        return $this->model->whereHas('customer', function($q) use ($customer_id) {
+                            $q->where('id', $customer_id);
+                        })
+                        ->whereDate('date', $date)
+                        ->count();
+    }
+
+    /**
+     * 
+     */
+    public function getCountCustomersFromZone($date, $customer_id, $zone_id): int
+    {
+        return $this->model->whereHas('customer', function($q) use ($customer_id, $zone_id) {
+                            $q->where('zone_id', $zone_id)
+                                ->where('id', '<>', $customer_id);
+                        })
+                        ->whereDate('date', $date)
+                        ->count();
+    }
 }
