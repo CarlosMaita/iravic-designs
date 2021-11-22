@@ -234,7 +234,7 @@
                                 <button class="btn btn-info next action-button" type="button" data-step="3">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
                             <fieldset>
-                                <div class="form-card">
+                                <div class="form-card py-1">
                                     <div class="row mb-4">
                                         <div class="col-12">
                                             <small class="form-text text-muted font-weight-bold text-success">Resumen Productos</small>
@@ -412,7 +412,7 @@
         }
         @media(max-width: 500px) {
             .radio {
-                width: 48%;
+                width: 47%;
             }
         }
         .radio label {
