@@ -196,7 +196,7 @@ class ProductRequest extends FormRequest
                 $combination_num = ($key + 1);
 
                 if (empty($this->combinations_group_colors[$key])) {
-                    $validator->after(function ($validator) use($combination_num) {
+                    $validator->after(function ($validator) use ($combination_num) {
                         $validator->errors()->add('color_' . $combination_num, 'Debe seleccionar un color para la combinación ' . ($combination_num) . '.');
                     });
                 } else {
@@ -205,7 +205,7 @@ class ProductRequest extends FormRequest
                             $size_num = ($key_product_combination + 1);
 
                             if (empty($this->sizes_existing[$key][$id_product_combination])) {
-                                $validator->after(function ($validator) use($size_num, $combination_num) {
+                                $validator->after(function ($validator) use ($size_num, $combination_num) {
                                     $validator->errors()->add('sizes_' . $size_num, 'Debe seleccionar la talla ' .  ($size_num) .  ' para la combinación ' . ($combination_num));
                                 });
                             }
@@ -213,39 +213,43 @@ class ProductRequest extends FormRequest
                     }
     
                     if (isset($this->combinations[$key])) {
-                        $total_existing = isset($this->product_combinations[$key]) && is_array($this->product_combinations[$key]) 
-                                                        ? count($this->product_combinations[$key]) 
+                        $total_existing = isset($this->product_combinations[$key]) && is_array($this->product_combinations[$key])
+                                                        ? count($this->product_combinations[$key])
                                                         : 0;
                         foreach (array_keys($this->combinations[$key]) as $key_new_combination) {
                             $size_num = ($total_existing + $key_new_combination + 1);
 
                             // if (empty($this->sizes[$key][$key_new_combination])) {
                             if (empty($this->sizes[$key][($key_new_combination + $total_existing)])) {
-                                $validator->after(function ($validator) use($size_num, $combination_num) {
+                                $validator->after(function ($validator) use ($size_num, $combination_num) {
                                     $validator->errors()->add('sizes_' . $size_num, 'Debe seleccionar la talla ' .  ($size_num) .  ' para la combinación ' . ($combination_num));
                                 });
                             }
                         }
                     }
                 }
+                
+                foreach ($this->product_combinations[$key] as $product_combination_id) {
+                    if (!empty($this->combinations_group_code[$key])) {
+                        if ($this->isMethod('POST')) {
+                            $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
+                        } else {
+                            $product_id_route = $this->route('producto')->id;
+                            $product_with_code = Product::where('code', $this->combinations_group_code[$key])
+                                                        ->where(function ($q) use ($product_id_route, $product_combination_id) {
+                                                            // $q->where('id', '<>', $product_id_route)
+                                                            //     ->orWhere('product_id', '<>', $product_id_route);
+                                                            $q->where('id', '<>', $product_combination_id)
+                                                                ->where('product_id', '<>', $product_id_route);
+                                                        })
+                                                        ->count();
+                        }
 
-                if (!empty($this->combinations_group_code[$key])) {
-                    if ($this->isMethod('POST')) {
-                        $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
-                    } else {
-                        $product_id_route = $this->route('producto')->id;
-                        $product_with_code = Product::where('code', $this->combinations_group_code[$key])
-                                                    ->where(function($q) use($product_id_route) {
-                                                        $q->where('id', '<>', $product_id_route)
-                                                            ->orWhere('product_id', '<>', $product_id_route);
-                                                    })
-                                                    ->count();
-                    }
-
-                    if ($product_with_code) {
-                        $validator->after(function ($validator) use($combination_num) {
-                            $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
-                        });
+                        if ($product_with_code) {
+                            $validator->after(function ($validator) use ($combination_num) {
+                                $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
+                            });
+                        }
                     }
                 }
             }
