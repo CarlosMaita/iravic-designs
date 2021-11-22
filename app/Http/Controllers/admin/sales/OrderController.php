@@ -151,7 +151,7 @@ class OrderController extends Controller
                 $redirect = route('ventas.index');
             }
 
-            flash("El venta ha sido creado con éxito")->success();
+            flash("La venta ha sido creado con éxito")->success();
             return response()->json([
                     'success' => true,
                     'data' => [
@@ -249,7 +249,7 @@ class OrderController extends Controller
         try {
             $this->authorize('update', $venta);
             // $this->orderRepository->update($venta->id, $request->only('cash_initial'));
-            flash("El venta <b>$venta->id</b> ha sido actualizado con éxito")->success();
+            flash("La venta <b>$venta->id</b> ha sido actualizado con éxito")->success();
 
             return response()->json([
                 'success' => 'true',
