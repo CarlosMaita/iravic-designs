@@ -44,11 +44,11 @@ class DebtController extends Controller
                         $btn = '';
                         
                         if (Auth::user()->can('update', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-debt" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-debt mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                         }
 
                         if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-debt" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-debt mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
 
                         return $btn;

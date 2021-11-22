@@ -4,13 +4,13 @@
     <div class="container-fluid">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-0">
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.boxes.index') }}</div>
                         <div class="card-body">
                             @can('create', App\Models\Box::class)
                                 <div class="row"> 
-                                    <a href="{{ route('cajas.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
+                                    <a href="{{ route('cajas.create') }}" class="btn btn-primary ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                 </div>
                                 <br>
                             @endcan

@@ -237,6 +237,7 @@
                 serverSide: true,
                 ajax: URL_RESOURCE + url_params,
                 pageLength: 25,
+                ordering: false,
                 columns: [
                     {data: 'id'},
                     {data: 'date'},

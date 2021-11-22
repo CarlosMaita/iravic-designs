@@ -81,7 +81,7 @@
             form_spendings.attr('action', URL_RESOURCE);
             form_spendings.attr('method', 'POST');
             modal_spendings.modal('show');
-            modal_spendings.find('.modal-title').text('Crear pago');
+            modal_spendings.find('.modal-title').text('Crear Gasto');
         });
 
         form_spendings.on('submit', function(e) {
@@ -233,7 +233,7 @@
                     form_spendings.find('#amount').val(response.amount);
                     form_spendings.find('#comment').val(response.comment);
                     modal_spendings.modal('show');
-                    modal_spendings.find('.modal-title').text('Editar gasto');
+                    modal_spendings.find('.modal-title').text('Editar Gasto');
 
                     if (response.picture) {
                         is_editing = true;
@@ -300,6 +300,7 @@
                 serverSide: true,
                 ajax: URL_RESOURCE + url_params,
                 pageLength: 25,
+                ordering: false,
                 columns: [
                     {
                         render: function (data, type, row) {

@@ -246,7 +246,6 @@
                                             <div class="row"> 
                                                 <a href="{{ route('ventas.create') }}?cliente={{ $customer->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
-                                            <br>
                                         @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
@@ -263,7 +262,6 @@
                                             <div class="row"> 
                                                 <a href="{{ route('devoluciones.create') }}?cliente={{ $customer->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                             </div>
-                                            <br>
                                         @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
@@ -280,7 +278,6 @@
                                             <div class="row"> 
                                                 <a id="btn-create-payment" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
-                                            <br>
                                         @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
@@ -296,7 +293,6 @@
                                             <div class="row"> 
                                                 <a id="btn-create-debt" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                             </div>
-                                            <br>
                                         @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
@@ -312,7 +308,6 @@
                                             <div class="row"> 
                                                 <a id="btn-create-visit" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                             </div>
-                                            <br>
                                         @endcan
                                         <div class="row mt-3">
                                             <div class="col-12">
