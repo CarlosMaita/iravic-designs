@@ -790,7 +790,7 @@
                                 </div>
                             </div>
                             {{--  --}}
-                            <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <a href="{{ route('productos.index') }}" class="btn btn-primary ml-3">{{ __('dashboard.form.back to list') }}</a>
                             <a href="{{ route('productos.edit', [$product->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                         </div>
                     </div>
