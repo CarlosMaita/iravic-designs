@@ -272,7 +272,7 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
-                                <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
+                                <button class="btn btn-success" type="submit">Confirmar</button>
                             </fieldset>
                         </div>
                     </div>
