@@ -182,7 +182,10 @@
                         that.marker_created_after_search = false;
                         that.createAddressError();
                         that.removeMarkerFromMap();
-                        toastr.error("No se encuentran resultados para la dirección indicada");
+                        new Noty({
+                            text: "No se encuentran resultados para la dirección indicada",
+                            type: 'error'
+                        }).show();
                     } else {
 						var result = results[0];
                         var coords =  {
@@ -198,7 +201,10 @@
                     that.marker_created_after_search = false;
                     that.createAddressError();
                     that.removeMarkerFromMap();
-                    toastr.error("No se encuentran resultados para la dirección indicada");
+                    new Noty({
+                        text: "No se encuentran resultados para la dirección indicada",
+                        type: 'error'
+                    }).show();
                 }
             });
 		}
@@ -215,7 +221,10 @@
 			if (status == 'OK') {
 				if (results.length == 0) {
 					that.createAddressError();
-					toastr.error("No se encuentran resultados para la ubicación seleccionada");
+                    new Noty({
+                        text: "No se encuentran resultados para la ubicación seleccionada",
+                        type: 'error'
+                    }).show();
 				} else {
                     var coords =  {
 		              	lat: data.lat,
@@ -231,7 +240,10 @@
 				}
 			} else {
 				that.createAddressError();
-				toastr.error("No se encuentran resultados para la ubicación seleccionada");
+                new Noty({
+                    text: "No se encuentran resultados para la ubicación seleccionada",
+                    type: 'error'
+                }).show();
 			}
 		});
 	}

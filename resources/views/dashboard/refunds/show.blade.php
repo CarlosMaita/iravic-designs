@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-0">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify" aria-hidden="true"></i> {{ __('dashboard.orders.order') }} - #{{ $refund->id }} </div>
+                        <div class="card-header"><i class="fa fa-align-justify" aria-hidden="true"></i> Devolución - #{{ $refund->id }} </div>
                         <div class="card-body">
                             <div class="container-fluid mb-3 px-0">
                                 <!--  -->

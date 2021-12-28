@@ -38,7 +38,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-if="customerSelected" id="customer-selected-container" class="row d-none">
+                                    <div v-if="customerSelected" id="customer-selected-container" class="row">
                                         <div class="col-12">
                                             <div class="row mb-4">
                                                 <div class="col-12">
