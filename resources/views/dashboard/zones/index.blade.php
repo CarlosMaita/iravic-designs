@@ -41,6 +41,6 @@
 @push('js')
     @include('plugins.sweetalert')
     @include('plugins.sortablejs')
-    @include('dashboard.zones.js.sortablejs')
+    @include('dashboard.zones.js.sortableJs')
     @include('dashboard.zones.js.index')
 @endpush
