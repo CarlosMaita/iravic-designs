@@ -28,7 +28,7 @@ class CheckOpenBox
         
         if (!$this->boxRepository->getOpenByUserId($user->id)) {
             flash("Usted no tiene una caja abiertas.")->warning();
-            return redirect()->route('box.index');
+            return redirect()->route('cajas.index');
         }
 
         return $next($request);
