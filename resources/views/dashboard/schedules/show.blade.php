@@ -1,5 +1,13 @@
 @extends('dashboard.base')
 
+@push('css')
+    <style>
+        .datepicker-dropdown {
+            max-width: 300px;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="animated fadeIn">
@@ -46,7 +54,8 @@
     </div>
 
     @include('dashboard.schedules._modal_map')
-    @include('dashboard.schedules._modal_visits')
+    @include('dashboard.schedules._modal_responsable')
+    @include('dashboard.visits.modal_form')
 @endsection
 
 @push('js')
@@ -57,6 +66,7 @@
             $zones = @json($zones);
     </script>
 
+    @include('plugins.datepicker')
     @include('plugins.google-maps')
     @include('plugins.select2')
     @include('plugins.sweetalert')

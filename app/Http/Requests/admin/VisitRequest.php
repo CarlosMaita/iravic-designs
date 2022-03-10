@@ -67,14 +67,13 @@ class VisitRequest extends FormRequest
 
         $this->merge([
             'user_creator_id'   => $user->id,
-            'date'              => $date->format('Y-m-d')
+            'date'              => $date ? $date->format('Y-m-d') : null
         ]);
     }
 
     public function withValidator($validator)
     {
         if (!$validator->fails()) {
-
             $customer = $this->customerRepository->find($this->customer_id);
             $visita = $this->route('visita');
 

@@ -1,6 +1,6 @@
-<div id="modal-visits" class="modal" tabindex="-1" role="dialog">
+<div id="modal-responsable" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <form id="form-visits" method="POST">
+        <form id="form-responsable" method="POST">
             @csrf
             <input type="hidden" name="_method" value="PUT">
             <div class="modal-content">

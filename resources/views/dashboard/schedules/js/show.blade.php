@@ -1,12 +1,16 @@
 <script>
     $(function () {
+        const URL_SCHEDULES = "{{ route('agendas.index') }}"
+        const URL_RESOURCE_VISITS = "{{ route('visitas.index') }}"
         const URL_RESOURCE = "{{ route('agendas.show', [$schedule->id]) }}";
         const URL_VISITS = "{{ route('visitas.index') }}";
         const DATATABLE_RESOURCE = $("#datatable_schedule_visits");
 
         let btn_open_map = $('#btn-open-map'),
-            form_visits = $('#form-visits'),
+            form_responsable = $('#form-responsable'),
+            form_visits = $('#form-visits')
             modal_visits = $('#modal-visits'),
+            modal_responsable = $('#modal-responsable'),
             modal_map = $('#modal-map'),
             visit_editing_id = null,
             role_select = $('#role-map'),
@@ -15,6 +19,7 @@
             schedule_map = new ScheduleMap('map-schedule', $schedule, URL_RESOURCE, zone_select, role_select);
 
         schedule_map.setMap();
+        setDatePicker();
 
         $('.datatable-zone').DataTable();
 
@@ -27,7 +32,7 @@
         });
 
         $('#visit-responsable').select2({
-            dropdownParent: modal_visits
+            dropdownParent: modal_responsable
         });
         
         zone_select.select2({
@@ -62,23 +67,23 @@
         /**
         *
         */
-        modal_visits.on('hidden.coreui.modal', function(e) {
-            form_visits.find('#visit-responsable').val('Seleccionar').trigger('change');
+        modal_responsable.on('hidden.coreui.modal', function(e) {
+            form_responsable.find('#visit-responsable').val('Seleccionar').trigger('change');
             $visit_editing_id = null;
         });
 
         /**
         *
         */
-        form_visits.on('submit', function(e) {
+        form_responsable.on('submit', function(e) {
             e.preventDefault();
             var url = `${URL_VISITS}/${$visit_editing_id}/update-responsable`;
-            var form = $('#form-visits')[0];
+            var form = $('#form-responsable')[0];
             var formData = new FormData(form);
             
             $.ajax({
                 url: url,
-                type: form_visits.attr('method'),
+                type: form_responsable.attr('method'),
                 enctype: 'multipart/form-data',
                 data: formData,
                 processData: false,
@@ -89,9 +94,10 @@
                             text: response.message,
                             type: 'success'
                         }).show();
-                        
-                        modal_visits.modal('hide');
-                        DATATABLE_RESOURCE.DataTable().ajax.reload();
+
+                        modal_responsable.modal('hide');
+                        $(`#visit-${response.visita.id}-responsable`).text(response.visita.responsable.name);
+                        // DATATABLE_RESOURCE.DataTable().ajax.reload();
                     } else if (response.error) {
                         new Noty({
                             text: response.error,
@@ -231,7 +237,7 @@
         /**
         * Http get visit to edit responsable
         */
-        $('body').on('click', 'tbody .btn-edit-visit', function (e) {
+        $('body').on('click', 'tbody .btn-edit-responsable', function (e) {
             e.preventDefault();
             var id = $(this).data('id'),
                 url = `${URL_VISITS}/${id}`;
@@ -245,10 +251,10 @@
                         $visit_editing_id = response.id;
 
                         if (response.user_responsable_id) {
-                            form_visits.find('#visit-responsable').val(response.user_responsable_id).trigger('change');
+                            form_responsable.find('#visit-responsable').val(response.user_responsable_id).trigger('change');
                         }
                         
-                        modal_visits.modal('show');
+                        modal_responsable.modal('show');
                     } else {
                         new Noty({
                                     text: 'No podemos obtener los detalles de la visita en este momento.',
@@ -285,5 +291,169 @@
                 }
             });
         });
+
+        /**
+         * 
+         */
+        $('body').on('click', 'tbody .edit-visit', function (e) {
+            var id = $(this).data('id'),
+                url = `${URL_RESOURCE_VISITS}/${id}`;
+
+            $.ajax({
+                    url: `${url}/edit`,
+                    type: 'GET',
+                    contentType: 'application/json',
+                success: function (response) {
+                    form_visits.append(`<input id="form-visitas-customer-id" type="hidden" name="customer_id"" value="${response.customer_id}">`);
+                    form_visits.append(`<input id="form-visitas-input-method-put" type="hidden" name="_method"" value="PUT">`);
+                    form_visits.attr('action', url);
+                    form_visits.attr('method', 'POST');
+                    form_visits.find('#visit-date').val(response.date);
+                    form_visits.find('#visit-comment').val(response.comment);
+                    modal_visits.modal('show');
+                    modal_visits.find('.modal-title').text('Editar Visita');
+                    setDatePicker();
+                },
+                error: function (e) {
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    }else if (e.responseJSON.message){
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else if (e.responseJSON.error){
+                        new Noty({
+                            text: e.responseJSON.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        });
+
+        /**
+        *
+        */
+        modal_visits.on('hidden.coreui.modal', function(e) {
+            $('#form-visitas-customer-id').remove();
+            $('#form-visitas-input-method-put').remove();
+            form_visits.attr('action', '');
+            form_visits.attr('method', '');
+            form_visits.find('#visit-date').val('');
+            form_visits.find('#visit-comment').val('');
+            form_visits.find('.modal-title').text('');
+        });
+
+        form_visits.on('submit', function(e) {
+            e.preventDefault();
+
+            var url = form_visits.attr('action');
+            var form = $('#form-visits')[0];
+            var formData = new FormData(form);
+            
+            $.ajax({
+                    url: url,
+                    type: form_visits.attr('method'),
+                    enctype: 'multipart/form-data',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        new Noty({
+                            text: response.message,
+                            type: 'success'
+                        }).show();
+                        
+                        modal_visits.modal('hide');
+
+                        params = '';
+                        if (response.prev_schedule) {
+                            params = `?open-zone=${response.visita.customer.zone_id}`;
+                        }
+                        
+                        window.location.href = `${URL_SCHEDULES}/${response.visita.schedule_id}${params}`;
+                    } else if (response.error) {
+                        new Noty({
+                            text: response.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    }else if (e.responseJSON.message){
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else if (e.responseJSON.error){
+                        new Noty({
+                            text: e.responseJSON.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        });
+
+        function setDatePicker() {
+            var inputs = $('.datepicker-form');
+
+            inputs.each((index, element) => {
+                var value = element.value;
+
+                if (value) {
+                    var dateParts = value.split("-");
+                    var date = dateParts[0] + "/" +  dateParts[1] + "/" + dateParts[2];
+                } else {
+                    var date = new Date(value);
+                }
+
+                $(element).datepicker({
+                    format: "dd-mm-yyyy",
+                    todayBtn: "linked",
+                    language: "es",
+                    autoclose: true,
+                    todayHighlight: true,
+                    showOnFocus: true,
+                }).datepicker("setDate", date)
+                .end().on('keypress paste', function (e) {
+                    // e.preventDefault();
+                    // return false;
+                });
+            });
+        }
     });
 </script>

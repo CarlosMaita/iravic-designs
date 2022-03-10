@@ -6,11 +6,11 @@
 <div id="zone-{{ $zone->id }}" class="card zona-item" data-id="{{ $zone->id }}">
     <div class="card-header">
         <span>{{ $zone->name }}</span> @if ($visits_qty) <span class="qty-clientes">({{ $visits_qty }})</span> @endif
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-zone-{{ $zone->id }}" aria-expanded="false" aria-controls="collapse-zona-{{ $zone->id }}">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-zone-{{ $zone->id }}"  aria-controls="collapse-zona-{{ $zone->id }}" @if(isset($openZone) && $openZone == $zone->id) aria-expanded="true" @else aria-expanded="false" @endif>
             Ver listado de clientes <i class="fas fa-expand-alt"></i> 
         </button>
     </div>
-    <div class="card-body collapse zone-customers" id="collapse-zone-{{ $zone->id }}">
+    <div class="card-body collapse zone-customers @if(isset($openZone) && $openZone == $zone->id) show @endif" id="collapse-zone-{{ $zone->id }}">
         <div class="table-responsive">
             <table id="datatable-zone-{{ $zone->id }}" class="table datatable-zone table-schedule responsive table_btn table-vcenter dataTable no-footer no-wrap" width="100%">    
                 <thead>
@@ -43,14 +43,10 @@
                                 {{ $visit->comment }}
                             </td>
                             <td>
-                                @if ($visit->responsable)
-                                    <span>{{ $visit->responsable->name }}</span>
-                                @else
-                                <span>Por asignar</span>
-                                @endif
+                                <span id="visit-{{ $visit->id }}-responsable">{{ $visit->responsable ? $visit->responsable->name : 'Por asignar' }}</span>
 
                                 @if (Auth::user()->can('updateResponsable', App\Models\Visit::class))
-                                    <button data-id="{{ $visit->id }}"  class="btn btn-sm btn-success btn-action-icon btn-edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>
+                                    <button data-id="{{ $visit->id }}"  class="btn btn-sm btn-success btn-action-icon btn-edit-responsable" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>
                                 @endif
                             </td>
                             <td>
@@ -64,7 +60,9 @@
                                     @if ($visit->is_completed)
                                         <button data-id="{{ $visit->id }}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-times"></i></button>
                                     @else
-                                        <button data-id="{{ $visit->id }}" data-to-complete="1" class="btn btn-sm btn-success btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-check"></i></button>
+                                        <button data-id="{{ $visit->id }}" data-to-complete="1" class="btn btn-sm btn-primary btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-check"></i></button>
+                                        {{--  --}}
+                                        <button data-id="{{ $visit->id }}" class="btn btn-sm btn-success btn-action-icon edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>
                                     @endif
                                 @endif
                             </td>

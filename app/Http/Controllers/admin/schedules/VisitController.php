@@ -135,12 +135,13 @@ class VisitController extends Controller
             if ($schedule->id != $prev_schedule->id && !$prev_schedule->visits()->count()) {
                 $prev_schedule->delete();
             }
-
             DB::commit();
 
             return response()->json([
                 'message' => "La visita ha sido actualizada con éxito",
                 'success' => 'true',
+                'visita' => $visita->refresh()->load('customer'),
+                'prev_schedule' => $prev_schedule->fresh()
             ]);
         } catch (Exception $e) {
             DB::rollback();
@@ -189,9 +190,11 @@ class VisitController extends Controller
         try {
             $attributes = $request->only('user_responsable_id');
             $this->visitRepository->update($visita->id, $attributes);
+            $visita->refresh()->load('responsable');
 
             return response()->json([
                 'success' => true,
+                'visita' => $visita,
                 'message' => 'El responsable de la visita ha sido actualizado'
             ]);
         } catch (Exception $e) {
