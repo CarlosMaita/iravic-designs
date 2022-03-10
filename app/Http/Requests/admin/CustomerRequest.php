@@ -18,8 +18,10 @@ class CustomerRequest extends FormRequest
             'contact_name.required' => 'El campo Nombre de contacto es obligatorio.',
             'contact_telephone.required' => 'El campo teléfono de contacto es obligatorio.',
             'contact_dni.required' => 'El campo C.I de contacto es obligatorio.',
+            'days_to_notify_debt.required' => 'La cantidad de días después del último pago para salir en listado es obligatorio.',
             'days_to_notify_debt.integer' => 'La cantidad de días después del último pago para salir en listado de morosos debe ser un número entero.',
             'days_to_notify_debt.min' => 'La cantidad mínima de días después del último pago para salir en listado de morosos es de :min .',
+            'days_to_notify_debt.max' => 'La cantidad máxima de días después del último pago para salir en listado de morosos es de :max .',
             'dni.required' => 'El campo C.I es obligatorio.',
             'dni_picture.required' => 'La foto de la C.I es obligatoria.',
             'max_credit.required' => 'El campo Crédito Máximo es obligatorio.',
@@ -56,6 +58,7 @@ class CustomerRequest extends FormRequest
             // 'contact_name' => 'required',
             // 'contact_telephone' => 'required',
             // 'contact_dni' => 'required',
+            'days_to_notify_debt' => 'required|integer|min:0|max:500',
             'dni' => 'required',
             'max_credit' => 'required|numeric',
             'name' => 'required|min:2',
@@ -63,10 +66,6 @@ class CustomerRequest extends FormRequest
             'telephone' => 'required',
             'zone_id' => 'required|exists:zones,id'
         ];
-
-        if (!empty($this->days_to_notify_debt)) {
-            $rules['days_to_notify_debt'] = 'integer|min:0';
-        }
 
         /*
         if ($this->isMethod('POST')) {
