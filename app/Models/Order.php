@@ -42,7 +42,7 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo('App\Models\Customer');
+        return $this->belongsTo('App\Models\Customer')->withTrashed();
     }
 
     public function user()

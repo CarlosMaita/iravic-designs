@@ -1,4 +1,8 @@
 <script>
+    let $visit_container = $('#new-visit-container');
+    let $customer_balance = 0;
+    let $customer_max_credit = 0;
+
     $(function(){
         const FORM_RESOURCE_ORDERS = $("#form-orders");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
@@ -17,11 +21,11 @@
         const select_customer = $('select#customer');
         const select_product = $('select#product');
 
-        let $customer_max_credit = 0;
         let datatable_products = $('#datatable_products');
         let datatable_products_resume = $('#datatable_products_resume');
         let discount_to_apply = 0;
 
+        setDatePicker();
         select_customer.select2();
         select_product.select2({
             matcher: function(params, data) {
@@ -32,13 +36,21 @@
                 // Check if the text contains the term
                 // if (original.indexOf(term) > -1) { return data; }
 
+                // if (
+                //     $(data.element).data('brand') && $(data.element).data('category') && $(data.element).data('code') &&
+                //     (
+                //         $(data.element).data('brand').toString().indexOf(params.term) > -1 ||
+                //         $(data.element).data('category').toString().indexOf(params.term) > -1 ||
+                //         $(data.element).data('code').toString().indexOf(params.term) > -1
+                //     )
+                // ) {
+                //     return data;
+                // }
+
                 if (
-                    $(data.element).data('brand') && $(data.element).data('category') && $(data.element).data('code') &&
-                    (
-                        $(data.element).data('brand').toString().indexOf(params.term) > -1 ||
-                        $(data.element).data('category').toString().indexOf(params.term) > -1 ||
-                        $(data.element).data('code').toString().indexOf(params.term) > -1
-                    )
+                    ($(data.element).data('brand') && $(data.element).data('brand').toString().indexOf(params.term) > -1) ||
+                    ($(data.element).data('category') && $(data.element).data('category').toString().indexOf(params.term) > -1) ||
+                    ($(data.element).data('code') && $(data.element).data('code').toString().indexOf(params.term) > -1)
                 ) {
                     return data;
                 }
@@ -251,6 +263,7 @@
                 selected        = $('#customer').find(':selected'),
                 address         = selected.data('address'),
                 balance         = selected.data('balance'),
+                balance_numeric = selected.data('balance-numeric'),
                 dni             = selected.data('dni'),
                 maxcredit       = selected.data('max-credit'),
                 maxcredit_str   = selected.data('max-credit-str'),
@@ -266,7 +279,8 @@
             container.find('#selected-customer-qualification').val(qualification);
             container.find('#selected-customer-telephone').val(telephone);
             container.removeClass('d-none');
-
+            
+            $customer_balance = balance_numeric;
             $customer_max_credit = maxcredit;
             $('.max-credit').text(maxcredit_str);
             $('.customer-balance').text(balance);
@@ -317,6 +331,9 @@
             });
         }
         
+        /**
+         * 
+         */
         function addAllStocksToShow(product) {
             @if (Auth::user()->isAdmin())
                 var html = `<p class="text-right">
@@ -370,7 +387,7 @@
         function setProductModalHeaderInfo(product) {
             modal_product.find('.product-name').text(product.name);
             modal_product.find('.product-code').text(product.real_code);
-            modal_product.find('.product-category').text(product.category.name);
+            modal_product.find('.product-category').text(product.category?.name);
             modal_product.find('.product-brand').text(product.brand.name);
         }
         
@@ -706,6 +723,30 @@
                 }).show();
         });
 
+        $('#enable_new_visit').change(function() {
+            if (this.checked) {
+                $('#visit-fields').removeClass('d-none');
+            } else {
+                $('#visit-fields').addClass('d-none');
+            }
+        });
+
+        function checkNeedsVisit() {
+            let result = $customer_balance;
+            let orderTotal = getOrderTotal();
+            let payment_method = $("input[name='payment_method']:checked").val();
+
+            if (payment_method == 'credit') {
+                result = $customer_balance - orderTotal.total;
+            }
+
+            if (result < 0) {
+                $visit_container.removeClass('d-none');
+            } else {
+                $visit_container.addClass('d-none');
+            }
+        }
+
         // Utilities
         function replaceNumberWithCommas(number) {
             //Seperates the components of the number
@@ -715,12 +756,38 @@
             //Combines the two sections
             return n.join(",");
         }
-    });
 
-    /**
-    * Steps form
-    */
-    $(document).ready(function(){
+        function setDatePicker() {
+            var inputs = $('.datepicker-form');
+
+            inputs.each((index, element) => {
+                var value = element.value;
+
+                if (value) {
+                    var dateParts = value.split("-");
+                    var date = dateParts[2] + "/" +  dateParts[1] + "/" + dateParts[0];
+                } else {
+                    var date = new Date(value);
+                }
+
+                $(element).datepicker({
+                    format: "dd-mm-yyyy",
+                    todayBtn: "linked",
+                    language: "es",
+                    autoclose: true,
+                    todayHighlight: true,
+                    showOnFocus: true,
+                }).datepicker("setDate", date)
+                .end().on('keypress paste', function (e) {
+                    // e.preventDefault();
+                    // return false;
+                });
+            });
+        }
+
+        /**
+        * Steps form
+        */
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
 
@@ -759,6 +826,8 @@
                     $('#datatable_products_resume').DataTable()
                                     .columns.adjust()
                                     .responsive.recalc();
+
+                    checkNeedsVisit();
                 }
             }
         });

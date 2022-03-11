@@ -11,6 +11,8 @@ use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
+use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use DataTables;
 use Exception;
@@ -30,18 +32,24 @@ class OrderController extends Controller
 
     public $productRepository;
 
+    public $scheduleRepository;
+
+    public $visitRepository;
+
     public $zoneRepository;
 
     /**
      * Construct
      */
-    public function __construct(BoxRepository $boxRepository, CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, ZoneRepository $zoneRepository)
+    public function __construct(BoxRepository $boxRepository, CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository, ZoneRepository $zoneRepository)
     {
         $this->boxRepository = $boxRepository;
         $this->customerRepository = $customerRepository;
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->visitRepository = $visitRepository;
         $this->zoneRepository = $zoneRepository;
         $this->middleware('box.open')->only('create');
     }
@@ -140,6 +148,19 @@ class OrderController extends Controller
                         $this->orderProductRepository->create($attributes);
                     }
                 }
+            }
+
+            if (isset($request->enable_new_visit) && !empty($request->visit_date)) {
+                $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
+                $attributes = array(
+                        'customer_id' => $order->customer_id,
+                        'order_id' => $order->id,
+                        'schedule_id' => $schedule->id,
+                        'user_id' => $request->user_id,
+                        'comment' => $request->visit_comment,
+                        'date' => $request->visit_date
+                    );
+                $this->visitRepository->create($attributes);
             }
             DB::commit();
 

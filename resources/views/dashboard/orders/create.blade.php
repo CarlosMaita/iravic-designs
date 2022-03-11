@@ -9,6 +9,12 @@
       border-radius: 4px 0px 0px 4px;
     }
   </style>
+
+  <style>
+    .datepicker-dropdown {
+        max-width: 300px;
+    }
+  </style>
 @endpush
 
 @section('content')
@@ -58,6 +64,7 @@
   </script>
   <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
 
+  @include('plugins.datepicker')
   @include('plugins.google-maps')
   @include('plugins.select2')
   @include('plugins.sweetalert')

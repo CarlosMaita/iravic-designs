@@ -3,6 +3,7 @@
 namespace App\Http\Requests\admin;
 
 use App\Repositories\Eloquent\ProductRepository;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -82,6 +83,16 @@ class OrderRequest extends FormRequest
             });
         }
 
+        if (!empty($this->enable_new_visit)) {
+            if (!$this->visit_date) {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('visit_date', 'Debe seleccionar la fecha de la visita.');
+                });
+            } else {
+
+            }
+        }
+
         if (!$validator->fails()) {
             $totals = $this->getTotal();
 
@@ -107,11 +118,13 @@ class OrderRequest extends FormRequest
     {
         $user = Auth::user();
         $box = $user->boxes()->where('closed', 0)->first();
+        $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? Carbon::createFromFormat('d-m-Y', $this->visit_date) : null;
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,
             'stock_type'        => $user->getColumnStock(),
-            'user_id'           => $user->id
+            'user_id'           => $user->id,
+            'visit_date'        => $visit_date ? $visit_date->format('Y-m-d') : null
         ]);
     }
 

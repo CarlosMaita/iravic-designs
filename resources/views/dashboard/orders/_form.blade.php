@@ -36,6 +36,7 @@
                                                                     data-qualification="{{ $customer->qualification }}"
                                                                     data-debt="{{ $customer->total_debt }}"
                                                                     data-balance="{{ $customer->balance }}"
+                                                                    data-balance-numeric="{{ $customer->balance_numeric }}"
                                                                     @if(!empty($customerParam) && $customerParam->id == $customer->id) selected @endif
                                                             >{{ $customer->name }}</option>
                                                         @endforeach
@@ -124,7 +125,7 @@
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
                                                                     data-brand="{{ $product->brand->name }}"
-                                                                    data-category="{{ $product->category->name }}"
+                                                                    data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
                                                                     {{ $product->name }}
@@ -133,7 +134,7 @@
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
                                                                     data-brand="{{ $product->brand->name }}"
-                                                                    data-category="{{ $product->category->name }}"
+                                                                    data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
                                                                     {{ $product->name }} (T: {{ optional($product->size)->name }} - Color: {{ optional($product->color)->name }})
@@ -215,7 +216,6 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: <span class="max-credit">$ 0.00</span></p>
-                                            <p class="font-weight-bold text-dark mb-1">Deuda Total: <span class="total-debt">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Saldo: <span class="customer-balance">$ 0.00</span></p>
                                             <hr>
                                             <div>
@@ -268,6 +268,23 @@
                                     <div class="row mt-3 mb-4">
                                         <div class="col-12">
                                             <p class="font-weight-bold text-dark text-center mb-0">Total: <span class="total">$ 0.00</span></p>
+                                        </div>
+                                    </div>
+                                    {{--  --}}
+                                    <div id="new-visit-container" class="mt-3 d-none">
+                                        <hr>
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div class="form-check form-check-inline mb-4">
+                                                    <input class="form-check-input" type="checkbox" name="enable_new_visit" id="enable_new_visit" value="1">
+                                                    <label class="form-check-label" for="enable_new_visit">¿Desea agendar una visita? El cliente tendrá deuda al final la compra</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="visit-fields" class="row d-none">
+                                            <div class="col-md-6 mx-auto">
+                                                @include('dashboard.visits._form', ['fromPayment' => true])
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

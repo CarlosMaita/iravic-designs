@@ -14,6 +14,7 @@ class Visit extends Model
         'schedule_id',
         'user_creator_id',
         'user_responsable_id',
+        'order_id',
         'comment',
         'date',
         'position',
@@ -52,6 +53,11 @@ class Visit extends Model
     public function creator()
     {
         return $this->belongsTo('App\User', 'user_creator_id', 'id');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order');
     }
 
     public function responsable()

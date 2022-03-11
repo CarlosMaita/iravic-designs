@@ -153,7 +153,7 @@ document.getElementById("type").onchange = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\jonat\Downloads\backup htdocs\zapatos\resources\js\coreui\menu-create.js */"./resources/js/coreui/menu-create.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\zapatos\resources\js\coreui\menu-create.js */"./resources/js/coreui/menu-create.js");
 
 
 /***/ })

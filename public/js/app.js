@@ -44879,9 +44879,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [
-        _vm._v("Aplicar descuento al venta")
-      ]),
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Aplicar descuento")]),
       _vm._v(" "),
       _c(
         "button",
@@ -59013,9 +59011,9 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\jonat\Downloads\backup htdocs\zapatos\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! C:\Users\jonat\Downloads\backup htdocs\zapatos\resources\sass\app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! C:\Users\jonat\Downloads\backup htdocs\zapatos\resources\sass\style.scss */"./resources/sass/style.scss");
+__webpack_require__(/*! C:\xampp\htdocs\zapatos\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! C:\xampp\htdocs\zapatos\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\zapatos\resources\sass\style.scss */"./resources/sass/style.scss");
 
 
 /***/ })
