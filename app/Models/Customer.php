@@ -36,6 +36,7 @@ class Customer extends Model
 
     public $appends = [
         'balance',
+        'balance_numeric',
         'date_next_visit',
         'max_credit_str',
         'total_buyed',
@@ -104,6 +105,11 @@ class Customer extends Model
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    public function getBalanceNumericAttribute()
+    {
+        return $this->getBalance();
+    }
+
     public function getMaxCreditStrAttribute()
     {
         if ($this->max_credit) {
@@ -140,7 +146,9 @@ class Customer extends Model
     public function getTotalDebtAttribute()
     {
         $total = $this->getTotalDebt();
-        return '$ -' . number_format($total, 2, '.', ',');
+        $totalFormat = number_format($total, 2, '.', ',');
+        $symb = $total > 0 ? '$ -' : '$ ';
+        return $symb . $totalFormat;
     }
 
     public function getTotalPaymentsAttribute()

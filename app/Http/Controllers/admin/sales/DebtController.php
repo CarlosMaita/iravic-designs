@@ -71,11 +71,12 @@ class DebtController extends Controller
         try {
             $this->authorize('create', 'App\Models\Debt');
             $attributes = $request->only('box_id', 'customer_id', 'user_id', 'amount', 'comment', 'date');
-            $this->debtRepository->create($attributes);
+            $deuda = $this->debtRepository->create($attributes);
 
             return response()->json([
                 'success' => true,
-                'message' => 'La deuda ha sido creada con éxito'
+                'message' => 'La deuda ha sido creada con éxito',
+                'customer' => $deuda->customer
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -111,7 +112,7 @@ class DebtController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(DebtRequest $request, Debt $deuda)
+    public function edit(Request $request, Debt $deuda)
     {
         $this->authorize('update', $deuda);
 
@@ -139,7 +140,8 @@ class DebtController extends Controller
 
             return response()->json([
                 'success' => 'true',
-                'message' => 'El pago ha sido actualizado con éxito'
+                'message' => 'El pago ha sido actualizado con éxito',
+                'customer' => $deuda->refresh()->customer
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -162,11 +164,13 @@ class DebtController extends Controller
     {
         try {
             $this->authorize('delete', $deuda);
+            $customer = $deuda->customer;
             $deuda->delete();
             
             return response()->json([
                 'success' => true,
-                'message' => "La deuda ha sido eliminada con éxito"
+                'message' => "La deuda ha sido eliminada con éxito",
+                'customer' => $customer->fresh()
             ]);
         } catch (Exception $e) {
             return response()->json([

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\PaymentRequest;
 use App\Models\Payment;
 use App\Repositories\Eloquent\PaymentRepository;
+use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use DataTables;
 use Exception;
@@ -17,11 +18,14 @@ class PaymentController extends Controller
 {
     public $paymentRepository;
 
+    public $scheduleRepository;
+
     public $visitRepository;
 
-    public function __construct(PaymentRepository $paymentRepository, VisitRepository $visitRepository)
+    public function __construct(PaymentRepository $paymentRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
     {
         $this->paymentRepository = $paymentRepository;
+        $this->scheduleRepository = $scheduleRepository;
         $this->visitRepository = $visitRepository;
         $this->middleware('box.open')->only('create');
     }
@@ -78,13 +82,27 @@ class PaymentController extends Controller
             $this->authorize('create', 'App\Models\Payment');
             DB::beginTransaction();
             $attributes = $request->only('box_id', 'customer_id', 'user_id', 'amount', 'comment', 'date', 'payed_bankwire', 'payed_card', 'payed_cash');
-            $payment = $this->paymentRepository->create($attributes);
-            $this->visitRepository->completeByDateUser($payment->customer_id, $payment->getRawOriginal('date'));
+            $pago = $this->paymentRepository->create($attributes);
+            $this->visitRepository->completeByDateUser($pago->customer_id, $pago->getRawOriginal('date'));
+
+            if (!empty($request->visit_date)) {
+                $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
+                $attributes = array(
+                        'customer_id' => $pago->customer_id,
+                        'schedule_id' => $schedule->id,
+                        'user_id' => $request->user_id,
+                        'comment' => $request->visit_comment,
+                        'date' => $request->visit_date
+                    );
+                $this->visitRepository->create($attributes);
+            }
+
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'El pago ha sido creado con éxito'
+                'message' => 'El pago ha sido creado con éxito',
+                'customer' => $pago->customer
             ]);
         } catch (Exception $e) {
             DB::rollback();
@@ -148,7 +166,8 @@ class PaymentController extends Controller
 
             return response()->json([
                 'success' => 'true',
-                'message' => 'El pago ha sido actualizado con éxito'
+                'message' => 'El pago ha sido actualizado con éxito',
+                'customer' => $pago->refresh()->customer
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -171,11 +190,13 @@ class PaymentController extends Controller
     {
         try {
             $this->authorize('delete', $pago);
+            $customer = $pago->customer;
             $pago->delete();
             
             return response()->json([
                 'success' => true,
-                'message' => "El Pago ha sido eliminado con éxito"
+                'message' => "El Pago ha sido eliminado con éxito",
+                'customer' => $customer->fresh()
             ]);
         } catch (Exception $e) {
             return response()->json([

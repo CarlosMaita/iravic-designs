@@ -7,21 +7,6 @@
             modal_payments = $('#modal-payments'),
             form_payments = $('#form-payments');
 
-
-        // $('#payments')
-        // // .bind('beforeShow', function() {
-        // // }) 
-        // .bind('afterShow', function() {
-        //     $('#orders').removeAttr('style');
-        //     // $('#payments').removeAttr('style');
-        // })
-        // .show(1000, function() {
-        //     DATATABLE_RESOURCE.DataTable()
-        //         .columns.adjust()
-        //         .responsive.recalc();
-        // })
-        // .show();
-
         form_payments.find('select').select2();
 
         $('#payments-tab').on('click', function(e) {
@@ -40,6 +25,7 @@
             form_payments.attr('method', 'POST');
             modal_payments.modal('show');
             modal_payments.find('.modal-title').text('Crear pago');
+            $('#payment-visit').removeClass('d-none');
         });
 
         form_payments.on('submit', function(e) {
@@ -63,7 +49,9 @@
                             type: 'success'
                         }).show();
                         
+                        $customer = response.customer;
                         clearModalForm();
+                        clearPaymentVisitForm();
                         modal_payments.modal('hide');
                         DATATABLE_RESOURCE.DataTable().ajax.reload();
                     } else if (response.error) {
@@ -88,7 +76,7 @@
                                 }).show();
                             }
                         });
-                    }else if (e.responseJSON.message){
+                    } else if (e.responseJSON.message){
                         new Noty({
                             text: e.responseJSON.message,
                             type: 'error'
@@ -129,8 +117,9 @@
                     datatype: 'json',
                     success: function (response) {
                         if (response.success) {
+                            $customer = response.customer;
                             DATATABLE_RESOURCE.DataTable().ajax.reload();
-
+                            
                             new Noty({
                                 text: response.message,
                                 type: 'success'
@@ -179,6 +168,9 @@
         });
 
         $('body').on('click', 'tbody .edit-payment', function (e) {
+            $('#payment-visit').addClass('d-none');
+            clearPaymentVisitForm();
+
             var id = $(this).data('id'),
                 url = `${URL_RESOURCE}/${id}`;
 
@@ -206,7 +198,7 @@
                                 }).show();
                             }
                         });
-                    }else if (e.responseJSON.message){
+                    } else if (e.responseJSON.message) {
                         new Noty({
                             text: e.responseJSON.message,
                             type: 'error'
@@ -227,6 +219,19 @@
         });
 
         /**
+         * 
+         */
+        // $('#amount').on('change', function() {
+        // });
+        $('#new_visit').change(function() {
+            if (this.checked) {
+                $('#payment-visit-fields').removeClass('d-none');
+            } else {
+                $('#payment-visit-fields').addClass('d-none');
+            }
+        });
+
+        /**
         *
         */
         modal_payments.on('hidden.coreui.modal', function(e) {
@@ -239,9 +244,16 @@
             modal_payments.find('.modal-title').text('');
         });
 
+        function clearPaymentVisitForm() {
+            form_payments.find('#visit-comment').val('');
+            $("#new_visit").prop( "checked", false );
+            $('#payment-visit-fields').addClass('d-none');
+            form_payments.find('#visit-date').val('');
+        }
+
         function clearModalForm() {
-            form_payments.find('amount').val('');
-            form_payments.find('comment').val('');
+            form_payments.find('#amount').val('');
+            form_payments.find('#comment').val('');
             form_payments.find('select').val('Seleccionar').trigger('change');
         }
 

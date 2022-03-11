@@ -344,7 +344,7 @@
 
 @push('js')
     <script>
-        const $customer = @json($customer);
+        let $customer = @json($customer);
 
         $(function() {
             // $('#orders')

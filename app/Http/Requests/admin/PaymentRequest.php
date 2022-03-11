@@ -3,6 +3,7 @@
 namespace App\Http\Requests\admin;
 
 use App\Repositories\Eloquent\BoxRepository;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -96,10 +97,12 @@ class PaymentRequest extends FormRequest
     {
         $user = Auth::user();
         $box = $this->boxRepository->getOpenByUserId($user->id);
+        $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? Carbon::createFromFormat('d-m-Y', $this->visit_date) : null;
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,
             'date'              => now(),
+            'visit_date'        => $visit_date ? $visit_date->format('Y-m-d') : null,
             'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
             'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0, 
             'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,

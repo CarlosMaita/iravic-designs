@@ -47,6 +47,7 @@
                             type: 'success'
                         }).show();
                         
+                        $customer = response.customer;
                         clearModalForm();
                         modal.modal('hide');
                         DATATABLE_RESOURCE.DataTable().ajax.reload();
@@ -113,6 +114,7 @@
                     datatype: 'json',
                     success: function (response) {
                         if (response.success) {
+                            $customer = response.customer;
                             DATATABLE_RESOURCE.DataTable().ajax.reload();
 
                             new Noty({
