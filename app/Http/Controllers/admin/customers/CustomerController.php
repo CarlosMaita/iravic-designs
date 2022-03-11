@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
@@ -140,6 +141,8 @@ class CustomerController extends Controller
             ]);
         } catch (Exception $e) {
             DB::rollback();
+            Log::debug('Error ocurred after trying to create a customer');
+            Log::debug($e->getMessage());
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
@@ -218,6 +221,8 @@ class CustomerController extends Controller
             ]);
         } catch (Exception $e) {
             DB::rollback();
+            Log::debug('Error ocurred after trying to update a customer: ' . $cliente->id);
+            Log::debug($e->getMessage());
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
