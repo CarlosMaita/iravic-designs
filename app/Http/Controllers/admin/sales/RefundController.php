@@ -13,6 +13,8 @@ use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\RefundRepository;
 use App\Repositories\Eloquent\RefundProductRepository;
+use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Eloquent\VisitRepository;
 use App\Services\Orders\OrderService;
 use DataTables;
 use Exception;
@@ -38,10 +40,14 @@ class RefundController extends Controller
     
     public $refundProductRepository;
 
+    public $scheduleRepository;
+
+    public $visitRepository;
+
     /**
      * Construct
      */
-    public function __construct(CustomerRepository $customerRepository, DebtRepository $debtRepository, DebtOrderProductRepository $debtOrderProductRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, RefundRepository $refundRepository, RefundProductRepository $refundProductRepository)
+    public function __construct(CustomerRepository $customerRepository, DebtRepository $debtRepository, DebtOrderProductRepository $debtOrderProductRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, RefundRepository $refundRepository, RefundProductRepository $refundProductRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
     {
         $this->customerRepository = $customerRepository;
         $this->debtRepository = $debtRepository;
@@ -51,6 +57,8 @@ class RefundController extends Controller
         $this->productRepository = $productRepository;
         $this->refundRepository = $refundRepository;
         $this->refundProductRepository = $refundProductRepository;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->visitRepository = $visitRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -232,6 +240,20 @@ class RefundController extends Controller
                         ); 
                         $this->debtOrderProductRepository->create($attributes);
                     }
+                }
+
+                // Solo deberia haber visita si hay una compra nueva de productos
+                if (isset($request->enable_new_visit) && !empty($request->visit_date)) {
+                    $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
+                    $attributes = array(
+                            'customer_id' => $order->customer_id,
+                            'order_id' => $order->id,
+                            'schedule_id' => $schedule->id,
+                            'user_id' => $request->user_id,
+                            'comment' => $request->visit_comment,
+                            'date' => $request->visit_date
+                        );
+                    $this->visitRepository->create($attributes);
                 }
             }
             DB::commit();

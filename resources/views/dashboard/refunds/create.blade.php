@@ -9,6 +9,12 @@
       border-radius: 4px 0px 0px 4px;
     }
   </style>
+
+  <style>
+    .datepicker-dropdown {
+        max-width: 300px;
+    }
+  </style>
 @endpush
 
 @section('content')
@@ -29,7 +35,7 @@
 @endsection
 
 @push('js')
+  @include('plugins.datepicker')
   @include('plugins.select2')
   @include('plugins.sweetalert')
-  {{-- @include('dashboard.refunds.js.form') --}}
 @endpush

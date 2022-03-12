@@ -132,7 +132,7 @@
                                     </div>
                                     <div v-if="productsSelectedForRefund.length" class="row">
                                         <div class="col-12">
-                                            <table>
+                                            <table class="table-refund">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Venta</th>
@@ -205,7 +205,7 @@
                                     </div>
                                     <div v-if="productsSelectedToBuy.length" class="row">
                                         <div class="col-12">
-                                            <table>
+                                            <table class="table-refund">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Nombre</th>
@@ -345,6 +345,44 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  -->
+                                    <div class="form-card mt-3" :class="{'d-none' : !needsNewVisit }">
+                                        <hr>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12 mx-auto">
+                                                <div class="custom-control custom-checkbox text-center">
+                                                    <input v-model="enableNewVisit"
+                                                            type="checkbox" 
+                                                            class="custom-control-input" 
+                                                            id="enableNewVisit"
+                                                            name="enable_new_visit"
+                                                            value="1"
+                                                    >
+                                                    <label class="custom-control-label" for="enableNewVisit">¿Desea agendar una visita? El cliente <b>{{ customerNameVisit }}</b> tendrá deuda al final la devolución/compra.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" :class="{'d-none' : !enableNewVisit }">
+                                            <div class="col-md-6 mx-auto">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="visit-date">Fecha</label>
+                                                            <input ref="visit_date_ref" class="form-control datepicker-form" id="visit-date" name="visit_date" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="visit-comment">Comentario</label>
+                                                            <textarea v-model="visitComment" class="form-control" name="visit_comment" id="visit-comment" cols="30" rows="3"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div> 
                                 <button class="btn btn-secondary" type="button" @click="goPrevious">Anterior</button>
                                 <button class="btn btn-info" type="button" @click="goNext">Siguiente</button>
@@ -359,7 +397,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <table>
+                                            <table class="table-refund">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Venta</th>
@@ -395,7 +433,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <table>
+                                            <table class="table-refund">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Nombre</th>
@@ -541,6 +579,10 @@
             }
         },
         data: () => ({
+            enableNewVisit: 0,
+            visitDate: null,
+            visitComment: null,
+            renderedDatepicker: false,
             customer_id: null,
             customer_id_new_credit: null,
             customerNewCreditSelected: null,
@@ -558,6 +600,36 @@
             mounted: false,
         }),
 	    computed: {
+            customerNameVisit() {
+                if (this.customerNewCreditSelected) {
+                    return this.customerNewCreditSelected.name;
+                } else if (this.customerSelected) {
+                    return this.customerSelected.name
+                }
+
+                return '';
+            },
+            needsNewVisit: function() {
+                if (!this.productsSelectedToBuy.length || !this.paymentMethodSelected) return false;
+
+                let result = 0;
+
+                if (this.customerNewCreditSelected) {
+                    if (this.paymentMethodSelected == 'credit') {
+                        result = this.customerNewCreditSelected.balance_numeric - this.totalCancelar;
+                    } else {
+                        this.customerNewCreditSelected.balance_numeric
+                    }
+                } else if (this.customerSelected) {
+                    if (this.paymentMethodSelected == 'credit') {
+                        result = this.customerSelected.balance_numeric - this.totalCancelar;
+                    } else {
+                        result = this.customerSelected.balance_numeric;
+                    }
+                }
+
+                return result < 0 ? true : false;
+            },
             subtotalCompra: function () {
                 return this.productsSelectedToBuy.reduce(function(prev, cur) {
                     return prev + (cur.qty * cur.product.regular_price);
@@ -739,6 +811,21 @@
                     } else {
                         this.currentStep += 1;
                     }
+
+                    if (this.currentStep == 4 && !this.renderedDatepicker) {
+                        this.setDatePicker();
+
+                        // $(this.$refs.datepicker).datepicker({
+                        //     format: 'dd/mm/yyyy'
+                        // })
+                        // .on("changeDate", e => {
+                        //     this.update(e.target.value);
+                        // });
+
+                        // update(value) {
+                        //     $(this.$refs.datepicker).datepicker("update", value);
+                        // }
+                    }
                 }
             },
             goPrevious() {
@@ -831,9 +918,6 @@
                     });
                 }
             },
-            // openModalNewCustomer() {
-            //     console.log('Open modal new customer');
-            // },
             removeProductToRefund(index) {
                 this.productsSelectedForRefund.splice(index, 1);
             },
@@ -881,6 +965,35 @@
                 }
 
                 return label;
+            },
+            setDatePicker() {
+                this.renderedDatepicker = true;
+
+                var inputs = $('.datepicker-form');
+
+                inputs.each((index, element) => {
+                    var value = element.value;
+
+                    if (value) {
+                        var dateParts = value.split("-");
+                        var date = dateParts[2] + "/" +  dateParts[1] + "/" + dateParts[0];
+                    } else {
+                        var date = new Date(value);
+                    }
+
+                    $(element).datepicker({
+                        format: "dd-mm-yyyy",
+                        todayBtn: "linked",
+                        language: "es",
+                        autoclose: true,
+                        todayHighlight: true,
+                        showOnFocus: true,
+                    }).datepicker("setDate", date)
+                    .end().on('keypress paste', function (e) {
+                        // e.preventDefault();
+                        // return false;
+                    });
+                });
             }
         },
         watch: {
@@ -904,84 +1017,88 @@
         width: calc(100% - 38px);
     }
 
-    table {
+    table.table-refund {
         border: 1px solid #ccc;
         border-collapse: collapse;
         margin: 0;
         padding: 0;
         width: 100%;
         table-layout: fixed;
-    }
 
-    table caption {
-        font-size: 1.5em;
-        margin: .5em 0 .75em;
-    }
+        caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
 
-    table tr {
-        background-color: #f8f8f8;
-        border: 1px solid #ddd;
-        padding: .35em;
-    }
+        tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
 
-    table th,
-    table td {
-        padding: .625em;
-        text-align: center;
-    }
+        th,
+        td {
+            padding: .625em;
+            text-align: center;
+        }
 
-    table th {
-        font-size: .85em;
-        letter-spacing: .1em;
-        text-transform: uppercase;
+        th {
+            font-size: .5em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 0.7rem;
+        }
     }
 
     @media screen and (max-width: 600px) {
-        table {
+        table.table-refund {
             border: 0;
-        }
 
-        table caption {
-            font-size: 1.3em;
-        }
-        
-        table thead {
-            border: none;
-            clip: rect(0 0 0 0);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
-            padding: 0;
-            position: absolute;
-            width: 1px;
-        }
-        
-        table tr {
-            border-bottom: 3px solid #ddd;
-            display: block;
-            margin-bottom: .625em;
-        }
-        
-        table td {
-            border-bottom: 1px solid #ddd;
-            display: block;
-            font-size: .8em;
-            text-align: right;
-        }
-        
-        table td::before {
-            /*
-            * aria-label has no advantage, it won't be read inside a table
-            content: attr(aria-label);
-            */
-            content: attr(data-label);
-            float: left;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        table td:last-child {
-            border-bottom: 0;
+            caption {
+                font-size: 1.3em;
+            }
+            
+            thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+            
+            tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+            
+            td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+            
+            td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            
+            td:last-child {
+                border-bottom: 0;
+            }
         }
     }
 </style>

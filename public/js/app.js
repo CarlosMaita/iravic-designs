@@ -3119,6 +3119,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3172,6 +3210,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      enableNewVisit: 0,
+      visitDate: null,
+      visitComment: null,
+      renderedDatepicker: false,
       customer_id: null,
       customer_id_new_credit: null,
       customerNewCreditSelected: null,
@@ -3190,6 +3232,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   computed: {
+    customerNameVisit: function customerNameVisit() {
+      if (this.customerNewCreditSelected) {
+        return this.customerNewCreditSelected.name;
+      } else if (this.customerSelected) {
+        return this.customerSelected.name;
+      }
+
+      return '';
+    },
+    needsNewVisit: function needsNewVisit() {
+      if (!this.productsSelectedToBuy.length || !this.paymentMethodSelected) return false;
+      var result = 0;
+
+      if (this.customerNewCreditSelected) {
+        if (this.paymentMethodSelected == 'credit') {
+          result = this.customerNewCreditSelected.balance_numeric - this.totalCancelar;
+        } else {
+          this.customerNewCreditSelected.balance_numeric;
+        }
+      } else if (this.customerSelected) {
+        if (this.paymentMethodSelected == 'credit') {
+          result = this.customerSelected.balance_numeric - this.totalCancelar;
+        } else {
+          result = this.customerSelected.balance_numeric;
+        }
+      }
+
+      return result < 0 ? true : false;
+    },
     subtotalCompra: function subtotalCompra() {
       return this.productsSelectedToBuy.reduce(function (prev, cur) {
         return prev + cur.qty * cur.product.regular_price;
@@ -3363,6 +3434,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         } else {
           this.currentStep += 1;
         }
+
+        if (this.currentStep == 4 && !this.renderedDatepicker) {
+          this.setDatePicker(); // $(this.$refs.datepicker).datepicker({
+          //     format: 'dd/mm/yyyy'
+          // })
+          // .on("changeDate", e => {
+          //     this.update(e.target.value);
+          // });
+          // update(value) {
+          //     $(this.$refs.datepicker).datepicker("update", value);
+          // }
+        }
       }
     },
     goPrevious: function goPrevious() {
@@ -3456,9 +3539,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       }
     },
-    // openModalNewCustomer() {
-    //     console.log('Open modal new customer');
-    // },
     removeProductToRefund: function removeProductToRefund(index) {
       this.productsSelectedForRefund.splice(index, 1);
     },
@@ -3499,6 +3579,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return label;
+    },
+    setDatePicker: function setDatePicker() {
+      this.renderedDatepicker = true;
+      var inputs = $('.datepicker-form');
+      inputs.each(function (index, element) {
+        var value = element.value;
+
+        if (value) {
+          var dateParts = value.split("-");
+          var date = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
+        } else {
+          var date = new Date(value);
+        }
+
+        $(element).datepicker({
+          format: "dd-mm-yyyy",
+          todayBtn: "linked",
+          language: "es",
+          autoclose: true,
+          todayHighlight: true,
+          showOnFocus: true
+        }).datepicker("setDate", date).end().on('keypress paste', function (e) {// e.preventDefault();
+          // return false;
+        });
+      });
     }
   },
   watch: {
@@ -8836,7 +8941,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".select2-container .select2-selection--single {\n  height: 37px !important;\n}\n.select2-container--default .select2-selection--single .select2-selection__rendered {\n  line-height: 37px;\n}\n.input-group .v-select {\n  width: calc(100% - 38px);\n}\ntable {\n  border: 1px solid #ccc;\n  border-collapse: collapse;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  table-layout: fixed;\n}\ntable caption {\n  font-size: 1.5em;\n  margin: 0.5em 0 0.75em;\n}\ntable tr {\n  background-color: #f8f8f8;\n  border: 1px solid #ddd;\n  padding: 0.35em;\n}\ntable th,\ntable td {\n  padding: 0.625em;\n  text-align: center;\n}\ntable th {\n  font-size: 0.85em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n}\n@media screen and (max-width: 600px) {\ntable {\n    border: 0;\n}\ntable caption {\n    font-size: 1.3em;\n}\ntable thead {\n    border: none;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\ntable tr {\n    border-bottom: 3px solid #ddd;\n    display: block;\n    margin-bottom: 0.625em;\n}\ntable td {\n    border-bottom: 1px solid #ddd;\n    display: block;\n    font-size: 0.8em;\n    text-align: right;\n}\ntable td::before {\n    /*\n    * aria-label has no advantage, it won't be read inside a table\n    content: attr(aria-label);\n    */\n    content: attr(data-label);\n    float: left;\n    font-weight: bold;\n    text-transform: uppercase;\n}\ntable td:last-child {\n    border-bottom: 0;\n}\n}", ""]);
+exports.push([module.i, ".select2-container .select2-selection--single {\n  height: 37px !important;\n}\n.select2-container--default .select2-selection--single .select2-selection__rendered {\n  line-height: 37px;\n}\n.input-group .v-select {\n  width: calc(100% - 38px);\n}\ntable.table-refund {\n  border: 1px solid #ccc;\n  border-collapse: collapse;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  table-layout: fixed;\n}\ntable.table-refund caption {\n  font-size: 1.5em;\n  margin: 0.5em 0 0.75em;\n}\ntable.table-refund tr {\n  background-color: #f8f8f8;\n  border: 1px solid #ddd;\n  padding: 0.35em;\n}\ntable.table-refund th,\ntable.table-refund td {\n  padding: 0.625em;\n  text-align: center;\n}\ntable.table-refund th {\n  font-size: 0.5em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n}\ntable.table-refund td {\n  font-size: 0.7rem;\n}\n@media screen and (max-width: 600px) {\ntable.table-refund {\n    border: 0;\n}\ntable.table-refund caption {\n    font-size: 1.3em;\n}\ntable.table-refund thead {\n    border: none;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\ntable.table-refund tr {\n    border-bottom: 3px solid #ddd;\n    display: block;\n    margin-bottom: 0.625em;\n}\ntable.table-refund td {\n    border-bottom: 1px solid #ddd;\n    display: block;\n    font-size: 0.8em;\n    text-align: right;\n}\ntable.table-refund td::before {\n    /*\n    * aria-label has no advantage, it won't be read inside a table\n    content: attr(aria-label);\n    */\n    content: attr(data-label);\n    float: left;\n    font-weight: bold;\n    text-transform: uppercase;\n}\ntable.table-refund td:last-child {\n    border-bottom: 0;\n}\n}", ""]);
 
 // exports
 
@@ -43191,7 +43296,7 @@ var render = function() {
                           _vm.productsSelectedForRefund.length
                             ? _c("div", { staticClass: "row" }, [
                                 _c("div", { staticClass: "col-12" }, [
-                                  _c("table", [
+                                  _c("table", { staticClass: "table-refund" }, [
                                     _vm._m(2),
                                     _vm._v(" "),
                                     _c(
@@ -43389,7 +43494,7 @@ var render = function() {
                           _vm.productsSelectedToBuy.length
                             ? _c("div", { staticClass: "row" }, [
                                 _c("div", { staticClass: "col-12" }, [
-                                  _c("table", [
+                                  _c("table", { staticClass: "table-refund" }, [
                                     _vm._m(4),
                                     _vm._v(" "),
                                     _c(
@@ -44174,7 +44279,221 @@ var render = function() {
                                       : _vm._e()
                                   ])
                                 ])
-                              : _vm._e()
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "form-card mt-3",
+                                class: { "d-none": !_vm.needsNewVisit }
+                              },
+                              [
+                                _c("hr"),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row mt-3" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "col-md-12 mx-auto" },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "custom-control custom-checkbox text-center"
+                                        },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.enableNewVisit,
+                                                expression: "enableNewVisit"
+                                              }
+                                            ],
+                                            staticClass: "custom-control-input",
+                                            attrs: {
+                                              type: "checkbox",
+                                              id: "enableNewVisit",
+                                              name: "enable_new_visit",
+                                              value: "1"
+                                            },
+                                            domProps: {
+                                              checked: Array.isArray(
+                                                _vm.enableNewVisit
+                                              )
+                                                ? _vm._i(
+                                                    _vm.enableNewVisit,
+                                                    "1"
+                                                  ) > -1
+                                                : _vm.enableNewVisit
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$a = _vm.enableNewVisit,
+                                                  $$el = $event.target,
+                                                  $$c = $$el.checked
+                                                    ? true
+                                                    : false
+                                                if (Array.isArray($$a)) {
+                                                  var $$v = "1",
+                                                    $$i = _vm._i($$a, $$v)
+                                                  if ($$el.checked) {
+                                                    $$i < 0 &&
+                                                      (_vm.enableNewVisit = $$a.concat(
+                                                        [$$v]
+                                                      ))
+                                                  } else {
+                                                    $$i > -1 &&
+                                                      (_vm.enableNewVisit = $$a
+                                                        .slice(0, $$i)
+                                                        .concat(
+                                                          $$a.slice($$i + 1)
+                                                        ))
+                                                  }
+                                                } else {
+                                                  _vm.enableNewVisit = $$c
+                                                }
+                                              }
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "label",
+                                            {
+                                              staticClass:
+                                                "custom-control-label",
+                                              attrs: { for: "enableNewVisit" }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "¿Desea agendar una visita? El cliente "
+                                              ),
+                                              _c("b", [
+                                                _vm._v(
+                                                  _vm._s(_vm.customerNameVisit)
+                                                )
+                                              ]),
+                                              _vm._v(
+                                                " tendrá deuda al final la devolución/compra."
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "row",
+                                    class: { "d-none": !_vm.enableNewVisit }
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "col-md-6 mx-auto" },
+                                      [
+                                        _c("div", { staticClass: "row" }, [
+                                          _c(
+                                            "div",
+                                            { staticClass: "col-sm-12" },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "form-group" },
+                                                [
+                                                  _c(
+                                                    "label",
+                                                    {
+                                                      attrs: {
+                                                        for: "visit-date"
+                                                      }
+                                                    },
+                                                    [_vm._v("Fecha")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c("input", {
+                                                    ref: "visit_date_ref",
+                                                    staticClass:
+                                                      "form-control datepicker-form",
+                                                    attrs: {
+                                                      id: "visit-date",
+                                                      name: "visit_date",
+                                                      autocomplete: "off"
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("div", { staticClass: "row" }, [
+                                          _c(
+                                            "div",
+                                            { staticClass: "col-sm-12" },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "form-group" },
+                                                [
+                                                  _c(
+                                                    "label",
+                                                    {
+                                                      attrs: {
+                                                        for: "visit-comment"
+                                                      }
+                                                    },
+                                                    [_vm._v("Comentario")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c("textarea", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.visitComment,
+                                                        expression:
+                                                          "visitComment"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      name: "visit_comment",
+                                                      id: "visit-comment",
+                                                      cols: "30",
+                                                      rows: "3"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.visitComment
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.visitComment =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
                           ]
                         ),
                         _vm._v(" "),
@@ -44210,7 +44529,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", { staticClass: "row" }, [
                                 _c("div", { staticClass: "col-12" }, [
-                                  _c("table", [
+                                  _c("table", { staticClass: "table-refund" }, [
                                     _vm._m(7),
                                     _vm._v(" "),
                                     _c(
@@ -44250,7 +44569,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", { staticClass: "row" }, [
                                 _c("div", { staticClass: "col-12" }, [
-                                  _c("table", [
+                                  _c("table", { staticClass: "table-refund" }, [
                                     _vm._m(9),
                                     _vm._v(" "),
                                     _c(
@@ -44969,7 +45288,15 @@ var render = function() {
                             {
                               staticClass: "product-category font-weight-normal"
                             },
-                            [_vm._v(_vm._s(_vm.product.category.name))]
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.product.category
+                                    ? _vm.product.category.name
+                                    : ""
+                                )
+                              )
+                            ]
                           )
                         ])
                       ]),
@@ -44981,7 +45308,15 @@ var render = function() {
                           _c(
                             "p",
                             { staticClass: "product-brand font-weight-normal" },
-                            [_vm._v(_vm._s(_vm.product.brand.name))]
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.product.brand
+                                    ? _vm.product.brand.name
+                                    : ""
+                                )
+                              )
+                            ]
                           )
                         ])
                       ])
@@ -44992,7 +45327,7 @@ var render = function() {
                     _c("div", { staticClass: "row" }, [
                       _c("div", { staticClass: "col-12" }, [
                         _c("div", { staticClass: "table-responsive" }, [
-                          _c("table", { staticClass: "table" }, [
+                          _c("table", { staticClass: "table table-refund" }, [
                             _c("thead", [
                               _vm.product.is_regular
                                 ? _c("tr", [
@@ -45284,7 +45619,8 @@ var render = function() {
                                         _c(
                                           "table",
                                           {
-                                            staticClass: "table mb-0",
+                                            staticClass:
+                                              "table table-refund mb-0",
                                             attrs: { width: "100%" }
                                           },
                                           [
@@ -45546,7 +45882,7 @@ var render = function() {
                   _c("div", { attrs: { id: "product-add-stocks" } }, [
                     _c("div", { staticClass: "row" }, [
                       _c("div", { staticClass: "table-responsive" }, [
-                        _c("table", { staticClass: "table" }, [
+                        _c("table", { staticClass: "table table-refund" }, [
                           _vm._m(5),
                           _vm._v(" "),
                           _c(
@@ -45717,25 +46053,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { staticStyle: { width: "20%" }, attrs: { scope: "col" } }, [
-          _vm._v("ID venta")
-        ]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("ID venta")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" }, attrs: { scope: "col" } }, [
-          _vm._v("Color")
-        ]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Color")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" }, attrs: { scope: "col" } }, [
-          _vm._v("Talla")
-        ]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Talla")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" }, attrs: { scope: "col" } }, [
-          _vm._v("Comprado")
-        ]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Comprado")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" }, attrs: { scope: "col" } }, [
-          _vm._v("Devolver")
-        ])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Devolver")])
       ])
     ])
   }

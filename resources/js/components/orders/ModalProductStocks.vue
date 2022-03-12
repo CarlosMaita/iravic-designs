@@ -27,13 +27,13 @@
                             <div class="col-6 col-md-3">
                                 <div class="form-group">
                                     <label><b>Categoría</b></label>
-                                    <p class="product-category font-weight-normal">{{ product.category.name }}</p>
+                                    <p class="product-category font-weight-normal">{{ product.category ? product.category.name : ''}}</p>
                                 </div>
                             </div>
                             <div class="col-6 col-md-3">
                                 <div class="form-group">
                                     <label><b>Marca</b></label>
-                                    <p class="product-brand font-weight-normal">{{ product.brand.name }}</p>
+                                    <p class="product-brand font-weight-normal">{{ product.brand ? product.brand.name : ''}}</p>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-refund">
                                         <thead>
                                             <tr v-if="product.is_regular">
                                                 <th scope="col" style="width: 33%;">Precio</th>
@@ -113,7 +113,7 @@
                                             <div class="row">
                                                 <div class="col-12 px-0">
                                                     <div class="table-responsive">
-                                                        <table class="table mb-0" width="100%">
+                                                        <table class="table table-refund mb-0" width="100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col" class="text-center">Depósito</th>

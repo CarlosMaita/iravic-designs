@@ -41,14 +41,14 @@
                     <div id="product-add-stocks">
                         <div class="row">
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-refund">
                                     <thead>
                                         <tr>
-                                            <th scope="col" style="width: 20%;">ID venta</th>
-                                            <th scope="col" style="width: 20%;">Color</th>
-                                            <th scope="col" style="width: 20%;">Talla</th>
-                                            <th scope="col" style="width: 20%;">Comprado</th>
-                                            <th scope="col" style="width: 20%;">Devolver</th>
+                                            <th scope="col">ID venta</th>
+                                            <th scope="col">Color</th>
+                                            <th scope="col">Talla</th>
+                                            <th scope="col">Comprado</th>
+                                            <th scope="col">Devolver</th>
                                         </tr>
                                     </thead>
                                     <tbody>

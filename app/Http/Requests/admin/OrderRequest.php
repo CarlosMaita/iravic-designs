@@ -88,8 +88,6 @@ class OrderRequest extends FormRequest
                 $validator->after(function ($validator) {
                     $validator->errors()->add('visit_date', 'Debe seleccionar la fecha de la visita.');
                 });
-            } else {
-
             }
         }
 
