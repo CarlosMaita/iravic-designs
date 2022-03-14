@@ -34,6 +34,11 @@ class Debt extends Model
         return $this->belongsTo('App\Models\Customer');
     }
 
+    public function operation()
+    {
+        return $this->hasOne('App\Models\Operation');
+    }
+
     public function order_product()
     {
         return $this->belongsTo('App\Models\OrderProduct');
@@ -42,6 +47,18 @@ class Debt extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    # Boot
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            Operation::create([
+                'customer_id' => $model->customer_id,
+                'debt_id' => $model->id
+            ]);
+        });
     }
 
     # Accessors

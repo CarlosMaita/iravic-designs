@@ -7,7 +7,9 @@ class OrderService
     public static function getOrderTotalsByRefund($params, $productRepository, $orderProductRepository)
     {
         $discount = isset($params['discount']) && is_numeric($params['discount']) ? $params['discount'] : 0;
-        $subtotal = self::getSubtotalOrder($productRepository, $params['products'], $params['qtys']);
+        $subtotal = self::getSubtotalOrder($productRepository, $params);
+        // $subtotal = self::getSubtotalOrder($productRepository, $params['products'], $params['qtys']);
+        $payment_method = isset($params['payment_method']) ? $params['payment_method'] : null;
         $totalCancel = 0;
         $totalsRefund = self::getTotalsToRefund($orderProductRepository, $params['products_refund'], $params['qtys_refund']);
         $totalRefund = $totalsRefund['total'];
@@ -15,7 +17,7 @@ class OrderService
         $totalRefundCredit = $totalsRefund['total_by_credit'];
         $totalOrder = $subtotal - $discount;
 
-        if ($params['payment_method'] == 'credit' && $totalOrder > $totalRefundCredit && isset($params['is_credit_shared'])) {
+        if ($payment_method == 'credit' && $totalOrder > $totalRefundCredit && isset($params['is_credit_shared'])) {
             $totalCancel = $totalOrder - $totalRefundDebit - $totalRefundCredit;
         } else {
             $totalCancel = $totalOrder;
@@ -32,8 +34,10 @@ class OrderService
         ];
     }
 
-    public static function getSubtotalOrder($productRepository, $products, $qtys)
+    public static function getSubtotalOrder($productRepository, $params)
     {
+        $products = !empty($params['products']) ? $params['products'] : [];
+        $qtys = !empty($params['qtys']) ? $params['qtys'] : [];
         $subtotal = 0;
 
         foreach ($products as $product_id) {

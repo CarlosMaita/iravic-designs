@@ -39,6 +39,11 @@ class Payment extends Model
         return $this->belongsTo('App\Models\Customer');
     }
     
+    public function operation()
+    {
+        return $this->hasOne('App\Models\Operation');
+    }
+
     public function refund()
     {
         return $this->belongsTo('App\Models\Refund');
@@ -47,6 +52,18 @@ class Payment extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    # Boot
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            Operation::create([
+                'customer_id' => $model->customer_id,
+                'payment_id' => $model->id
+            ]);
+        });
     }
 
     # Accessors

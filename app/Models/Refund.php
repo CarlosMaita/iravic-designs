@@ -30,6 +30,11 @@ class Refund extends Model
         return $this->belongsTo('App\Models\Customer')->withTrashed();
     }
 
+    public function operation()
+    {
+        return $this->hasOne('App\Models\Operation');
+    }
+
     public function order()
     {
         return $this->hasOne('App\Models\Order');
@@ -43,6 +48,18 @@ class Refund extends Model
     public function products()
     {
         return $this->hasMany('App\Models\RefundProduct');
+    }
+
+    # Boot
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            Operation::create([
+                'customer_id' => $model->customer_id,
+                'refund_id' => $model->id
+            ]);
+        });
     }
 
     # Accessors

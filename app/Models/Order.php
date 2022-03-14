@@ -45,9 +45,9 @@ class Order extends Model
         return $this->belongsTo('App\Models\Customer')->withTrashed();
     }
 
-    public function user()
+    public function operation()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasOne('App\Models\Operation');
     }
 
     public function products()
@@ -58,6 +58,23 @@ class Order extends Model
     public function refund()
     {
         return $this->belongsTo('App\Models\Refund');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    # Boot
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function ($model) {
+            Operation::create([
+                'customer_id' => $model->customer_id,
+                'order_id' => $model->id
+            ]);
+        });
     }
 
     # Accessors
