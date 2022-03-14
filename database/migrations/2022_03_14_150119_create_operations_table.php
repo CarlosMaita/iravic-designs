@@ -20,6 +20,7 @@ class CreateOperationsTable extends Migration
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->unsignedBigInteger('refund_id')->nullable();
+            $table->string('balance')->default(0);
             $table->timestamps();
 
             $table->foreign('customer_id')

@@ -54,6 +54,8 @@
                         clearPaymentVisitForm();
                         modal_payments.modal('hide');
                         DATATABLE_RESOURCE.DataTable().ajax.reload();
+                        updateDatatableOperations();
+                        updateBalanceLabel($customer.balance);
                     } else if (response.error) {
                         new Noty({
                             text: response.error,
@@ -119,7 +121,9 @@
                         if (response.success) {
                             $customer = response.customer;
                             DATATABLE_RESOURCE.DataTable().ajax.reload();
-                            
+                            updateDatatableOperations();
+                            updateBalanceLabel($customer.balance);
+
                             new Noty({
                                 text: response.message,
                                 type: 'success'

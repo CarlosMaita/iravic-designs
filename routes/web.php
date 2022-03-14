@@ -86,6 +86,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('gastos', 'SpendingController')->except('create');
         #
+        Route::resource('operaciones', 'OperationController')->only('index');
+        #
         Route::resource('pagos', 'PaymentController')->except('create');
         #
         Route::resource('ventas', 'OrderController')->except('destroy');

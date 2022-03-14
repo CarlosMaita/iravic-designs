@@ -72,7 +72,8 @@ class Order extends Model
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
-                'order_id' => $model->id
+                'order_id' => $model->id,
+                'balance' => $model->customer->getBalance()
             ]);
         });
     }

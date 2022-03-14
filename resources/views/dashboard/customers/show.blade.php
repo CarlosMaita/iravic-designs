@@ -85,22 +85,15 @@
 @push('js')
     <script>
         let $customer = @json($customer);
+        let $datatable_operations = $("#datatable_operations");
 
-        $(function() {
-            // $('#orders')
-            // // .bind('beforeShow', function() {
-            // // }) 
-            // .bind('afterShow', function() {
-            //     // $('#orders').removeAttr('style');
-            //     $('#payments').removeAttr('style');
-            // })
-            // .show(1000, function() {
-            //     $('#datatable_orders').DataTable()
-            //         .columns.adjust()
-            //         .responsive.recalc();
-            // })
-            // .show();
-        });
+        function updateDatatableOperations() {
+            $datatable_operations.DataTable().ajax.reload();
+        }
+
+        function updateBalanceLabel(balance) {
+            $('#balance-text').val(balance);
+        }
     </script>
 
     @include('plugins.datepicker')
@@ -111,6 +104,7 @@
     @include('dashboard.customers.js.customer-map')
     @include('dashboard.customers.js.show')
     @include('dashboard.debts.js.index')
+    @include('dashboard.operations.js.index')
     @include('dashboard.payments.js.index')
     @include('dashboard.visits.js.index')
 @endpush

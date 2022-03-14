@@ -61,7 +61,8 @@ class Payment extends Model
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
-                'payment_id' => $model->id
+                'payment_id' => $model->id,
+                'balance' => $model->customer->getBalance()
             ]);
         });
     }

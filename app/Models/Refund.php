@@ -57,7 +57,8 @@ class Refund extends Model
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
-                'refund_id' => $model->id
+                'refund_id' => $model->id,
+                'balance' => $model->customer->getBalance()
             ]);
         });
     }

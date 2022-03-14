@@ -11,9 +11,9 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
 {
 
     /**
-     * BrandRepository constructor.
+     * OrderRepository constructor.
      *
-     * @param Brand $model
+     * @param Order $model
      */
     public function __construct(Order $model)
     {
