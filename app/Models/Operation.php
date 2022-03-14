@@ -85,6 +85,8 @@ class Operation extends Model
             return $this->debt->comment;
         } else if ($this->payment_id) {
             return $this->payment->comment;
+        } else if ($this->order && $this->order->refund) {
+            return "A partir de devolución: #" . $this->order->refund_id;
         }
 
         return null;
