@@ -28,7 +28,7 @@
                     {data: 'amount'},
                     {data: 'type'},
                     {data: 'balance'},
-                    {data: 'comentario'},
+                    {data: 'comment'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

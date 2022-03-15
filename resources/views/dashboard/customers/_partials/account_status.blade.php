@@ -6,6 +6,9 @@
                 <input id="balance-text" class="form-control" type="text" value="{{ $customer->balance }}" readOnly>
             </div>
         </div>
+        <div class="col-md-6 text-right">
+            <a href="{{ route('operaciones.download') }}?customer={{ $customer->id }}"> <i class="fa fa-file-pdf"></i> Descargar</a>
+        </div>
     </div>
     <hr>
     <div class="row mt-3">

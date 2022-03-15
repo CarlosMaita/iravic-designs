@@ -88,6 +88,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('operaciones', 'OperationController')->only('index');
         #
+        Route::get('operaciones-pdf', 'OperationController@download')->name('operaciones.download');
+        #
         Route::resource('pagos', 'PaymentController')->except('create');
         #
         Route::resource('ventas', 'OrderController')->except('destroy');

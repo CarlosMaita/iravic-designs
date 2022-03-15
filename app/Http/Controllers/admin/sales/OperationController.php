@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\admin\sales;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OperationRepository;
 use DataTables;
 use Illuminate\Http\Request;
 
 class OperationController extends Controller
 {
+    public $customerRepository;
+
     public $operationRepository;
 
-    public function __construct(OperationRepository $operationRepository)
+    public function __construct(CustomerRepository $customerRepository, OperationRepository $operationRepository)
     {
+        $this->customerRepository = $customerRepository;
         $this->operationRepository = $operationRepository;
     }
 
@@ -43,5 +47,28 @@ class OperationController extends Controller
         }
 
         abort(404);
+    }
+
+    /**
+     * 
+     */
+    public function download(Request $request)
+    {
+        try {
+            $customer = $this->customerRepository->find($request->customer);
+            $now = now()->format('d-m-Y');
+            $operations = $this->operationRepository->allByCustomer(array('customer' => $request->customer));
+
+            $pdf = \PDF::loadView('pdf.account_status', [
+                'customer' => $customer,
+                'operations' => $operations,
+                'date' => $now
+            ]);
+
+            return $pdf->download($customer->name . '-estado-de-cuenta-' . $now . '.pdf');
+        } catch (\Throwable $th) {
+            flash("Ha ocurrido un error al tratar de descargar el estado de cuenta.")->error();
+            return back();
+        }
     }
 }

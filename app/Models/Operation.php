@@ -76,7 +76,7 @@ class Operation extends Model
             return number_format($value, 2, ',', '.');
         }
 
-        return 'N/A';
+        return null;
     }
 
     public function getCommentAttribute()
