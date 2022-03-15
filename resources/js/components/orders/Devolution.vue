@@ -1101,4 +1101,9 @@
             }
         }
     }
+    @media screen and (max-width: 600px) {
+        table.table-refund td {
+            min-height: 34px;
+        }
+    }
 </style>

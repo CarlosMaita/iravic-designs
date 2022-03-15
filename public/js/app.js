@@ -8941,7 +8941,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".select2-container .select2-selection--single {\n  height: 37px !important;\n}\n.select2-container--default .select2-selection--single .select2-selection__rendered {\n  line-height: 37px;\n}\n.input-group .v-select {\n  width: calc(100% - 38px);\n}\ntable.table-refund {\n  border: 1px solid #ccc;\n  border-collapse: collapse;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  table-layout: fixed;\n}\ntable.table-refund caption {\n  font-size: 1.5em;\n  margin: 0.5em 0 0.75em;\n}\ntable.table-refund tr {\n  background-color: #f8f8f8;\n  border: 1px solid #ddd;\n  padding: 0.35em;\n}\ntable.table-refund th,\ntable.table-refund td {\n  padding: 0.625em;\n  text-align: center;\n}\ntable.table-refund th {\n  font-size: 0.5em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n}\ntable.table-refund td {\n  font-size: 0.7rem;\n}\n@media screen and (max-width: 600px) {\ntable.table-refund {\n    border: 0;\n}\ntable.table-refund caption {\n    font-size: 1.3em;\n}\ntable.table-refund thead {\n    border: none;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\ntable.table-refund tr {\n    border-bottom: 3px solid #ddd;\n    display: block;\n    margin-bottom: 0.625em;\n}\ntable.table-refund td {\n    border-bottom: 1px solid #ddd;\n    display: block;\n    font-size: 0.8em;\n    text-align: right;\n}\ntable.table-refund td::before {\n    /*\n    * aria-label has no advantage, it won't be read inside a table\n    content: attr(aria-label);\n    */\n    content: attr(data-label);\n    float: left;\n    font-weight: bold;\n    text-transform: uppercase;\n}\ntable.table-refund td:last-child {\n    border-bottom: 0;\n}\n}", ""]);
+exports.push([module.i, ".select2-container .select2-selection--single {\n  height: 37px !important;\n}\n.select2-container--default .select2-selection--single .select2-selection__rendered {\n  line-height: 37px;\n}\n.input-group .v-select {\n  width: calc(100% - 38px);\n}\ntable.table-refund {\n  border: 1px solid #ccc;\n  border-collapse: collapse;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  table-layout: fixed;\n}\ntable.table-refund caption {\n  font-size: 1.5em;\n  margin: 0.5em 0 0.75em;\n}\ntable.table-refund tr {\n  background-color: #f8f8f8;\n  border: 1px solid #ddd;\n  padding: 0.35em;\n}\ntable.table-refund th,\ntable.table-refund td {\n  padding: 0.625em;\n  text-align: center;\n}\ntable.table-refund th {\n  font-size: 0.5em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n}\ntable.table-refund td {\n  font-size: 0.7rem;\n}\n@media screen and (max-width: 600px) {\ntable.table-refund {\n    border: 0;\n}\ntable.table-refund caption {\n    font-size: 1.3em;\n}\ntable.table-refund thead {\n    border: none;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\ntable.table-refund tr {\n    border-bottom: 3px solid #ddd;\n    display: block;\n    margin-bottom: 0.625em;\n}\ntable.table-refund td {\n    border-bottom: 1px solid #ddd;\n    display: block;\n    font-size: 0.8em;\n    text-align: right;\n}\ntable.table-refund td::before {\n    /*\n    * aria-label has no advantage, it won't be read inside a table\n    content: attr(aria-label);\n    */\n    content: attr(data-label);\n    float: left;\n    font-weight: bold;\n    text-transform: uppercase;\n}\ntable.table-refund td:last-child {\n    border-bottom: 0;\n}\n}\n@media screen and (max-width: 600px) {\ntable.table-refund td {\n    min-height: 34px;\n}\n}", ""]);
 
 // exports
 
@@ -45924,74 +45924,95 @@ var render = function() {
                                 "tr",
                                 { key: "tr-refund-" + orderProduct.id },
                                 [
-                                  _c("th", { attrs: { scope: "row" } }, [
-                                    _vm._v(_vm._s(orderProduct.order_id))
-                                  ]),
+                                  _c(
+                                    "td",
+                                    { attrs: { "data-label": "ID venta" } },
+                                    [_vm._v(_vm._s(orderProduct.order_id))]
+                                  ),
                                   _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(
-                                        orderProduct.color
-                                          ? orderProduct.color.name
-                                          : ""
+                                  _c(
+                                    "td",
+                                    { attrs: { "data-label": "Color" } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          orderProduct.color
+                                            ? orderProduct.color.name
+                                            : ""
+                                        )
                                       )
-                                    )
-                                  ]),
+                                    ]
+                                  ),
                                   _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(
-                                        orderProduct.size
-                                          ? orderProduct.size.name
-                                          : ""
+                                  _c(
+                                    "td",
+                                    { attrs: { "data-label": "Talla" } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          orderProduct.size
+                                            ? orderProduct.size.name
+                                            : ""
+                                        )
                                       )
-                                    )
-                                  ]),
+                                    ]
+                                  ),
                                   _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(orderProduct.available_for_refund)
-                                    )
-                                  ]),
+                                  _c(
+                                    "td",
+                                    { attrs: { "data-label": "Comprado" } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          orderProduct.available_for_refund
+                                        )
+                                      )
+                                    ]
+                                  ),
                                   _vm._v(" "),
-                                  _c("td", [
-                                    _c("div", { staticClass: "form-group" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.qty[orderProduct.id],
-                                            expression: "qty[orderProduct.id]"
-                                          }
-                                        ],
-                                        staticClass:
-                                          "form-control modal-product-refund-input",
-                                        attrs: {
-                                          autocomplete: "off",
-                                          type: "number",
-                                          min: "0",
-                                          step: "1",
-                                          max: orderProduct.available_for_refund
-                                        },
-                                        domProps: {
-                                          value: _vm.qty[orderProduct.id]
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
+                                  _c(
+                                    "td",
+                                    { attrs: { "data-label": "Devolver" } },
+                                    [
+                                      _c("div", { staticClass: "form-group" }, [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.qty[orderProduct.id],
+                                              expression: "qty[orderProduct.id]"
                                             }
-                                            _vm.$set(
-                                              _vm.qty,
-                                              orderProduct.id,
-                                              $event.target.value
-                                            )
+                                          ],
+                                          staticClass:
+                                            "form-control modal-product-refund-input",
+                                          attrs: {
+                                            autocomplete: "off",
+                                            type: "number",
+                                            min: "0",
+                                            step: "1",
+                                            max:
+                                              orderProduct.available_for_refund
+                                          },
+                                          domProps: {
+                                            value: _vm.qty[orderProduct.id]
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                _vm.qty,
+                                                orderProduct.id,
+                                                $event.target.value
+                                              )
+                                            }
                                           }
-                                        }
-                                      })
-                                    ])
-                                  ])
+                                        })
+                                      ])
+                                    ]
+                                  )
                                 ]
                               )
                             }),

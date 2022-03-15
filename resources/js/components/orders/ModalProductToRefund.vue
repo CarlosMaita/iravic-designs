@@ -53,11 +53,11 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(orderProduct) in product.order_products" :key="`tr-refund-${orderProduct.id}`">
-                                            <th scope="row">{{ orderProduct.order_id }}</th>
-                                            <td>{{ orderProduct.color ? orderProduct.color.name : '' }}</td>
-                                            <td>{{ orderProduct.size ? orderProduct.size.name : '' }}</td>
-                                            <td>{{ orderProduct.available_for_refund }}</td>
-                                            <td>
+                                            <td data-label="ID venta">{{ orderProduct.order_id }}</td>
+                                            <td data-label="Color">{{ orderProduct.color ? orderProduct.color.name : '' }}</td>
+                                            <td data-label="Talla">{{ orderProduct.size ? orderProduct.size.name : '' }}</td>
+                                            <td data-label="Comprado">{{ orderProduct.available_for_refund }}</td>
+                                            <td data-label="Devolver">
                                                 <div class="form-group">
                                                     <input v-model="qty[orderProduct.id]" 
                                                         autocomplete="off"
