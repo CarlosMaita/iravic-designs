@@ -89,7 +89,13 @@ class Operation extends Model
             $comment = array();
             $products = $this->order->products;
             foreach ($products as $product) {
-                array_push($comment, $product->product->name);
+                $product_name = $product->product->name;
+
+                if ($product->qty > 1) {
+                    $product_name .= " ($product->qty)";
+                }
+
+                array_push($comment, $product_name);
             }
             
             return $comment;
@@ -97,7 +103,13 @@ class Operation extends Model
             $comment = array();
             $products = $this->refund->products;
             foreach ($products as $product) {
-                array_push($comment, $product->product->name);
+                $product_name = $product->product->name;
+
+                if ($product->qty > 1) {
+                    $product_name .= " ($product->qty)";
+                }
+
+                array_push($comment, $product_name);
             }
 
             return $comment;
