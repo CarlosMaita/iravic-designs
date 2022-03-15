@@ -28,7 +28,21 @@
                     {data: 'amount'},
                     {data: 'type'},
                     {data: 'balance'},
-                    {data: 'comment'},
+                    {
+                        render: function (data, type, row) {
+                            let comment = '';
+                            
+                            if (Array.isArray(row.comment)) {
+                                row.comment.forEach((value, index) => {
+                                    comment += `<p class="mb-0"><b>-</b> ${value}</p>`;
+                                });
+                            } else if (row.comment) {
+                                comment = row.comment;
+                            }
+
+                            return comment;
+                        }
+                    },
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

@@ -85,8 +85,22 @@ class Operation extends Model
             return $this->debt->comment;
         } else if ($this->payment_id) {
             return $this->payment->comment;
-        } else if ($this->order && $this->order->refund) {
-            return "A partir de devolución: #" . $this->order->refund_id;
+        } else if ($this->order_id) {
+            $comment = array();
+            $products = $this->order->products;
+            foreach ($products as $product) {
+                array_push($comment, $product->product->name);
+            }
+            
+            return $comment;
+        } else if ($this->refund_id) {
+            $comment = array();
+            $products = $this->refund->products;
+            foreach ($products as $product) {
+                array_push($comment, $product->product->name);
+            }
+
+            return $comment;
         }
 
         return null;
