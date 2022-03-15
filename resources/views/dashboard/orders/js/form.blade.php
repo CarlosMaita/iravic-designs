@@ -271,13 +271,13 @@
                 qualification   = selected.data('qualification'),
                 telephone       = selected.data('telephone');
 
-            container.find('#selected-customer-address').val(address);
-            container.find('#selected-customer-balance').val(balance);
-            container.find('#selected-customer-dni').val(dni);
-            container.find('#selected-customer-maxcredit').val(maxcredit_str);
-            container.find('#selected-customer-name').val(name);
-            container.find('#selected-customer-qualification').val(qualification);
-            container.find('#selected-customer-telephone').val(telephone);
+            container.find('#selected-customer-address').text(address);
+            container.find('#selected-customer-balance').text(balance);
+            container.find('#selected-customer-dni').text(dni);
+            container.find('#selected-customer-maxcredit').text(maxcredit_str);
+            container.find('#selected-customer-name').text(name);
+            container.find('#selected-customer-qualification').text(qualification);
+            container.find('#selected-customer-telephone').text(telephone);
             container.removeClass('d-none');
             
             $customer_balance = balance_numeric;

@@ -16,7 +16,7 @@
                                 <li id="confirm-step"><strong>{{ __('dashboard.form.fields.orders.finish') }}</strong></li>
                             </ul> <!-- fieldsets -->
                             <fieldset>
-                                <div class="form-card">
+                                <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.customer_information') }}</h2>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
@@ -59,13 +59,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.name') }}</label>
-                                                        <input id="selected-customer-name" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-name" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.dni') }}</label>
-                                                        <input id="selected-customer-dni" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-dni" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -73,13 +73,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.telephone') }}</label>
-                                                        <input id="selected-customer-telephone" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-telephone" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
-                                                        <input id="selected-customer-qualification" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-qualification" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -87,13 +87,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.max_credit') }}</label>
-                                                        <input id="selected-customer-maxcredit" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-maxcredit" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.customers.balance') }}</label>
-                                                        <input id="selected-customer-balance" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-balance" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,7 +101,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.address') }}</label>
-                                                        <input id="selected-customer-address" class="form-control" type="text" readOnly>
+                                                        <p id="selected-customer-address" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -192,7 +192,7 @@
                                 <button class="btn btn-info next action-button" type="button" data-step="2">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
                             <fieldset>
-                                <div class="form-card">
+                                <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.payment_information') }}</h2>
                                     <div class="radio-group">
                                         <div class='radio' data-value="bankwire" for="bankwire">
@@ -234,7 +234,7 @@
                                 <button class="btn btn-info next action-button" type="button" data-step="3">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
                             <fieldset>
-                                <div class="form-card py-1">
+                                <div class="form-card py-1 px-md-4 px-2">
                                     <div class="row mb-4">
                                         <div class="col-12">
                                             <small class="form-text text-muted font-weight-bold text-success">Resumen Productos</small>
@@ -349,6 +349,11 @@
             margin-bottom: 10px;
             font-weight: bold;
             text-align: left;
+        }
+        @media (max-width: 500px) {
+            .fs-title {
+                font-size: 18px;
+            }
         }
         #progressbar {
             color: lightgrey;

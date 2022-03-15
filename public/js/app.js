@@ -42959,7 +42959,7 @@ var render = function() {
                         attrs: { id: "section-customer" }
                       },
                       [
-                        _c("div", { staticClass: "form-card" }, [
+                        _c("div", { staticClass: "form-card px-md-4 px-2" }, [
                           _c("h2", { staticClass: "fs-title" }, [
                             _vm._v("Información de Cliente")
                           ]),
@@ -43024,17 +43024,20 @@ var render = function() {
                                           [
                                             _c("label", [_vm._v("Nombre")]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id: "selected-customer-name",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value: _vm.customerSelected.name
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected.name
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ]),
@@ -43046,17 +43049,20 @@ var render = function() {
                                           [
                                             _c("label", [_vm._v("DNI")]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id: "selected-customer-dni",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value: _vm.customerSelected.dni
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected.dni
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ])
@@ -43070,19 +43076,21 @@ var render = function() {
                                           [
                                             _c("label", [_vm._v("Teléfono")]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id:
-                                                  "selected-customer-telephone",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value:
-                                                  _vm.customerSelected.telephone
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected
+                                                      .telephone
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ]),
@@ -43096,20 +43104,21 @@ var render = function() {
                                               _vm._v("Calificación")
                                             ]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id:
-                                                  "selected-customer-qualification",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value:
-                                                  _vm.customerSelected
-                                                    .qualification
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected
+                                                      .qualification
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ])
@@ -43125,20 +43134,21 @@ var render = function() {
                                               _vm._v("Crédito máximo")
                                             ]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id:
-                                                  "selected-customer-maxcredit",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value:
-                                                  _vm.customerSelected
-                                                    .max_credit_str
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected
+                                                      .max_credit_str
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ]),
@@ -43150,18 +43160,20 @@ var render = function() {
                                           [
                                             _c("label", [_vm._v("Saldo")]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id: "selected-customer-balance",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value:
-                                                  _vm.customerSelected.balance
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected.balance
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ])
@@ -43175,18 +43187,20 @@ var render = function() {
                                           [
                                             _c("label", [_vm._v("Dirección")]),
                                             _vm._v(" "),
-                                            _c("input", {
-                                              staticClass: "form-control",
-                                              attrs: {
-                                                id: "selected-customer-address",
-                                                type: "text",
-                                                readOnly: ""
+                                            _c(
+                                              "p",
+                                              {
+                                                staticClass:
+                                                  "form-control h-100"
                                               },
-                                              domProps: {
-                                                value:
-                                                  _vm.customerSelected.address
-                                              }
-                                            })
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.customerSelected.address
+                                                  )
+                                                )
+                                              ]
+                                            )
                                           ]
                                         )
                                       ])
@@ -43581,7 +43595,7 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "form-card p-1",
+                            staticClass: "form-card py-1 px-md-4 px-2",
                             attrs: { id: "card-payment" }
                           },
                           [
@@ -44524,87 +44538,103 @@ var render = function() {
                       { class: { "d-none": _vm.currentStep != 5 } },
                       [
                         _vm.productsSelectedForRefund.length
-                          ? _c("div", { staticClass: "form-card" }, [
-                              _vm._m(6),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-12" }, [
-                                  _c("table", { staticClass: "table-refund" }, [
-                                    _vm._m(7),
-                                    _vm._v(" "),
+                          ? _c(
+                              "div",
+                              { staticClass: "form-card px-md-4 px-2" },
+                              [
+                                _vm._m(6),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col-12" }, [
                                     _c(
-                                      "tbody",
-                                      _vm._l(
-                                        _vm.productsSelectedForRefund,
-                                        function(item, index) {
-                                          return _c("ProductItemToRefund", {
-                                            key: item.id,
-                                            attrs: {
-                                              item: item,
-                                              index: index,
-                                              "can-remove": false
-                                            },
-                                            on: {
-                                              removeProduct:
-                                                _vm.removeProductToRefund,
-                                              updateQty:
-                                                _vm.updateProductForRefundQty
+                                      "table",
+                                      { staticClass: "table-refund" },
+                                      [
+                                        _vm._m(7),
+                                        _vm._v(" "),
+                                        _c(
+                                          "tbody",
+                                          _vm._l(
+                                            _vm.productsSelectedForRefund,
+                                            function(item, index) {
+                                              return _c("ProductItemToRefund", {
+                                                key: item.id,
+                                                attrs: {
+                                                  item: item,
+                                                  index: index,
+                                                  "can-remove": false
+                                                },
+                                                on: {
+                                                  removeProduct:
+                                                    _vm.removeProductToRefund,
+                                                  updateQty:
+                                                    _vm.updateProductForRefundQty
+                                                }
+                                              })
                                             }
-                                          })
-                                        }
-                                      ),
-                                      1
+                                          ),
+                                          1
+                                        )
+                                      ]
                                     )
                                   ])
                                 ])
-                              ])
-                            ])
+                              ]
+                            )
                           : _vm._e(),
                         _vm._v(" "),
                         _c("hr"),
                         _vm._v(" "),
                         _vm.productsSelectedToBuy.length
-                          ? _c("div", { staticClass: "form-card" }, [
-                              _vm._m(8),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-12" }, [
-                                  _c("table", { staticClass: "table-refund" }, [
-                                    _vm._m(9),
-                                    _vm._v(" "),
+                          ? _c(
+                              "div",
+                              { staticClass: "form-card px-md-4 px-2" },
+                              [
+                                _vm._m(8),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col-12" }, [
                                     _c(
-                                      "tbody",
-                                      _vm._l(
-                                        _vm.productsSelectedToBuy,
-                                        function(item, index) {
-                                          return _c("ProductItemToBuy", {
-                                            key:
-                                              "product-" +
-                                              item.id +
-                                              "-buy-resumen",
-                                            attrs: {
-                                              item: item,
-                                              index: index,
-                                              "can-remove": false
-                                            },
-                                            on: {
-                                              removeProduct:
-                                                _vm.removeProductToBuy,
-                                              updateQty:
-                                                _vm.updateProductForBuyQty
+                                      "table",
+                                      { staticClass: "table-refund" },
+                                      [
+                                        _vm._m(9),
+                                        _vm._v(" "),
+                                        _c(
+                                          "tbody",
+                                          _vm._l(
+                                            _vm.productsSelectedToBuy,
+                                            function(item, index) {
+                                              return _c("ProductItemToBuy", {
+                                                key:
+                                                  "product-" +
+                                                  item.id +
+                                                  "-buy-resumen",
+                                                attrs: {
+                                                  item: item,
+                                                  index: index,
+                                                  "can-remove": false
+                                                },
+                                                on: {
+                                                  removeProduct:
+                                                    _vm.removeProductToBuy,
+                                                  updateQty:
+                                                    _vm.updateProductForBuyQty
+                                                }
+                                              })
                                             }
-                                          })
-                                        }
-                                      ),
-                                      1
+                                          ),
+                                          1
+                                        )
+                                      ]
                                     )
                                   ])
                                 ])
-                              ])
-                            ])
+                              ]
+                            )
                           : _vm._e(),
                         _vm._v(" "),
-                        _c("div", { staticClass: "form-card" }, [
+                        _c("div", { staticClass: "form-card px-md-4 px-2" }, [
                           _c(
                             "h2",
                             { staticClass: "fs-title text-center mt-2" },

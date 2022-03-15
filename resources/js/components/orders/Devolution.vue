@@ -20,7 +20,7 @@
                             </ul> 
                             <!-- fieldsets -->
                             <fieldset id="section-customer" :class="{ 'd-none' : currentStep != 1 }">
-                                <div class="form-card">
+                                <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">Información de Cliente</h2>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
@@ -49,13 +49,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nombre</label>
-                                                        <input id="selected-customer-name" class="form-control" type="text" :value="customerSelected.name" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.name }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>DNI</label>
-                                                        <input id="selected-customer-dni" class="form-control" type="text" :value="customerSelected.dni" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.dni }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -63,13 +63,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Teléfono</label>
-                                                        <input id="selected-customer-telephone" class="form-control" type="text" :value="customerSelected.telephone" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.telephone }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Calificación</label>
-                                                        <input id="selected-customer-qualification" class="form-control" type="text" :value="customerSelected.qualification" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.qualification }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,13 +77,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Crédito máximo</label>
-                                                        <input id="selected-customer-maxcredit" class="form-control" type="text" :value="customerSelected.max_credit_str" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.max_credit_str }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Saldo</label>
-                                                        <input id="selected-customer-balance" class="form-control" type="text" :value="customerSelected.balance" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.balance }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,7 +91,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Dirección</label>
-                                                        <input id="selected-customer-address" class="form-control" type="text" :value="customerSelected.address" readOnly>
+                                                        <p class="form-control h-100">{{ customerSelected.address }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,7 +241,7 @@
                             </fieldset>
                             <!--  -->
                             <fieldset id="section-payment" :class="{ 'd-none' : currentStep != 4 }">
-                                <div id="card-payment" class="form-card p-1">
+                                <div id="card-payment" class="form-card py-1 px-md-4 px-2">
                                     <h2 class="fs-title">Información de Pago</h2>
                                     <div class="radio-group text-center">
                                         <div class='radio' data-value="bankwire" for="bankwire" :class="{ 'selected' : paymentMethodSelected == 'bankwire' }">
@@ -389,7 +389,7 @@
                             </fieldset>
                             <!-- {{--  --}} -->
                             <fieldset :class="{ 'd-none' : currentStep != 5 }">
-                                <div v-if="productsSelectedForRefund.length" class="form-card">
+                                <div v-if="productsSelectedForRefund.length" class="form-card px-md-4 px-2">
                                     <div class="row mb-4">
                                         <div class="col-12">
                                             <small class="form-text text-muted font-weight-bold text-success">Resumen Productos a devolver</small>
@@ -425,7 +425,7 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div v-if="productsSelectedToBuy.length" class="form-card">
+                                <div v-if="productsSelectedToBuy.length" class="form-card px-md-4 px-2">
                                     <div class="row mb-4">
                                         <div class="col-12">
                                             <small class="form-text text-muted font-weight-bold text-success">Resumen Productos a llevarse</small>
@@ -458,7 +458,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-card">
+                                <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title text-center mt-2">Confirmar Devolución</h2>
                                     <div class="row mt-3 mb-4">
                                         <div class="col-12">

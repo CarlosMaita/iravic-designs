@@ -68,6 +68,11 @@
             font-weight: bold;
             text-align: left;
         }
+        @media (max-width: 500px) {
+            .fs-title {
+                font-size: 18px;
+            }
+        }
         #progressbar {
             color: lightgrey;
             margin-bottom: 30px;

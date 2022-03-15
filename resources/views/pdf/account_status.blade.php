@@ -241,7 +241,15 @@
                         <td class="text-center" style="width: 15%;">{{ $operation->amount }}</td>
                         <td class="text-center" style="width: 17%;">{{ $operation->type }}</td>
                         <td class="text-center" style="width: 15%;">{{ $operation->balance }}</td>
-                        <td style="width: 38%;">{{ $operation->comment }}</td>
+                        <td style="width: 38%;">
+                            @if ($operation->comment && is_array($operation->comment))
+                                @foreach ($operation->comment as $comment)
+                                    <p style="margin: 0;"><b>-</b> {{ $comment }}</p>
+                                @endforeach
+                            @elseif ($operation->comment)
+                                <span>{{ $operation->comment }}</span>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -49,7 +49,12 @@
         <div class="c-body">
             <main id="app" class="c-main">
                 <div class="container-fluid">
-                    @include('flash::message')
+                    <div class="row">
+                        <div class="col-12">
+                            @include('flash::message')
+                        </div>
+                    </div>
+                    {{--  --}}
                     @yield('content') 
                 </div>
             </main>
