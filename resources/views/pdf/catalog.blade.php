@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $customer->name }} Historial de Cuenta</title>
-
+    <title>Catálogo</title>
 </head>
 <body>
     <div class="information">

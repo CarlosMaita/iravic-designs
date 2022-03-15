@@ -324,69 +324,74 @@ class ProductController extends Controller
      */
     public function download(Request $request)
     {
-        $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
-        $products = $this->productRepository->onlyPrincipals($criteria);
-        $categories = array();
-        $category_id = null;
+        // try {
+            $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
+            $products = $this->productRepository->onlyPrincipals($criteria);
+            $categories = array();
+            $category_id = null;
 
-        foreach ($products as $product) {
-            if ($product->category_id != $category_id) {
-                $category_id = $product->category_id;
-                $categories[$product->category_id] = array();
-                $categories[$product->category_id]['name'] = $product->category->name;
-                $categories[$product->category_id]['products'] = array();
-            }
-
-            if (count($product->product_combinations)) {
-                $combinations = array();
-
-                foreach ($product->product_combinations as $product_combination) {
-                    if (
-                        $product_combination->stock_depot == 0 
-                        && $product_combination->stock_local == 0 
-                        && $product_combination->stock_truck == 0
-                    ) {
-                        break;
-                    }
-
-                    if (isset($criteria['color']) && !in_array($product_combination->color_id, $criteria['color'])) {
-                        break;
-                    }
-
-                    if (isset($criteria['size']) && !in_array($product_combination->size_id, $criteria['size'])) {
-                        break;
-                    }
-
-                    if (!empty($criteria['price_from']) && $product_combination->getRegularPrice() >= $criteria['price_from']) {
-                        break;
-                    }
-
-                    if (!empty($criteria['price_to']) && $product_combination->getRegularPrice() >= $criteria['price_to']) {
-                        break;
-                    }
-                    
-                    array_push($combinations, $product_combination);
+            foreach ($products as $product) {
+                if ($product->category_id != $category_id) {
+                    $category_id = $product->category_id;
+                    $categories[$product->category_id] = array();
+                    $categories[$product->category_id]['name'] = optional($product->category)->name;
+                    $categories[$product->category_id]['products'] = array();
                 }
 
-                if (count($combinations)) {
-                    $product['combinations'] = $combinations;
+                if (count($product->product_combinations)) {
+                    $combinations = array();
+
+                    foreach ($product->product_combinations as $product_combination) {
+                        if (
+                            $product_combination->stock_depot == 0 
+                            && $product_combination->stock_local == 0 
+                            && $product_combination->stock_truck == 0
+                        ) {
+                            break;
+                        }
+
+                        if (isset($criteria['color']) && !in_array($product_combination->color_id, $criteria['color'])) {
+                            break;
+                        }
+
+                        if (isset($criteria['size']) && !in_array($product_combination->size_id, $criteria['size'])) {
+                            break;
+                        }
+
+                        if (!empty($criteria['price_from']) && $product_combination->getRegularPrice() >= $criteria['price_from']) {
+                            break;
+                        }
+
+                        if (!empty($criteria['price_to']) && $product_combination->getRegularPrice() >= $criteria['price_to']) {
+                            break;
+                        }
+                        
+                        array_push($combinations, $product_combination);
+                    }
+
+                    if (count($combinations)) {
+                        $product['combinations'] = $combinations;
+                        array_push($categories[$product->category_id]['products'], $product);
+                    }
+                } else if ($product->stock_depot >0 || $product->stock_local >0 || $product->stock_truck >0) {
                     array_push($categories[$product->category_id]['products'], $product);
                 }
-            } else if ($product->stock_depot >0 || $product->stock_local >0 || $product->stock_truck >0) {
-                array_push($categories[$product->category_id]['products'], $product);
             }
-        }
 
+            // $customPaper = array(0, 0, 5000, 1440);
+            $customPaper = array(0, 0, 5000, 650);
 
-        // $customPaper = array(0, 0, 5000, 1440);
-        $customPaper = array(0, 0, 5000, 650);
+            $pdf = \PDF::loadView('pdf/catalog', [
+                'categories' => $categories,
+                'date' => now()->format('d-m-Y')
+            ])
+            ->setPaper($customPaper, 'landscape');
 
-        $pdf = \PDF::loadView('pdf/catalog', [
-            'categories' => $categories,
-            'date' => now()->format('d-m-Y')
-        ])
-        ->setPaper($customPaper, 'landscape');
-
-        return $pdf->download(config('app.name') . ' - catalogo.pdf');
+            return $pdf->download(config('app.name') . ' - catalogo.pdf');
+            //code...
+        // } catch (\Throwable $th) {
+        //     flash("Ha ocurrido un error al tratar de descargar el catálogo.")->error();
+        //     return back();
+        // }
     }
 }
