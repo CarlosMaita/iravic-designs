@@ -206,8 +206,8 @@
         },
         watch: { 
             qty: function(value) {
-                var newQty = value,
-                    max_available = this.product.stock_user;
+                var newQty = Number(value),
+                    max_available = Number(this.product.stock_user);
 
                 if (newQty < 0 || isNaN(newQty))  {
                     this.qty = 0;

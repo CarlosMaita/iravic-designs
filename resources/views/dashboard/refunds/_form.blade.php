@@ -156,7 +156,7 @@
 
         @media(max-width: 500px) {
             .radio {
-                width: 48%;
+                width: 47%;
             }
         }
 

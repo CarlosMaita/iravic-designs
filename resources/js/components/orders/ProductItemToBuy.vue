@@ -74,8 +74,8 @@
         },
         watch: {
             quantity: function(newVal, oldVal) {
-                var newQty = newVal,
-                    max_available = this.item.product.stock_user;
+                var newQty = Number(newVal),
+                    max_available = Number(this.item.product.stock_user);
 
                 if (newQty < 0 || isNaN(newQty))  {
                     this.quantity = 0;

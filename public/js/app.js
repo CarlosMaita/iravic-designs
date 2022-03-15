@@ -4004,8 +4004,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     qty: function qty(value) {
-      var newQty = value,
-          max_available = this.product.stock_user;
+      var newQty = Number(value),
+          max_available = Number(this.product.stock_user);
 
       if (newQty < 0 || isNaN(newQty)) {
         this.qty = 0;
@@ -4327,8 +4327,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     quantity: function quantity(newVal, oldVal) {
-      var newQty = newVal,
-          max_available = this.item.product.stock_user;
+      var newQty = Number(newVal),
+          max_available = Number(this.item.product.stock_user);
 
       if (newQty < 0 || isNaN(newQty)) {
         this.quantity = 0;
@@ -4452,8 +4452,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     quantity: function quantity(newVal, oldVal) {
-      var newQty = newVal,
-          max_available = this.item.orderProduct.available_for_refund;
+      var newQty = Number(newVal),
+          max_available = Number(this.item.orderProduct.available_for_refund);
 
       if (newQty < 0 || isNaN(newQty)) {
         this.quantity = 0;

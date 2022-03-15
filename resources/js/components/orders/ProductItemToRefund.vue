@@ -76,8 +76,8 @@
         },
         watch: {
             quantity: function(newVal, oldVal) {
-                var newQty = newVal,
-                    max_available = this.item.orderProduct.available_for_refund;
+                var newQty = Number(newVal),
+                    max_available = Number(this.item.orderProduct.available_for_refund);
 
                 if (newQty < 0 || isNaN(newQty))  {
                     this.quantity = 0;
