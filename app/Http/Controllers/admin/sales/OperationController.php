@@ -7,6 +7,7 @@ use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OperationRepository;
 use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OperationController extends Controller
 {
@@ -35,10 +36,12 @@ class OperationController extends Controller
                     ->addColumn('action', function($row){
                         $btn = '';
                         
-                        // if (Auth::user()->can('view', $row)) {
-                            // '. route('ventas.show', $row->id) . '
-                            $btn .= '<a href="" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        // }
+                        $resource = $row->getResourceForPolicy();
+                        $route = $row->getResourceRoute();
+
+                        if ($route && Auth::user()->can('view', $resource)) {
+                            $btn .= '<a href="' . $route . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        }
 
                         return $btn;
                     })

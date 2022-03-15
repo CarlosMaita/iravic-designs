@@ -115,4 +115,32 @@ class Operation extends Model
 
         return null;
     }
+
+    /**
+     * 
+     */
+    public function getResourceRoute()
+    {
+        if ($this->order_id) {
+            return route('ventas.show', $this->order_id);
+        } else if ($this->refund_id) {
+            return route('devoluciones.show', $this->refund_id);
+        }
+
+        return null;
+    }
+
+    /**
+     * 
+     */
+    public function getResourceForPolicy()
+    {
+        if ($this->order_id) {
+            return $this->order;
+        } else if ($this->refund_id) {
+            return $this->refund;
+        }
+
+        return null;
+    }
 }
