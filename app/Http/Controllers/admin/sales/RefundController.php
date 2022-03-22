@@ -184,6 +184,9 @@ class RefundController extends Controller
 
                 $order = $this->orderRepository->create($attributesOrder);
 
+                /**
+                 * Se guardan los productos de la nueva venta (Productos que se llevan)
+                 */
                 foreach ($request->products as $product_id) {
                     if ($product = $this->productRepository->find($product_id)) {
                         if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
@@ -242,7 +245,13 @@ class RefundController extends Controller
                     }
                 }
 
-                // Solo deberia haber visita si hay una compra nueva de productos
+                /**
+                 * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
+                 * Si selecciona una fecha para visita, intenta crear una agenda para esa fecha si aun no existe
+                 * 
+                 * Nota: En este caso 
+                 * Solo deberia haber visita si hay una compra nueva de productos
+                 */
                 if (isset($request->enable_new_visit) && !empty($request->visit_date)) {
                     $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
                     $attributes = array(

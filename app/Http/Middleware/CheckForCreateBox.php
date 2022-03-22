@@ -26,6 +26,9 @@ class CheckForCreateBox
     {
         $user = Auth::user();
         
+        /**
+         * Un usuario no puede tener mas de 1 caja abierta
+         */
         if ($this->boxRepository->getOpenByUserId($user->id)) {
             flash("Usted ya posee una caja abierta.")->warning();
             return redirect()->route('cajas.index');

@@ -75,6 +75,9 @@ class OrderDiscountRequest extends FormRequest
      */
     public function withValidator($validator)
     {
+        /**
+         * Para aplicar descuento, debe ingresar la contrasena, y ademas los descuentos deben estar activados
+         */
         if (!empty($this->discount_password)) {
             $discount_password = Config::getConfig('discount_password');
 

@@ -96,8 +96,9 @@ class PaymentRequest extends FormRequest
     protected function prepareForValidation()
     {
         $user = Auth::user();
-        $box = $this->boxRepository->getOpenByUserId($user->id);
-        $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? Carbon::createFromFormat('d-m-Y', $this->visit_date) : null;
+        $box = $this->boxRepository->getOpenByUserId($user->id);// Se busca la caja abierta del usuario
+        $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? 
+                    Carbon::createFromFormat('d-m-Y', $this->visit_date) : null; // Se puede pautar una visita al realizar una venta
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,

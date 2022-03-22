@@ -17,7 +17,7 @@ class CheckForDestroyBox
     public function handle($request, Closure $next)
     {
         $box = $request->route('caja');
-
+        
         if ($box->orders()->count()) {
             return response()->json([
                 'success' => false,

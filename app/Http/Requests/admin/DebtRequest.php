@@ -49,8 +49,8 @@ class DebtRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'date'              => now(),
-            'user_id'           => Auth::user()->id
+            'date' => now(),
+            'user_id' => Auth::user()->id
         ]);
     }
 }

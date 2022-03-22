@@ -221,10 +221,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the stock
+     * Update the product's stock by stock column
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $product_id [Inside Request]
+     * @param  int  $stock_column [Inside Request] = Tipo de stock
      * @return \Illuminate\Http\Response
      */
     public function updateStock(ProductStockRequest $request)
@@ -284,7 +285,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 
+     * Se eliminan combinaciones (Seleccionadas) de un producto
      */
     public function destroyCombinations(Request $request)
     {
@@ -317,9 +318,8 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Se descarga PDF - Catalogo con los productos y combinaciones existentes que tengan stock
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function download(Request $request)
@@ -330,6 +330,9 @@ class ProductController extends Controller
             $categories = array();
             $category_id = null;
 
+            /**
+             * Los productos se ordenan por categoria
+             */
             foreach ($products as $product) {
                 if ($product->category_id != $category_id) {
                     $category_id = $product->category_id;
@@ -341,6 +344,11 @@ class ProductController extends Controller
                 if (count($product->product_combinations)) {
                     $combinations = array();
 
+                    /**
+                     * Una combinacion no se muestra si:
+                     * - No tiene stock de ningun tipo
+                     * - No cumple alguno de los filtros en la variable criteria
+                     */
                     foreach ($product->product_combinations as $product_combination) {
                         if (
                             $product_combination->stock_depot == 0 
@@ -388,7 +396,6 @@ class ProductController extends Controller
             ->setPaper($customPaper, 'landscape');
 
             return $pdf->download(config('app.name') . ' - catalogo.pdf');
-            //code...
         // } catch (\Throwable $th) {
         //     flash("Ha ocurrido un error al tratar de descargar el catálogo.")->error();
         //     return back();

@@ -131,6 +131,9 @@ class OrderController extends Controller
             );
             $order = $this->orderRepository->create($attributes);
 
+            /**
+             * Se guardan los productos de la venta
+             */
             foreach ($request->products as $product_id) {
                 if ($product = $this->productRepository->find($product_id)) {
                     if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
@@ -150,6 +153,10 @@ class OrderController extends Controller
                 }
             }
 
+            /**
+             * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
+             * Si selecciona una fecha para visita, intenta crear una agenda para esa fecha si aun no existe
+             */
             if (isset($request->enable_new_visit) && !empty($request->visit_date)) {
                 $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
                 $attributes = array(
@@ -192,7 +199,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Calculate totals.
+     * Calculate totals, including discount.
      *
      * @return \Illuminate\Http\Response
      */
@@ -243,49 +250,5 @@ class OrderController extends Controller
         $this->authorize('view', $venta);
         return view('dashboard.orders.show')
                 ->withOrder($venta);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $venta)
-    {
-        $this->authorize('update', $venta);
-        return view('dashboard.orders.edit')
-                ->withOrder($venta);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(OrderRequest $request, Order $venta)
-    {
-        try {
-            $this->authorize('update', $venta);
-            // $this->orderRepository->update($venta->id, $request->only('cash_initial'));
-            flash("La venta <b>$venta->id</b> ha sido actualizado con éxito")->success();
-
-            return response()->json([
-                'success' => 'true',
-                'data' => [
-                    'redirect' => route('ventas.edit', $venta->id)
-                ]
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => __('dashboard.general.operation_error'),
-                'error' => [
-                    'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
-                ]
-            ]);
-        }
     }
 }

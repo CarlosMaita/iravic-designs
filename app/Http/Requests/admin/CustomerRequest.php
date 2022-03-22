@@ -123,6 +123,9 @@ class CustomerRequest extends FormRequest
             }
         }
 
+        /** 
+         * Telephone can't be equal to contact telephone 
+        */
         if ($this->telephone == $this->contact_telephone) {
             $validator->after(function ($validator) {
                 $validator->errors()->add('dni_unique', 'El teléfono del cliente tiene que ser diferente al teléfono de la persona de contacto.');

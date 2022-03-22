@@ -27,7 +27,7 @@ class CheckOpenBox
         $user = Auth::user();
         
         if (!$this->boxRepository->getOpenByUserId($user->id)) {
-            flash("Usted no tiene una caja abiertas.")->warning();
+            flash("Usted no tiene una caja abierta.")->warning();
             return redirect()->route('cajas.index');
         }
 

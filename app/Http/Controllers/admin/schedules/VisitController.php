@@ -132,6 +132,9 @@ class VisitController extends Controller
             );
             $this->visitRepository->update($visita->id, $attributes);
             
+            /* 
+             * Si se cambia la fecha de una visita y la agenda queda sin visitas, esta es eliminada
+             */
             if ($schedule->id != $prev_schedule->id && !$prev_schedule->visits()->count()) {
                 $prev_schedule->delete();
             }
@@ -183,7 +186,7 @@ class VisitController extends Controller
     }
 
     /**
-     * 
+     *  Se actualiza el responsable de una visita
      */
     public function updateResponsable(VisitResponsableRequest $request, Visit $visita)
     {
@@ -209,7 +212,7 @@ class VisitController extends Controller
     }
 
     /**
-     * 
+     * Se marca una visita como completada
      */
     public function complete(Request $request, Visit $visita)
     {
@@ -234,7 +237,7 @@ class VisitController extends Controller
     }
 
     /**
-     * 
+     * Se ordenan las posiciones de las visitas
      */
     public function sort(Request $request)
     {

@@ -53,7 +53,7 @@ class OperationController extends Controller
     }
 
     /**
-     * 
+     * Se descarga un pdf con el historial de operaciones de un cliente (Devoluciones, Deudas, Pagos, Ventas)
      */
     public function download(Request $request)
     {

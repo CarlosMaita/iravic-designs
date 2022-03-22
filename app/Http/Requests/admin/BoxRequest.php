@@ -56,6 +56,7 @@ class BoxRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        // Se manda un header para mandar a cerrar la caja
         if ($this->isMethod('POST') && !$this->header('close-box')) {
             $this->merge([
                 'date' => now()->format('Y-m-d'),

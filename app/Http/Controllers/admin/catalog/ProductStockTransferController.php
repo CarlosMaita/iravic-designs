@@ -119,7 +119,7 @@ class ProductStockTransferController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina una solicitud de transferencia de Stock
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

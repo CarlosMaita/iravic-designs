@@ -92,7 +92,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('pagos', 'PaymentController')->except('create');
         #
-        Route::resource('ventas', 'OrderController')->except('destroy');
+        Route::resource('ventas', 'OrderController')->except('edit', 'update', 'destroy');
         #
         Route::get('ventas-descuento', 'OrderController@calculateDiscount')->name('ventas.discount');
     });

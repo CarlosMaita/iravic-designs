@@ -77,12 +77,18 @@ class OrderRequest extends FormRequest
      */
     public function withValidator($validator)
     {
+        /**
+         * Para realizar una venta, el usuario debe tener una caja abierta
+         */
         if (!$this->box_id) {
             $validator->after(function ($validator) {
                 $validator->errors()->add('box', 'El usuario no tiene una caja abierta en este momento.');
             });
         }
 
+        /** 
+         * Si en el formulario de la venta, se habilita pautar una visita, debe seleccionar la fecha
+         */
         if (!empty($this->enable_new_visit)) {
             if (!$this->visit_date) {
                 $validator->after(function ($validator) {
@@ -115,19 +121,21 @@ class OrderRequest extends FormRequest
     protected function prepareForValidation()
     {
         $user = Auth::user();
-        $box = $user->boxes()->where('closed', 0)->first();
-        $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? Carbon::createFromFormat('d-m-Y', $this->visit_date) : null;
+        $box = $user->boxes()->where('closed', 0)->first(); // Se busca la caja abierta del usuario
+        $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? 
+                    Carbon::createFromFormat('d-m-Y', $this->visit_date) : null; // Se puede pautar una visita al realizar una venta
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,
-            'stock_type'        => $user->getColumnStock(),
+            'stock_type'        => $user->getColumnStock(), // La cantidades de productos se descontaran de este stock
             'user_id'           => $user->id,
             'visit_date'        => $visit_date ? $visit_date->format('Y-m-d') : null
         ]);
     }
 
     /**
-     * 
+     * Se calculan los totales (descuento incluido)
+     * @return Array
      */
     public function getTotal()
     {

@@ -85,6 +85,10 @@ class PaymentController extends Controller
             $pago = $this->paymentRepository->create($attributes);
             $this->visitRepository->completeByDateUser($pago->customer_id, $pago->getRawOriginal('date'));
 
+            /**
+             * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
+             * Si selecciona una fecha para visita, intenta crear una agenda para esa fecha si aun no existe
+             */
             if (!empty($request->visit_date)) {
                 $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
                 $attributes = array(

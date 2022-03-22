@@ -120,7 +120,7 @@ class BoxController extends Controller
         $this->authorize('view', $caja);
         $customers = $this->customerRepository->all();
         $orders = $caja->orders()->orderBy('date', 'desc')->get();
-        $showOrdersTab = isset($request->ventas) ? true : false;
+        $showOrdersTab = isset($request->ventas) ? true : false; // Para determinar si hay que abrir el tab de ordenes en el collapse
         return view('dashboard.boxes.show')
                 ->withCustomers($customers)
                 ->withBox($caja)

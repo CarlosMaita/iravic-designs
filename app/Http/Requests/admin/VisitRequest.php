@@ -81,12 +81,18 @@ class VisitRequest extends FormRequest
                 $customersCount = $this->visitRepository->getCountCustomersFromZone($this->date, $customer->id, $customer->zone_id);
                 $hasCustomerVisit = $this->visitRepository->hasCustomerVisitForDate($this->date, $customer->id);
 
+                /**
+                 * No puede tener mas de 1 visita en el mismo dia
+                 */
                 if ($hasCustomerVisit) {
                     $validator->after(function ($validator) {
                         $validator->errors()->add('customer_visit', 'El cliente ya tiene una visita pautada para el día seleccionado.');
                     });
                 }
 
+                /**
+                 * No puede agendar una visita si la zona del cliente ya tiene 25 clientes. [Conflicto con Google Maps para calcular routes]
+                 */
                 if ($customersCount >= $this->max_customers_per_zone) {
                     $validator->after(function ($validator) {
                         $validator->errors()->add('zone', 'La zona ya posee 25 clientes a visitar para el día seleccionado.');

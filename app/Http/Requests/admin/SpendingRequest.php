@@ -54,7 +54,7 @@ class SpendingRequest extends FormRequest
     protected function prepareForValidation()
     {
         $user = Auth::user();
-        $box = $this->boxRepository->getOpenByUserId($user->id);
+        $box = $this->boxRepository->getOpenByUserId($user->id); // Se busca la caja abierta del usuario
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,

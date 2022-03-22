@@ -88,7 +88,7 @@ class ScheduleController extends Controller
         $sortBy = empty($request->sort) || $request->sort != 'desc' ? 'asc' : 'desc';
         $visits = $this->visitRepository->allBySchedule($agenda->id);
         $zones = $agenda->getZones($sortBy);
-        $openZone = $request->get('open-zone') ?: null;
+        $openZone = $request->get('open-zone') ?: null; // Se usa para abrir automaticamente uno los collapses de zona
 
         return view('dashboard.schedules.show')
                 ->withEmployees($employees)
