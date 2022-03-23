@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class ImageService
 {
     /**
-     * 
+     * Almacena una imagen un disco especificado por parametro
      */
     public static function save($disk, $file)
     {
@@ -24,7 +24,7 @@ class ImageService
     }
 
     /**
-     * 
+     * Procesa actualizacion de una imagen (Manda a eliminar una imagen si existe para luego almacena una nueva).
      */
     public static function updateImage($disk, $old_image, $new_file, $delete)
     {
@@ -44,7 +44,7 @@ class ImageService
     }
     
     /**
-     * 
+     * Elimina una imagen de un disco especificado por parametro
      */
     public static function delete($disk, $image)
     {

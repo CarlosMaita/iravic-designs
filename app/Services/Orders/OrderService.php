@@ -4,6 +4,11 @@ namespace App\Services\Orders;
 
 class OrderService
 {
+    /**
+     * Retorna array con valores de una devolucion
+     * 
+     * @return array
+     */
     public static function getOrderTotalsByRefund($params, $productRepository, $orderProductRepository)
     {
         $discount = isset($params['discount']) && is_numeric($params['discount']) ? $params['discount'] : 0;
@@ -34,6 +39,9 @@ class OrderService
         ];
     }
 
+    /**
+     * Retorna subtotal de una venta
+     */
     public static function getSubtotalOrder($productRepository, $params)
     {
         $products = !empty($params['products']) ? $params['products'] : [];
@@ -51,6 +59,9 @@ class OrderService
         return $subtotal;
     }
 
+    /**
+     * Retorna totales de devolucion. Dividido en total por credito y debito y suma de ambos
+     */
     public static function getTotalsToRefund($orderProductRepository, $products, $qtys)
     {
         $total_by_credit = 0;

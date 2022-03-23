@@ -4,6 +4,12 @@ namespace App\Services\Catalog;
 
 class StockService
 {
+    /**
+     * Retorna el nombre Display de un tipo de stock
+     * 
+     * @param stock = Tipo de stock
+     * @return string
+     */
     public static function getStockName($stock)
     {
         $stock_name = '';
