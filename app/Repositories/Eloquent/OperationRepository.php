@@ -10,7 +10,7 @@ class OperationRepository extends BaseRepository implements OperationRepositoryI
 {
 
     /**
-     * BrandRepository constructor.
+     * OperationRepository constructor.
      *
      * @param Operation $model
      */
@@ -20,6 +20,8 @@ class OperationRepository extends BaseRepository implements OperationRepositoryI
     }
 
     /**
+     * Retorna listado de operaciones (Devoluciones, Deudas, Pagos, Ventas) de un cliente. Se usa para su estado de cuenta
+     * 
      * @return Collection
      */
     public function allByCustomer($params): Collection

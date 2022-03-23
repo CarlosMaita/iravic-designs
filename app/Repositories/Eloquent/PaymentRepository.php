@@ -20,6 +20,8 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     }
 
     /**
+     * Retorna listado de todos los pagos. Puede filtrar por cliente o por caja de un cliente
+     * 
      * @return Collection
      */
     public function all($params = null): Collection

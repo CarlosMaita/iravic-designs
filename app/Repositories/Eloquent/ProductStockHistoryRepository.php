@@ -11,7 +11,7 @@ class ProductStockHistoryRepository extends BaseRepository implements ProductSto
     /**
      * ProductStockHistoryRepository constructor.
      *
-     * @param Product $model
+     * @param ProductStockHistory $model
      */
     public function __construct(ProductStockHistory $model)
     {
@@ -19,6 +19,8 @@ class ProductStockHistoryRepository extends BaseRepository implements ProductSto
     }
 
     /**
+     * Retorna listado de historial de stock de un producto. Puede filtrar por tipo de stock
+     * 
      * @return Collection
      */
     public function all($criteria = null): Collection

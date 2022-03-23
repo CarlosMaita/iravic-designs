@@ -21,6 +21,8 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     }
 
     /**
+     * Retorna listado de todos las ventas de todos los clientes
+     * 
      * @return Collection
      */
     public function all(): Collection

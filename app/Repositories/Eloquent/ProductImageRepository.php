@@ -9,9 +9,9 @@ use App\Repositories\ProductImageRepositoryInterface;
 class ProductImageRepository extends BaseRepository implements ProductImageRepositoryInterface
 {
     /**
-     * ProductRepository constructor.
+     * ProductImageRepository constructor.
      *
-     * @param Product $model
+     * @param ProductImage $model
      */
     public function __construct(ProductImage $model)
     {
@@ -19,6 +19,8 @@ class ProductImageRepository extends BaseRepository implements ProductImageRepos
     }
 
     /**
+     * Retorna listado de imagenes de un producto
+     * 
      * @return Collection
      */
     public function all($product_id = null): Collection

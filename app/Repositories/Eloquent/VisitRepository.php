@@ -21,6 +21,8 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     }
 
     /**
+     * Retorna listado de visitas. Puede filtrar por cliente o por agenda
+     * 
      * @return Collection
      */
     public function all($params = null): Collection
@@ -39,6 +41,8 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     }
 
     /**
+     * Retorna listado de una agenda, filtrando por zonas o roles de usuarios que sean responsables
+     * 
      * @return Collection
      */
     public function allBySchedule($schedule_id, $zones = null, $roles = null): Collection
@@ -71,7 +75,7 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     }
 
     /**
-     * 
+     * Actualiza visita(s) de un cliente para una fecha especifica
      */
     public function completeByDateUser($customer_id, $date): bool
     {
@@ -81,7 +85,9 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     }
 
     /**
+     * Retorna cantidad (1) si un cliente tiene visita para una fecha
      * 
+     * @return int
      */
     public function hasCustomerVisitForDate($date, $customer_id): int
     {
@@ -93,7 +99,9 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
     }
 
     /**
+     * Retorna cantidad de visitas de clientes de una fecha y zona especifica 
      * 
+     * @return int
      */
     public function getCountCustomersFromZone($date, $customer_id, $zone_id): int
     {

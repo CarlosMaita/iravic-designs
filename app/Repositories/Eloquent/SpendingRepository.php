@@ -12,7 +12,7 @@ class SpendingRepository extends BaseRepository implements SpendingRepositoryInt
     /**
      * PaymentRepository constructor.
      *
-     * @param Payment $model
+     * @param Spending $model
      */
     public function __construct(Spending $model)
     {
@@ -20,6 +20,8 @@ class SpendingRepository extends BaseRepository implements SpendingRepositoryInt
     }
 
     /**
+     * Retorna listado de gastos de todos los usuarios. Puede filtrar por caja que le pertenece a un usuario
+     * 
      * @return Collection
      */
     public function all($params = null): Collection

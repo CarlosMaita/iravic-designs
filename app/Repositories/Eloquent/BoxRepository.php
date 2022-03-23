@@ -12,9 +12,9 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
 {
 
     /**
-     * BrandRepository constructor.
+     * BoxRepository constructor.
      *
-     * @param Brand $model
+     * @param Box $model
      */
     public function __construct(Box $model)
     {
@@ -22,6 +22,8 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
     }
 
     /**
+     * Retorna listado de cajas de un usuario. Valida que el usuario no sea rol administrador.
+     * 
      * @return Collection
      */
     public function all(): Collection
@@ -38,8 +40,10 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
     }
 
     /**
+     * Retorna caja que este abierta de un usuario
+     * 
      * @param $user_id = Authenticated user
-     * @return
+     * @return model
      */
     public function getOpenByUserId($user_id): ?Model
     {

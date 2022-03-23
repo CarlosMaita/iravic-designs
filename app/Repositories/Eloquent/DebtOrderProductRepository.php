@@ -9,9 +9,9 @@ class DebtOrderProductRepository extends BaseRepository implements DebtOrderProd
 {
 
     /**
-     * BrandRepository constructor.
+     * DebtOrderProductRepository constructor.
      *
-     * @param Brand $model
+     * @param DebtOrderProduct $model
      */
     public function __construct(DebtOrderProduct $model)
     {

@@ -13,13 +13,19 @@ class OrderProductRepository extends BaseRepository implements OrderProductRepos
     /**
      * OrderProductRepository constructor.
      *
-     * @param Brand $model
+     * @param OrderProduct $model
      */
     public function __construct(OrderProduct $model)
     {
         parent::__construct($model);
     }
 
+    /**
+     * Retorna listado de productos que estan disponibles para ser devueltos por un cliente
+     * Solo son considerados productos que hayan sido comprado por el cliente, y que la cantidad que haya devuelto del mismo producto sea menor a la comprada
+     * 
+     * @return collection
+     */
     public function availableForRefund($customer_id): Collection
     {
         $products = new Collection;

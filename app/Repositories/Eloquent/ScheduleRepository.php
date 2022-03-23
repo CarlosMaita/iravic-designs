@@ -22,6 +22,8 @@ class ScheduleRepository extends BaseRepository implements ScheduleRepositoryInt
     }
 
     /**
+     * Retorna listado de agendas
+     * 
      * @return Collection
      */
     public function all(): Collection
@@ -38,7 +40,7 @@ class ScheduleRepository extends BaseRepository implements ScheduleRepositoryInt
     }
 
     /**
-     * 
+     * Crea o "actualiza", una agenda para una fecha si esta no existe.
      */
     public function firstOrCreate($attributes = null): Model
     {

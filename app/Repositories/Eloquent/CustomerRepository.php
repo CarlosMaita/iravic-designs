@@ -10,9 +10,9 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
 {
 
     /**
-     * BrandRepository constructor.
+     * CustomerRepository constructor.
      *
-     * @param Brand $model
+     * @param Customer $model
      */
     public function __construct(Customer $model)
     {
@@ -20,6 +20,8 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     }
 
     /**
+     * Retorna listado de clientes
+     * 
      * @return Collection
      */
     public function all(): Collection
@@ -28,6 +30,9 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     }
 
     /**
+     * Retorna listado de clientes que tienen deudas y necesitan ser avisados/visitados.
+     * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado
+     * 
      * @return Collection
      */
     public function debtorsToNotify(): Collection

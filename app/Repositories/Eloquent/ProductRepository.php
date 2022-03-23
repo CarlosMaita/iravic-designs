@@ -30,6 +30,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
     /**
+     * Retorna listado de productos principales. 
+     * Producto principal = Producto que no tenga combinacion o producto general de un grupo de combinaciones
+     * Se puede filtrar por marca, categoria, genero, color, talla, rango de precio
+     * 
      * @return Collection
      */
     public function onlyPrincipals($criteria = null): Collection
@@ -68,6 +72,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
     /**
+     * Crea un producto con sus combinaciones si tiene. Se valida si tiene imagen para mandar a guardar
+     * 
     * @param $request
     * @return void
     */
@@ -117,6 +123,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
     /**
+     * Actualiza un producto y sus combinaciones si tiene o tenia. Se valida si tiene imagen para mandar a guardar
+     * 
     * @param $request
     * @return void
     */
@@ -194,6 +202,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
     /**
+     * Elimina grupo de productos por sus ids
+     * 
     * @param $ids
     * @return void
     */
@@ -203,8 +213,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
     /**
-    * @param $product
-    * @param $files
+     * Almacena imagenes de un producto llamando al servicio de Imagenes
+     * 
+    * @param product
+    * @param files
     * @return void
     */
     public function saveImages($product, $files): void

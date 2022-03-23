@@ -10,9 +10,9 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
 {
 
     /**
-     * BrandRepository constructor.
+     * DebtRepository constructor.
      *
-     * @param Brand $model
+     * @param Debt $model
      */
     public function __construct(Debt $model)
     {
@@ -20,6 +20,8 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
     }
 
     /**
+     * Retorna listado de deudas. Puede filtrar por cliente o por caja de un cliente
+     * 
      * @return Collection
      */
     public function all($params = null): Collection

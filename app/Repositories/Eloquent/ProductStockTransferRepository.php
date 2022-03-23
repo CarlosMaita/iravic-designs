@@ -12,7 +12,7 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
     /**
      * ProductStockTransferRepository constructor.
      *
-     * @param Product $model
+     * @param ProductStockTransfer $model
      */
     public function __construct(ProductStockTransfer $model)
     {
@@ -20,6 +20,8 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
     }
 
     /**
+     * Retorna listado de solicitudes de transferencias de stocks filtrando por tipo de Stock del usuario logueado
+     * 
      * @return Collection
      */
     public function all($criteria = null): Collection

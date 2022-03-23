@@ -12,7 +12,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     /**
      * UserRepository constructor.
      *
-     * @param Cliente $model
+     * @param User $model
      */
     public function __construct(User $model)
     {
@@ -28,6 +28,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     /**
+     * Retorna listado de todos los empleados
+     * 
      * @return Collection
      */
     public function allEmployees(): Collection
@@ -43,9 +45,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     /**
-    * @param array $attributes
-    * @return Model
-    */
+     * Crea o actualiza (y elimina el deleted_at) un usuario
+     * Retorna el usuario creado/actualizado.
+     * 
+     * @param array $attributes
+     * @return Model
+     */
     public function updateOrCreateByEmail(array $attributes): Object
     {
         return $this->model->withTrashed()->updateOrCreate(

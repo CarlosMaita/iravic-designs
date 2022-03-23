@@ -10,7 +10,7 @@ class RefundProductRepository extends BaseRepository implements RefundProductRep
 {
 
     /**
-     * RoleRepository constructor.
+     * RefundProductRepository constructor.
      *
      * @param RefundProduct $model
      */

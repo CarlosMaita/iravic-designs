@@ -20,6 +20,8 @@ class BrandRepository extends BaseRepository implements BrandRepositoryInterface
     }
 
     /**
+     * Retorna listado de marcas de productos
+     * 
      * @return Collection
      */
     public function all(): Collection

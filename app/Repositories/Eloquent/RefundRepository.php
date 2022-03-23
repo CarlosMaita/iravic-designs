@@ -10,9 +10,9 @@ class RefundRepository extends BaseRepository implements RefundRepositoryInterfa
 {
 
     /**
-     * RoleRepository constructor.
+     * RefundRepository constructor.
      *
-     * @param Cliente $model
+     * @param Refund $model
      */
     public function __construct(Refund $model)
     {
@@ -20,6 +20,8 @@ class RefundRepository extends BaseRepository implements RefundRepositoryInterfa
     }
 
     /**
+     * Retorna listado de devoluciones
+     * 
      * @return Collection
      */
     public function all(): Collection

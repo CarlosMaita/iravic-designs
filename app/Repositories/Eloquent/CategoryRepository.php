@@ -10,7 +10,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
 {
 
     /**
-     * BrandRepository constructor.
+     * CategoryRepository constructor.
      *
      * @param Category $model
      */
@@ -20,6 +20,8 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     }
 
     /**
+     * Retorna listado de Categorías de productos
+     * 
      * @return Collection
      */
     public function all(): Collection

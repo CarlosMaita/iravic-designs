@@ -12,7 +12,7 @@ class ZoneRepository extends BaseRepository implements ZoneRepositoryInterface
     /**
      * UserRepository constructor.
      *
-     * @param Cliente $model
+     * @param Zone $model
      */
     public function __construct(Zone $model)
     {
@@ -20,6 +20,8 @@ class ZoneRepository extends BaseRepository implements ZoneRepositoryInterface
     }
 
     /**
+     * Retorna listado de zonas ordenadas por posicion
+     * 
      * @return Collection
      */
     public function all(): Collection

@@ -12,7 +12,7 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
     /**
      * PermissionRepository constructor.
      *
-     * @param Cliente $model
+     * @param Permission $model
      */
     public function __construct(Permission $model)
     {
@@ -20,6 +20,8 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
     }
 
     /**
+     * Retorna listado de todos los permisos
+     * 
      * @return Collection
      */
     public function all(): Collection
