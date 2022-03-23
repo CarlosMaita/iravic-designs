@@ -99,6 +99,10 @@
         async mounted() {
         },
         methods: {
+            /**
+             * Agrega producto al listado de productos para devolucion
+             * Se valida que las cantidades ingresadas no sean superiores a las disponibles para devolver
+             */
             addProductToRefund() {
                 var error = false,
                     products_to_refund = []
@@ -136,16 +140,26 @@
                     }).show();
                 }
             },
+            /**
+             * Cierra el modal
+             */
             closeModal() {
                 this.product = null;
                 $(this.$refs.modalProductToRefund).modal('hide');
             },
+            /**
+             * Abre el modal
+             */
             showModal(product) {
                 this.product = product;
                 $(this.$refs.modalProductToRefund).modal('show');
             }
         },
         watch: { 
+            /**
+             * Evento de cambio de valor de la cantidad.
+             * Si la cantidad ingresa es superior a la cantidad maxima disponible para devolver, le setea el valor a dicha cantidad maxima
+             */
             qty: function(value) {
                 var newQty = 0,
                     id = null,

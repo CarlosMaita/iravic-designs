@@ -59,18 +59,34 @@
         async mounted() {
         },
         methods: {
+            /**
+             * Aplica descuento al componente padre emitiendo evento 'addDiscount;
+             * EL descuento se vera reflejado en el componente padre
+             */
             addDiscount() {
                 this.$emit('addDiscount', Number(this.discount));
                 this.closeModal();
             },
+
+            /**
+             * Cierra modal
+             */
             closeModal() {
                 $(this.$refs.modalDiscount).modal('hide');
             },
+
+            /**
+             * Abre modal
+             */
             showModal(total, discount) {
                 this.discount = discount;
                 this.total = total;
                 $(this.$refs.modalDiscount).modal('show');
             },
+
+            /**
+             * Peticion HTTP para confirmar que contrasena ingresada para aplicar descuentos es correcta con la que se encuentra en configuracion
+             */
             validate() {
                 var self = this;
 
@@ -114,6 +130,10 @@
             }
         },
         watch: {
+            /**
+             * Evento de cambio de descuento.
+             * Si el campo ingresado no es numerico, lo setea en 0
+             */
             discount: function (newVal) {
                 if (isNaN(newVal)) {
                     this.discount = 0;

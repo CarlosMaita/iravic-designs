@@ -164,13 +164,17 @@
         async mounted() {
         },
         methods: {
+            /**
+             * Agrega producto al listado de productos para a llevarse
+             * Se valida que las cantidades ingresadas no sean superiores a las disponibles para comprar
+             */
             addProductToOrder() {
                 var data = {};
 
                 if (this.qty && !isNaN(this.qty) && this.qty > 0) {
                     if (this.qty > this.product.stock_user) {
                         new Noty({
-                            text: "La cantidad ingresada sobrepasa el stock disponible del producto.",
+                            text: "La cantidad ingresada supera el stock disponible del producto.",
                             type: 'error'
                         }).show();
                     } else {
@@ -189,22 +193,42 @@
                         }).show();
                 }
             },
+
+            /**
+             * Cierra el collapse de los stocks
+             */
             closeCollapseStocks() {
                 this.collapseShow = false;
             },
+
+            /**
+             * Cierra el modal
+             */
             closeModal() {
                 this.product = null;
                 $(this.$refs.modalProductStock).modal('hide');
             },
+
+            /**
+             * Abre el collapse de los stocks
+             */
             openCollapseStocks() {
                 this.collapseShow = true;
             },
+
+            /**
+             * Abre el modal
+             */
             showModal(product) {
                 this.product = product;
                 $(this.$refs.modalProductStock).modal('show');
             }
         },
         watch: { 
+            /**
+             * Evento de cambio de valor de la cantidad.
+             * Si la cantidad ingresa es superior a la cantidad maxima disponible de stock asociado al usuario, le setea el valor a dicha cantidad maxima
+             */
             qty: function(value) {
                 var newQty = Number(value),
                     max_available = Number(this.product.stock_user);

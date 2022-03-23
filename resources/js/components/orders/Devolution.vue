@@ -600,6 +600,11 @@
             mounted: false,
         }),
 	    computed: {
+            /**
+             * Retorna el nombre del cliente al que se le aplicara la visita
+             * Si selecciona un cliente para la nueva deuda, este sera el nombre a mostrar
+             * Sino, sera el del cliente de la devolucion
+             */
             customerNameVisit() {
                 if (this.customerNewCreditSelected) {
                     return this.customerNewCreditSelected.name;
@@ -609,6 +614,12 @@
 
                 return '';
             },
+
+            /**
+             * Verifica si hace falta pautar una nueva visita
+             * Debe tener productos a comprar y que el pago sea a credito
+             * Ademas, el cliente debe quedar con balance deudor
+             */
             needsNewVisit: function() {
                 if (!this.productsSelectedToBuy.length || !this.paymentMethodSelected) return false;
 
@@ -630,14 +641,26 @@
 
                 return result < 0 ? true : false;
             },
+
+            /**
+             * Calcula el subtotal de compra nueva, sin contar el descuento
+             */
             subtotalCompra: function () {
                 return this.productsSelectedToBuy.reduce(function(prev, cur) {
                     return prev + (cur.qty * cur.product.regular_price);
                 }, 0.00);
             },
+
+            /**
+             * Calcula el total de compra nueva, menos el descuento
+             */
             totalCompra: function() {
                 return this.subtotalCompra - this.discount;
             },
+
+            /**
+             * Calcula el total a devolver de productos comprados a credito
+             */
             totalDevolucionCredito: function () {
                 return this.productsSelectedForRefund.filter((item) => {
                     return item.orderProduct.order.payed_credit == 1
@@ -646,6 +669,10 @@
                     return prev + (cur.qty * cur.orderProduct.product_price);
                 }, 0.00);
             },
+
+            /**
+             * Calcula el total a devolver de productos comprados a debito
+             */
             totalDevolucionDebito: function () {
                 return this.productsSelectedForRefund.filter((item) => {
                     return item.orderProduct.order.payed_credit != 1
@@ -654,9 +681,18 @@
                     return prev + (cur.qty * cur.orderProduct.product_price);
                 }, 0.00);
             },
+
+            /**
+             * Calcula el total a devolver
+             */
             totalDevolucion: function () {
                 return this.totalDevolucionCredito + this.totalDevolucionDebito;
             },
+
+            /**
+             * Calcular el total de la compra
+             * Toma el cuenta el total devuelto de productos comprados a credito y a debito si la deuda es compartida
+             */
             totalCancelar: function () {
                 if (
                     this.paymentMethodSelected == 'credit' 
@@ -674,10 +710,15 @@
                 this.customerSelected = this.customerParam;
             }
 
-            this.productsAvailableForRefund = this.productsForRefund;
+            this.productsAvailableForRefund = this.productsForRefund; // Setea productos disponibles para devolucion
             this.mounted = true;
         },
         methods: {
+            /**
+             * Valida si puede mostrar el total a cancelar.
+             * El metodo de pago debe ser a credito
+             * Y el total debe ser superior al monto de la devolucion
+             */
             canShowTotalCancelar(withCustomer = false) {
                 if (withCustomer) {
                     return this.paymentMethodSelected == 'credit' 
@@ -688,12 +729,24 @@
                         && this.totalCompra > this.totalDevolucionCredito;
                 }
             },
+
+            /**
+             * Setea el cliente seleccionado, porque el Select vue envia el objeto
+             */
             setCustomerIdSelected(value) {
                 this.customer_id = value.id;
             },
+
+            /**
+             * Setea el cliente seleccionado para nueva deuda, porque el Select vue envia el objeto
+             */
             setCustomerIdNewDebtSelected(value) {
                 this.customer_id_new_credit = value.id;
             },
+
+            /**
+             * Proceso el envio del formulario a la api
+             */
             submitForm() {
                 var form = $('#form-refunds')[0];
                 var formData = new FormData(form);
@@ -754,6 +807,10 @@
                     }
                 });
             },
+
+            /**
+             * Valida si puede avanzar al siguiente paso del formulario
+             */
             canGoNextStep() {
                 if (
                     this.currentStep == 1 
@@ -804,6 +861,13 @@
 
                 return true;
             },
+
+            /**
+             * Avanza un paso en el formulario
+             * - Valida que se cumplan los datos requeridos para avanzar
+             * - Si no selecciona un producto a comprar, se salta el paso 4 y avanza de una vez hasta el resumen
+             * - Si pasa del paso 4 al 5, llama a la funcion para setear el datepicker solamente si no ha sido renderizado
+             */
             goNext() {
                 if (this.canGoNextStep()) {
                     if (this.currentStep == 3 && !this.productsSelectedToBuy.length) {
@@ -828,6 +892,10 @@
                     }
                 }
             },
+
+            /**
+             * Retrocede un paso del formulario
+             */
             goPrevious() {
                 if (this.currentStep == 5 && !this.productsSelectedToBuy.length) {
                     this.currentStep -= 2;
@@ -835,9 +903,20 @@
                     this.currentStep -= 1;
                 }
             },
+
+            /**
+             * Evento callback que recibe el descuento del modal para descuentos
+             */
             handleAddDiscount(discount) {
                 this.discount = discount;
             },
+
+            /**
+             * Procesa evento para agregar producto a comprar
+             * Si intenta agregar un producto que ya estaba seleccionado, solamente actualiza el producto
+             * Si no estaba seleccionado, lo agrega
+             * 
+             */
             handleAddProductToBuy(product) {
                 const i = this.productsSelectedToBuy.findIndex(_item => _item.id === product.id);
 
@@ -847,6 +926,13 @@
                     this.productsSelectedToBuy.push(product);
                 }
             },
+
+            /**
+             * Procesa evento para agregar producto a devolver
+             * Si intenta agregar un producto que ya estaba seleccionado, solamente actualiza el producto
+             * Si no estaba seleccionado, lo agrega
+             * 
+             */
             handleAddProductToRefund(products_to_refund) {
                 products_to_refund.forEach((orderProduct) => {
                     const i = this.productsSelectedForRefund.findIndex(_item => _item.id === orderProduct.id);
@@ -858,14 +944,26 @@
                     }
                 });
             },
+
+            /**
+             * Abre modal para aplicar descuento a la venta
+             */
             openModalDiscount() {
                 this.$refs.modalDiscount.showModal(this.subtotalCompra, this.discount);
             },
+
+            /**
+             * Abre modal para ingresar cantidad de devolucion de un producto
+             */
             openModalProductToRefund() {
                 if (this.productForRefundSelected) {
                     this.$refs.modalProductToRefund.showModal(this.productForRefundSelected);
                 }
             },
+
+            /**
+             * Abre modal para ingresar cantidad a comprar de un producto
+             */
             openModalProductToBuy() {
                 if (this.productsSelectedToBuy) {
                     var self = this;
@@ -918,18 +1016,38 @@
                     });
                 }
             },
+
+            /**
+             * Elimina un producto seleccionado para devolucion
+             */
             removeProductToRefund(index) {
                 this.productsSelectedForRefund.splice(index, 1);
             },
+
+            /**
+             * Elimina un producto seleccionado compra
+             */
             removeProductToBuy(index) {
                 this.productsSelectedToBuy.splice(index, 1);
             },
+
+            /**
+             * Evento ejecutado en el select vue para actualizar y setear la cantidad de un producto para comprar
+             */
             updateProductForBuyQty(index, qty) {
                 this.productsSelectedToBuy[index].qty = qty;
             },
+
+            /**
+             * Evento ejecutado en el select vue para actualizar y setear la cantidad de un producto para devolucion
+             */
             updateProductForRefundQty(index, qty) {
                 this.productsSelectedForRefund[index].qty = qty;
             },
+
+            /**
+             * Peticion HTTP para obtener el listado de productos disponibles que tiene el cliente para devolucion
+             */
             httpGetProductsForRefund() {
                 var url = `${this.urlRefundProducts}?cliente=${this.customerSelected.id}`;
                 var self = this;
@@ -947,25 +1065,26 @@
                     }).show();
                 });
             },
+
+            /**
+             * Retorna label de producto para ser impreso en el select vue
+             * El select vue pasa como parametro el producto completo como objeto
+             */
             getProductsToBuyOptionLabel(option) {
                 var label = '';
 
                 if (option.is_regular) {
                     label += `${option.name} (Cod: ${option.code})`;
-
-                    // if (option.stock_user < 1) {
-                    //     label += ` (SIN STOCK)`;
-                    // }
                 } else {
                     label += `${option.name} (${ option.size ? option.size.name + '-' : '' } ${ option.color ? option.color.name + '-' : '' } Cod: ${option.real_code})`;
-
-                    // if (option.stock_user < 1) {
-                    //     label += ` (SIN STOCK)`;
-                    // }
                 }
 
                 return label;
             },
+
+            /**
+             * Setea el datapicker usado para pautar la proxima visita
+             */
             setDatePicker() {
                 this.renderedDatepicker = true;
 
@@ -997,6 +1116,10 @@
             }
         },
         watch: {
+            /**
+             * Evento de cambio de cliente seleccionado
+             * Llama a metodo HTTP para obtener productos disponibles que tiene el cliente para devolucion
+             */
             customerSelected: function(value) {
                 if (this.customerSelected) {
                     this.httpGetProductsForRefund();

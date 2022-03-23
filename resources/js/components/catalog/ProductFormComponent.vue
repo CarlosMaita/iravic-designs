@@ -308,6 +308,9 @@
         async mounted() {
             this.mounted = true;
             
+            /**
+             * Si el producto existe, se asignan sus datos a los models, y se crean items para sus combinaciones y tallas.
+             */
             if (this.product.id) {
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
@@ -318,13 +321,6 @@
                 this.gender = this.product.gender;
 
                 if (this.product.product_combinations) {
-                    
-                    // this.combinations.forEach(function(item, index) {
-                    //     item.color_prop = item.color;
-                        // item.size_prop = item.sizes.map(item => item.size);
-                    //     item.size_values = item.sizes.map(item => item.size_id).toString();
-                    // });
-                    
                     for (var i=0; i<this.product.product_combinations.length; i++) {
                         const combination = this.product.product_combinations[i];
                         var index = this.getIndex(combination.color_id);
@@ -363,61 +359,57 @@
 
                             this.combinations[index].sizes.push(new_size);
                         }
-
-                        /*
-                            let new_combination = {
-                                code: combination.code,
-                                color_id: combination.color_id,
-                                color_prop: combination.color,
-                                id: combination.id,
-                                product_id: combination.product_id,
-                                size_id: combination.size_id,
-                                size_prop: combination.size,
-                                // size_prop: combination.sizes.map(item => item.size),
-                                // size_values: combination.sizes.map(item => item.size_id).toString(),
-                                price: combination.price,
-                                stock_depot: combination.stock_depot,
-                                stock_local: combination.stock_local,
-                                stock_truck: combination.stock_truck
-                            };
-
-                            this.combinations.push(new_combination);
-                        */
                     }
                 }
             }
         },
         methods: {
+            /**
+             * Retorna indice de un color dentro del listado de combinaciones del producto
+             */
             getIndex(color_id) {
-                // var index = this.combinations.map(function(e) { return e.color_id; }).indexOf(color_id);
                 var index = this.combinations.map(e => e.color_id).indexOf(color_id);
                 return index;
             },
 
+            /**
+             * Setea la marca seleccionada. Porque el select vue retorna el objeto
+             */
             setBrandSelected(value) {
                 this.product.brand_id = value ? value.id : null;
             },
+
+            /**
+             * Setea la categoria seleccionada. Porque el select vue retorna el objeto
+             */
             setCategorySelected(value) {
                 this.product.category_id = value ? value.id : null;
             },
+
+            /**
+             * Setea el genero seleccionado. Porrque el select vue retorna el objeto
+             */
             setGenderSelected(value) {
                 this.product.gender = value;
             },
+
+            /**
+             * Setea el color de una combinacion. Porque el select vue retorna el objeto
+             */
             setCombinationColorSelected(value, index) {
                 this.combinations[index].color_id = value ? value.id : null;
             },
-            // setCombinationSizeSelected(value, index) {
+
+            /**
+             * Setea la talla de una combinacion. Porque el select vue retorna el objeto
+             */
             setCombinationSizeSelected(value, index, index_size) {
                 this.combinations[index].sizes[index_size].size_id = value ? value.id : null;
             },
-            // setCombinationSizeSelected(value, index) {
-            //     // this.combinations[index].size_prop = value;
-            //     // this.combinations[index].size_values = value.map(item => item.id).toString();
-            // },
-            // setCombinationSizeSelected(combination, value) {
-            //     combination.size_prop = value;
-            //     combination.size_values = value.map(item => item.id).toString();
-            // },
+
+            /**
+             * Agrega al listado de combinaciones, un objeto combinacion sin datos
+             */
             addCombination() {
                 let new_combination = {
                     code: null,
@@ -441,6 +433,10 @@
 
                 this.combinations.push(new_combination);
             },
+            
+            /**
+             * Agrega al listado de tallas de una combinacion, un objeto talla sin datos
+             */
             addSize(combination) {
                 var combination_size = {
                             color_prop: null,
@@ -457,6 +453,14 @@
 
                 combination.sizes.push(combination_size);
             },
+
+            /**
+             * Retorna nombre que se le asigna a un input de la combinancion
+             * Para que todos los inputs de una misma combinacion tengan sentido, se les pone el mismo prefio
+             * Nombre del input + existing (Si existe en la bd) + 
+             *  - id de la combinacion si existe
+             *  - indice de la talla si no existe y es una nueva talla
+             */
             getCombinationInputName(input, product_combination, index, index_size) {
                 var input_name = '';
 
@@ -468,6 +472,10 @@
 
                 return input_name;
             },
+
+            /**
+             * Peticion HTTP a la api para eliminar una talla de una combinacion
+             */
             async httpDeleteCombinationSize(index, index_combination, product_combination_id) {
                 try {
                     $('body').append('<div class="loading">Loading&#8230;</div>');
@@ -498,6 +506,10 @@
                         }).show();
                 }
             },
+
+            /**
+             * Peticion HTTP a la api para eliminar una combinacion
+             */
             async httpDeleteCombination(index, combination) {
                 try {
                     $('body').append('<div class="loading">Loading&#8230;</div>');
@@ -529,6 +541,10 @@
                         }).show();
                 }
             },
+
+            /**
+             * Retorna booleano indicando si una combinacion tiene un producto existente en la BD
+             */
             hasCombinationExistingProduct(combination) {
                 if (combination.sizes.filter(e => e.product_id > 0).length > 0) {
                     return true;
@@ -536,6 +552,10 @@
 
                 return false;
             },
+
+            /**
+             * Retorna listado de ids de combinaciones de un producto
+             */
             getProductIdsToDeleteCombination(combination) {
                 var ids = combination.sizes
                         .filter(function(obj) {
@@ -547,6 +567,12 @@
 
                 return ids.join();
             },
+
+            /**
+             * Elimina una combinacion del producto.
+             * Si la combinacion ya existia en BD, llama a httpDeleteCombination para realizar peticion a la api y eliminarla
+             * Si no existe en la BD, simplemente se elimina del listado de combinaciones
+             */
             removeCombination(index, combination) {
                 if (index < 0) return;
                 
@@ -567,6 +593,12 @@
                     self.combinations.splice(index, 1);
                 }
             },
+
+            /**
+             * Elimina una talla de una combinacion.
+             * Si la talla ya existia en BD, llama a httpDeleteCombinationSize para realizar peticion a la api y eliminarla
+             * Si no existe en la BD, simplemente se elimina del listado de tallas de la combinacion
+             */
             removeSize(index, index_combination, product_combination_id = null) {
                 if (index < 0) return;
                 

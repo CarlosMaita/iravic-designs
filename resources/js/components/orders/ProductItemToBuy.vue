@@ -68,11 +68,18 @@
             this.quantity = this.item.qty;
         },
         methods: {
+            /**
+             * Evento para eliminar producto. Emite evento 'removeProduct' recibido de su componente padre
+             */
             removeProduct() {
                 this.$emit('removeProduct', this.index);
             }
         },
         watch: {
+            /**
+             * Evento de cambio de valor de la cantidad.
+             * Si la cantidad ingresa es superior a la cantidad maxima disponible para comprar, le setea el valor a dicha cantidad maxima
+             */
             quantity: function(newVal, oldVal) {
                 var newQty = Number(newVal),
                     max_available = Number(this.item.product.stock_user);
