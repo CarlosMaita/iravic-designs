@@ -129,6 +129,9 @@ class Product extends Model
     }
 
     # Appends
+    /**
+     * Retorna label para el producto con el color y talla
+     */
     public function getNameFullAttribute()
     {
         $name = $this->name;
@@ -144,6 +147,9 @@ class Product extends Model
         return $name;
     }
 
+    /**
+     * Retorna el codigo del producto. Si es combinancion, devolvera su codigo si lo tiene, sino, devuelve el del producto base
+     */
     public function getRealCodeAttribute()
     {
         if ($this->code) {
@@ -157,16 +163,25 @@ class Product extends Model
         return null;
     }
 
+    /**
+     * Retorna en formato numerico, el precio del producto. Si es combinancion, devolvera su precio si lo tiene, sino, devuelve el del producto base
+     */
     public function getRegularPriceAttribute()
     {
         return $this->getRegularPrice();
     }
     
+    /**
+     * Retorna en formato moneda, el precio del producto. Si es combinancion, devolvera su precio si lo tiene, sino, devuelve el del producto base
+     */
     public function getRegularPriceStrAttribute()
     {
         return '$ ' . number_format($this->regular_price, 2, '.', ',');
     }
 
+    /**
+     * Retorna el tipo de stock a sociado al usuario
+     */
     public function getStockUserAttribute()
     {
         if ($stock_column = Auth::user()->getColumnStock()) {
@@ -176,6 +191,9 @@ class Product extends Model
         return 0;
     }
 
+    /**
+     * Retorna el total de stock, sumando todos los tipos de stocks
+     */
     public function getStockTotalAttribute()
     {
         return ($this->stock_depot + $this->stock_local + $this->stock_truck);
@@ -229,6 +247,15 @@ class Product extends Model
     }
 
     # Methods
+
+    /**
+     * Almacena en BD, un registro de historial de cambio de stock de un producto
+     * 
+     * Se utiliza cuando un producto es:
+     *  - Comprado
+     *  - Devuelto
+     *  - Transferido su stock de un tipo a otro
+     */
     public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null, $product_stock_transfer_id = null, $refund_product_id = null)
     {
         $attributes = array(
@@ -246,11 +273,18 @@ class Product extends Model
         $this->stocks_history()->create($attributes);
     }
 
+    /**
+     * Retorna el precio del producto. Si es combinancion, devolvera su precio si lo tiene, sino, devuelve el del producto base
+     */
     public function getRegularPrice()
     {
         return $this->price ? $this->price : $this->product_parent->price;
     }
 
+    /**
+     * Agrega/Devuelve cantidad devuelta, al stock asociado al usuario logueado.
+     * Se usa cuando un producto es devuelto
+     */
     public function addStockUser($refund_product_id, $qty, $action)
     {
         $user = Auth::user();
@@ -272,6 +306,10 @@ class Product extends Model
         }
     }
 
+    /**
+     * Disminuye cantidad comprada, al stock asociado al usuario logueado.
+     * Se usa cuando un producto es comprado
+     */
     public function subtractStockUser($order_product_id, $qty, $action)
     {
         $user = Auth::user();

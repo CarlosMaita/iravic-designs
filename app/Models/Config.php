@@ -15,6 +15,9 @@ class Config extends Model
     ];
 
     # Methods
+    /**
+     * Almacena una config en la BD. Se guarda por Key
+     */
     public static function getConfig($key)
     {
         $config = Config::where('key', $key)->first();
@@ -29,6 +32,9 @@ class Config extends Model
         return $config;
     }
 
+    /**
+     * Se almacena contrasena predeterminada para descuentos
+     */
     public static function defaultConfig($key)
     {
         $keys = [

@@ -55,6 +55,9 @@ class Operation extends Model
     }
     
     # Appends
+    /**
+     * Retorna el total de la operacion, validando si fue devolucion, deuda, pago o venta
+     */
     public function getAmountAttribute()
     {
         if ($this->debt_id) {
@@ -70,6 +73,7 @@ class Operation extends Model
         return null;
     }
 
+    # Retorna en formato moneda el balance con el que quedo el cliente
     public function getBalanceAttribute($value)
     {
         if ($value) {
@@ -79,6 +83,10 @@ class Operation extends Model
         return null;
     }
 
+    /**
+     * Retorna comentario de la operacion, validando si fue devolucion, deuda, pago o venta
+     * Si es venta o devolucion, se listan los productos
+     */
     public function getCommentAttribute()
     {
         if ($this->debt_id) {
@@ -118,6 +126,9 @@ class Operation extends Model
         return null;
     }
 
+    /**
+     * Retorna la fecha en formato d-m-Y
+     */
     public function getDateAttribute()
     {
         if ($this->created_at) {
@@ -127,6 +138,9 @@ class Operation extends Model
         return null;
     }
 
+    /**
+     * Retorna tipo de operacion
+     */
     public function getTypeAttribute()
     {
         if ($this->debt_id) {
@@ -143,7 +157,7 @@ class Operation extends Model
     }
 
     /**
-     * 
+     * Retorna la url de recurso asociado a la operacion. Solo considera ventas o devoluciones.
      */
     public function getResourceRoute()
     {
@@ -157,7 +171,7 @@ class Operation extends Model
     }
 
     /**
-     * 
+     * Retorna modelo del recurso asociado, para ser usado en el listado de operaciones, validando sus permisos por policy
      */
     public function getResourceForPolicy()
     {

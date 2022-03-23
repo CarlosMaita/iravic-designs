@@ -58,6 +58,8 @@ class Payment extends Model
     protected static function boot()
     {
         parent::boot();
+
+        # Cada vez que se crea una pago, se crea un registro de Operacion con el saldo resultante del cliente
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
@@ -78,11 +80,13 @@ class Payment extends Model
     }
 
     # Appends
+    # Retorna en formato moneda el monto del pago
     public function getAmountStrAttribute()
     {
         return '$ ' . number_format($this->amount, 2, '.', ',');
     }
 
+    # Retorna nombre en espanol del metodo de pago
     public function getPaymentMethodAttribute()
     {
         if ($this->payed_bankwire) {
@@ -100,6 +104,7 @@ class Payment extends Model
         return '';
     }
 
+    # Retorna display name de metodo de pago
     public function getPaymentSelectedAttribute()
     {
         if ($this->payed_bankwire) {

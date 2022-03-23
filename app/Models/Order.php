@@ -69,6 +69,8 @@ class Order extends Model
     protected static function boot()
     {
         parent::boot();
+
+        # Cada vez que se crea una venta, se crea un registro de Operacion con el saldo resultante del cliente
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
@@ -79,6 +81,7 @@ class Order extends Model
     }
 
     # Accessors
+    # Modifica la fecha en formato d-m-Y h:i:s
     public function getDateAttribute($value)
     {
         if ($value) {
@@ -88,22 +91,26 @@ class Order extends Model
         return null;
     }
 
+    # Retorna en formato moneda el descuento aplicado en la venta
     public function getDiscountAttribute($value)
     {
         return $this->getAmountFormated($value);
     }
 
+    # Retorna en formato moneda el subtotal de la venta
     public function getSubtotalAttribute($value)
     {
         return $this->getAmountFormated($value);
     }
 
+    # Retorna en formato moneda el total de la venta
     public function getTotalAttribute($value)
     {
         return $this->getAmountFormated($value);
     }
 
     # Appends
+    # Retorna nombre en espanol del metodo de pago
     public function getPaymentMethodAttribute()
     {
         if ($this->payed_bankwire) {
@@ -126,6 +133,8 @@ class Order extends Model
     }
 
     # Methods
+
+    # Retorna monto de la venta en formato moneda
     public function getAmountFormated($value)
     {
         if ($value) {

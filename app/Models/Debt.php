@@ -53,6 +53,8 @@ class Debt extends Model
     protected static function boot()
     {
         parent::boot();
+
+        # Cada vez que se crea una deuda, se crea un registro de Operacion con el saldo resultante del cliente
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
@@ -63,6 +65,9 @@ class Debt extends Model
     }
 
     # Accessors
+    /**
+     * Modifica la fecha de la deuda
+     */
     public function getDateAttribute($value)
     {
         if ($value) {
@@ -73,6 +78,9 @@ class Debt extends Model
     }
 
     # Appends
+    /**
+     * Retorna en formato moneda el monto de la deuda
+     */
     public function getAmountStrAttribute()
     {
         return '$ ' . number_format($this->amount, 2, '.', ',');

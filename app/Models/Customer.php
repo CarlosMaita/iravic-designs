@@ -60,6 +60,8 @@ class Customer extends Model
     protected static function boot()
     {
         parent::boot();
+
+        # Cuando se elimina un cliente, se eliminan sus imagenes
         Customer::deleting(function ($model) {
             ImageService::delete($model::DISK_DNI, $model->dni_picture);
             ImageService::delete($model::DISK_RECEIPT, $model->receipt_picture);
@@ -99,17 +101,26 @@ class Customer extends Model
     }
     
     # Attributes
+    /**
+     * Retorna en formato moneda, el balance del cliente
+     */
     public function getBalanceAttribute()
     {
         $total = $this->getBalance();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato numerico, el balance del cliente
+     */
     public function getBalanceNumericAttribute()
     {
         return $this->getBalance();
     }
 
+    /**
+     * Retorna en formato moneda, el credito maximo otorgado al cliente
+     */
     public function getMaxCreditStrAttribute()
     {
         if ($this->max_credit) {
@@ -119,6 +130,9 @@ class Customer extends Model
         return '$ 0.00';
     }
 
+    /**
+     * Retorna la fecha de la proxima visita (Si tiene)
+     */
     public function getDateNextVisitAttribute()
     {
         $now = now();
@@ -131,18 +145,27 @@ class Customer extends Model
         return $date;
     }
 
+    /**
+     * Retorna en formato moneda el total comprardo
+     */
     public function getTotalBuyedAttribute()
     {
         $total = $this->getTotalBuyed();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, total comprado a credito
+     */
     public function getTotalCreditAttribute()
     {
         $total = $this->getTotalCredit();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, total comprado a debito
+     */
     public function getTotalDebtAttribute()
     {
         $total = $this->getTotalDebt();
@@ -151,18 +174,27 @@ class Customer extends Model
         return $symb . $totalFormat;
     }
 
+    /**
+     * Retorna en formato moneda, total de pagos
+     */
     public function getTotalPaymentsAttribute()
     {
         $total = $this->getTotalPayments();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, el total devoluciones a credito
+     */
     public function getTotalRefundCreditAttribute()
     {
         $total = $this->getTotalRefundCredit();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna url de imagen de direccion
+     */
     public function getUrlAddressAttribute()
     {
         if (Storage::disk(self::DISK_ADDRESS)->exists($this->address_picture)) {
@@ -172,6 +204,9 @@ class Customer extends Model
         return url("/img/no_image.jpg");
     }
 
+    /**
+     * Retorna url de imagen de DNI
+     */
     public function getUrlDniAttribute()
     {
         if (Storage::disk(self::DISK_DNI)->exists($this->dni_picture)) {
@@ -181,6 +216,9 @@ class Customer extends Model
         return url("/img/no_image.jpg");
     }
 
+    /**
+     * Retorna URL del recibo
+     */
     public function getUrlReceiptAttribute()
     {
         if (Storage::disk(self::DISK_RECEIPT)->exists($this->receipt_picture)) {
@@ -189,7 +227,10 @@ class Customer extends Model
 
         return url("/img/no_image.jpg");
     }
-    
+
+    /**
+     * Retorna Link de whatsapp con mensaje a cliente sobre visita para cobrar hoy
+     */
     public function getWhatsappNumberAttribute()
     {
         if ($this->cellphone) {
@@ -208,6 +249,9 @@ class Customer extends Model
     }
 
     # Methods
+    /**
+     * Procesa imagenes, borra si tenia una anterior (e.g DNI o Recibo)
+     */
     public function updateImage($disk, $old_image, $new_file, $delete)
     {
         $url = null;
@@ -225,6 +269,9 @@ class Customer extends Model
         return $url;
     }
 
+    /**
+     * Retorna balance del cliente
+     */
     public function getBalance()
     {
         $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
@@ -236,6 +283,9 @@ class Customer extends Model
         return ($total_payments + $total_credit_refund - $total_credit - $total_debts + $total_debit_refunded_balance);
     }
 
+    /**
+     * Retorna en formato numerico, el total devvuelto con compra pagada a debito
+     */
     public function getTotalDebitRefundedBalance()
     {
         $refunded = $this->refunds()->has('order')->sum('total_refund_debit');
@@ -247,22 +297,34 @@ class Customer extends Model
         
         return $refunded - $ordered;;
     }
-    
+
+    /**
+     * Retorna en formato numerico, total comprado
+     */
     public function getTotalBuyed()
     {
         return $this->orders()->sum('total');
     }
 
+    /**
+     * Retorna en formato numerico, total comprado a credito
+     */
     public function getTotalCredit()
     {
         return $this->orders()->where('payed_credit', 1)->sum('total');
     }
 
+    /**
+     * Retorna en formato numerico, total pagado
+     */
     public function getTotalPayments()
     {
         return $this->payments()->sum('amount');
     }
 
+    /**
+     * Retorna en formato numerico, total devuelto comprado a credito
+     */
     public function getTotalRefundCredit()
     {
         $total = 0;
@@ -278,11 +340,18 @@ class Customer extends Model
         return $total;
     }
 
+    /**
+     * Retorn en formato numerico, total de deuda
+     */
     public function getTotalDebt()
     {
         return $this->debts()->sum('amount');
     }
 
+    /**
+     * Retorna Boolean si necesita ser visitado por deuda.
+     * Se valida que los dias para avisar en caso de deuda, junto a la fecha del ultimo pago.
+     */
     public function needsToNotifyDebt()
     {
         if ($this->getBalance() < 0) {
@@ -298,6 +367,9 @@ class Customer extends Model
         return false;
     }
 
+    /**
+     * Retorna fecha del ultimo pago/deuda registrada
+     */
     public function getLastDateForDebtNotification()
     {
         if ($payment = $this->payments()->latest()->first()) {

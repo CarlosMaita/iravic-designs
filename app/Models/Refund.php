@@ -54,6 +54,8 @@ class Refund extends Model
     protected static function boot()
     {
         parent::boot();
+
+        # Cada vez que se crea una devolucion, se crea un registro de Operacion con el saldo resultante del cliente
         self::created(function ($model) {
             Operation::create([
                 'customer_id' => $model->customer_id,
@@ -64,6 +66,8 @@ class Refund extends Model
     }
 
     # Accessors
+
+    # Retorna la fecha en formato d-m-Y h:i:s
     public function getDateAttribute($value)
     {
         if ($value) {

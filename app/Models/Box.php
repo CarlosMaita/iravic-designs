@@ -63,6 +63,9 @@ class Box extends Model
     }
 
     # Accessors
+    /**
+     * Modifica la fecha en formato d-m-Y
+     */
     public function getDateAttribute($value)
     {
         if ($value) {
@@ -72,6 +75,9 @@ class Box extends Model
         return null;
     }
 
+    /**
+     * Modifica la fecha de inicio en fomato d-m-Y h:i:s
+     */
     public function getDateStartAttribute($value)
     {
         if ($value) {
@@ -81,6 +87,9 @@ class Box extends Model
         return null;
     }
 
+    /**
+     * Modifica la fecha de fin en fomato d-m-Y h:i:s
+     */
     public function getDateEndAttribute($value)
     {
         if ($value) {
@@ -91,24 +100,37 @@ class Box extends Model
     }
 
     # Appends
+    /**
+     * Retorna en formato moneda, calculo de diferencia entre vendido y pagado por metodo de pago Transferencia Bancaria
+     */
     public function getTotalBankwireAttribute()
     {
         $total = $this->getTotalByPaymentMethod('bankwire');
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, calculo de diferencia entre vendido y pagado por metodo de pago Tarjeta
+     */
     public function getTotalCardAttribute()
     {
         $total = $this->getTotalByPaymentMethod('card');
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, calculo de diferencia entre vendido y pagado por metodo de pago Efectivo
+     */
     public function getTotalCashAttribute()
     {
         $total = $this->getTotalByPaymentMethod('cash');
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, el total de efectivo luego de descontar gastos 
+     * Se toma en cuenta el efectivo inicial
+     */
     public function getTotalCashInBoxAttribute()
     {
         $total = $this->getTotalByPaymentMethod('cash');
@@ -117,30 +139,45 @@ class Box extends Model
         return '$ ' . number_format($total, 2, '.', ','); 
     }
     
+    /**
+     * Retorn en formato moneda, 
+     */
     public function getTotalCreditAttribute()
     {
         $total = $this->getTotalOrdersByPaymentMethod('credit');
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, total pagado
+     */
     public function getTotalPayedAttribute()
     {
         $total = $this->getTotalPayed();
         return '$ ' . number_format($total, 2, '.', ',');
     }
-
+    
+    /**
+     * Retorna en formato moneda, total devuelto
+     */
     public function getTotalRefundedAttribute()
     {
         $total = $this->getTotalRefunded();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, total gastado
+     */
     public function getTotalSpentAttribute()
     {
         $total = $this->getTotalSpent();
         return '$ ' . number_format($total, 2, '.', ',');
     }
 
+    /**
+     * Retorna en formato moneda, calculo de total pagado - total devuelto
+     */
     public function getTotalFinalSalesAttribute()
     {
         $total_payed = $this->getTotalPayed();
@@ -150,11 +187,17 @@ class Box extends Model
     }
 
     # Methods
+    /**
+     * Retorna en formato numerico, calculo de diferencia entre vendido y pagado sin tomar en cuenta ningun metodo de pago
+     */
     public function getTotalPayed()
     {
         return $this->getTotalByPaymentMethod();
     }
 
+    /**
+     * Retorna en formato numerico, calculo de diferencia entre vendido y pagado por metodo de pago (Opcional) o en general
+     */
     public function getTotalByPaymentMethod($payment_method = null)
     {
         $total_orders = $this->getTotalOrdersByPaymentMethod($payment_method);
@@ -162,6 +205,9 @@ class Box extends Model
         return ($total_orders + $total_payments);
     }
 
+    /**
+     * Retorna en formato numerico, total vendido, por metodo de pago (Opcional) o en general
+     */
     public function getTotalOrdersByPaymentMethod($payment_method = null)
     {
         $orders = $this->orders();
@@ -173,6 +219,9 @@ class Box extends Model
         return $orders->sum('total');
     }
 
+    /**
+     * Retorna en formato numerico, total pagado por metodo especifico
+     */
     public function getTotalPaymentsByPaymentMethod($payment_method = null)
     {
         $payments = $this->payments();
@@ -184,11 +233,17 @@ class Box extends Model
         return $payments->sum('amount');
     }
 
+    /**
+     * Retorna en formato numerico, total devuelto
+     */
     public function getTotalRefunded()
     {
         return $this->refunds()->sum('total');
     }
 
+    /**
+     * Retorna en formato numerico, total gastado
+     */
     public function getTotalSpent()
     {
         return $this->spendings()->sum('amount');

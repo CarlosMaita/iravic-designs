@@ -31,6 +31,7 @@ class OrderProduct extends Model
     {
         parent::boot();
 
+        # Cada ve que se compra un producto, se descuenta la cantidad del stock asociado al vendedor que realizo la venta
         OrderProduct::saved(function($order_product) {
             $qty = $order_product->qty;
             $order_product->product->subtractStockUser($order_product->id, $qty, 'venta');
@@ -64,23 +65,27 @@ class OrderProduct extends Model
     }
 
     # Accessors
+    # Modifica el total del producto en formato moneda
     public function getTotalAttribute($value)
     {
         return '$ ' . number_format($value, 2, '.', ',');
     }
 
     # Appends
+    # Retorna la cantidad disponible para devolucion del producto comprado
     public function getAvailableForRefundAttribute()
     {
         $qty_refunded = $this->refunds_products()->sum('qty');
         return $this->qty - $qty_refunded;
     }
 
+    # Retorna si el venta fue por credito
     public function getIsByCreditAttribute()
     {
         return $this->order->payed_credit;
     }
 
+    # Retorna en formato moneda el precio del producto comprado
     public function getProductPriceStrAttribute()
     {
         return '$ ' . number_format($this->product_price, 2, '.', ',');

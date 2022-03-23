@@ -10,7 +10,9 @@ class Brand extends Model
     use SoftDeletes;
     
     protected $table = 'brands';
+
     protected $guarded = [];
+    
     public $fillable = [
         'name'
     ];

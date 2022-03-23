@@ -75,6 +75,9 @@ class ProductStockTransfer extends Model
     }
 
     # Appends
+    /**
+     * Retorna la fecha en formato d-m-Y h:i:s
+     */
     public function getDateAttribute()
     {
         if ($this->created_at) {
@@ -84,11 +87,17 @@ class ProductStockTransfer extends Model
         return '';
     }
 
+    /**
+     * Retorna nombre del stock origen de la transferencia
+     */
     public function getStockNameOriginAttribute()
     {
         return StockService::getStockName($this->stock_origin);
     }
 
+    /**
+     * Retorna nombre del stock destino de la transferencia
+     */
     public function getStockNameDestinationAttribute()
     {
         return StockService::getStockName($this->stock_destination);

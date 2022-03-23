@@ -42,11 +42,13 @@ class Role extends Model
     }
 
     # Methods
+    # Agrega permiso a un rol
     public function allowTo($permission)
     {
         return $this->permissions()->save($permission);
     }
 
+    # Agrega permisos a un rol
     public function allowToMany($permissions)
     {
         return $this->permissions()->saveMany($permissions);

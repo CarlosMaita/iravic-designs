@@ -22,6 +22,9 @@ class Schedule extends Model
     }
 
     # Accessors
+    /**
+     * Modifica la fecha de la agenda en formato d-m-Y
+     */
     public function getDateAttribute($value)
     {
         if ($value) {
@@ -40,11 +43,17 @@ class Schedule extends Model
     }
 
     # Methods
+    /**
+     * Retorna numero (usado como boolean) para verificar si tiene visitas que aun no han sido ordenadas
+     */
     public function hasVisitsWithoutPosition()
     {
         return $this->visits()->whereNull('position')->count();
     }
 
+    /**
+     * Retorna collect de zonas que tengan clientes en la agenda
+     */
     public function getZones($sort_asc = 'asc')
     {
         $zones = collect();
@@ -63,10 +72,15 @@ class Schedule extends Model
         }
     }
 
+    /**
+     * Retorna listado de visitas por una zona especifica pasada por parametro
+     */
     public function getVisitsByCustomersZone($zone_id)
     {
         return $this->visits()->whereHas('customer', function($q) use ($zone_id) {
             $q->where('zone_id', $zone_id);
-        })->orderBy('position')->get();
+        })
+        ->orderBy('position')
+        ->get();
     }
 }

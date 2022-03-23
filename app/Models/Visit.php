@@ -27,6 +27,7 @@ class Visit extends Model
     {
         parent::boot();
 
+        # Si actualizan una visita (fecha) y esta cambia de agenda, se valida si la agenda anterior queda vacia para eliminarla
         Visit::updated(function ($model) {
             if ($model->schedule->id != $model->getOriginal('schedule_id')) {
                 $schedule = Schedule::find($model->getOriginal('schedule_id'));
@@ -37,6 +38,7 @@ class Visit extends Model
             }
         });
 
+        # Si eliminan una visita, se valida si la agenda queda vacia para eliminarla
         Visit::deleting(function ($model) {
             if (!$model->schedule->visits()->where('id', '<>', $model->id)->count()) {
                 $model->schedule->delete();
@@ -71,6 +73,8 @@ class Visit extends Model
     }
 
     # Accessors
+
+    # Modifica la fecha en formato d-m-Y
     public function getDateAttribute($value)
     {
         if ($value) {

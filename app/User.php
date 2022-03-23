@@ -71,6 +71,9 @@ class User extends Authenticatable
         return $this->roles()->sync($role);
     }
 
+    /**
+     * Retorna tipo de stock asociado al rol del usuario
+     */
     public function getColumnStock()
     {
         $roles_name = $this->roles->flatten()->pluck('name');
@@ -90,6 +93,9 @@ class User extends Authenticatable
         return null;
     }
 
+    /**
+     * Retorna boolean para verificar si el usuario tiene rol de administrador (Incluido superadmin)
+     */
     public function isAdmin()
     {
         $roles_name = $this->roles->flatten()->pluck('name');

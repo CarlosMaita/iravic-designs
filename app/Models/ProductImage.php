@@ -25,6 +25,8 @@ class ProductImage extends Model
     protected static function boot()
     {
         parent::boot();
+
+        # Se elimina la imagen del disco (Storage) cuando se elimina su registro de la BD
         ProductImage::deleting(function ($model) {
             ImageService::delete($model->filedisk, $model->url);
         });
