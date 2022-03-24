@@ -8,12 +8,19 @@
         zone_map.setMap();
         zone_map.setInitialMarker();
 
+
+        /**
+         * Evento que captura keypress (escritura) en el campo de direccion en el formulario de zonas
+         */
         $("#address").keypress(_.debounce( function(){
             if (zone_map.canGeocoding) {
                 zone_map.geocoding();
             }
         }, 700));
 
+        /**
+         * Evento que captura submit del formulario de zona y envia datos a la API
+         */
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-zones')[0];

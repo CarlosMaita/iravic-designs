@@ -2,6 +2,9 @@
     $(function(){
         const FORM_RESOURCE = $("#form-brands");
 
+        /**
+         * Captura evento submit de formulario de marcas
+         */
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-brands')[0];

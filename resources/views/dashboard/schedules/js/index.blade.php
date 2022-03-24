@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de las aagendas
+         */
         function initDataTable() {
             DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
@@ -22,7 +25,9 @@
             });
         }
 
-
+        /**
+         * Captura evento para eliminar una agenda. Realiza peticion HTTP para eliminarla de la BD
+         */
         $('body').on('click', 'tbody .delete-schedule', function (e) {
             e.preventDefault();
             var id = $(this).data('id');

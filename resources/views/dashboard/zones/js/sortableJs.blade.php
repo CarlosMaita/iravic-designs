@@ -6,7 +6,8 @@
     }
 
     /**
-     *  
+     *  Crea el componente para ordenar
+     *  Maneja eventos para detectar cambios de posicion para cada item
     */
     SortableJs.prototype.create = function(callback) {
         let options = {
@@ -37,6 +38,10 @@
         this.sortable = Sortable.create(container, options);
     }
 
+    /**
+     * El componente sortable
+     * Se elimina para volver a crear el mismo, ya que da conflicto para actualizarlo una vez creado
+     */
     SortableJs.prototype.destroyElement = function() {
         this.sortable.destroy();
     }

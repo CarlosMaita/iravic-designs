@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa datatable de transferencias
+         */
         function initDataTable() {
             datatable_resource.DataTable({
                 fixedHeader: true,
@@ -27,8 +30,9 @@
         }
 
         /**
-        * Delete transfer
-        */
+         * Captura evento para eliminar una transferencia
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-transfer', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -99,8 +103,9 @@
         });
 
         /**
-        * Accept Transfer
-        */
+         * Captura evento para aceptar transferencia
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .btn-accept-transfer', function (e) {
             e.preventDefault();
             var self = this;

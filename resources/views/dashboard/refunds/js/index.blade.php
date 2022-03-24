@@ -5,7 +5,10 @@
         let datatable_resource = $("#datatable_refunds");
 
         initDataTable();
-
+        
+        /**
+         * Inicializa datatable de devoluciones
+         */
         function initDataTable() {
             datatable_resource.DataTable({
                 fixedHeader: true,
@@ -25,8 +28,9 @@
         }
 
         /**
-        *
-        */
+         * Captura evento para eliminar una devolucion
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-refund', function (e) {
             e.preventDefault();
             let id = $(this).data('id');

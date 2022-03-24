@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa datatable de categorias de productos
+         */
         function initDataTable() {
             DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
@@ -20,7 +23,10 @@
             });
         }
 
-
+        /**
+         * Captura evento para eliminar categoria
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-category', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -89,6 +95,5 @@
                 });
             }).catch(swal.noop);
         });
-
     });
 </script>

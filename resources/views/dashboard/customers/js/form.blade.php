@@ -7,6 +7,12 @@
         customer_map.setMap();
         customer_map.setInitialMarker();
 
+        $('select').select2();
+
+        /**
+         * Captura evento cuando seleccionan una imagen
+         * Agrega preview de la imagen
+         */
         inputs_files.on('change', function(event) {
             const id = this.id
             const img_target = document.getElementById('img-' + id);
@@ -23,6 +29,10 @@
             }
         });
 
+        /**
+         * Captura evento para eliminar la imagen del gasto.
+         * Agrega input al DOM para cancelar eliminacion
+         */
         $('.delete-img').on('click', function(e) {
             e.preventDefault();
             var parent = $(this).parent('.img-wrapper'); // closest
@@ -41,6 +51,9 @@
             }
         });
 
+        /**
+         * Captura evento para cancelar eliminacion de imagen
+         */
         $('.cancel-delete-img').on('click', function(e){
             e.preventDefault();
             var parent = $(this).parent('.img-wrapper');
@@ -56,8 +69,9 @@
             input_delete.remove();
         });
 
-        $('select').select2();
-
+        /**
+         * Captura evento de cambio en switch de buscar direccion con coordenadas o direccion escrita
+         */
         $('#location-switch').on('change', function(e) {
             if ($(this).is(':checked')) {
                 $("#address").attr('readOnly', true);
@@ -70,30 +84,44 @@
             }
         });
 
+        /**
+         * Evento que captura keypress (escritura) en el campo de direccion en el formulario de cliente
+         */
         $("#address").keypress( _.debounce( function(){
             if (customer_map.canGeocoding) {
                 customer_map.geocoding();
             }
         }, 700));
 
-
+        /**
+         * Evento que captura keypress (escritura) en el campo de latitud en el formulario de cliente
+         */
         $("#latitude_search").keypress( _.debounce( function() {
             if (customer_map.canGeocodingReverse && $('#latitude_search').val() && $('#longitude_search').val()) {
                 customer_map.geocodingReverse();
             }
         }, 700));
 
+        /**
+         * Evento que captura keypress (escritura) en el campo de longitud en el formulario de cliente
+         */
         $("#longitude_search").keypress( _.debounce( function() {
             if (customer_map.canGeocodingReverse && $('#latitude_search').val() && $('#longitude_search').val()) {
                 customer_map.geocodingReverse();
             }
         }, 700));
-
+        
+        /**
+         * Captura evento de submit de formulario de clientes
+         */
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
             httpSubmitForm();
         });
 
+        /**
+         * Peticion HTTP para enviar datos del cliente
+         */
         function httpSubmitForm(confirm = false) {
             var url = FORM_RESOURCE.attr('action');
             var form = $('#form-customers')[0];

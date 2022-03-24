@@ -1,4 +1,8 @@
 <script>
+    /**
+     * No se usa
+     * Funcionalidad se paso a VUE.JS 
+     */
     $(function(){
         const FORM_RESOURCE_REFUNDS = $("#form-refunds");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
@@ -60,14 +64,17 @@
         datatable_products_resume = datatable_products_resume.DataTable();
         datatable_products_resume_refund = datatable_products_resume_refund.DataTable();
 
+        /**
+         * Captura evento para cerrar collapse con stocks de un productos
+         */
         $('body').on('click', '#btn-stocks-close', function(e) {
             var collapse = $('#stocks-collapse');
             collapse.collapse('hide');
         });
 
         /**
-        *
-        */
+         *
+         */
         FORM_RESOURCE_REFUNDS.on('submit', function (e) {
             e.preventDefault();
             if (modal_discount.hasClass('show')) return;
@@ -135,8 +142,8 @@
         });
 
         /**
-        *
-        */
+         *
+         */
         btn_add_product.on('click', function(e) {
             var selected = select_product.val();
 
@@ -179,8 +186,8 @@
         });
 
         /**
-        *
-        */
+         *
+         */
         btn_add_product_modal.on('click', function(e) {
             var input = $('#product-modal-input'),
                 product_id = input.data('id'),
@@ -194,30 +201,30 @@
         });
 
         /**
-        *
-        */
+         *
+         */
         btn_open_modal_discount.on('click', function(e) {
             modal_discount.modal('show');
         });
 
         /**
-        *
-        */
+         *
+         */
         btn_apply_discount.on('click', function(e) {
             e.preventDefault();
             httpCalculateDiscount();
         });
 
         /**
-        *
-        */
+         *
+         */
         modal_product.on('hidden.coreui.modal', function(e) {
             modal_product_product_stocks.empty();
         });
 
         /**
-        *
-        */
+         *
+         */
         select_customer.on('change', function(e) {
             var container       = $('#customer-selected-container'),
                 selected        = $('#customer').find(':selected'),
@@ -247,8 +254,8 @@
         });
 
         /**
-        *
-        */
+         *
+         */
         function getOrderTotal() {
             var subtotal = 0,
                 total = 0;
@@ -269,8 +276,8 @@
         }
 
         /**
-        * 
-        */
+         * 
+         */
         function updateOrderTotal() {
             var totals = getOrderTotal();
 
@@ -279,8 +286,8 @@
         }
 
         /**
-        * 
-        */
+         * 
+         */
         function handleShowProductForm(product) {
             setProductModalHeaderInfo(product);
             addProductModalTable(product);
@@ -292,6 +299,9 @@
             });
         }
         
+        /**
+         * 
+         */
         function addAllStocksToShow(product) {
             @if (Auth::user()->isAdmin())
                 var html = `<p class="text-right">
@@ -338,8 +348,8 @@
         }
 
         /**
-        * 
-        */
+         *  
+         */
         function setProductModalHeaderInfo(product) {
             modal_product.find('.product-name').text(product.name);
             modal_product.find('.product-code').text(product.real_code);
@@ -348,8 +358,8 @@
         }
         
         /**
-        * 
-        */
+         * 
+         */
         function addProductModalTable(product) {
             var html,
                 table_header = getHtmlTableHeaderProductStocks(product.is_regular),
@@ -368,8 +378,8 @@
         }
 
         /**
-        * 
-        */
+         * 
+         */
         function getHtmlTableHeaderProductStocks(is_regular) {
             var html = '';
 
@@ -397,8 +407,8 @@
         }
 
         /**
-        * 
-        */
+         * 
+         */
         function getHtmlTableBodyProductStocks(product) {
             var html = '<tbody>';
 
@@ -431,8 +441,8 @@
         }
 
         /**
-        *
-        */
+         *
+         */
         function addProductToDatatable(product_id, value) {
             var product = getProductFromArray(product_id);
 
@@ -446,8 +456,8 @@
         }
 
         /**
-        *
-        */
+         *
+         */
         function appendProductToProductsDatatable(product, value) {
             datatable_products.row.add( [
                 product.name,
@@ -483,8 +493,8 @@
         }
 
         /**
-        *
-        */
+         *
+         */
         function getProductFromArray(product_id) {
             return $products.find(obj => {
                 return obj.id === product_id
@@ -492,8 +502,8 @@
         }
 
         /**
-        *
-        */
+         *
+         */
         function isProductValid(stock, value) {
             var valid = true;
 
@@ -517,8 +527,8 @@
         }
 
         /**
-        *
-        */
+         *
+         */
         function updateDatatableResumeProductQty(product_id, new_qty)  {
             var tr = $(`.tr-product-${product_id}`);
             var data = datatable_products_resume.row(tr).data();

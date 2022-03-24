@@ -74,6 +74,9 @@
 
     <script>
         $(function(){
+            /**
+             * Se agregar el loading a cada peticion Ajax y se elimina cuando estas terminan
+             */
             $.ajaxSetup({
                 beforeSend: function(xhr) {
                     $('body').append('<div class="loading">Loading&#8230;</div>');

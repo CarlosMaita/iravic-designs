@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa datatable de clientes deudores
+         */
         function initDataTable() {
             DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,

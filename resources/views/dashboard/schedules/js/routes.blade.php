@@ -16,6 +16,10 @@
         waypoints: [],
 
 
+        /**
+         * Peticion HTTP para actualizar orden/posicion de las zonas
+         * Recibe las visitas en forma de waypoints usados por google maps para calcular la ruta
+         */
         httpUpdateVisitsOrder(waypoints) {
             var self = this;
 
@@ -65,6 +69,10 @@
                 }
             });
         },
+
+        /**
+         * Peticion para calcular la ruta de todas las zonas (Posicion de los clientes)
+         */
         async calcZonesRoute(zones) {
             var self = this,
                 length = zones.length,
@@ -109,6 +117,9 @@
             }
         },
 
+        /**
+         * Calcula la ruta de una zona
+         */
         async calcRoute(data, index, length) {
             var self = this;
             var request = {
@@ -139,17 +150,23 @@
             });
         },
 
+        /**
+         *  Como la peticion que realiza google maps para el calculo de rutas no es ajax, se le agrega directamente aca el loader
+         */
         addLoading() {
             $('body').append('<div class="loading">Loading&#8230;</div>');
         },
 
+        /**
+         * Eliminar el loader
+         */
         stopLoading() {
             $('.loading').remove();
         },
 
         /**
-        *
-        */
+         * Retorna la data de una zona para calcular su ruta en google maps
+         */
         getZoneData($zones, zone, index) {
             return {
                     destination: this.getZoneDestination(zone),
@@ -157,6 +174,10 @@
                     waypoints: this.getZoneWaypoints(zone.id)
                 };
         },
+
+        /**
+         * Procesa las visitas de la agenda por zona, para generar un array con waypoints
+         */
         getZoneWaypoints(zone_id) {
             return $schedule.visits.filter(function(element) {
                         return element.customer.zone_id == zone_id;
@@ -172,6 +193,10 @@
                         }
                     });   
         },
+
+        /**
+         * Retorna la info del origen de la zona
+         */
         getZoneOrigin(zones, index) {
             if (typeof zones[index - 1] === 'undefined') return this.getDefaultLocation();
 
@@ -183,6 +208,10 @@
                     }
                 };
         },
+
+        /**
+         * Retorna la data del destino de la zona
+         */
         getZoneDestination(zone) {
             return {
                     is_cliente: false,
@@ -192,6 +221,10 @@
                     }
                 };
         },
+
+        /**
+         * Retorna una data predeterminada para ser usada como origen o destino de una zona que no tenga alguno de los dos
+         */
         getDefaultLocation() {
             return {
                     is_cliente: false,
@@ -202,6 +235,10 @@
                 };
         },
 
+        /**
+         * Ordena los waypoints obtenidos por google maps
+         * Este array determina el orden con el que se ordenaran las visitas
+         */
         orderedWaypoints(response, waypoints) {
             var waypoints_ordered = [];
             
@@ -212,6 +249,9 @@
             return waypoints_ordered;
         },
 
+        /**
+         * Retorna un array con los waypoints ya ordenados
+         */
         getWaypointsOrdered(waypoint_order, waypoints) {
             var new_array = [];
 

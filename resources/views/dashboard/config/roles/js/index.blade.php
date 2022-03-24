@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de roles
+         */
         function initDataTable() {
             DATATABLE_ROLES.DataTable({
                 fixedHeader: true,
@@ -27,7 +30,10 @@
             });
         }
 
-
+        /**
+         * Captura evento para eliminar un rol
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-role', function (e) {
             e.preventDefault();
             let id = $(this).data('id');

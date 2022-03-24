@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de permisos
+         */
         function initDataTable() {
             DATATABLE_PERMISSIONS.DataTable({
                 fixedHeader: true,

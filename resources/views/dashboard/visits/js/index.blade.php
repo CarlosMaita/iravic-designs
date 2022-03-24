@@ -10,6 +10,11 @@
         initDataTable();
         setDatePicker();
 
+        /**
+         * Captura evento de click en la pestana visitas
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
         $('#visits-tab').on('click', function(e) {
             setTimeout(function(e) {
                 DATATABLE_RESOURCE.DataTable()
@@ -18,6 +23,9 @@
             }, 1000);
         });
 
+        /**
+         * Captura evento click en el boton para crear una visita y abre el modal
+         */
         btn_create_visit.on('click', function(e) {
             e.preventDefault();
             form_resource.attr('action', URL_RESOURCE);
@@ -26,6 +34,9 @@
             modal_resource.find('.modal-title').text('Crear Visita');
         });
 
+        /**
+         * Captura evento submit del formulario de visitas
+         */
         form_resource.on('submit', function(e) {
             e.preventDefault();
 
@@ -92,8 +103,8 @@
         });
 
         /**
-        *
-        */
+         * Limpia formulario de visita cuando cierra el modal
+         */
         modal_resource.on('hidden.coreui.modal', function(e) {
             $('#input-method-put').remove();
             form_resource.attr('action', '');
@@ -103,6 +114,9 @@
             form_resource.find('.modal-title').text('');
         });
 
+        /**
+         * Captura evento para eliminar visita. Realiza peticion HTTP para eliminarla en BD
+         */
         $('body').on('click', 'tbody .delete-visit', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -173,7 +187,9 @@
             }).catch(swal.noop);
         });
 
-
+        /**
+         * Captura evento para editar una visita. Realiza peticion HTTP para obtener datos
+         */
         $('body').on('click', 'tbody .edit-visit', function (e) {
             var id = $(this).data('id'),
                 url = `${URL_RESOURCE}/${id}`;
@@ -221,6 +237,9 @@
             });
         });
 
+        /**
+         * Inicializa el datatable de las visitas
+         */
         function initDataTable() {
             var url_params = getDatatableUrlParams();
 
@@ -261,6 +280,9 @@
             });
         }
 
+        /**
+         *
+         */
         function getDatatableUrlParams() {
             var params = '';
 
@@ -274,16 +296,11 @@
 
             return params;
         }
-
+        
+        /**
+         * Setea el datepicker para seleccionar la visita
+         */
         function setDatePicker() {
-            // $('.datepicker-form').datepicker({
-            //     uiLibrary: 'bootstrap4'
-            // });
-
-            // return;
-            // .gj-picker-bootstrap
-            // max-width: 300px;
-
             var inputs = $('.datepicker-form');
 
             inputs.each((index, element) => {

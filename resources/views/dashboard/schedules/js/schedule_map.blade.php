@@ -17,14 +17,24 @@
         this.setMapCoords();
     };
 
+    /**
+     * Retorna el elemento del DOM del mapa basadi en el id que recibe por parametro
+     */
     ScheduleMap.prototype.getMapElement = function() {
         return document.getElementById(this.map_id);
     }
 
+    /**
+     * Setea las coordenas del mapa
+     */
     ScheduleMap.prototype.setMapCoords = function() {
         this.map_coords = this.getCoords();
     }
 
+    /**
+     * Retorna las coordenas del mapa
+     * Si el mapa no recibe latitude y longitud como parametro, se le setea una coordenada predeterminada
+     */
     ScheduleMap.prototype.getCoords = function() {
         if (this.lat && this.lng) {
             return  {
@@ -39,6 +49,9 @@
         }
     }
 
+    /**
+     * Setea el mapa con las coordenadas y el elemento DOM 
+     */
     ScheduleMap.prototype.setMap = function() {
         var map_element = this.getMapElement();
         
@@ -51,6 +64,9 @@
         }
     }
 
+    /**
+     * Retorna icon para el marker de un cliente basado en su reputacion
+     */
     ScheduleMap.prototype.getIconByCustomerReputation = function(customer) {
         var icon = '';
 
@@ -74,10 +90,16 @@
         return icon;
     }
 
+    /**
+     * Manda a mostrar todos los clientes/visitas de la agenda
+     */
     ScheduleMap.prototype.showAllCustomers = function() {
         this.showMarkers(this.schedule.visits);
     }
 
+    /**
+     * Agrega como marcadores todas las visitas que no han sido completadas
+     */
     ScheduleMap.prototype.showMarkers = function(visits) {
         var that = this;
         visits.forEach((visit, index) => {
@@ -96,6 +118,10 @@
         });
     }
 
+    /**
+     * Agregar marcador de una visita al mapa
+     * Con evento para click en el marcador para mostrar popup con sus detalles
+     */
     ScheduleMap.prototype.addMarker = function(data) {
         var that = this;
         var marker = new google.maps.Marker({
@@ -126,17 +152,26 @@
         })(marker, (data.index)));
     }
 
+    /**
+     * Elimina todos los marcadores del mapa
+     */
     ScheduleMap.prototype.clearMarkers = function() {
         this.markers.forEach(element => {
             element.setMap(null);
         });
     }
 
+    /**
+     * Vacia los marcadores asociados y manda a eliminarlos del mapa
+     */
     ScheduleMap.prototype.removeMarkers = function() {
         this.clearMarkers();
         this.markers = [];
     }
 
+    /**
+     * Peticion HTTP para obtener visitas. Se pueden filtrar por roles o zonas
+     */
     ScheduleMap.prototype.httpGetVisits = function() {
         var params_roles = this.getHttpRolesParams(),
             params_zones = this.getHttpZonesParams(),
@@ -160,6 +195,9 @@
         });
     }
 
+    /**
+     * Retorna string para ser usado como parametro query con las zonas seleccionadas para filtrar
+     */
     ScheduleMap.prototype.getHttpZonesParams = function() {
         var zones = this.zone_select.val(),
             params = '';
@@ -172,6 +210,9 @@
         return params;
     }
 
+    /**
+     * Retorna string para ser usado como parametro query con los roles seleccionados para filtrar
+     */
     ScheduleMap.prototype.getHttpRolesParams = function() {
         var params = null,
             roles = '';

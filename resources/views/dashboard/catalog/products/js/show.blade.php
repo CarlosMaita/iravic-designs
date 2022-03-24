@@ -19,8 +19,8 @@
         initDatatableHistory();
 
         /**
-        *
-        */
+         * Captura evento submit de formulario de transferencia de stock
+         */
         form_transfer.on('submit', function(e) {
             e.preventDefault();
             var form = $('#stock-transfer-form')[0];
@@ -90,8 +90,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento submit de formulario de actualizar stock del producto (Tipo)
+         */
         form_modify.on('submit', function(e) {
             e.preventDefault();
             var form = $('#stock-modify-stock-form')[0];
@@ -151,8 +151,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para mostrar modal de historial de stock
+         * Actualiza datatable de historial
+         */
         modal_stock_history.on('shown.coreui.modal', function(e) {
             datatable_history.DataTable({
                 responsive: true
@@ -162,8 +163,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cerrar odal de historial de stock
+         */
         modal_stock_history.on('hidden.coreui.modal', function(e) {
             product_viewing = null;
             stock_column_viewing = null;
@@ -171,8 +172,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cerrar modal de modificar/actualizar stock
+         * Se vacian los campos del formulario de modificar stock
+         */
         modal_stock_modify.on('hidden.coreui.modal', function(e) {
             form_modify.find("input[name='product_id']").val('');
             form_modify.find("input[name='stock_column']").val('');
@@ -182,8 +184,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de ocultar modal de transferencia de stock
+         * Vacia los inputs del formulario de transferencia
+         */
         modal_stock_transfer.on('hidden.coreui.modal', function(e) {
             modal_stock_transfer.find('input[name="product_id"]').val('');
             modal_stock_transfer.find('input[name="stock_origin"]').val('');
@@ -197,8 +200,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de ver historial de stock (Tipo) de un producto
+         */
         $('.view-stock-history').on('click', function(e) {
             var product_id = $(this).data('id'),
                 stock_column = $(this).data('stock'),
@@ -212,8 +215,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para modificar/actualizar stock
+         */
         $('.modify-stock').on('click', function(e) {
             var product_id = $(this).data('id'),
                 stock_qty = $(this).data('qty'),
@@ -229,8 +232,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para ver transferencia de stock
+         */
         $('.view-transfer-stock').on('click', function(e) {
             var product_id = $(this).data('id'),
                 stock = Number($(this).data('stock')),
@@ -251,16 +254,17 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de maximo stock del producto.
+         * Setea el stock del producto como el maximo en la transferencia modal
+         */
         $('#btn-max').on('click', function(e) {
             var max = Number($(this).attr('stock'));
             modal_stock_transfer.find('input[name="qty"]').val(max);
         });
 
         /**
-        *
-        */
+         * Inicializa datatable de imagenes del producto
+         */
         function initDatatableImages() {
             DATATABLE_IMAGES.DataTable({
                 fixedHeader: true,
@@ -281,8 +285,8 @@
         }
         
         /**
-        *
-        */
+         * Inicializa datatable de historial de stock
+         */
         function initDatatableHistory() {
             datatable_history.DataTable({
                 fixedHeader: true,
@@ -312,8 +316,8 @@
         }
 
         /**
-        *
-        */
+         * Retorna nombre en espanol del tipo de stock
+         */
         function getStockName(stock_column) {
             var stock_name = '';
 

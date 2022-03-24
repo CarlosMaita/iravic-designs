@@ -6,6 +6,9 @@
 
         sortableJs.create(sortZones);
 
+        /**
+         * Evento para eliminar una zona
+         */
         $('body').on('click', '.delete-zone', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -71,6 +74,9 @@
             }).catch(swal.noop);
         });
 
+        /**
+         * Agrega todos los ids de las zonas a un array y los pasa como parametro a httpSortZones para actualizar en la API
+         */
         function sortZones() {
             var zones = [];
 
@@ -81,6 +87,9 @@
             httpSortZones(zones);
         }
 
+        /**
+         * Peticion HTTP para actualizar la posicion de las zonas
+         */
         function httpSortZones(zones) {
             var token = $("input[name=_token]").val();
 

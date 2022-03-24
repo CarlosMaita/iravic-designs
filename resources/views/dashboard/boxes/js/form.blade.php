@@ -2,6 +2,9 @@
     $(function(){
         const FORM_RESOURCE = $("#form-boxes");
 
+        /**
+         * Captura evento de submit de formulario de caja
+         */
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-boxes')[0];

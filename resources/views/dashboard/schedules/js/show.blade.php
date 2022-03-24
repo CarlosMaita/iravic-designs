@@ -23,24 +23,41 @@
 
         $('.datatable-zone').DataTable();
 
+        /**
+         * Captura evento para cerrar collape de una zona (Listado de clientes)
+         */
         $('.btn-collapse-zone').on('click', function(e) {
             $(this).parents('.zone-customers').collapse('hide');
         });
 
+        /**
+         * Captura evento para iniciar proceso de ordenar clientes de una zona dentro de la agenda
+         */
         $('.btn-sort-schedule').on('click', function(e) {
             route.calcZonesRoute($zones);
         });
 
+        /**
+         * Inicializa el selector de responsable como Select2
+         */
         $('#visit-responsable').select2({
             dropdownParent: modal_responsable
         });
         
+        /**
+         * Inicializa el selector de zona como Select2
+         * Se utiliza para filtrar clientes en el mapa
+         */
         zone_select.select2({
             allowClear: true,
             placeholder: "Seleccionar",
             dropdownParent: modal_map
         });
 
+        /**
+         * Inicializa el selector de rol como Select2
+         * Se utiliza para filtrar clientes en el mapa
+         */
         role_select.select2({
             allowClear: true,
             placeholder: "Seleccionar",
@@ -48,8 +65,10 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de click para abrir mapa de la agenda
+         * Manda a mostrar todos los clientes/visitas de la agenda. Si el mapa no ha sido mostrado
+         * Si el mapa ha sido mostrado, solamente muestra los marcadores
+         */
         btn_open_map.on('click', function(e) {
             e.preventDefault();
             modal_map.modal('show');
@@ -65,16 +84,16 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cierre modal responsable. Reinicia el selector de responsable
+         */
         modal_responsable.on('hidden.coreui.modal', function(e) {
             form_responsable.find('#visit-responsable').val('Seleccionar').trigger('change');
             $visit_editing_id = null;
         });
 
         /**
-        *
-        */
+         * Captura evento de submit del formulario de una visita
+         */
         form_responsable.on('submit', function(e) {
             e.preventDefault();
             var url = `${URL_VISITS}/${$visit_editing_id}/update-responsable`;
@@ -141,24 +160,27 @@
         });
 
         /*
-        *
-        */
+         * Captura evento de cambio de tipo clientes.
+         * Llama a realizar peticion HTTP para obtener listado de visitas filtradas
+         */
         role_select.on('change', function(e) {
             schedule_map.removeMarkers();
             schedule_map.httpGetVisits();
         });
 
         /*
-        *
-        */
+         * Captura evento de zona.
+         * Llama a realizar peticion HTTP para obtener listado de visitas filtradas
+         */
         zone_select.on('change', function(e) {
             schedule_map.removeMarkers();
             schedule_map.httpGetVisits();
         });
 
         /**
-        * Complete visit
-        */
+         * Captura evento para Completar visita
+         * Realiza peticion HTTP para actualizar en la BD
+         */
         $('body').on('click', 'tbody .btn-complete-visit', function (e) {
             e.preventDefault();
             var id = $(this).data('id'),
@@ -235,8 +257,9 @@
         });
 
         /**
-        * Http get visit to edit responsable
-        */
+        * Captura evento de editar responsable de una visita.
+         * Realiza peticion HTTP para obtener detalles del responsable de la visita
+         */
         $('body').on('click', 'tbody .btn-edit-responsable', function (e) {
             e.preventDefault();
             var id = $(this).data('id'),
@@ -293,7 +316,8 @@
         });
 
         /**
-         * 
+         * Captura evento para editar una visita
+         * Realiza peticion HTTP para obtener detalles de la visita y llenar el formulario de visitas
          */
         $('body').on('click', 'tbody .edit-visit', function (e) {
             var id = $(this).data('id'),
@@ -345,8 +369,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cerrar modal de formulario visitas
+         * Limpia el formulario
+         */
         modal_visits.on('hidden.coreui.modal', function(e) {
             $('#form-visitas-customer-id').remove();
             $('#form-visitas-input-method-put').remove();
@@ -357,6 +382,9 @@
             form_visits.find('.modal-title').text('');
         });
 
+        /**
+         * Captura evento de submit de formulario visitas
+         */
         form_visits.on('submit', function(e) {
             e.preventDefault();
 
@@ -428,6 +456,9 @@
             });
         });
 
+        /**
+         * Setea el datepicker para crear/editar nueva visita
+         */
         function setDatePicker() {
             var inputs = $('.datepicker-form');
 

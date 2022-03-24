@@ -1,7 +1,10 @@
 <script>
-    $(function(){
+    $(function() {
         const FORM_ROLES = $("#form-roles");
 
+        /**
+         * Captura evento de submit de formulario de roles
+         */
         FORM_ROLES.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-roles')[0];

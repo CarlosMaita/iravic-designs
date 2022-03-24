@@ -3,7 +3,13 @@
         const FORM_RESOURCE = $("#form-products");
         const DATATABLE_IMAGES = $("#datatable_images");
         const URL_PRODUCT_IMAGES = "{{ route('producto-imagen.index') }}"
-        
+
+        /**
+         * Inicializa dropzone de imagenes en el formulario de producto
+         * Cuando hay imagenes el dropzone, se procesa la cola en el evento submit del formulario
+         * y Aca se ejecuta el condigo dentro del evento 'sendingmultiple'
+         * Mandando la informacion del formulario junto a las imagenes
+         */
         let myDropzone = new Dropzone("#myDropzone", {
             url: URL_RESOURCE,
             acceptedFiles: 'image/*',
@@ -61,26 +67,12 @@
                         }
                     }
                 });
-
-                /*
-                this.on("success", function(file, responseText) {
-                    this.removeAllFiles(true);
-                });
-
-                this.on("complete", function(file) {
-                    this.removeAllFiles(true);
-                });
-
-                this.on("queuecomplete", function (file) {
-                    this.removeAllFiles(true);
-                });
-                */
             }
         });
 
         /**
-        *
-        */
+         * Inicializa datatable de imagenes de un producto
+         */
         DATATABLE_IMAGES.DataTable({
             fixedHeader: true,
             processing: false,
@@ -100,8 +92,10 @@
         });
         
         /**
-        *
-        */
+         * Captura evento submit de formulario de producto
+         * Si no hay imagenes el dropzone entra en el else
+         * Si hay imagenes, manda a procesar la cola (Se ejecuta el codigo de la inicializacion del dropzone)
+         */
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
 
@@ -165,8 +159,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para eliminar una imagen
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-image', function (e) {
             e.preventDefault();
             let id = $(this).data('id');

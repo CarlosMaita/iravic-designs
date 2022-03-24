@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de clientes
+         */
         function initDataTable() {
             DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
@@ -24,7 +27,10 @@
             });
         }
 
-
+        /**
+         * Captura evento de eliminar cliente
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-customer', function (e) {
             e.preventDefault();
             let id = $(this).data('id');

@@ -1,8 +1,11 @@
 <script type="text/javascript">
     var geocoder = new google.maps.Geocoder;
 
+    /**
+     * Crea un objeto/funcion para crear mapas de zonas
+     */ 
     function ZoneMap(map_id, zone) {
-        this.infowindow = new google.maps.InfoWindow();
+        this.infowindow = new google.maps.InfoWindow(); // Permite agregar ventanitas a cada marcador cuando se les da click
         this.lat = -34.889052;
         this.lng = -56.164012;
         this.map_id = map_id;
@@ -13,14 +16,23 @@
         this.setMapCoords();
     };
 
+    /**
+     * Retorna el elemento DOM del mapa por su ID
+     */ 
     ZoneMap.prototype.getMapElement = function() {
         return document.getElementById(this.map_id);
     }
 
+    /**
+     * Setea las coordenadas
+     */ 
     ZoneMap.prototype.setMapCoords = function() {
         this.map_coords = this.getCoords();
     }
 
+    /**
+     * Retorna las coordenadas que tendra el mapa. Si la funcion/Objeto no recibe las coordenas, se colocan unas predeterminadas
+     */ 
     ZoneMap.prototype.getCoords = function() {
         if (this.lat && this.lng) {
             return  {
@@ -35,6 +47,9 @@
         }
     }
 
+    /**
+     * Crea el mapa con las coordenadas y el elemento DOM
+     */ 
     ZoneMap.prototype.setMap = function() {
         var map_element = this.getMapElement();
         
@@ -47,6 +62,9 @@
         }
     }
 
+    /**
+     * Retorna icon del pin que se le coloca al cliente basado en su reputacion
+     */ 
     ZoneMap.prototype.getIconByCustomerReputation = function(customer) {
         var icon = '';
 
@@ -70,10 +88,16 @@
         return icon;
     }
 
+    /**
+     * Manda a imprimir todos los clientes de la zona en el mapa (Marcadores)
+     */ 
     ZoneMap.prototype.showAllCustomers = function() {
         this.showMarkers(this.zone.customers);
     }
 
+    /**
+     * A cada cliente que recibe como parametro lo agrega en el mapa como marcador
+     */ 
     ZoneMap.prototype.showMarkers = function(customers) {
         var that = this;
         customers.forEach((customer, index) => {
@@ -90,6 +114,9 @@
         });
     }
 
+    /**
+     * Agregar el marcador al mapa
+     */ 
     ZoneMap.prototype.addMarker = function(data) {
         var that = this;
         var marker = new google.maps.Marker({
@@ -121,12 +148,18 @@
         })(marker, (data.index)));
     }
 
+    /**
+     * Elimina todos los marcadores (clientes) del mapa
+     */ 
     ZoneMap.prototype.clearMarkers = function() {
         this.markers.forEach(element => {
             element.setMap(null);
         });
     }
 
+    /**
+     * Vacia el listado de marcadores y manda a eliminarlos todos del mapa
+     */ 
     ZoneMap.prototype.removeMarkers = function() {
         this.clearMarkers();
         this.markers = [];

@@ -9,6 +9,13 @@
 
         form_payments.find('select').select2();
 
+        initDataTable();
+
+        /**
+         * Captura evento de click en la pestana pagos
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
         $('#payments-tab').on('click', function(e) {
             setTimeout(function(e) {
                 DATATABLE_RESOURCE.DataTable()
@@ -17,8 +24,9 @@
             }, 1000);
         });
 
-        initDataTable();
-
+        /**
+         *  Captura evento para abrir modal y crear un pago
+         */
         btn_create_payment.on('click', function(e) {
             e.preventDefault();
             form_payments.attr('action', URL_RESOURCE);
@@ -28,6 +36,10 @@
             $('#payment-visit').removeClass('d-none');
         });
 
+        /**
+         * Captura evento submit para crear un pago
+         * Realiza peticion HTTP
+         */
         form_payments.on('submit', function(e) {
             e.preventDefault();
 
@@ -98,6 +110,10 @@
             });
         });
 
+        /**
+         * Captura evento para eliminar un pago
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-payment', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -171,6 +187,10 @@
             }).catch(swal.noop);
         });
 
+        /**
+         * Captura evento para iniciar proceso para editar un pago
+         * Realiza una peticion HTTP para obtener datos del pago y rellenar el formulario
+         */
         $('body').on('click', 'tbody .edit-payment', function (e) {
             $('#payment-visit').addClass('d-none');
             clearPaymentVisitForm();
@@ -223,10 +243,8 @@
         });
 
         /**
-         * 
+         * Captura evento de cambio en check para activar nueva visita
          */
-        // $('#amount').on('change', function() {
-        // });
         $('#new_visit').change(function() {
             if (this.checked) {
                 $('#payment-visit-fields').removeClass('d-none');
@@ -236,8 +254,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cerrar modal de pagos
+         * Vacia los campos del formulario
+         */
         modal_payments.on('hidden.coreui.modal', function(e) {
             $('#input-method-put').remove();
             form_payments.attr('action', '');
@@ -248,6 +267,9 @@
             modal_payments.find('.modal-title').text('');
         });
 
+        /**
+         * Vacia formulario de visita en modal de pagos
+         */
         function clearPaymentVisitForm() {
             form_payments.find('#visit-comment').val('');
             $("#new_visit").prop( "checked", false );
@@ -255,12 +277,18 @@
             form_payments.find('#visit-date').val('');
         }
 
+        /**
+         * Vacia formulario de pago
+         */
         function clearModalForm() {
             form_payments.find('#amount').val('');
             form_payments.find('#comment').val('');
             form_payments.find('select').val('Seleccionar').trigger('change');
         }
 
+        /**
+         * Inicializa datatable de pagos
+         */
         function initDataTable() {
             var url_params = getUrlPaymentParams();
 
@@ -296,6 +324,9 @@
             });
         }
 
+        /**
+         * Retorna string para ser usado como query parametro con variables de cliente seleccionado o caja de un cliente
+         */
         function getUrlPaymentParams() {
             var params = '';
 

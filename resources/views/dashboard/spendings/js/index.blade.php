@@ -10,6 +10,11 @@
 
         initDataTable();
 
+        /**
+         * Captura evento de click en la pestana gastos
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
         $('#spendings-tab').on('click', function(e) {
             setTimeout(function(e) {
                 datatable_resource.DataTable()
@@ -18,6 +23,10 @@
             }, 1000);
         });
 
+        /**
+         * Captura evento cuando seleccionan una imagen
+         * Agrega preview de la imagen
+         */
         $('.custom-file-input').on('change', function(event) {
             var id = this.id,
                 img_target = document.getElementById('img-' + id),
@@ -37,6 +46,10 @@
             }
         });
 
+        /**
+         * Captura evento para eliminar la imagen del gasto.
+         * Agrega input al DOM para cancelar eliminacion
+         */
         $('.delete-img').on('click', function(e) {
             e.preventDefault();
             var parent = $(this).parent('.img-wrapper'), // closest
@@ -61,6 +74,9 @@
             }
         });
 
+        /**
+         * Captura evento para cancelar eliminacion de imagen
+         */
         $('.cancel-delete-img').on('click', function(e){
             e.preventDefault();
             var parent = $(this).parent('.img-wrapper');
@@ -76,6 +92,9 @@
             input_delete.remove();
         });
 
+        /**
+         * Captura evento para empezar a crear un gasto. Abre modal 
+         */
         btn_create_spending.on('click', function(e) {
             e.preventDefault();
             form_spendings.attr('action', URL_RESOURCE);
@@ -84,6 +103,9 @@
             modal_spendings.find('.modal-title').text('Crear Gasto');
         });
 
+        /**
+         * Captura evento de submit del formulario de gastos
+         */
         form_spendings.on('submit', function(e) {
             e.preventDefault();
             var url = form_spendings.attr('action');
@@ -148,6 +170,9 @@
             });
         });
 
+        /**
+         * Captura evento para eliminar gasto. Realiza peticion HTTP para eliminarlo de BD
+         */
         $('body').on('click', 'tbody .delete-spending', function (e) {
             e.preventDefault();
             var id = $(this).data('id'),
@@ -218,6 +243,9 @@
             }).catch(swal.noop);
         });
 
+        /**
+         *Captura evento para empezar a editar gasto. Realiza peticion HTTP para obtener datos
+         */
         $('body').on('click', 'tbody .edit-spending', function (e) {
             var id = $(this).data('id'),
                 url = `${URL_RESOURCE}/${id}`;
@@ -273,8 +301,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cierre del modal de gastos. Limpia el formulario para crear gasto
+         */
         modal_spendings.on('hidden.coreui.modal', function(e) {
             $('#input-method-put').remove();
             is_editing = false;
@@ -290,6 +318,9 @@
             modal_spendings.find('.modal-title').text('');
         });
 
+        /**
+         * Inicializa el datatable de gastos
+         */
         function initDataTable() {
             var url_params = getUrlParams();
 
@@ -316,6 +347,10 @@
             });
         }
 
+        /**
+         * Retorna parametros query de la url para actualizar datatable de gastos.
+         * El dataable puede existir en los detalles de una caja
+         */
         function getUrlParams() {
             var params = '';
 

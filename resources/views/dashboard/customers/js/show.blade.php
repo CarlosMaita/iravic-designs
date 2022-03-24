@@ -14,6 +14,11 @@
             pageLength: 25
         });
 
+        /**
+         * Captura evento de click en la pestana ventas
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
         $('#orders-tab').on('click', function(e) {
             setTimeout(function(e) {
                 datatable_orders
@@ -22,6 +27,11 @@
             }, 1000);
         });
 
+        /**
+         * Captura evento de click en la pestana devoluciones
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
         $('#refunds-tab').on('click', function(e) {
             setTimeout(function(e) {
                 datatable_refunds

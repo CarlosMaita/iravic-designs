@@ -26,7 +26,9 @@
         initDataTable();   
 
         /**
-         * 
+         * Captura evento de ver stocks de un stock
+         * Realiza peticion HTTP para obtener stocks
+         * Luego se manda actualizar los stocks del producto
          */
         $('body').on('click', 'tbody .btn-show-stock', function (e) {
             e.preventDefault();
@@ -65,7 +67,8 @@
         });
 
         /**
-         * 
+         * Captura evento de eliminar producto
+         * Realiza peticion HTTP
          */
         $('body').on('click', 'tbody .delete-resource', function (e) {
             e.preventDefault();
@@ -137,7 +140,7 @@
         });
 
         /**
-         * 
+         * Captura evento submit de busqueda avanzada para filtrar productos
          */
         form_advanced_search.on('submit', function(e) {
             e.preventDefault();
@@ -153,7 +156,7 @@
         });
 
         /**
-         * 
+         * Captura evento para abrir o cerrar formulario de busqueda avanzada
          */
         btn_advanced_search.click(function() {
             if (advanced_search.hasClass('show')) {
@@ -164,7 +167,7 @@
         });
 
         /**
-         * 
+         * Captura evento para vaciar filtro de busqueda avanzada
          */
         btn_clear_filter.click(function() {
             select_brand.val('Todas').trigger('change');
@@ -183,15 +186,16 @@
         });
 
         /**
-         * 
+         * Captura evento para cerrar filtro de busqueda avanzada
          */
         btn_close_filter.click(function() {
             advanced_search.collapse('hide');
         });
         
         /**
-        *
-        */
+         * Captura evento para descargar catalogo PDF
+         * Redirecciona para descarga automaticamente
+         */
         btn_download.click(function(e) {
             e.preventDefault();
             var data = form_advanced_search.serialize();
@@ -199,17 +203,17 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cerrar modal de stocks de un producto
+         */
         modal_stocks_qty.on('hidden.coreui.modal', function(e) {
             modal_stocks_qty.find('.modal-title span').text('');
             modal_stocks_qty.find('.modal-body').empty();
         });
 
-
         /**
-        *
-        */
+         * Inicializa filtro de busqueda avanzada
+         * Se guarda los datos en localstorage
+         */
         function initAdvanceFilterData() {
             var brand = localStorage.getItem('brand'),
                 category = localStorage.getItem('category'),
@@ -229,7 +233,7 @@
         }
 
         /**
-         * 
+         * Inicializa datatable de productos
          */
         function initDataTable() {
             DATATABLE_RESOURCE.DataTable({
@@ -268,7 +272,7 @@
         }
 
         /**
-         * 
+         * Actualiza contenido de stocks de producto en Modal
          */
         function updateModalStocksContent(product) {
             var html_content = getModalStocksContentHtml(product);
@@ -283,7 +287,7 @@
         }
 
         /**
-         * 
+         * Retorna contenido HTML de stocks para ser agregado al modal
          */
         function getModalStocksContentHtml(product) {
             if (!product.is_regular) {
@@ -294,7 +298,7 @@
         }
 
         /**
-         * 
+         * Retorna el contenido de stocks de un producto que es regular (Sin combinaciones)
          */
         function getRegularStockContent(product) {
             var html = `<div class="container-fluid">
@@ -336,7 +340,7 @@
         }
 
         /**
-         * 
+         * Retorna el contenido de stocks de un producto con combinaciones
          */
         function getCombinationsStockContent(product) {
             var html = `<div class="container-fluid">

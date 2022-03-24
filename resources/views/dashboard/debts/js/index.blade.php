@@ -7,9 +7,15 @@
             modal = $('#modal-debts'),
             form = $('#form-debts');
 
-            form.find('select').select2();
+        form.find('select').select2();
+        initDataTable();
 
-        $('#payments-tab').on('click', function(e) {
+        /**
+         * Captura evento de click en la pestana pagos
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
+        $('#debts-tab').on('click', function(e) {
             setTimeout(function(e) {
                 DATATABLE_RESOURCE.DataTable()
                 .columns.adjust()
@@ -17,8 +23,9 @@
             }, 1000);
         });
 
-        initDataTable();
-
+        /**
+         * Captura evento para abrir modal de crear deuda
+         */
         btn_create.on('click', function(e) {
             e.preventDefault();
             form.attr('action', URL_RESOURCE);
@@ -27,6 +34,9 @@
             modal.find('.modal-title').text('Crear Deuda');
         });
 
+        /**
+         * Captura evento submit del formulario de deudas
+         */
         form.on('submit', function(e) {
             e.preventDefault();
 
@@ -95,6 +105,10 @@
             });
         });
 
+        /**
+         * Captura evento para eliminar una deuda
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-debt', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -168,6 +182,10 @@
             }).catch(swal.noop);
         });
 
+        /**
+         * Captura evento para empezar a editar una deuda
+         * Realiza peticion HTTP para obtener sus detalles
+         */
         $('body').on('click', 'tbody .edit-debt', function (e) {
             var id = $(this).data('id'),
                 url = `${URL_RESOURCE}/${id}`;
@@ -216,8 +234,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cerrar modal de deudas
+         */
         modal.on('hidden.coreui.modal', function(e) {
             $('#input-method-put').remove();
             form.attr('action', '');
@@ -227,12 +245,18 @@
             modal.find('.modal-title').text('');
         });
 
+        /**
+         * Vacia campos del formulario de deudas
+         */
         function clearModalForm() {
             form.find('amount').val('');
             form.find('comment').val('');
             form.find('select').val('Seleccionar').trigger('change');
         }
 
+        /**
+         * Inicializa datatable de deudas
+         */
         function initDataTable() {
             var url_params = getUrlPaymentParams();
 
@@ -254,6 +278,9 @@
             });
         }
 
+        /**
+         * Retorna string para ser usado como query parametro con el cliente o caja
+         */
         function getUrlPaymentParams() {
             var params = '';
 

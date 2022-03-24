@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de usuarios
+         */
         function initDataTable() {
             DATATABLE_USERS.DataTable({
                 fixedHeader: true,
@@ -21,7 +24,10 @@
             });
         }
 
-
+        /**
+         * Captura evento para eliminar un usuario
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-user', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -94,6 +100,5 @@
                 });
             }).catch(swal.noop);
         });
-
     });
 </script>

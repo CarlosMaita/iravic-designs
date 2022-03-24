@@ -1,6 +1,9 @@
 <script type="text/javascript">
     const geocoder = new google.maps.Geocoder;
 
+    /**
+     * 
+     */
     function CustomerMap(map_id, lat = null, lng = null, address = '', updatable = false) {
         this.address = address;
         this.lat = lat;
@@ -16,10 +19,16 @@
         this.setMapCoords();
     }
 
+    /**
+     * 
+     */
     CustomerMap.prototype.canGeocoding = function() {
         return this.marker_created_after_click ? false : true;
     }
 
+    /**
+     * 
+     */
     CustomerMap.prototype.canGeocodingReverse = function() {
         if (!this.marker_created_after_search || $.trim($("#address").val()).length == 0) {
             return true;
@@ -28,12 +37,18 @@
         return false;
     }
 
+    /**
+     * 
+     */
     CustomerMap.prototype.addressError = function() {
         var content = '<span id="error-address">Selecciona la ubicación en el mapa</span>';
     	$('#error-address').remove();
     	$('#address').after(content);
     }
 
+    /**
+     * 
+     */
     CustomerMap.prototype.createMarkerPopup = function(marker, content) {
         this.marker.infowindow = new google.maps.InfoWindow({
             content: content
@@ -45,10 +60,16 @@
         });
     }
 
+    /**
+     * 
+     */
     CustomerMap.prototype.removeErrorAddress = function() {
 		$('#error-address').remove();
 	}
 
+    /**
+     * 
+     */
 	CustomerMap.prototype.updateLatLngInputs = function(lat, lng) {
 	    $('#latitude').val(lat);
 		$('#longitude').val(lng);
@@ -56,6 +77,9 @@
 		$('#longitude_search').val(lng);
     }
 
+    /**
+     * Valida que el texto de direccion tenga algun valor
+     */
     CustomerMap.prototype.validateAddressLength = function(direction) {
 		if (!direction && direction.trim().length == 0) {
 			return false;
@@ -64,6 +88,9 @@
 		return true;
 	}
 
+    /**
+     * Agregar el marcador al mapa
+     */
     CustomerMap.prototype.addMarker = function(data) {
         var latlong = new google.maps.LatLng(data.lat, data.lng);
 
@@ -100,20 +127,32 @@
         }
     }
 
+    /**
+     * Setea propiedade marcador en el objeto/function
+     */
     CustomerMap.prototype.setHasMarker = function () {
         if (this.lat && this.lng) {
             this.has_marker = true;
         }
     };
 
+    /**
+     * Retorna el elemento DOM del mapa por su ID
+     */
     CustomerMap.prototype.getMapElement = function() {
         return document.getElementById(this.map_id);
     };
 
+    /**
+     * Setea las coordenadas
+     */ 
     CustomerMap.prototype.setMapCoords = function() {
         this.map_coords = this.getCoords();
     };
 
+    /**
+     * Retorna las coordenadas que tendra el mapa. Si la funcion/Objeto no recibe las coordenas, se colocan unas predeterminadas
+     */
     CustomerMap.prototype.getCoords = function() {
         if (this.lat && this.lng) {
             return  {
@@ -128,6 +167,9 @@
         }
     };  
 
+    /**
+     * Crea el mapa con las coordenadas y el elemento DOM
+     */ 
     CustomerMap.prototype.setMap = function() {
         var self = this;
         var map_element = this.getMapElement();
@@ -158,6 +200,9 @@
         }
     };  
 
+    /**
+     * Agrega marcador si el objeto recibe uno como parametro. Sucede cuando se esta editando la zona
+     */
     CustomerMap.prototype.setInitialMarker = function() {
         if (this.has_marker) {
             var data = {
@@ -168,7 +213,11 @@
 		    this.addMarker(data);
         }
     }
-	
+    
+    /**
+     * Aplica geocoding de la direccion
+     * Geocoding busca coordenadas a traves de una direccion [String]
+     */
     CustomerMap.prototype.geocoding = function() {
         var address = this.getFormatedAddress();
 
@@ -210,6 +259,10 @@
 		}
 	}
 
+    /**
+     * Aplica geocoding inverso de las coordenas ingresadas
+     * Geocoding Inverso busca una direccion a traves de coordenadas
+     */
     CustomerMap.prototype.geocodingReverse = function(data = null) {
         var that = this;
 
@@ -248,6 +301,9 @@
 		});
 	}
 
+    /**
+     * Retorna objeto con coordenadas latitud y longitud a buscar para geocoding inversa
+     */
     CustomerMap.prototype.getSearchCoords = function() {
         return {
             lat: parseFloat($('#latitude_search').val()),
@@ -255,17 +311,26 @@
         }
     }
 
+    /**
+     * Formatea el string de la direccion a buscar (inpput), eliminando espacios.
+     */
     CustomerMap.prototype.getFormatedAddress = function() {
     	var value = $("#address").val();
 		return value.replace(/\s/g, "+");
     }
 
+    /**
+     * Agrega error de seleccionar ubicacion en el mapa [AL DOM] porque no encontro direccion con el geocoding
+     */
     CustomerMap.prototype.createAddressError = function() {
     	var content = '<span id="error-address" class="text-danger font-weight-bold">Selecciona la ubicación en el mapa</span>';
     	$('#error-address').remove();
     	$('#address').after(content);
     }
 
+    /**
+     * Elimina el macador del mapa
+     */
     CustomerMap.prototype.removeMarkerFromMap = function() {
         if (this.marker) {
 			this.marker.setMap(null);

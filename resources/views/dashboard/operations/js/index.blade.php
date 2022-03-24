@@ -1,7 +1,14 @@
 <script>
     $(function () {
-        const   URL_RESOURCE = "{{ route('operaciones.index') }}";
+        const URL_RESOURCE = "{{ route('operaciones.index') }}";
 
+        initDataTable();
+
+        /**
+         * Captura evento de click en la pestana estado de cuenta
+         * Espera 1 segundo para ajustar el tamano del datatable
+         * Cuando el datatable no esta visible y es creado, no configura bien el width
+         */
         $('#account-status-tab').on('click', function(e) {
             setTimeout(function(e) {
                 $datatable_operations.DataTable()
@@ -10,8 +17,9 @@
             }, 1000);
         });
 
-        initDataTable();
-
+        /**
+         * Inicializa datatable de estado de cuenta/operaciones.
+         */
         function initDataTable() {
             var url_params = getUrlPaymentParams();
 
@@ -48,6 +56,9 @@
             });
         }
 
+        /**
+         * Retorna string para ser usado como query parametro con el cliente seleccionado 
+         */
         function getUrlPaymentParams() {
             var params = '';
 

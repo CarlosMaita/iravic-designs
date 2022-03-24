@@ -33,20 +33,6 @@
                     return data;
                 }
 
-                // Check if the text contains the term
-                // if (original.indexOf(term) > -1) { return data; }
-
-                // if (
-                //     $(data.element).data('brand') && $(data.element).data('category') && $(data.element).data('code') &&
-                //     (
-                //         $(data.element).data('brand').toString().indexOf(params.term) > -1 ||
-                //         $(data.element).data('category').toString().indexOf(params.term) > -1 ||
-                //         $(data.element).data('code').toString().indexOf(params.term) > -1
-                //     )
-                // ) {
-                //     return data;
-                // }
-
                 if (
                     ($(data.element).data('brand') && $(data.element).data('brand').toString().indexOf(params.term) > -1) ||
                     ($(data.element).data('category') && $(data.element).data('category').toString().indexOf(params.term) > -1) ||
@@ -64,14 +50,17 @@
         datatable_products = datatable_products.DataTable();
         datatable_products_resume = datatable_products_resume.DataTable();
 
+        /**
+         * Captura evento de click para cerrar collapse de stocks de un producto
+         */
         $('body').on('click', '#btn-stocks-close', function(e) {
             var collapse = $('#stocks-collapse');
             collapse.collapse('hide');
         });
 
         /**
-        *
-        */
+         * Captura evento de submit de formulario productos
+         */
         FORM_RESOURCE_ORDERS.on('submit', function (e) {
             e.preventDefault();
             if (modal_discount.hasClass('show')) return;
@@ -139,8 +128,11 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para agregar producto a la venta
+         * Realiza peticion HTTP para obtener los stocks del producto
+         * Si tiene stock asociado al rol del usuario logueado, le abre el formulario
+         * Sino, le muestra un sweetalert indicando los stocks totales
+         */
         btn_add_product.on('click', function(e) {
             var selected = select_product.val();
 
@@ -196,8 +188,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de abrir modal para seleccionar un producto y ser agregado a la venta
+         */
         btn_add_product_modal.on('click', function(e) {
             var input = $('#product-modal-input'),
                 product_id = input.data('id'),
@@ -211,8 +203,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para crear un nuevo cliente desde la venta
+         */
         btn_add_customer.on('click', function(e) {
             e.preventDefault();
             modal_new_customer.modal('show');
@@ -220,8 +212,8 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para cancelar creacion de nuevo cliente
+         */
         btn_cancel_new_customer.on('click', function(e) {
             e.preventDefault();
             modal_new_customer.modal('hide');
@@ -229,35 +221,38 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para abrir modal de descuento
+         */
         btn_open_modal_discount.on('click', function(e) {
             modal_discount.modal('show');
         });
 
         /**
-        *
-        */
+         * Captura evento para aplicar descuento
+         * Luego llama a funcion para realizar peticion HTTP y validar contrasena para descuentos
+         */
         btn_apply_discount.on('click', function(e) {
             e.preventDefault();
             httpCalculateDiscount();
         });
 
-        
+        /**
+         * Captura evento de cerrar modal para crear nuevo cliente desde la venta
+         */
         modal_new_customer.on('hidden.coreui.modal', function(e) {
             select_customer.attr('disabled', false);
         });
 
         /**
-        *
-        */
+         * Captura evento para cerrar modal de agregar producto a la venta
+         */
         modal_product.on('hidden.coreui.modal', function(e) {
             modal_product_product_stocks.empty();
         });
 
         /**
-        *
-        */
+         * Captura evento de cambio de cliente seleccionado
+         */
         select_customer.on('change', function(e) {
             var container       = $('#customer-selected-container'),
                 selected        = $('#customer').find(':selected'),
@@ -287,8 +282,8 @@
         });
 
         /**
-        *
-        */
+         * Retorna el total de la venta
+         */
         function getOrderTotal() {
             var subtotal = 0,
                 total = 0;
@@ -309,8 +304,9 @@
         }
 
         /**
-        * 
-        */
+         * Actualiza los textos de subtotal y total de la venta
+         * Los totales son obtenidos de la funcion getOrderTotal
+         */
         function updateOrderTotal() {
             var totals = getOrderTotal();
             $('.subtotal').text(`$ ${replaceNumberWithCommas(totals.subtotal)}`);
@@ -318,8 +314,11 @@
         }
 
         /**
-        * 
-        */
+         * Procesa mostrar el formulario de un producto. Se llaman funciones para:
+         * - Llenar el header del modal con los datos base del producto
+         * - Llenar la tabla del producto
+         * - Se muestran los stocks del producto
+         */
         function handleShowProductForm(product) {
             setProductModalHeaderInfo(product);
             addProductModalTable(product);
@@ -332,7 +331,7 @@
         }
         
         /**
-         * 
+         * Agrega los stocks del producto al modal
          */
         function addAllStocksToShow(product) {
             @if (Auth::user()->isAdmin())
@@ -382,8 +381,8 @@
         }
 
         /**
-        * 
-        */
+         * Agregar los datos base del producto al header del modal
+         */
         function setProductModalHeaderInfo(product) {
             modal_product.find('.product-name').text(product.name);
             modal_product.find('.product-code').text(product.real_code);
@@ -392,8 +391,8 @@
         }
         
         /**
-        * 
-        */
+         * Retorna HTML string, con la tabla de los stocks del producto
+         */
         function addProductModalTable(product) {
             var html,
                 table_header = getHtmlTableHeaderProductStocks(product.is_regular),
@@ -412,8 +411,9 @@
         }
 
         /**
-        * 
-        */
+         * Retorna HTML string con el header para la tabl ade los stocks del producto
+         * Se valida si el producto tiene combinaciones o no
+         */
         function getHtmlTableHeaderProductStocks(is_regular) {
             var html = '';
 
@@ -441,8 +441,10 @@
         }
 
         /**
-        * 
-        */
+         * Retorna HTML string con el tbody de los stocks del producto
+         * Se valida si el producto es regular o con combinaciones
+         * Si tiene product.id es que es una combinacion
+         */
         function getHtmlTableBodyProductStocks(product) {
             var html = '<tbody>';
 
@@ -502,8 +504,8 @@
         }
 
         /**
-        *
-        */
+         * Agregar producta a vender a la datatable
+         */
         function addProductToDatatable(product_id, value) {
             var product = getProductFromArray(product_id);
 
@@ -517,8 +519,8 @@
         }
 
         /**
-        *
-        */
+         * Agrega al datatable de productos, el nuevo producto que se agrega a la venta
+         */
         function appendProductToProductsDatatable(product, value) {
             datatable_products.row.add( [
                 product.name,
@@ -554,8 +556,8 @@
         }
 
         /**
-        *
-        */
+         * Retorna el producto seleccionado a agregar a la venta del array de productos del cliente seleccionado
+         */
         function getProductFromArray(product_id) {
             return $products.find(obj => {
                 return obj.id === product_id
@@ -563,8 +565,8 @@
         }
 
         /**
-        *
-        */
+         * Valida si una cantidad agregada a es valida considerando el stock disponible
+         */
         function isProductValid(stock, value) {
             var valid = true;
 
@@ -588,8 +590,10 @@
         }
 
         /**
-        *
-        */
+         * Actualiza el datatable del resumen de la venta.
+         * Cuando se actualiza un producto en el paso 'Productos'
+         * Se actualiza la cantidad en el datatable del resumen
+         */
         function updateDatatableResumeProductQty(product_id, new_qty)  {
             var tr = $(`.tr-product-${product_id}`);
             var data = datatable_products_resume.row(tr).data();
@@ -598,8 +602,8 @@
         }
 
         /**
-        *
-        */
+         * Peticion HTTP para calcular descuento de la venta
+         */
         function httpCalculateDiscount() {
             var data = FORM_RESOURCE_ORDERS.serialize();
             $.ajax({
@@ -658,7 +662,11 @@
             });
         }
 
-        // Add event listener for opening and closing details + Update child input with parent (Original input-product-qty) value
+        /**
+         * Captura evento para abrir o cerrar los detalles y actualizar el input child de su tr padre (Input input-product-qty original)
+         * 
+         * Esto se hace porque si se modifica el datatable por responsive, los inputs se replican y pueden perderse porque el plugin oculta el input original
+         */
         datatable_products.on('click', 'tr', function () {
             var tr = $(this).closest('tr');
             var row = datatable_products.row(tr);
@@ -670,8 +678,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento de cambio de cantidad de un stock
+         * Se valida si ingresa un valor superior al maximo disponible para ese producto
+         */
         $('body').on('change', '.input-product-qty', function(e) {
             var stock = Number($(this).data('stock')),
                 product_name = $(this).data('name'),
@@ -703,8 +712,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para eliminar un producto de la venta
+         * Luego se actualiza el total de la venta
+         */
         $('body').on('click', 'tbody .remove-product', function (e) {
             var product_id = $(this).data('id'),
                 name = $(this).data('name'),
@@ -723,6 +733,10 @@
                 }).show();
         });
 
+        /**
+         * Captura evento de swtich de nueva visita
+         * Muestra o oculta los campos para agenda nueva visita
+         */
         $('#enable_new_visit').change(function() {
             if (this.checked) {
                 $('#visit-fields').removeClass('d-none');
@@ -731,6 +745,9 @@
             }
         });
 
+        /**
+         * Valida si el cliente necesita pautar una nueva visita debido a su balance (Si esta en negativo)
+         */
         function checkNeedsVisit() {
             let result = $customer_balance;
             let orderTotal = getOrderTotal();
@@ -748,6 +765,9 @@
         }
 
         // Utilities
+        /**
+         * Retorna un valor numerico en formato con , y . en los decimales, milesimas correspondientemente
+         */
         function replaceNumberWithCommas(number) {
             //Seperates the components of the number
             var n= number.toString().split(".");
@@ -757,6 +777,9 @@
             return n.join(",");
         }
 
+        /**
+         * Inicializa datepicker para una futura visita
+         */
         function setDatePicker() {
             var inputs = $('.datepicker-form');
 
@@ -790,7 +813,10 @@
         */
         var current_fs, next_fs, previous_fs; //fieldsets
         var opacity;
-
+        
+        /**
+         * Captura evento para avanzar al siguiente paso del formulario de venta
+         */
         $(".next").click(function() {
             var step = $(this).data('step');
 
@@ -832,6 +858,9 @@
             }
         });
 
+        /**
+         * Captura evento para regresar al paso anterior
+         */
         $(".previous").click(function() {
             current_fs = $(this).parent();
             previous_fs = $(this).parent().prev();
@@ -858,6 +887,9 @@
             });
         });
 
+        /**
+         * Captura evento de cambio de metodo de pago
+         */
         $('.radio-group .radio').click(function(){
             $(this).parent().find('.radio').removeClass('selected');
             $(this).parent().find('input').prop("checked", false);
@@ -865,6 +897,9 @@
             $(this).find('input').prop("checked", true);
         });
 
+        /**
+         * Valida si puede avanzar al siguiente paso del formulario de venta
+         */
         function canGoNextStep(step) {
             if (step == 1) {
                 if (!$('#customer').val()) {

@@ -4,6 +4,9 @@
 
         $('#role').select2();
 
+        /**
+         * Captura evento submit de formulario de usuarios
+         */
         FORM_USERS.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-users')[0];

@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de las cajas
+         */
         function initDataTable() {
             DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
@@ -31,8 +34,9 @@
         }
 
         /**
-        *
-        */
+         * Captura evento para eliminar una caja
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-box', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -103,8 +107,9 @@
         });
 
         /**
-        *
-        */
+         * Captura evento para cerrar una caja
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .close-box', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
