@@ -31,8 +31,9 @@ class ProductStockTransferController extends Controller
         $this->authorize('viewany', 'App\Models\ProductStockTransfer');
 
         if ($request->ajax()) {
-            $transfers = $this->productStockTransferRepository->all();
-            return Datatables::of($transfers)
+            $transfers = $this->productStockTransferRepository->allQuery();
+
+            return datatables()->eloquent($transfers)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';

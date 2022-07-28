@@ -30,8 +30,9 @@ class BrandController extends Controller
         $this->authorize('viewany', 'App\Models\Brand');
 
         if ($request->ajax()) {
-            $brands = $this->brandRepository->all();
-            return Datatables::of($brands)
+            $brands = $this->brandRepository->allQuery();
+
+            return datatables()->eloquent($brands)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';

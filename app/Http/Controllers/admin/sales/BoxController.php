@@ -36,8 +36,9 @@ class BoxController extends Controller
         $this->authorize('viewany', 'App\Models\Box');
 
         if ($request->ajax()) {
-            $boxes = $this->boxRepository->all();
-            return Datatables::of($boxes)
+            $boxes = $this->boxRepository->allQuery();
+
+            return datatables()->eloquent($boxes)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';

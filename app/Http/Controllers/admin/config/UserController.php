@@ -35,8 +35,9 @@ class UserController extends Controller
         $this->authorize('viewany', 'App\User');
 
         if ($request->ajax()) {
-            $users = $this->userRepository->allEmployees();
-            return Datatables::of($users)
+            $users = $this->userRepository->allEmployeesQuery();
+
+            return datatables()->eloquent($users)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';

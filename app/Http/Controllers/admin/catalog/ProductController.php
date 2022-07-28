@@ -44,8 +44,10 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
-            $products = $this->productRepository->onlyPrincipals($criteria);
-            return Datatables::of($products)
+            // $products = $this->productRepository->onlyPrincipals($criteria);
+            $products = $this->productRepository->onlyPrincipalsQuery($criteria);
+            
+            return datatables()->eloquent($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -68,7 +70,7 @@ class ProductController extends Controller
 
                         return $btn;
                     })
-                    ->rawColumns(['action'])
+                    // ->rawColumns(['action'])
                     ->make(true);
         }
 

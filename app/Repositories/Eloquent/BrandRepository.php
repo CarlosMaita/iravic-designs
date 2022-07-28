@@ -28,4 +28,9 @@ class BrandRepository extends BaseRepository implements BrandRepositoryInterface
     {
         return $this->model->orderBy('name')->get();
     }
+
+    public function allQuery()
+    {
+        return $this->model->orderBy('name');
+    }
 }

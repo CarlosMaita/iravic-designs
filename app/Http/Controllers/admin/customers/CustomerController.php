@@ -38,8 +38,9 @@ class CustomerController extends Controller
         $this->authorize('viewany', 'App\Models\Customer');
 
         if ($request->ajax()) {
-            $customers = $this->customerRepository->all();
-            return Datatables::of($customers)
+            $customers = $this->customerRepository->allQuery();
+
+            return datatables()->eloquent($customers)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -76,7 +77,7 @@ class CustomerController extends Controller
 
         if ($request->ajax()) {
             $customers = $this->customerRepository->debtorsToNotify();
-            return Datatables::of($customers)
+            return datatables()->of($customers)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';

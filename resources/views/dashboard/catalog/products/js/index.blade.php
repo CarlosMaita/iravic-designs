@@ -265,7 +265,7 @@
                     //         return row.is_regular ? 'No' : 'Si';
                     //     }
                     // },
-                    {data: 'regular_price_str'},
+                    {data: 'regular_price_str', searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

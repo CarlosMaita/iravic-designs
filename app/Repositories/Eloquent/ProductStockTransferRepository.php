@@ -39,4 +39,25 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
 
         return $query->orderBy('created_at', 'DESC')->get();
     }
+
+    /**
+     * Retorna listado de solicitudes de transferencias de stocks filtrando por tipo de Stock del usuario logueado
+     * 
+     * @return 
+     */
+    public function allQuery()
+    {
+        $roles_name = Auth::user()->roles->flatten()->pluck('name');
+        $query = $this->model->with('creator', 'responsable')->with(['product' => fn($q) => $q->withTrashed()]);
+
+        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
+            $query->whereUserStock(Auth::user()->id, 'stock_truck');
+        }
+
+        if ($roles_name->contains('Local')) {
+            $query->whereUserStock(Auth::user()->id, 'stock_local');
+        }
+
+        return $query->orderBy('products_stock_transfer.created_at', 'DESC');
+    }
 }

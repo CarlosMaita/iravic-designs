@@ -39,6 +39,19 @@ class BoxRepository extends BaseRepository implements BoxRepositoryInterface
         return $query->orderBy('date', 'DESC')->get();
     }
 
+    public function allQuery()
+    {
+        $user = Auth::user();
+        $user_roles = $user->roles->flatten()->pluck('name');
+        $query = $this->model->with('user');
+
+        if (!$user_roles->contains('superadmin') && !$user_roles->contains('admin')) {
+            $query->whereUser($user->id);
+        }
+
+        return $query->orderBy('date', 'DESC');
+    }
+
     /**
      * Retorna caja que este abierta de un usuario
      * 

@@ -29,6 +29,41 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->model->with(['brand', 'category'])->orderBy('name')->get();
     }
 
+    public function onlyPrincipalsQuery($criteria = null)
+    {
+        $query = $this->model->doesntHave('product_parent')->with(['brand', 'category']);
+        
+        if (isset($criteria['brand']) && is_array($criteria['brand'])) {
+            $query->whereInBrand($criteria['brand']);
+        }
+
+        if (isset($criteria['category']) && is_array($criteria['category'])) {
+            $query->whereInCategory($criteria['category']);
+        }
+
+        if (isset($criteria['gender']) && is_array($criteria['gender'])) {
+            $query->whereInGender($criteria['gender']);
+        }
+
+        if (isset($criteria['color']) && is_array($criteria['color'])) {
+            $query->whereInColor($criteria['color']);
+        }
+
+        if (isset($criteria['size']) && is_array($criteria['size'])) {
+            $query->whereInSize($criteria['size']);
+        }
+
+        if (!empty($criteria['price_from'])) {
+            $query->wherePrice($criteria['price_from'], '>=');
+        }
+
+        if (!empty($criteria['price_to'])) {
+            $query->wherePrice($criteria['price_to'], '<=');
+        }
+
+        return $query->orderBy('name');
+    }
+
     /**
      * Retorna listado de productos principales. 
      * Producto principal = Producto que no tenga combinacion o producto general de un grupo de combinaciones

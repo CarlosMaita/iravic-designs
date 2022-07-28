@@ -11,13 +11,13 @@
         function initDataTable() {
             datatable_resource.DataTable({
                 fixedHeader: true,
-                processing: false,
+                processing: true,
                 responsive: true,
-                serverSide: true,
+                // serverSide: true,
                 ajax: URL_RESOURCE,
                 pageLength: 25,
                 columns: [
-                    {data: 'product.name_full'},
+                    {data: 'product.name_full', name: 'product.name'},
                     {data: 'qty'},
                     {data: 'stock_name_origin'},
                     {data: 'stock_name_destination'},

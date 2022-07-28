@@ -30,8 +30,9 @@ class CategoryController extends Controller
         $this->authorize('viewany', 'App\Models\Category');
 
         if ($request->ajax()) {
-            $categories = $this->categoryRepository->all();
-            return Datatables::of($categories)
+            $categories = $this->categoryRepository->allQuery();
+
+            return datatables()->eloquent($categories)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';

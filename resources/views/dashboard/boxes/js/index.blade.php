@@ -25,9 +25,9 @@
                             return row.closed == 1 ? 'Si' : 'No';
                         }
                     },
-                    {data: 'total_payed'},
-                    {data: 'total_refunded'},
-                    {data: 'total_final_sales'},
+                    {data: 'total_payed', searchable: false},
+                    {data: 'total_refunded', searchable: false},
+                    {data: 'total_final_sales', searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

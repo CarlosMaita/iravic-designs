@@ -29,6 +29,11 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         return $this->model->with('zone')->orderBy('name')->get();
     }
 
+    public function allQuery()
+    {
+        return $this->model->with('zone')->orderBy('name');
+    }
+
     /**
      * Retorna listado de clientes que tienen deudas y necesitan ser avisados/visitados.
      * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado

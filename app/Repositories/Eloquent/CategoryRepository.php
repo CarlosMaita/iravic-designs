@@ -28,4 +28,14 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     {
         return $this->model->orderBy('name')->get();
     }
+
+    /**
+     * Retorna listado de Categorías de productos
+     * 
+     * @return
+     */
+    public function allQuery()
+    {
+        return $this->model->orderBy('name');
+    }
 }
