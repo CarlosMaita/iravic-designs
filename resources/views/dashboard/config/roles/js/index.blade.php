@@ -5,6 +5,9 @@
 
         initDataTable();
 
+        /**
+         * Inicializa la datatable de roles
+         */
         function initDataTable() {
             DATATABLE_ROLES.DataTable({
                 fixedHeader: true,
@@ -27,7 +30,10 @@
             });
         }
 
-
+        /**
+         * Captura evento para eliminar un rol
+         * Realiza peticion HTTP
+         */
         $('body').on('click', 'tbody .delete-role', function (e) {
             e.preventDefault();
             let id = $(this).data('id');
@@ -54,10 +60,6 @@
                                 text: response.message,
                                 type: 'success'
                             }).show();
-
-                            if (response.cerrar_sesion == true) {
-                                window.location.href = "{{url('/login')}}";
-                            }
                         } else if (response.message) {
                             new Noty({
                                 text: response.message,
@@ -70,7 +72,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar el role en este momento.",
+                                text: "No se puede eliminar el rol en este momento.",
                                 type: 'error'
                             }).show();
                         }
@@ -92,7 +94,7 @@
                             }).show();
                         } else {
                             new Noty({
-                                text: "No se puede eliminar el role en este momento.",
+                                text: "No se puede eliminar el rol en este momento.",
                                 type: 'error'
                             }).show();
                         }

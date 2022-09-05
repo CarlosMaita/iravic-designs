@@ -14,9 +14,24 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Models\Permission' => 'App\Policies\PermissionPolicy',
-        'App\Models\Role' => 'App\Policies\RolePolicy',
-        'App\User' => 'App\Policies\UserPolicy'
+        'App\Models\Box'                    => 'App\Policies\BoxPolicy',
+        'App\Models\Brand'                  => 'App\Policies\BrandPolicy',
+        'App\Models\Category'               => 'App\Policies\CategoryPolicy',
+        'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
+        'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
+        'App\Models\Order'                  => 'App\Policies\OrderPolicy',
+        'App\Models\Payment'                => 'App\Policies\PaymentPolicy',
+        'App\Models\Permission'             => 'App\Policies\PermissionPolicy',
+        'App\Models\Product'                => 'App\Policies\ProductPolicy',
+        'App\Models\ProductImage'           => 'App\Policies\ProductImagePolicy',
+        'App\Models\ProductStockTransfer'   => 'App\Policies\ProductStockTransferPolicy',
+        'App\Models\Refund'                 => 'App\Policies\RefundPolicy',
+        'App\Models\Role'                   => 'App\Policies\RolePolicy',
+        'App\Models\Schedule'               => 'App\Policies\SchedulePolicy',
+        'App\Models\Spending'               => 'App\Policies\SpendingPolicy',
+        'App\Models\Visit'                  => 'App\Policies\VisitPolicy',
+        'App\Models\Zone'                   => 'App\Policies\ZonePolicy',
+        'App\User'                          => 'App\Policies\UserPolicy'
     ];
 
     /**
@@ -30,12 +45,16 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::before(function (User $user) {
             if (!empty(array_intersect(array('superadmin', 'admin'), $user->roles->pluck('name')->toArray()))) {
-                // return true;
+                return true;
             }
         });
 
-        // Gate::define('create-user', function ($user) {
-        //     return $user->permissions()->contains('create-user');
-        // });
+        Gate::define('view-customers-debtors', function ($user) {
+            return $user->permissions()->contains('view-customers-debtors');
+        });
+
+        Gate::define('sort-zones', function ($user) {
+            return $user->permissions()->contains('sort-zones');
+        });
     }
 }

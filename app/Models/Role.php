@@ -31,17 +31,24 @@ class Role extends Model
         return $query->where('is_employee', 1);
     }
 
+    public function scopeWhereNotEmployee($query)
+    {
+        return $query->where('is_employee', 0);
+    }
+
     public function scopeWhereNotSuperadmin($query)
     {
         return $query->where('is_superadmin', 0);
     }
 
     # Methods
+    # Agrega permiso a un rol
     public function allowTo($permission)
     {
         return $this->permissions()->save($permission);
     }
 
+    # Agrega permisos a un rol
     public function allowToMany($permissions)
     {
         return $this->permissions()->saveMany($permissions);

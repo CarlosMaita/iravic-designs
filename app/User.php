@@ -49,8 +49,12 @@ class User extends Authenticatable
     protected $attributes = [
     ];
 
-
     // Relations
+    public function boxes()
+    {
+        return $this->hasMany('App\Models\Box');
+    }
+
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role')->withTimestamps();
@@ -65,5 +69,36 @@ class User extends Authenticatable
     public function assignRole($role)
     {
         return $this->roles()->sync($role);
+    }
+
+    /**
+     * Retorna tipo de stock asociado al rol del usuario
+     */
+    public function getColumnStock()
+    {
+        $roles_name = $this->roles->flatten()->pluck('name');
+
+        if ($roles_name->contains('superadmin') || $roles_name->contains('admin')) {
+            return 'stock_local';
+        }
+
+        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
+            return 'stock_truck';
+        }
+
+        if ($roles_name->contains('Local')) {
+            return 'stock_local';
+        }
+
+        return null;
+    }
+
+    /**
+     * Retorna boolean para verificar si el usuario tiene rol de administrador (Incluido superadmin)
+     */
+    public function isAdmin()
+    {
+        $roles_name = $this->roles->flatten()->pluck('name');
+        return $roles_name->contains('superadmin') || $roles_name->contains('admin');
     }
 }

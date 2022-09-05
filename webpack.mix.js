@@ -11,12 +11,12 @@ const mix = require('laravel-mix');
  |
  */
 
-//mix.js('resources/js/app.js', 'public/js')
-//mix.sass('resources/sass/app.scss', 'public/css');
+mix.js('resources/js/app.js', 'public/js')
+mix.sass('resources/sass/app.scss', 'public/css');
+
 
 //**************** CSS ******************** 
 //css
-//mix.copy('resources/vendors/pace-progress/css/pace.min.css', 'public/css');
 mix.copy('node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css', 'public/css');
 mix.copy('node_modules/cropperjs/dist/cropper.css', 'public/css');
 //main css

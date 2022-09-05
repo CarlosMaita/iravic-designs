@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent;   
 
 use App\Repositories\EloquentRepositoryInterface; 
-use Illuminate\Database\Eloquent\Model;  
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class BaseRepository implements EloquentRepositoryInterface 
@@ -47,6 +47,15 @@ class BaseRepository implements EloquentRepositoryInterface
     public function find($id): ?Model
     {
         return $this->model->findOrFail($id);
+    }
+
+    /**
+    * @param $id
+    * @return Model
+    */
+    public function findOnly($id): ?Model
+    {
+        return $this->model->find($id);
     }
 
     /**

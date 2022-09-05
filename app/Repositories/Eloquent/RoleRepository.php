@@ -12,7 +12,7 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
     /**
      * RoleRepository constructor.
      *
-     * @param Cliente $model
+     * @param Role $model
      */
     public function __construct(Role $model)
     {
@@ -20,6 +20,8 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
     }
 
     /**
+     * Retorna listado de roles
+     * 
      * @return Collection
      */
     public function all($except_role = null): Collection
@@ -33,11 +35,29 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
         return $roles->get();
     }
 
+    /**
+     * Retorma Listado de todos los usuarios que tengan rol de empleado No superadmin
+     * 
+     * @return Collection
+     */
     public function allEmployees(): Collection
     {
         return $this->model
                     ->whereEmployee()
                     ->whereNotSuperadmin()
+                    ->orderBy('name')
+                    ->get();
+    }
+
+    /**
+     * Retorna Listado de todos los usuarios que no sean empleados 
+     * 
+     * @return Collection
+     */
+    public function allNotEmployees(): Collection
+    {
+        return $this->model
+                    ->whereNotEmployee()
                     ->orderBy('name')
                     ->get();
     }

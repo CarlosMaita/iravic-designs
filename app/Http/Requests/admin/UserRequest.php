@@ -69,7 +69,7 @@ class UserRequest extends FormRequest
                 $this->merge(['password' => Hash::make($this->password)]);
                 $this->merge(['deleted_at' => null]);
             } else if (!empty($this->password) && $this->isMethod('PUT')) {
-                $this->merge(['password' => $this->password]);
+                $this->merge(['password' => Hash::make($this->password)]);
             } else if ($this->isMethod('PUT')) {
                 $this->merge(['password' => Auth::user()->password]);
             }

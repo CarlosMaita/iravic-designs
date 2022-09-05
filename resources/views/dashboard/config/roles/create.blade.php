@@ -11,8 +11,8 @@
                           <form id="form-roles" method="POST" action="{{ route('roles.store') }}">
                             @csrf
                             @include('dashboard.config.roles._form')
-                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                             <a href="{{ route('roles.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button>
                           </form>
                         </div>
                     </div>

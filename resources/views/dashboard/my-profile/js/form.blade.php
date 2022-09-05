@@ -2,6 +2,9 @@
     $(function(){
         const FORM_PROFILE = $("#form-profile");
 
+        /**
+         * Captura evento de submit del formulario de perfil
+         */
         FORM_PROFILE.on('submit', function (e) {
             e.preventDefault();
             var form = $('#form-profile')[0];

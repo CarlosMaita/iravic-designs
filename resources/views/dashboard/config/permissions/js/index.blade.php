@@ -3,11 +3,11 @@
         const URL_PERMISSIONS = "{{ route('permisos.index') }}";
         const DATATABLE_PERMISSIONS = $("#datatable_permissions");
 
-        console.log(URL_PERMISSIONS);
-        console.log(DATATABLE_PERMISSIONS);
-
         initDataTable();
 
+        /**
+         * Inicializa la datatable de permisos
+         */
         function initDataTable() {
             DATATABLE_PERMISSIONS.DataTable({
                 fixedHeader: true,

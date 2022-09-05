@@ -30,7 +30,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role)
     {
-        //
+        return $user->permissions()->contains('view-role');
     }
 
     /**
@@ -65,7 +65,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role)
     {
-        return !$role->is_superadmin && $user->permissions()->contains('delete-user');
+        return !$role->is_superadmin && $user->permissions()->contains('delete-role');
     }
 
     /**

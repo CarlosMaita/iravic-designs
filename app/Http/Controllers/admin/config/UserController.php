@@ -23,9 +23,6 @@ class UserController extends Controller
     {
         $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
-
-        $this->middleware('can:viewany,App\User');
-        $this->middleware('can:create,App\User');
     }
 
     /**
@@ -35,9 +32,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewany', 'App\User');
+
         if ($request->ajax()) {
-            $users = $this->userRepository->allEmployees();
-            return Datatables::of($users)
+            $users = $this->userRepository->allEmployeesQuery();
+
+            return datatables()->eloquent($users)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -66,6 +66,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', 'App\User');
         $roles = $this->roleRepository->allEmployees();
         return view('dashboard.config.users.create')
                 ->withRoles($roles)
@@ -81,6 +82,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
+            $this->authorize('create', 'App\User');
             $user = $this->userRepository->updateOrCreateByEmail($request->only('name', 'email', 'password', 'deleted_at'));
             $user->assignRole($request->role);
             flash("El usuario <b>$request->name</b> ha sido creado con éxito")->success();

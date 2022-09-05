@@ -1,10 +1,6 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-@import "node_modules/font-awesome/scss/font-awesome.scss";
-
-
-
 // Variables
 @import 'variables';
 
@@ -12,3 +8,4 @@
 @import '~bootstrap/scss/bootstrap';
 
 
+@import "vue-select/src/scss/vue-select.scss";

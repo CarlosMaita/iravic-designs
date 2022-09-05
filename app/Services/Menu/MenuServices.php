@@ -10,6 +10,9 @@ namespace App\Services\Menu;
 
 class MenuServices
 {
+    /**
+     * Retorna si se esta en una url base. Puede aceptar parametro para validar que la url sea exacta (Sin parametros query)
+     */
     public function isActive($url, $other, $exact = false, $dropdown = false)
     {
         $result = "";
