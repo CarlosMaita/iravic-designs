@@ -29,6 +29,8 @@ class Customer extends Model
         'max_credit',
         'name',
         'receipt_picture',
+        'card_front',
+        'card_back',
         'qualification',
         'telephone',
         'cellphone'
@@ -47,6 +49,8 @@ class Customer extends Model
         'url_address',
         'url_dni',
         'url_receipt',
+        'url_card_front',
+        'url_card_back',
         'whatsapp_number'
     ];
 
@@ -55,6 +59,8 @@ class Customer extends Model
     const DISK_DNI = 'customers_dni';
 
     const DISK_RECEIPT = 'customers_receipt';
+
+    const CARD = 'cards';
 
     # Boot
     protected static function boot()
@@ -227,6 +233,32 @@ class Customer extends Model
 
         return url("/img/no_image.jpg");
     }
+
+    /**
+     * Retorna URL del recibo
+     */
+    public function getUrlCardFrontAttribute()
+    {
+        if (Storage::disk(self::CARD)->exists($this->card_front)) {
+            return Storage::disk(self::CARD)->url($this->card_front);
+        }
+
+        return url("/img/no_image.jpg");
+    }
+
+    /**
+     * Retorna URL del recibo
+     */
+    public function getUrlCardBackAttribute()
+    {
+        if (Storage::disk(self::CARD)->exists($this->card_back)) {
+            return Storage::disk(self::CARD)->url($this->card_back);
+        }
+
+        return url("/img/no_image.jpg");
+    }
+
+
 
     /**
      * Retorna Link de whatsapp con mensaje a cliente sobre visita para cobrar hoy
