@@ -76,6 +76,33 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            @if ($customer->card_front)
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label for="receipt_picture">{{ __('dashboard.form.fields.customers.card_front') }}</label>
+                        
+                        <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                            <img id="img-receipt_picture" class="mt-3 img-fluid" src="{{ $customer->url_card_front }}" alt="{{ __('dashboard.form.fields.customers.card_front') }}" />
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($customer->card_back)
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label for="receipt_picture">{{ __('dashboard.form.fields.customers.card_back') }}</label>
+                        
+                        <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                            <img id="img-receipt_picture" class="mt-3 img-fluid" src="{{ $customer->url_card_back }}" alt="{{ __('dashboard.form.fields.customers.card_front') }}" />
+                        </div>
+                    </div>
+                </div>
+            @endif
+            
+            
+        </div>
     </div>
     <hr>
     <div  class="container-fluid">

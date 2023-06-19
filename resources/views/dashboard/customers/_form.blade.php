@@ -101,6 +101,42 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="card_front">{{ __('dashboard.form.fields.customers.card_front') }}</label>
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="card_front" name="card_front" lang="es">
+                    <label class="custom-file-label" for="card_front">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-card_front" class="mt-3 img-fluid  @if(!$customer->card_front) d-none @endif" src="{{ $customer->url_card_front }}" alt="{{ __('dashboard.form.fields.customers.card_front') }}" />
+                    @if($customer->card_front) 
+                        <span class="delete-img position-absolute" type="button" data-target="card_front"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="card_back">{{ __('dashboard.form.fields.customers.card_back') }}</label>
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="card_back" name="card_back" lang="es">
+                    <label class="custom-file-label" for="card_back">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-card_back" class="mt-3 img-fluid  @if(!$customer->card_back) d-none @endif" src="{{ $customer->url_card_back }}" alt="{{ __('dashboard.form.fields.customers.card_back') }}" />
+                    @if($customer->card_back) 
+                        <span class="delete-img position-absolute" type="button" data-target="card_back"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 </fieldset>
 <hr>
