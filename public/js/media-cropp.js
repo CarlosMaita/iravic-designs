@@ -100,7 +100,6 @@ this.removeFolderModal = new coreui.Modal(document.getElementById('cropp-img-mod
 this.cropper = null;
 this.croppUrl = null;
 this.croppFileId = null;
-
 this.uploadCroppedImage = function () {
   self.cropper.getCroppedCanvas().toBlob(function (blob) {
     var formData = new FormData();
@@ -112,9 +111,7 @@ this.uploadCroppedImage = function () {
     })["catch"](function (error) {
       console.log(error);
     });
-  }
-  /*, 'image/png' */
-  );
+  } /*, 'image/png' */);
 };
 
 this.afterShowedCroppModal = function () {
@@ -128,14 +125,12 @@ this.afterShowedCroppModal = function () {
     });
   }
 };
-
 this.showCroppModal = function (data) {
   self.croppUrl = data.url;
   self.croppUrl = self.croppUrl.replace('localhost', 'localhost' + self.changePort);
   document.getElementById('cropp-img-img').setAttribute('src', self.croppUrl);
   self.removeFolderModal.show();
 };
-
 this.croppImg = function (e) {
   self.croppFileId = e.target.getAttribute('atr');
   axios.get('/media/file?id=' + self.croppFileId + '&thisFolder=' + document.getElementById('this-folder-id').value).then(function (response) {
@@ -144,13 +139,10 @@ this.croppImg = function (e) {
     console.log(error);
   });
 };
-
 var croppFiles = document.getElementsByClassName("file-cropp-file");
-
 for (var i = 0; i < croppFiles.length; i++) {
   croppFiles[i].addEventListener('click', this.croppImg);
 }
-
 document.getElementById("cropp-img-modal").addEventListener("show.coreui.modal", this.afterShowedCroppModal);
 document.getElementById('cropp-img-save-button').addEventListener('click', this.uploadCroppedImage);
 
@@ -163,7 +155,7 @@ document.getElementById('cropp-img-save-button').addEventListener('click', this.
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\zapatos\resources\js\coreui\media-cropp.js */"./resources/js/coreui/media-cropp.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\zapatos\resources\js\coreui\media-cropp.js */"./resources/js/coreui/media-cropp.js");
 
 
 /***/ })
