@@ -58,7 +58,7 @@
 
                                 @if (Auth::user()->can('complete', App\Models\Visit::class))
                                     @if ($visit->is_completed)
-                                        <button data-id="{{ $visit->id }}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-times"></i></button>
+                                        <button data-id="{{ $visit->id }}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Cancelar" data-toggle="tooltip"><i class="fas fa-times"></i></button>
                                     @else
                                         <button data-id="{{ $visit->id }}" data-to-complete="1" class="btn btn-sm btn-primary btn-action-icon btn-complete-visit" title="Ver" data-toggle="tooltip"><i class="fas fa-check"></i></button>
                                         {{--  --}}
