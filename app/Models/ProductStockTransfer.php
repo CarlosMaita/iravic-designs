@@ -52,7 +52,7 @@ class ProductStockTransfer extends Model
                 $product->$stock_name_destination = $new_stock_destination;
                 $product->save();
 
-                $product->addStockHistoryRecord($user->id, 'Transferencia hacia ' . $new_stock_destination, $new_stock_origin, $old_stock_origin, $qty, $stock_name_origin, null, $product_stock_transfer->id);
+                $product->addStockHistoryRecord($user->id, 'Transferencia hacia ' . $stock_name_destination, $new_stock_origin, $old_stock_origin, $qty, $stock_name_origin, null, $product_stock_transfer->id);
                 $product->addStockHistoryRecord($user->id, 'Transferencia desde ' . $stock_name_origin, $new_stock_destination, $old_stock_destination, $qty, $stock_name_destination, null, $product_stock_transfer->id);
             }
         });
