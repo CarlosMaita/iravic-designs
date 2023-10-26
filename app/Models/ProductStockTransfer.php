@@ -81,7 +81,7 @@ class ProductStockTransfer extends Model
     public function getDateAttribute()
     {
         if ($this->created_at) {
-            return Carbon::parse($this->created_at)->format('d-m-Y h:i:s');
+            return Carbon::parse($this->created_at)->format('d-m-Y H:i:s');
         }
 
         return '';
