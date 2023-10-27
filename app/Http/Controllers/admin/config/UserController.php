@@ -35,8 +35,7 @@ class UserController extends Controller
         $this->authorize('viewany', 'App\User');
 
         if ($request->ajax()) {
-            $users = $this->userRepository->allEmployeesQuery();
-
+            $users = $this->userRepository->allUsersQuery( Auth::user()->isSuperAdmin() ) ;
             return datatables()->eloquent($users)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
