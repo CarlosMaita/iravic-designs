@@ -26,4 +26,12 @@ class Zone extends Model
     {
         return $this->hasMany('App\Models\Customer');
     }
+
+    #existen Clientes asignados a la zona 
+    public function existsAssignedCustomers() : bool
+    {
+        #ver si existen clientes asignados
+        return count($this->customers) > 0  ? true : false;;
+    }
+
 }
