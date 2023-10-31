@@ -52,7 +52,7 @@ class ScheduleController extends Controller
                             $btn .= '<a href="'. route('agendas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        if (Auth::user()->can('delete', $row)) {
+                        if (Auth::user()->can('delete', $row) && !$row->completed ) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-schedule" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
 
