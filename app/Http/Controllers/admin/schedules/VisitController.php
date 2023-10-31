@@ -17,13 +17,11 @@ use Illuminate\Support\Facades\DB;
 class VisitController extends Controller
 {
     public $scheduleRepository;
-
     public $visitRepository;
 
     public function __construct(ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
-
         $this->visitRepository = $visitRepository;
     }
 
@@ -218,13 +216,41 @@ class VisitController extends Controller
     {
         try {
             $attributes = $request->only('is_completed');
-            $this->visitRepository->update($visita->id, $attributes);
-            $message = $request->is_completed ? 'La visita ha sido marcada como completa con éxito' : 'La visita ha sido marcada como NO completa con éxito';
+            if($request->is_completed)
+            {
+                #Marcar visita como COMPLETADA
+                if($visita->existsAssignedResponsible())
+                {
+                    $this->visitRepository->update($visita->id, $attributes);
+                    #vefificar si todas las visitas de la agenda han sido completadas 
+                    if ($this->scheduleRepository->checkAllVisitsCompleted($visita->schedule_id)){
+                        #completar repositorio 
+                        $this->scheduleRepository->setCompleted($visita->schedule_id, true);
+                    }
+                    $message = 'La visita ha sido marcada como completa con éxito';
+                    return response()->json([
+                        'success' => true,
+                        'message' => $message
+                    ]);
+                }else{
+                    $message = 'Falta asignar responsable a la visita';
+                    return response()->json([
+                        'success' => false,
+                        'message' => $message
+                    ]);
+                }
+            } else{
+                #Marcar visita como NO COMPLETADA
+                $this->visitRepository->update($visita->id, $attributes);
+                #Marcar agenda como NO COMPLETADA 
+                $this->scheduleRepository->setCompleted($visita->schedule_id, false);
+                 $message = 'La visita ha sido marcada como NO completa con éxito';
+                 return response()->json([
+                     'success' => true,
+                     'message' => $message
+                 ]);
+            }
 
-            return response()->json([
-                'success' => true,
-                'message' => $message
-            ]);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
@@ -271,4 +297,6 @@ class VisitController extends Controller
             ]);
         }
     }
+
+    
 }

@@ -46,4 +46,34 @@ class ScheduleRepository extends BaseRepository implements ScheduleRepositoryInt
     {
         return $this->model->firstOrCreate($attributes);
     }
+
+     /**
+     * Verifica que en la agenda todas las visitas estén completadas.
+     * Retorna 
+     *  true - si todas las visitas están completadas; 
+     *  false - si existe una o más visitas no completadas.
+     *
+     * @return bool
+     */
+    public function checkAllVisitsCompleted(int $schedule_id) : bool 
+    {
+        #Consigue la agenda
+        $schedule = $this->model->find($schedule_id);   
+        $visitas = $schedule->visits->where('is_completed', false);
+        return count($visitas) > 0 ? false : true; 
+    }
+
+    /**
+     * modifica la variable completed la agenda 
+     * @param int schedule_id 
+     * 
+     */
+    public function setCompleted( int $schedule_id , bool $value ) : void
+    {
+        #Consigue la agenda & Completa la agenda
+        $schedule = $this->model->find($schedule_id);
+        $schedule->completed = $value ;
+        $schedule->save();
+    }
+
 }
