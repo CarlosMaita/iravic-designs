@@ -431,4 +431,9 @@ class Customer extends Model
         return count($this->visits) > 0? true : false;
     }
 
+    public function haveDebtsCustomer() : bool 
+    {
+        return $this->getBalance() < 0 ? true : false;
+    }
+
 }

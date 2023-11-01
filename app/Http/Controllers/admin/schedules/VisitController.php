@@ -166,8 +166,17 @@ class VisitController extends Controller
     {
         try {
             $this->authorize('delete', $visita);
+            #validar si cliente tiene deudas 
+            if($visita->customer->haveDebtsCustomer())
+            {
+                #No se puede eliminar
+                return response()->json([
+                    'success' => false,
+                    'message' => "No se pudo eliminar la visita debido a una deuda pendiente del cliente"
+                ]);   
+            }
+            #client sin deudas
             $visita->delete();
-            
             return response()->json([
                 'success' => true,
                 'message' => "La visita ha sido eliminada con éxito"
