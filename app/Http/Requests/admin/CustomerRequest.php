@@ -25,6 +25,7 @@ class CustomerRequest extends FormRequest
             'dni.required' => 'El campo C.I es obligatorio.',
             'dni_picture.required' => 'La foto de la C.I es obligatoria.',
             'max_credit.required' => 'El campo Crédito Máximo es obligatorio.',
+            'max_credit.min' => 'La cantidad mínima de Crédito Máximo es de :min ',
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El campo nombre debe tener por lo menos :min caracteres.',
             'receipt_picture.required' => 'La foto del recibo de sueldo es obligatoria.',
@@ -32,7 +33,17 @@ class CustomerRequest extends FormRequest
             'qualification.in' => 'El campo de calificación seleccionado no es válido.',
             'telephone.required' => 'El campo teléfono es obligatorio.',
             'zone_id.required' => 'El campo zona es obligatorio.',
-            'zone_id.exists' => 'La zona seleccionada no existe en nuestra BD.'
+            'zone_id.exists' => 'La zona seleccionada no existe en nuestra BD.',
+            'dni_picture.image' => 'La foto de la C.I debe ser una imagen.',
+            'receipt_picture.image' => 'La foto del recibo debe ser una imagen.',
+            'card_front.image' => 'La foto del frente de la tarjeta  debe ser una imagen.',
+            'card_back.image' => 'La foto del dorso de la tarjeta debe ser una imagen.',
+            'address_picture.image' => 'La foto del frente de la casa debe ser una imagen.',
+            'dni_picture.mimes' => 'La foto de la C.I  debe ser de tipo jpeg, jpg, png o webp.',
+            'receipt_picture.mimes' => 'La foto del recibo debe debe ser de tipo jpeg, jpg, png o webp.',
+            'card_front.mimes' => 'la foto del frente de la tarjeta  debe debe ser de tipo jpeg, jpg, png o webp.',
+            'card_back.mimes' => 'La foto del dorso de la tarjeta debe debe ser de tipo jpeg, jpg, png o webp.',
+            'address_picture.mimes' => 'La foto del frente de la casa debe debe ser de tipo jpeg, jpg, png o webp.',
         ];
     }
 
@@ -54,33 +65,21 @@ class CustomerRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'address' => 'required',
-            // 'contact_name' => 'required',
-            // 'contact_telephone' => 'required',
-            // 'contact_dni' => 'required',
-            'days_to_notify_debt' => 'required|integer|min:0|max:500',
-            'dni' => 'required',
-            'max_credit' => 'required|numeric',
             'name' => 'required|min:2',
-            'qualification' => ['required', Rule::in(['Muy Bueno', 'Bueno', 'Malo', 'Muy Malo'])],
-            'telephone' => 'required',
-            'zone_id' => 'required|exists:zones,id'
+            'dni' => 'required',
+            'address' => 'required',
+            'contact_name' => 'required',
+            'max_credit' => 'required|numeric|min:0',
+            'days_to_notify_debt' => 'required|integer|min:0|max:500',
+            'qualification' => ['required', Rule::in(['Nuevo','Muy Bueno', 'Bueno', 'Malo', 'Muy Malo'])],
+            'zone_id' => 'required|exists:zones,id',
         ];
-
-        /*
-        if ($this->isMethod('POST')) {
-            $rules['dni_picture'] = 'required|file';
-            $rules['receipt_picture'] = 'required|file';
-        } else {
-            if (isset($this->delete_dni_picture) && !$this->dni_picture) {
-                $rules['dni_picture'] = 'required|file';
-            }
-
-            if (isset($this->delete_receipt_picture) && !$this->receipt_picture) {
-                $rules['receipt_picture'] = 'required|file';
-            }
-        }
-        */
+        #validacion de imagenes 
+        $rules['dni_picture'] = 'image|mimes:jpeg,jpg,png,webp';
+        $rules['receipt_picture'] = 'image|mimes:jpeg,jpg,png,webp';
+        $rules['card_front'] = 'image|mimes:jpeg,jpg,png,webp';
+        $rules['card_back'] = 'image|mimes:jpeg,jpg,png,webp';
+        $rules['address_picture'] = 'image|mimes:jpeg,jpg,png,webp';
 
         return $rules;
     }
@@ -126,7 +125,7 @@ class CustomerRequest extends FormRequest
         /** 
          * Telephone can't be equal to contact telephone 
         */
-        if ($this->telephone == $this->contact_telephone) {
+        if ($this->telephone == $this->contact_telephone && !empty($this->telephone) && !empty($this->contact_telephone) ) {
             $validator->after(function ($validator) {
                 $validator->errors()->add('dni_unique', 'El teléfono del cliente tiene que ser diferente al teléfono de la persona de contacto.');
             });
