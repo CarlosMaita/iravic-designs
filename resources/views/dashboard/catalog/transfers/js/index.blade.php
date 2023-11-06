@@ -23,9 +23,15 @@
                     {data: 'stock_name_destination'},
                     {data: 'creator.name'},
                     {data: 'responsable.name'},
-                    {data: 'date', orderData: 6},
+                    {data: 'date', orderData: 6,},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ], 
+                columnDefs: [
+                {
+                    targets: 6, // Index of the "date" column
+                    type: 'date' // Specify the column type as "date"
+                }
+                ],
                 order: [[6, 'desc']]
             });
         }
