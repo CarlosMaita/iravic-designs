@@ -101,4 +101,13 @@ class User extends Authenticatable
         $roles_name = $this->roles->flatten()->pluck('name');
         return $roles_name->contains('superadmin') || $roles_name->contains('admin');
     }
+
+    /**
+     * Retorna boolean para verificar si el usuario tiene rol de Super Administrador
+     */
+    public function isSuperAdmin()
+    {
+        $roles_name = $this->roles->flatten()->pluck('name');
+        return $roles_name->contains('superadmin') ;
+    }
 }

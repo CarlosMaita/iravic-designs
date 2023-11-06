@@ -3,6 +3,7 @@
 namespace App\Http\Requests\admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ZoneRequest extends FormRequest
 {
@@ -40,7 +41,13 @@ class ZoneRequest extends FormRequest
         if ($this->isMethod('POST')) {
             $rules['name'] = 'required|max:100|unique:zones,name,NULL,id,deleted_at,NULL';
         } else {
-            $rules['name'] = 'required|max:100|unique:zones,name,' . $this->route('zona')->id;
+            $rules['name'] = [
+                'required',
+                'max:100',
+                Rule::unique('zones', 'name')->where(function ($query) {
+                    $query->whereNull('deleted_at');
+                })->ignore($this->route('zona')->id),
+            ];
         }
 
         return $rules;

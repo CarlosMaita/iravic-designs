@@ -414,4 +414,26 @@ class Customer extends Model
 
         return now();
     }
+    
+    /**
+     * Retorna si existen ordenes vinculadas al cliente
+     */
+    public function existsOrders() : bool
+    {
+        return count($this->orders) > 0 ? true : false;
+    }
+
+    /**
+     * Retorna si existen Visitas vinculadas al cliente
+     */
+    public function existsVisits() : bool
+    {
+        return count($this->visits) > 0? true : false;
+    }
+
+    public function haveDebtsCustomer() : bool 
+    {
+        return $this->getBalance() < 0 ? true : false;
+    }
+
 }

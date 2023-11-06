@@ -191,6 +191,7 @@ class ProductRequest extends FormRequest
      */
     public function withValidator($validator)
     {
+        
         if (!$this->is_regular && isset($this->combinations_group)) {
             foreach(array_keys($this->combinations_group) as $key) {
                 $combination_num = ($key + 1);
@@ -228,27 +229,29 @@ class ProductRequest extends FormRequest
                         }
                     }
                 }
-                
-                foreach ($this->product_combinations[$key] as $product_combination_id) {
-                    if (!empty($this->combinations_group_code[$key])) {
-                        if ($this->isMethod('POST')) {
-                            $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
-                        } else {
-                            $product_id_route = $this->route('producto')->id;
-                            $product_with_code = Product::where('code', $this->combinations_group_code[$key])
-                                                        ->where(function ($q) use ($product_id_route, $product_combination_id) {
-                                                            // $q->where('id', '<>', $product_id_route)
-                                                            //     ->orWhere('product_id', '<>', $product_id_route);
-                                                            $q->where('id', '<>', $product_combination_id)
-                                                                ->where('product_id', '<>', $product_id_route);
-                                                        })
-                                                        ->count();
-                        }
-
-                        if ($product_with_code) {
-                            $validator->after(function ($validator) use ($combination_num) {
-                                $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
-                            });
+                #validar la existencia 
+                if(isset($this->product_combinations[$key]  )){
+                    foreach ($this->product_combinations[$key] as $product_combination_id) {
+                        if (!empty($this->combinations_group_code[$key])) {
+                            if ($this->isMethod('POST')) {
+                                $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
+                            } else {
+                                $product_id_route = $this->route('producto')->id;
+                                $product_with_code = Product::where('code', $this->combinations_group_code[$key])
+                                                            ->where(function ($q) use ($product_id_route, $product_combination_id) {
+                                                                // $q->where('id', '<>', $product_id_route)
+                                                                //     ->orWhere('product_id', '<>', $product_id_route);
+                                                                $q->where('id', '<>', $product_combination_id)
+                                                                    ->where('product_id', '<>', $product_id_route);
+                                                            })
+                                                            ->count();
+                            }
+    
+                            if ($product_with_code) {
+                                $validator->after(function ($validator) use ($combination_num) {
+                                    $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
+                                });
+                            }
                         }
                     }
                 }

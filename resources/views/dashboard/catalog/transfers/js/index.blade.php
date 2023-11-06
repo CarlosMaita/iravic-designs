@@ -23,9 +23,10 @@
                     {data: 'stock_name_destination'},
                     {data: 'creator.name'},
                     {data: 'responsable.name'},
-                    {data: 'date'},
+                    {data: 'date', orderData: 6},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ], 
+                order: [[6, 'desc']]
             });
         }
 

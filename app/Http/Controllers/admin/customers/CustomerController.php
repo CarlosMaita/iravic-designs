@@ -250,6 +250,13 @@ class CustomerController extends Controller
     {
         try {
             $this->authorize('delete', $cliente);
+              #validar existencia de ordenes o visitas antes de eliminar
+              if ($cliente->existsOrders() || $cliente->existsVisits() ){
+                  return response()->json([
+                      'success' => false,
+                      'message' => "El cliente no ha podido ser eliminada existe ordenes y/o visitas asociadas"
+                  ]); 
+              }
             DB::beginTransaction();
             $cliente->delete();
             DB::commit();

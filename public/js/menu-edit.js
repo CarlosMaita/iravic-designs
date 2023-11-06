@@ -94,13 +94,12 @@
 /***/ (function(module, exports) {
 
 /* 11.12.2019 */
-var self = this;
 
+var self = this;
 this.buildSelectParent = function (data) {
   var result = '<option value="none">Do not have parent</option>';
   $parentId = document.getElementById('parentId').value;
   $menuElementId = document.getElementById('menuElementId').value;
-
   for (var i = 0; i < data.length; i++) {
     if (data[i].id != $menuElementId) {
       if (data[i].id == $parentId) {
@@ -110,10 +109,8 @@ this.buildSelectParent = function (data) {
       }
     }
   }
-
   return result;
 };
-
 this.updateSelectParent = function () {
   axios.get('/menu/element/get-parents?menu=' + document.getElementById("menu").value).then(function (response) {
     document.getElementById("parent").innerHTML = self.buildSelectParent(response.data);
@@ -122,10 +119,8 @@ this.updateSelectParent = function () {
     console.log(error);
   });
 };
-
 this.toggleDivs = function () {
   var value = document.getElementById("type").value;
-
   if (value === 'title') {
     document.getElementById('div-href').classList.add('d-none');
     document.getElementById('div-dropdown-parent').classList.add('d-none');
@@ -140,14 +135,11 @@ this.toggleDivs = function () {
     document.getElementById('div-icon').classList.remove('d-none');
   }
 };
-
 this.updateSelectParent();
 this.toggleDivs();
-
 document.getElementById("menu").onchange = function () {
   self.updateSelectParent();
 };
-
 document.getElementById("type").onchange = function () {
   self.toggleDivs();
 };
@@ -161,7 +153,7 @@ document.getElementById("type").onchange = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\zapatos\resources\js\coreui\menu-edit.js */"./resources/js/coreui/menu-edit.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\zapatos\resources\js\coreui\menu-edit.js */"./resources/js/coreui/menu-edit.js");
 
 
 /***/ })

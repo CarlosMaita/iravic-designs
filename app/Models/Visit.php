@@ -120,4 +120,14 @@ class Visit extends Model
             });
         });
     }
+
+     /**
+     * valida que exista responsable asignado 
+     * 
+     * @return bool 
+     */
+    public function existsAssignedResponsible() : bool 
+    {
+        return  $this->responsable ? true : false;
+    }
 }
