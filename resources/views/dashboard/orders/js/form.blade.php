@@ -144,7 +144,7 @@
                     contentType: false,
                     success: function(res) {
                         var product = res;
-
+                        console.log(res);
                         if (product && product.stock_user > 0) {
                             handleShowProductForm(product);
                         } else if (product) {
@@ -386,8 +386,8 @@
         function setProductModalHeaderInfo(product) {
             modal_product.find('.product-name').text(product.name);
             modal_product.find('.product-code').text(product.real_code);
-            modal_product.find('.product-category').text(product.category?.name);
-            modal_product.find('.product-brand').text(product.brand.name);
+            modal_product.find('.product-category').text(product.category ? product.category.name : '-');
+            modal_product.find('.product-brand').text(product.brand ? product.brand.name : '-' );
         }
         
         /**

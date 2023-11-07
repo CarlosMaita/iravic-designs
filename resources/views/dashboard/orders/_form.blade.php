@@ -124,7 +124,7 @@
                                                             @if ($product->is_regular)
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
-                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-brand="{{ optional($product->brand)->name }}"
                                                                     data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
@@ -133,7 +133,7 @@
                                                             @elseif($product->product_id)
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
-                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-brand="{{ optional($product->brand)->name }}"
                                                                     data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
