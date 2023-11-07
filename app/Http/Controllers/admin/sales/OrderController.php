@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\sales;
 
+use App\Constants\CustomerConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
@@ -109,6 +110,7 @@ class OrderController extends Controller
                 ->withBoxParam($boxParam)
                 ->withCustomers($customers)
                 ->withCustomerParam($customerParam)
+                ->withQualifications(CustomerConstants::QUALIFICATIONS)
                 ->withOrder(new Order())
                 ->withProducts($products)
                 ->withZones($zones);
