@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\admin;
 
+use App\Constants\CustomerConstants;
 use App\Models\Customer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -71,7 +72,7 @@ class CustomerRequest extends FormRequest
             'contact_name' => 'required',
             'max_credit' => 'required|numeric|min:0',
             'days_to_notify_debt' => 'required|integer|min:0|max:500',
-            'qualification' => ['required', Rule::in(['Nuevo','Muy Bueno', 'Bueno', 'Malo', 'Muy Malo'])],
+            'qualification' => ['required', Rule::in(CustomerConstants::QUALIFICATIONS)],
             'zone_id' => 'required|exists:zones,id',
         ];
         #validacion de imagenes 

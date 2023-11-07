@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\customers;
 
+use App\Constants\CustomerConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CustomerRequest;
 use App\Models\Customer;
@@ -106,6 +107,7 @@ class CustomerController extends Controller
         $zones = $this->zoneRepository->all();
         return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
+                ->withQualifications(CustomerConstants::QUALIFICATIONS)
                 ->withZones($zones);
     }
 
@@ -192,6 +194,7 @@ class CustomerController extends Controller
         $zones = $this->zoneRepository->all();
         return view('dashboard.customers.edit')
                 ->withCustomer($cliente)
+                ->withQualifications(CustomerConstants::QUALIFICATIONS)
                 ->withZones($zones);
     }
 

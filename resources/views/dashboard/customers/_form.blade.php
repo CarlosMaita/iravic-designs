@@ -38,12 +38,9 @@
                 <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
                 <select id="qualification" class="form-control" name="qualification">
                     <option selected disabled>Seleccionar</option>
-                    <option value="Nuevo" @if($customer->qualification == "Nuevo") selected @endif>Nuevo</option>
-                    <option value="Muy Bueno" @if($customer->qualification == "Muy Bueno") selected @endif>Muy Bueno</option>
-                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
-                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
-                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
-                
+                    @foreach($qualifications as $q)
+                    <option value="{{$q}}" @if($customer->qualification == $q) selected @endif>{{$q}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
