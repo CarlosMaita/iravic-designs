@@ -76,11 +76,11 @@ class CustomerRequest extends FormRequest
             'zone_id' => 'required|exists:zones,id',
         ];
         #validacion de imagenes 
-        $rules['dni_picture'] = 'image|mimes:jpeg,jpg,png,webp';
-        $rules['receipt_picture'] = 'image|mimes:jpeg,jpg,png,webp';
-        $rules['card_front'] = 'image|mimes:jpeg,jpg,png,webp';
-        $rules['card_back'] = 'image|mimes:jpeg,jpg,png,webp';
-        $rules['address_picture'] = 'image|mimes:jpeg,jpg,png,webp';
+        $rules['dni_picture'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
+        $rules['receipt_picture'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
+        $rules['card_front'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
+        $rules['card_back'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
+        $rules['address_picture'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
 
         return $rules;
     }
