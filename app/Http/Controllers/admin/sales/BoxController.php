@@ -51,7 +51,7 @@ class BoxController extends Controller
                             $btn .= '<a href="'. route('cajas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        if (Auth::user()->can('update', $row)) {
+                        if (Auth::user()->can('update', $row) && !$row->isClosed()) {
                             $btn .= '<a href="'. route('cajas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
 
@@ -138,6 +138,11 @@ class BoxController extends Controller
     public function edit(Box $caja)
     {
         $this->authorize('update', $caja);
+        #validar que la caja esta abierta
+        if ($caja->isClosed()){
+            flash( 'La caja no puede ser editada porque ya ha sido cerrada.' )->warning();
+            return redirect()->back();
+        }
         return view('dashboard.boxes.edit')
                 ->withBox($caja);
     }

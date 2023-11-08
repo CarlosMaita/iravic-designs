@@ -248,4 +248,14 @@ class Box extends Model
     {
         return $this->spendings()->sum('amount');
     }
+
+    /**
+     * Retorna 
+     * true, si la caja esta cerrada
+     * fasle, si esta abierta
+     */
+    public function isClosed() : bool
+    {
+        return  $this->closed == 1 ? true : false;
+    }
 }
