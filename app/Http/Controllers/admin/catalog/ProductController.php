@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\catalog;
 
+use App\Constants\ProductConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductRequest;
 use App\Http\Requests\admin\Catalog\ProductStockRequest;
@@ -78,11 +79,13 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $genders = ProductConstants::GENDERS;
 
         return view('dashboard.catalog.products.index')
             ->withColors($colors)
             ->withSizes($sizes)
             ->withBrands($brands)
+            ->withGenders($genders)
             ->withCategories($categories);
     }
 
@@ -98,11 +101,13 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $genders = ProductConstants::GENDERS;
 
         return view('dashboard.catalog.products.create')
                 ->withBrands($brands)
                 ->withCategories($categories)
                 ->withColors($colors)
+                ->withGenders($genders)
                 ->withProduct(new Product())
                 ->withSizes($sizes);
     }
@@ -179,11 +184,13 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $genders = ProductConstants::GENDERS;
 
         return view('dashboard.catalog.products.edit')
                 ->withBrands($brands)
                 ->withCategories($categories)
                 ->withColors($colors)
+                ->withGenders($genders)
                 ->withProduct($producto)
                 ->withSizes($sizes);
     }
