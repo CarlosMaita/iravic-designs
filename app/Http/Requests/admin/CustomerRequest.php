@@ -29,6 +29,7 @@ class CustomerRequest extends FormRequest
             'max_credit.min' => 'La cantidad mínima de Crédito Máximo es de :min ',
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El campo nombre debe tener por lo menos :min caracteres.',
+            'email.email' => 'El campo de correo electrónico debe ser tipo email. Ej:email@axample.com.',
             'receipt_picture.required' => 'La foto del recibo de sueldo es obligatoria.',
             'qualification.required' => 'El campo calificación del cliente es obligatorio.',
             'qualification.in' => 'El campo de calificación seleccionado no es válido.',
@@ -67,6 +68,7 @@ class CustomerRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|min:2',
+            'email' => 'email|nullable',
             'dni' => 'required',
             'address' => 'required',
             'contact_name' => 'required',

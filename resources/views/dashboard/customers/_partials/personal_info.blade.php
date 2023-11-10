@@ -13,32 +13,40 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
-                <input class="form-control" type="text" value="{{ $customer->qualification }}" readOnly>
+                <label>{{ __('dashboard.form.fields.customers.email') }}</label>
+                <input class="form-control" type="text" value="{{ $customer->email }}" readOnly>
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
+                <input class="form-control" type="text" value="{{ $customer->qualification }}" readOnly>
+            </div>
+        </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>{{ __('dashboard.form.fields.customers.telephone') }}</label>
                 <input class="form-control" type="text" value="{{ $customer->telephone }}" readOnly>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>{{ __('dashboard.form.fields.customers.cellphone') }}</label>
                 <input class="form-control" type="text" value="{{ $customer->cellphone }}" readOnly>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>{{ __('dashboard.form.fields.customers.dni') }}</label>
                 <input class="form-control" type="text" value="{{ $customer->dni }}" readOnly>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="dni_picture">{{ __('dashboard.form.fields.customers.dni_picture') }}</label>

@@ -28,6 +28,7 @@ class Customer extends Model
         'longitude',
         'max_credit',
         'name',
+        'email',
         'receipt_picture',
         'card_front',
         'card_back',

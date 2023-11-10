@@ -120,6 +120,7 @@ return [
                 'dni_picture'         => 'Foto C.I',
                 'max_credit'          => 'Crédito máximo',
                 'name'                => 'Nombre',
+                'email'               => 'Correo electrónico',
                 'qualification'       => 'Calificación',
                 'receipt_picture'     => 'Foto recibo',
                 'cellphone'           => 'Teléfono celular',

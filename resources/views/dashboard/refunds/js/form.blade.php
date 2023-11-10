@@ -234,6 +234,7 @@
                 maxcredit       = selected.data('max-credit'),
                 maxcredit_str   = selected.data('max-credit-str'),
                 name            = selected.data('name'),
+                email            = selected.data('email'),
                 qualification   = selected.data('qualification'),
                 telephone       = selected.data('telephone');
 
@@ -242,6 +243,7 @@
             container.find('#selected-customer-dni').val(dni);
             container.find('#selected-customer-maxcredit').val(maxcredit_str);
             container.find('#selected-customer-name').val(name);
+            container.find('#selected-customer-email').val(email);
             container.find('#selected-customer-qualification').val(qualification);
             container.find('#selected-customer-telephone').val(telephone);
             container.removeClass('d-none');

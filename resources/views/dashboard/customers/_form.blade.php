@@ -13,26 +13,32 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="dni">{{ __('dashboard.form.fields.customers.dni') }}</label>
-                <input class="form-control" id="dni" name="dni" type="text" value="{{ old("dni", $customer->dni) }}">
+                <label for="email">{{ __('dashboard.form.fields.customers.email') }}</label>
+                <input class="form-control" id="email" name="email" type="text" value="{{ old("email", $customer->email) }}" autofocus>
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="dni">{{ __('dashboard.form.fields.customers.dni') }}</label>
+                <input class="form-control" id="dni" name="dni" type="text" value="{{ old("dni", $customer->dni) }}">
+            </div>
+        </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="telephone">{{ __('dashboard.form.fields.customers.telephone') }}</label>
                 <input class="form-control" id="telephone" name="telephone" type="text" value="{{ old("telephone", $customer->telephone) }}">
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="cellphone">{{ __('dashboard.form.fields.customers.cellphone') }}</label>
                 <input class="form-control" id="cellphone" name="cellphone" type="text" value="{{ old("cellphone", $customer->cellphone) }}">
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
@@ -44,6 +50,8 @@
                 </select>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="dni_picture">{{ __('dashboard.form.fields.customers.dni_picture') }}</label>

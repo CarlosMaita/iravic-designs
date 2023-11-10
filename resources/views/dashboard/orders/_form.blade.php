@@ -32,6 +32,7 @@
                                                                     data-max-credit="{{ $customer->max_credit }}"
                                                                     data-max-credit-str="{{ $customer->max_credit_str }}"
                                                                     data-name="{{ $customer->name }}"
+                                                                    data-email="{{ $customer->email }}"
                                                                     data-telephone="{{ $customer->telephone }}"
                                                                     data-qualification="{{ $customer->qualification }}"
                                                                     data-debt="{{ $customer->total_debt }}"
@@ -64,41 +65,47 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.form.fields.customers.dni') }}</label>
-                                                        <p id="selected-customer-dni" class="form-control h-100"></p>
+                                                        <label>{{ __('dashboard.form.fields.customers.email') }}</label>
+                                                        <p id="selected-customer-email" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.form.fields.customers.dni') }}</label>
+                                                        <p id="selected-customer-dni" class="form-control h-100"></p>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.telephone') }}</label>
                                                         <p id="selected-customer-telephone" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
                                                         <p id="selected-customer-qualification" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.max_credit') }}</label>
                                                         <p id="selected-customer-maxcredit" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.customers.balance') }}</label>
                                                         <p id="selected-customer-balance" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.address') }}</label>
                                                         <p id="selected-customer-address" class="form-control h-100"></p>

@@ -128,7 +128,7 @@ class CustomerController extends Controller
                 array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
                 array('card_front'      => ImageService::save(Customer::CARD, $request->file('card_front'))),
                 array('card_back'       => ImageService::save(Customer::CARD, $request->file('card_back'))),
-                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'email', 'qualification', 'telephone', 'zone_id')
             );
 
             $customer = $this->customerRepository->create($attributes);
@@ -217,7 +217,7 @@ class CustomerController extends Controller
                 $request->delete_receipt_picture)),
                 array('card_front'     => $cliente->updateImage(Customer::CARD, $cliente->card_front, $request->card_front, $request->delete_card_front)),
                 array('card_back'       => $cliente->updateImage(Customer::CARD, $cliente->card_back, $request->card_back, $request->delete_card_back)),
-                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'email', 'qualification', 'telephone', 'zone_id')
             );
             $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();
