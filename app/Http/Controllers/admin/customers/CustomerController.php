@@ -96,6 +96,37 @@ class CustomerController extends Controller
         return view('dashboard.customers.index_debtors');
     }
 
+       /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexPendingToSchedule(Request $request)
+    {
+        Gate::authorize('view-customers-pending-to-schedule');
+
+        if ($request->ajax()) {
+            $customers = $this->customerRepository->pendingToScheduleToNotify();
+            return datatables()->of($customers)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '';
+
+                        if (Auth::user()->can('view', $row)) {
+                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        }
+
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('dashboard.customers.index_pending_to_schedule');
+    }
+
+    
+
     /**
      * Show the form for creating a new resource.
      *

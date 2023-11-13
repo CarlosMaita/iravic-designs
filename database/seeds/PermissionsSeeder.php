@@ -12,6 +12,10 @@ class PermissionsSeeder extends Seeder
      */
     public function run()
     {
+        // Obtener los nombres de permisos existentes
+        $existingPermissions = Permission::pluck('name')->toArray();
+        
+        // definir los permisos 
         $permissions = [
             # Configuration
             [
@@ -536,8 +540,21 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            [
+                'name'         => 'view-customers-pending-to-schedule',
+                'display_name' => 'Clientes pendientes por agendar Listar',
+                'description'  => 'Clientes pendientes por agendar Listar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
-        Permission::insert($permissions);
+        // Verificar y crear los permisos
+        foreach ($permissions as $permission) {
+            if (!in_array($permission['name'], $existingPermissions)) {
+                Permission::create($permission);
+            }
+        }
+
     }
 }

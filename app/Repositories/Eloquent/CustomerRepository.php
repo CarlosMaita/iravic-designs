@@ -51,4 +51,19 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
 
         return $customers->filter->needsToNotifyDebt()->values();
     }
+
+    /**
+     * Retorna listado de clientes que se les ha postergado la visita y necesitan ser reagendados. 
+     * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado
+     * 
+     * @return Collection
+     */
+    public function pendingToScheduleToNotify(): Collection
+    {
+        $customers = $this->model->where('is_pending_to_schedule', 1 )
+                            ->with('zone')
+                            ->get();
+
+        return $customers;
+    }
 }

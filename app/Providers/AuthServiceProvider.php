@@ -53,6 +53,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->permissions()->contains('view-customers-debtors');
         });
 
+        Gate::define('view-customers-pending-to-schedule', function ($user) {
+            return $user->permissions()->contains('view-customers-pending-to-schedule');
+        });
+
         Gate::define('sort-zones', function ($user) {
             return $user->permissions()->contains('sort-zones');
         });

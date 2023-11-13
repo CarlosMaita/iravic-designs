@@ -289,6 +289,7 @@ return [
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
         'debtors'               => 'Morosos',
+        'pending-to-schedule'   => 'Pendientes por agendar',
         'refunds'               => 'Devoluciones',
         'general'               => 'General',
         'orders'                => 'Ventas',

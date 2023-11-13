@@ -33,6 +33,7 @@ class Customer extends Model
         'card_front',
         'card_back',
         'qualification',
+        'is_pending_to_schedule',
         'telephone',
         'cellphone'
     ];
@@ -437,4 +438,14 @@ class Customer extends Model
         return $this->getBalance() < 0 ? true : false;
     }
 
+    public function isPendingToSchedule() : bool 
+    {
+        return $this->is_pending_to_schedule == 1 ? true : false ;
+    } 
+
+    public function  setPendingToSchedule ($value) : void
+    {
+        $this->is_pending_to_schedule = $value;
+        $this->save();
+    }
 }

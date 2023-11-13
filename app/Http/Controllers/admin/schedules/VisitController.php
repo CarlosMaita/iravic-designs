@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\schedules;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\VisitRequest;
 use App\Http\Requests\admin\VisitResponsableRequest;
+use App\Models\Customer;
 use App\Models\Visit;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
@@ -75,8 +76,10 @@ class VisitController extends Controller
                 $request->only('customer_id', 'user_creator_id', 'date', 'comment')
             );
             $this->visitRepository->create($attributes);
+            $customer = Customer::find($request->customer_id);
+            #bajar la bandera de pendiente por agendar 
+            $customer->setPendingToSchedule(false);
             DB::commit();
-
             return response()->json([
                     'message' => 'La visita ha sido creada con éxito',
                     'success' => true
@@ -299,6 +302,34 @@ class VisitController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'No se ha podido actualizar las posiciones de las visitas.',
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+
+        
+    }
+
+    /**
+     * Posponer una visita
+     */
+    public function postpone( Request $request, Visit $visita)  
+    {
+        try{
+            #subir bandera de pending to schedule 
+            $customer =  $visita->customer;
+            $customer->setPendingToSchedule(true);
+            #eliminar visita
+            $visita->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Se ha postergado la visita.'
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'No se ha podido postergar la visita.',
                 'error' => [
                     'e' => $e->getMessage(),
                     'trace' => $e->getMessage()
