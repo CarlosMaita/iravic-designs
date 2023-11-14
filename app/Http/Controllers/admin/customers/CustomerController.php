@@ -166,10 +166,19 @@ class CustomerController extends Controller
             
             DB::commit();
 
-            if (!isset($request->without_flash)) {
+            if (isset($request->from_orders)) {
                 flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
+                return response()->json([
+                        'success' => true,
+                        'data' => [
+                            'customer' => $customer,
+                            'redirect' => route('ventas.create'), 
+                            'from_orders' => true 
+                        ]
+                ]);
             }
             
+            flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
             return response()->json([
                     'success' => true,
                     'data' => [

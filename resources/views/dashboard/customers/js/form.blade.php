@@ -140,16 +140,30 @@
                     contentType: false,
                 success: function (response) {
                     if (response.success) {
-                        if (is_creating_order) {
+                        if (response.data.from_orders) {
                             const customer = response.data.customer;
                             const customer_select = $('select#customer');
                             customer_select.attr('disabled', false);
-                            customer_select.append(`<option value="${customer.id}" selected>${customer.name}</option>`);
+                            const new_option = `<option 
+                                value="${customer.id}"
+                                data-address="${customer.address}"
+                                data-dni="${ customer.dni }"
+                                data-max-credit="${ customer.max_credit }"
+                                data-max-credit-str="${ customer.max_credit_str }"
+                                data-name="${ customer.name }"
+                                data-email="${ customer.email }"
+                                data-telephone="${ customer.telephone }"
+                                data-qualification="${ customer.qualification }"
+                                data-debt="${ customer.total_debt }"
+                                data-balance="${ customer.balance }"
+                                data-balance-numeric="${ customer.balance_numeric }"
+                                selected>${customer.name}</option>`;
+                            customer_select.append(new_option);
                             customer_select.select2().val(customer.id).trigger('change');
                             $('#modal-new-customer').modal('hide');
 
                             new Noty({
-                                text: 'Cliente creado',
+                                text: `El cliente <b>${customer.name}</b> ha sido creado con éxito`,
                                 type: 'success'
                             }).show();
                         } else {
