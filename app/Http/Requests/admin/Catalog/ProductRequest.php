@@ -126,10 +126,29 @@ class ProductRequest extends FormRequest
             'price' => 'required|numeric|min:0'
         ];
 
+
         if ($this->isMethod('POST')) {
+            #create product
             $rules['code'] = 'required|min:1|max:100|unique:products,code,NULL,id,deleted_at,NULL';
         } else {
-            $rules['code'] = 'required||min:1|max:100|unique:products,code,' . $this->route('producto')->id;
+            #update product
+            $rules['code'] = 'required|min:1|max:100|unique:products,code,' . $this->route('producto')->id;
+            #to check
+            // if($this->producto->is_regular){
+            //     $rules['code'] = 'required|min:1|max:100|unique:products,code,' . $this->route('producto')->id;
+            // }else{
+            //     $array_ids = array();
+            //     array_push($array_ids, $this->route('producto')->id );
+            //     if (isset($this->combinations_group)) {
+            //         foreach (array_keys($this->combinations_group) as $i) {
+            //             if (is_array($this->product_combinations[$i])) {
+            //                 $array_ids = array_merge($array_ids, $this->product_combinations[$i] );
+            //             }
+            //         }
+            //     }
+            //     $idsExcluidos = implode(',', $array_ids);
+            //     $rules['code'] = 'required|min:1|max:100|unique:products,code,' . $idsExcluidos ;
+            // }
         }
         
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
