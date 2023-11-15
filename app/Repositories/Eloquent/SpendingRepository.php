@@ -26,7 +26,7 @@ class SpendingRepository extends BaseRepository implements SpendingRepositoryInt
      */
     public function all($params = null): Collection
     {
-        $query = $this->model->with(['user']);
+        $query = $this->model->with(['user', 'box']);
 
         if (isset($params['box'])) {
             $query->where('box_id', $params['box']);

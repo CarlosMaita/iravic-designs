@@ -26,7 +26,7 @@ class DebtRepository extends BaseRepository implements DebtRepositoryInterface
      */
     public function all($params = null): Collection
     {
-        $query = $this->model->with(['customer', 'user']);
+        $query = $this->model->with(['customer', 'user', 'box']);
 
         if (isset($params['customer'])) {
             $query->where('customer_id', $params['customer']);

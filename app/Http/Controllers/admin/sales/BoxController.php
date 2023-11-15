@@ -41,8 +41,9 @@ class BoxController extends Controller
             return datatables()->eloquent($boxes)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
-
+                        
+                        $btn = '<div style="display:flex">';
+                        
                         if (Auth::user()->can('update', $row) && $row->closed == 0) {
                             $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-warning btn-action-icon close-box mb-2" title="Cerrar Caja" data-toggle="tooltip"><i class="fas fa-lock"></i></button>';
                         }
@@ -55,9 +56,12 @@ class BoxController extends Controller
                             $btn .= '<a href="'. route('cajas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
 
-                        if (Auth::user()->can('delete', $row)) {
+                        if (Auth::user()->can('delete', $row) && !$row->isClosed()) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-box mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
+
+                        $btn .= '</div">';
+
 
                         return $btn;
                     })
