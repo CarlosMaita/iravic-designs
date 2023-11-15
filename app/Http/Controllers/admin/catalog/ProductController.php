@@ -51,7 +51,7 @@ class ProductController extends Controller
             return datatables()->eloquent($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
+                        $btn = '<div style="display:flex">';
 
                         if (Auth::user()->can('view', $row)) {
                             $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
@@ -68,6 +68,7 @@ class ProductController extends Controller
                         if (Auth::user()->can('delete', $row)) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-resource" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
+                        $btn .= '</div>';
 
                         return $btn;
                     })
