@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Constants\PermissionConstants;
 use App\Models\Permission;
 use Illuminate\Support\Collection;
 use App\Repositories\PermissionRepositoryInterface;
@@ -26,6 +27,9 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
      */
     public function all(): Collection
     {
-        return $this->model->orderBy('display_name')->get();
+        return $this->model
+                    ->whereNotIn('name', PermissionConstants::EXCLUDED_PERMISSIONS)
+                    ->orderBy('display_name')
+                    ->get();
     }
 }

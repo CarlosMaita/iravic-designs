@@ -75,14 +75,6 @@ class OrderController extends Controller
                             $btn .= '<a href="'. route('ventas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        // if (Auth::user()->can('update', $row)) {
-                        //     $btn .= '<a href="'. route('ventas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        // }
-
-                        // if (Auth::user()->can('delete', $row)) {
-                        //     $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-box" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        // }
-
                         return $btn;
                     })
                     ->rawColumns(['action'])
