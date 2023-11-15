@@ -2,11 +2,13 @@
     <thead>
         <tr>
             <th scope="col">{{ __('dashboard.payments.id') }}</th>
-            @if (isset($customer)) 
+            <th scope="col">{{ __('dashboard.payments.box') }}</th>
+            <th scope="col">{{ __('dashboard.payments.customer') }}</th>
+            {{-- @if (isset($customer)) 
                 <th scope="col">{{ __('dashboard.payments.box') }}</th>
             @else
                 <th scope="col">{{ __('dashboard.payments.customer') }}</th>
-            @endif
+            @endif --}}
             <th scope="col">{{ __('dashboard.payments.date') }}</th>
             <th scope="col">{{ __('dashboard.payments.payment_method') }}</th>
             <th scope="col">{{ __('dashboard.payments.amount') }}</th>

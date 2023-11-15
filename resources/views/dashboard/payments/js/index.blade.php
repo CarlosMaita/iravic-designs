@@ -302,19 +302,21 @@
                 ordering: false,
                 columns: [
                     {data: 'id'},
-                    {
-                        render: function (data, type, row) {
-                            if (typeof $customer !== 'undefined') {
-                                return row.box ? row.box.id : '';
-                            }
+                    {data: 'box.id'},
+                    {data: 'customer.name'},
+                    // {
+                    //     render: function (data, type, row) {
+                    //         if (typeof $customer !== 'undefined') {
+                    //             return row.box ? row.box.id : '';
+                    //         }
 
-                            if (typeof $box !== 'undefined') {
-                                return row.customer ? row.customer.name : '';
-                            }
+                    //         if (typeof $box !== 'undefined') {
+                    //             return row.customer ? row.customer.name : '';
+                    //         }
 
-                            return '';
-                        }
-                    },
+                    //         return '';
+                    //     }
+                    // },
                     {data: 'date'},
                     {data: 'payment_method'},
                     {data: 'amount_str'},
