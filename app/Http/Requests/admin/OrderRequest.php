@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\admin;
 
+use App\Models\Customer;
 use App\Repositories\Eloquent\ProductRepository;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
@@ -97,6 +98,26 @@ class OrderRequest extends FormRequest
             }
         }
 
+        /***
+         * Se debe validar, si la venta es a credito, que el monto no supere el saldo disponible en credito
+         */
+        if ( $this->payment_method == "credit")
+        {
+            $validator->after(function ($validator) {
+                $customer = Customer::find($this->customer_id);
+                $balance = $customer->getBalance();
+                $total_sale_with_discount = $this->getTotal()['total'];
+                $max_credit = $customer->max_credit ; 
+                $avaible_credit = $max_credit + $balance >= 0 ? $max_credit + $balance : 0;
+
+                if (!$this->canBuyOnCredit($balance, $total_sale_with_discount , $max_credit)){
+                    $validator->errors()->add('payment_method', 'El usuario no cuenta con credito disponible para hacer la venta.
+                     Su compra debe ser menor o igual a $'. number_format($avaible_credit, 2, '.', ',') );
+                }
+
+            });
+        }
+
         if (!$validator->fails()) {
             $totals = $this->getTotal();
 
@@ -156,4 +177,16 @@ class OrderRequest extends FormRequest
             'total' => $subtotal - $discount
         ];
     }
+
+     /**
+     * Se valida si el usuario puede hacer una compra a credito
+     * @return bool
+     */
+    public function canBuyOnCredit($balance, $total_sale_with_discount , $max_credit)
+    {
+        $result = $max_credit + $balance - $total_sale_with_discount ;
+        return $result >= 0 ? true : false;
+    }
+
+
 }
