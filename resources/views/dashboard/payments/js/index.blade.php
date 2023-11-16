@@ -4,10 +4,13 @@
                 DATATABLE_RESOURCE = $("#datatable_payments");
 
         let btn_create_payment = $('#btn-create-payment'),
-            modal_payments = $('#modal-payments'),
-            form_payments = $('#form-payments');
+            modal_payments    = $('#modal-payments'),
+            customer_selector = $("#customer"),
+            form_payments     = $('#form-payments');
 
-        form_payments.find('select').select2();
+        form_payments.find('select').select2({
+            dropdownParent: $("#modal-payments")
+        });
 
         initDataTable();
 
@@ -35,6 +38,11 @@
             modal_payments.find('.modal-title').text('Crear pago');
             $('#payment-visit').removeClass('d-none');
         });
+
+
+        // customer_selector.select2({
+        //     dropdownParent: $("#modal-payments")
+        // });
 
         /**
          * Captura evento submit para crear un pago
