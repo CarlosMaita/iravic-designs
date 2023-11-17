@@ -171,8 +171,8 @@
             addProductToOrder() {
                 var data = {};
 
-                if (this.qty && !isNaN(this.qty) && this.qty > 0) {
-                    if (this.qty > this.product.stock_user) {
+                if (Number(this.qty) && !isNaN(this.qty) && Number(this.qty) > 0) {
+                    if (Number(this.qty) > Number(this.product.stock_user)) {
                         new Noty({
                             text: "La cantidad ingresada supera el stock disponible del producto.",
                             type: 'error'
