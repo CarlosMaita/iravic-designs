@@ -29,21 +29,41 @@ class OrderProductRepository extends BaseRepository implements OrderProductRepos
     public function availableForRefund($customer_id): Collection
     {
         $products = new Collection;
+        #nota old query usado para conseguir las ordenes de producto, estaba generando error en local. 
+        // $orders_products = $this->model->with('color', 'product', 'size')
+        //                     ->whereHas('order', function ($q) use ($customer_id) {
+        //                         $q->whereDoesntHave('refund', function($q) use ($customer_id) {
+        //                             $q->where('customer_id', '<>', $customer_id);
+        //                         })
+        //                         ->where('customer_id', $customer_id);
+        //                     })
+        //                     ->where(function($q) {
+        //                         $q->whereHas('refunds_products', function ($query){
+        //                             $query->havingRaw('orders_products.qty>sum(qty)');
+        //                             $query->groupBy('order_product_id');
+        //                         })
+        //                         ->orWhereDoesntHave('refunds_products');
+        //                     })
+        //                     ->get();
+
         $orders_products = $this->model->with('color', 'product', 'size')
-                            ->whereHas('order', function ($q) use ($customer_id) {
-                                $q->whereDoesntHave('refund', function($q) use ($customer_id) {
-                                    $q->where('customer_id', '<>', $customer_id);
-                                })
-                                ->where('customer_id', $customer_id);
+                        ->whereHas('order', function ($q) use ($customer_id) {
+                            $q->whereDoesntHave('refund', function ($q) use ($customer_id) {
+                                $q->where('customer_id', '<>', $customer_id);
                             })
-                            ->where(function($q) {
-                                $q->whereHas('refunds_products', function ($query){
-                                    $query->havingRaw('orders_products.qty>sum(qty)');
-                                    $query->groupBy('order_product_id');
-                                })
-                                ->orWhereDoesntHave('refunds_products');
+                            ->where('customer_id', $customer_id);
+                        })
+                        ->where(function ($q) {
+                            $q->whereExists(function ($query) {
+                                $query->select('order_product_id')
+                                    ->from('refunds_products')
+                                    ->whereColumn('orders_products.id', 'refunds_products.order_product_id')
+                                    ->groupBy('order_product_id')
+                                    ->havingRaw('orders_products.qty > SUM(refunds_products.qty)');
                             })
-                            ->get();
+                            ->orWhereDoesntHave('refunds_products');
+                        })
+                        ->get();
 
         foreach ($orders_products as $order_product) {
             $product = $order_product->product;
