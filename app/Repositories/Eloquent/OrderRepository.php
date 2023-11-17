@@ -5,7 +5,6 @@ namespace App\Repositories\Eloquent;
 use App\Models\Order;
 use Illuminate\Support\Collection;
 use App\Repositories\OrderRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
 
 class OrderRepository extends BaseRepository implements OrderRepositoryInterface
 {
