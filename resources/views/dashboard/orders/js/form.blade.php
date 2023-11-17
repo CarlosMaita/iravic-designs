@@ -26,23 +26,11 @@
         let discount_to_apply = 0;
 
         setDatePicker();
-        select_customer.select2();
+        select_customer.select2({
+            matcher: matchCustomer
+        });
         select_product.select2({
-            matcher: function(params, data) {
-                if ($.trim(params.term) === '') {
-                    return data;
-                }
-
-                if (
-                    ($(data.element).data('brand') && $(data.element).data('brand').toString().indexOf(params.term) > -1) ||
-                    ($(data.element).data('category') && $(data.element).data('category').toString().indexOf(params.term) > -1) ||
-                    ($(data.element).data('code') && $(data.element).data('code').toString().indexOf(params.term) > -1)
-                ) {
-                    return data;
-                }
-
-                return null;
-            }
+            matcher: matchProduct
         });
 
         $('[data-toggle="tooltip"]').tooltip();
