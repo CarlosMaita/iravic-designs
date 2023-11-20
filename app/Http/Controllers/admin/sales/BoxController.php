@@ -163,7 +163,10 @@ class BoxController extends Controller
         try {
             $this->authorize('update', $caja);
             if ($request->header('close-box')) {
-                $attributes = array('closed' => 1);
+                $attributes = array(
+                    'closed' => 1,
+                    'date_end' => date('Y-m-d H:i:s'),
+                    );
                 $this->boxRepository->update($caja->id, $attributes);
             } else {
                 $this->boxRepository->update($caja->id, $request->only('cash_initial'));
