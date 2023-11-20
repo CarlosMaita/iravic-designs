@@ -259,6 +259,9 @@
             } else {
                 $('#payment-visit-fields').addClass('d-none');
             }
+            // Hack para correguir error con la libreria select2
+            form_payments.find('select').select2("open");
+            form_payments.find('select').select2("close");
         });
 
         /**

@@ -335,10 +335,12 @@
             });
         });
     </script>
-    
+
+    @include('plugins.datepicker')
     @include('plugins.select2')
     @include('plugins.show_bind')
     @include('plugins.sweetalert')
     @include('dashboard.payments.js.index')
     @include('dashboard.spendings.js.index')
+    @include('dashboard.visits.js.index')
 @endpush
