@@ -917,13 +917,14 @@
              * Si no estaba seleccionado, lo agrega
              * 
              */
-            handleAddProductToBuy(product) {
-                const i = this.productsSelectedToBuy.findIndex(_item => _item.id === product.id);
+            handleAddProductToBuy(orderProduct) {
+                const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id);
 
-                if (i > -1) {
-                    Vue.set(this.productsSelectedToBuy, i, product);
+                if (index > -1) {
+                    Vue.set(this.productsSelectedToBuy, index, orderProduct);
+                    this.$emit("updateQuantityToBuy", index, orderProduct.qty)
                 } else {
-                    this.productsSelectedToBuy.push(product);
+                    this.productsSelectedToBuy.push(orderProduct);
                 }
             },
 
@@ -935,10 +936,11 @@
              */
             handleAddProductToRefund(products_to_refund) {
                 products_to_refund.forEach((orderProduct) => {
-                    const i = this.productsSelectedForRefund.findIndex(_item => _item.id === orderProduct.id);
+                    const index = this.productsSelectedForRefund.findIndex(_item => _item.id === orderProduct.id);
 
-                    if (i > -1) {
-                        Vue.set(this.productsSelectedForRefund, i, orderProduct);
+                    if (index > -1) {
+                        Vue.set(this.productsSelectedForRefund, index, orderProduct);
+                        this.$emit("updateQuantityToRefund", index, orderProduct.qty)
                     } else {
                         this.productsSelectedForRefund.push(orderProduct);
                     }

@@ -67,6 +67,13 @@
         async mounted() {
             this.quantity = this.item.qty;
         },
+        created() {
+            this.$parent.$on("updateQuantityToBuy", (index,value) => {
+                if(index == this.index){
+                    this.quantity = value;
+                }
+            })
+        },
         methods: {
             /**
              * Evento para eliminar producto. Emite evento 'removeProduct' recibido de su componente padre
@@ -75,7 +82,7 @@
                 this.$emit('removeProduct', this.index);
             }
         },
-        watch: {
+        watch: {            
             /**
              * Evento de cambio de valor de la cantidad.
              * Si la cantidad ingresa es superior a la cantidad maxima disponible para comprar, le setea el valor a dicha cantidad maxima
