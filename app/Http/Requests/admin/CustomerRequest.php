@@ -80,7 +80,6 @@ class CustomerRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|min:2',
-            'email' => 'email|nullable',
             'dni' => 'required|regex:/^[0-9.-]+$/u|min:3|max:30',
             'contact_dni' => 'regex:/^[0-9.-]+$/u|min:3|max:30|nullable',
             'telephone' => 'regex:/^\+?\d[\d\s]+$/u|max:20|nullable',
@@ -93,6 +92,19 @@ class CustomerRequest extends FormRequest
             'qualification' => ['required', Rule::in(CustomerConstants::QUALIFICATIONS)],
             'zone_id' => 'required|exists:zones,id',
         ];
+
+        if ($this->isMethod('POST')) {
+            $rules['email'] = 'email|unique:customers,email,NULL,id|nullable';
+        } else {
+            $rules['email'] = [
+                'email',
+                'nullable',
+                Rule::unique('customers', 'email')->where(function ($query) {
+                    $query->whereNull('deleted_at');
+                })->ignore($this->route('cliente')->id),
+            ];
+        }
+
         #validacion de imagenes 
         $rules['dni_picture'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
         $rules['receipt_picture'] = 'mimetypes:image/jpeg,image/jpg,image/png,image/webp';
