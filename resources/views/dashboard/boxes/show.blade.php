@@ -270,10 +270,10 @@
                                     </div>
                                 </div>
                             </div>
-                            @can('viewAny', App\Models\Box::class)
+                            @can('viewAny', $box)
                                 <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                             @endcan
-                            @can ('update', App\Models\Box::class)
+                            @can ('update', $box)
                                  @if (!$box->isClosed())
                                 <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                                 @endif
