@@ -64,6 +64,7 @@ return [
         'total_debts'           => 'Total deudas',
         'qualification'         => 'Calificación',
         'zone'                  => 'Zona',
+        'days_to_notify_debt' => 'Días después del último pago para salir en listado de morosos'
     ],
     'config' => [
         'index' => 'Listado de configuraciones',

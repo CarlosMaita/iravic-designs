@@ -74,6 +74,12 @@
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
+                    <label>{{ __('dashboard.form.fields.customers.days_to_notify_debt') }}</label>
+                    <input class="form-control" type="text" value="{{ $customer->days_to_notify_debt }}" readOnly>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
                     <label for="receipt_picture">{{ __('dashboard.form.fields.customers.receipt_picture') }}</label>
                     
                     {{-- @if($customer->receipt_picture)  --}}
