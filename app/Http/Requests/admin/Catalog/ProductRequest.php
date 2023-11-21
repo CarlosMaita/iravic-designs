@@ -4,6 +4,7 @@ namespace App\Http\Requests\admin\Catalog;
 
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -38,7 +39,7 @@ class ProductRequest extends FormRequest
             'stock_local.required' => 'El campo Stock Local es obligatorio.',
             'stock_local.min' => 'El Stock Local no puede ser menor a :min.',
             'stock_truck.required' => 'El campo Stock Camioneta es obligatorio.',
-            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.'
+            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.',
         ];
 
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
@@ -65,6 +66,11 @@ class ProductRequest extends FormRequest
                             if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
                                 $messages['sizes_existing.' . $i . '.' . $j . '.exists'] = 'La talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no se encuentra disponible en la BD.';
                             }
+
+                            if (isset($this->codes_existing[$i][$j]) && $this->codes_existing[$i][$j]) {
+                                $messages['codes_existing.' . $i . '.' . $j . '.unique'] = 'El valor del campo codigo en la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' ya está en uso.';
+                            }
+
                         }
                     }
 
@@ -131,26 +137,33 @@ class ProductRequest extends FormRequest
             #create product
             $rules['code'] = 'required|min:1|max:100|unique:products,code,NULL,id,deleted_at,NULL';
         } else {
-            #update product
-            $rules['code'] = 'required|min:1|max:100|unique:products,code,' . $this->route('producto')->id;
-            #to check
-            // if($this->producto->is_regular){
-            //     $rules['code'] = 'required|min:1|max:100|unique:products,code,' . $this->route('producto')->id;
-            // }else{
-            //     $array_ids = array();
-            //     array_push($array_ids, $this->route('producto')->id );
-            //     if (isset($this->combinations_group)) {
-            //         foreach (array_keys($this->combinations_group) as $i) {
-            //             if (is_array($this->product_combinations[$i])) {
-            //                 $array_ids = array_merge($array_ids, $this->product_combinations[$i] );
-            //             }
-            //         }
-            //     }
-            //     $idsExcluidos = implode(',', $array_ids);
-            //     $rules['code'] = 'required|min:1|max:100|unique:products,code,' . $idsExcluidos ;
-            // }
+            #update regular product 
+            if ($this->producto->is_regular){
+                #update product
+                $rules['code'] = [
+                    'required',
+                    'min:1',
+                    'max:100',
+                    Rule::unique('products', 'code')->where(function ($query) {
+                        $query->whereNull('deleted_at');
+                    })->ignore($this->route('producto')->id),
+                ];
+            }
+            #update combination product
+            else{
+                 $rules['code'] = [
+                    'required',
+                    'min:1',
+                    'max:100',
+                    Rule::unique('products', 'code')->where(function ($query) {
+                        $query->whereNull('deleted_at');
+                        $query->where('product_id', '<>', $this->route('producto')->id)
+                            ->orWhereNull('product_id');
+                    })->ignore($this->route('producto')->id),
+                ];
+            }
         }
-        
+        // exit($this);
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
             if ($this->isMethod('POST')) {
                 $rules['combinations'] = 'required';
@@ -172,6 +185,15 @@ class ProductRequest extends FormRequest
         
                             if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
                                 $rules['sizes_existing.' . $i . '.' . $j] = 'exists:sizes,id';
+                            }
+                            
+                            if(isset($this->codes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
+                                $rules['codes_existing.' . $i . '.' . $j]  = [ Rule::unique('products', 'code')->where(function ($query) {
+                                                                                $query->whereNull('deleted_at');
+                                                                                $query->where('product_id', '<>', $this->route('producto')->id)
+                                                                                    ->orWhereNull('product_id');
+                                                                            })->ignore($this->route('producto')->id),  
+                                                                        ];
                             }
                         }
                     }

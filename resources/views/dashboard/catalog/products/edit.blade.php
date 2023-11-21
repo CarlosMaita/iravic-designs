@@ -21,6 +21,7 @@
                                 v-bind:sizes="{{ json_encode($sizes) }}"
                                 url-products="{{ route('productos.index') }}"
                                 url-products-combinations="{{ route('productos.delete_combinations') }}"
+                                :is_updating="{{'true'}}"
                             ></product-form>
                             {{--  --}}
                             <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
