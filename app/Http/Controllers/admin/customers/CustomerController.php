@@ -80,6 +80,9 @@ class CustomerController extends Controller
             $customers = $this->customerRepository->debtorsToNotify();
             return datatables()->of($customers)
                     ->addIndexColumn()
+                    ->addColumn('lastdatefordebt', function($customer){
+                        return $customer->getLastDateForDebtNotification();
+                    })
                     ->addColumn('action', function($row){
                         $btn = '';
 

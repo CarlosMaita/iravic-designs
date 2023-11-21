@@ -21,6 +21,7 @@
                                                 <th scope="col">{{ __('dashboard.customers.qualification') }}</th>
                                                 <th scope="col">{{ __('dashboard.customers.zone') }}</th>
                                                 <th scope="col">{{ __('dashboard.customers.balance') }}</th>
+                                                <th scope="col">{{ __('dashboard.customers.last_payment') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

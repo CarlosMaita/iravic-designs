@@ -49,7 +49,9 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
                             })
                             ->get();
 
-        return $customers->filter->needsToNotifyDebt()->values();
+        return $customers->filter(function ($customer) {
+            return $customer->needsToNotifyDebt();
+        })->values();
     }
 
     /**

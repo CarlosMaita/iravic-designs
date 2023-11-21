@@ -50,6 +50,7 @@ return [
     'customers' => [
         'index'                 => 'Listado de Clientes',
         'balance'               => 'Saldo',
+        'last_payment'          => 'Último pago',
         'create'                => 'Crear nuevo cliente',
         'details'               => 'Detalle cliente',
         'edit'                  => 'Editar cliente',
