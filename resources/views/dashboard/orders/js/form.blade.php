@@ -444,7 +444,7 @@
                             <td>${product.stock_user}</td>
                             <td>
                                 <div class="form-group">
-                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0"  max="${product.stock_user}"  step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
                                 </div>
                             </td>
                         </tr>`;
@@ -456,7 +456,7 @@
                         <td>${product.stock_user}</td>
                         <td>
                             <div class="form-group">
-                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0"  max="${product.stock_user}"  step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
                             </div>
                         </td>
                     </tr>`;
