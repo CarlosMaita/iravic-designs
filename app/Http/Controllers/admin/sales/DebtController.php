@@ -57,7 +57,7 @@ class DebtController extends Controller
                             }
                         }
 
-                        $btn = '</div>';
+                        $btn .= '</div>';
 
                         return $btn;
                     })
