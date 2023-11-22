@@ -2,11 +2,19 @@
 
 namespace App\Http\Requests\admin;
 
+use App\Repositories\Eloquent\BoxRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class DebtRequest extends FormRequest
 {
+    public $boxRepository;
+    
+    public function __construct(BoxRepository $boxRepository)
+    {
+        $this->boxRepository = $boxRepository;
+    }
+
     public function messages()
     {
         return [
@@ -41,6 +49,17 @@ class DebtRequest extends FormRequest
         ];
     }
 
+    public function withValidator($validator)
+    {
+        if ($this->isMethod('POST')) {
+            if (!$this->box_id) {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('box', 'No posee una caja abierta en la cual se puedan registrar pagos.');
+                });
+            }
+        }
+    }
+
     /**
      * Prepare the data for validation.
      *
@@ -48,9 +67,13 @@ class DebtRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        $user = Auth::user();
+        $box = $this->boxRepository->getOpenByUserId($user->id);// Se busca la caja abierta del usuario
+
         $this->merge([
-            'date' => now(),
-            'user_id' => Auth::user()->id
+            'box_id'    => $box ? $box->id : null,
+            'date'      => now(),
+            'user_id'   => $user->id
         ]);
     }
 }

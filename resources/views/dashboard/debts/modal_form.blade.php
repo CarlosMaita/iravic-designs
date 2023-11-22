@@ -5,6 +5,9 @@
             @if (isset($customer))
                 <input type="hidden" name="customer_id" value="{{ $customer->id }}">
             @endif
+            @if (isset($box))
+                <input type="hidden" name="box_id" value="{{ $box->id }}">
+            @endif
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"></h5>
