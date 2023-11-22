@@ -759,10 +759,12 @@
          * Retorna un valor numerico en formato con , y . en los decimales, milesimas correspondientemente
          */
         function replaceNumberWithCommas(number) {
+            var n = number.toFixed(2); // Limita el resultado a dos decimales
             //Seperates the components of the number
             var n= number.toString().split(".");
             //Comma-fies the first part
             n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            n[1] = n[1] ? n[1].slice(0, 2) : "00";
             //Combines the two sections
             return n.join(",");
         }
