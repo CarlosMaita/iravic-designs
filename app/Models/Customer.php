@@ -392,8 +392,7 @@ class Customer extends Model
             $now = now();
             $days_to_notify = is_int($this->days_to_notify_debt) ? $this->days_to_notify_debt : 0;
             $date_last_payment = $this->getLastDateForDebtNotification();
-
-            if ($date_last_payment->addDays($days_to_notify)->diffInDays($now, false) >= 0) {
+            if ($date_last_payment->diffInDays($now, false) >= $days_to_notify) {
                 return true;
             }
         }
