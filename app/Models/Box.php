@@ -27,6 +27,7 @@ class Box extends Model
         'total_payed',
         'total_refunded',
         'total_spent',
+        'total_charges',
         'total_final_sales'
     ];
 
@@ -176,15 +177,30 @@ class Box extends Model
     }
 
     /**
-     * Retorna en formato moneda, calculo de total pagado - total devuelto
+     * Retorna en formato moneda, calculo de total en Ventas
+     * 
+     * @return String  
      */
     public function getTotalFinalSalesAttribute()
     {
-        $total_payed = $this->getTotalPayed();
-        $total_refunded = $this->getTotalRefunded();
-        $total = $total_payed - $total_refunded;
+        // $total_payed = $this->getTotalPayed();
+        // $total_refunded = $this->getTotalRefunded();
+        // $total = $total_payed - $total_refunded;
+        $total = $this->getTotalOrdersByPaymentMethod();
         return '$ ' . number_format($total, 2, '.', ',');
     }
+
+    /**
+     * Retorna en formato moneda, calculo de total cobros
+     * 
+     * @return String  
+     */
+    public function getTotalChargesAttribute()
+    {
+        $total = $this->getTotalPaymentsByPaymentMethod();
+        return '$ ' . number_format($total, 2, '.', ',');
+    }
+
 
     # Methods
     /**
@@ -192,8 +208,15 @@ class Box extends Model
      */
     public function getTotalPayed()
     {
-        return $this->getTotalByPaymentMethod();
+        #esta mal
+        // return $this->getTotalByPaymentMethod();
+        #Pagos de ordenes - credito de ordenes + pagos/cobros
+        $order_payments = $this->getTotalOrdersByPaymentMethod();
+        $order_credits  = $this->getTotalOrdersByPaymentMethod("credit");
+        $payments = $this->getTotalPaymentsByPaymentMethod();
+        return ($order_payments - $order_credits + $payments );
     }
+    
 
     /**
      * Retorna en formato numerico, calculo de diferencia entre vendido y pagado por metodo de pago (Opcional) o en general

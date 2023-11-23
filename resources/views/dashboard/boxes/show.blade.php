@@ -177,18 +177,27 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_charges') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_charges }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_payed') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_payed }}" readOnly>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_refunded') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_refunded }}" readOnly>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_final_sales') }}</label>

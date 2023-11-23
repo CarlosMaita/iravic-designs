@@ -24,7 +24,8 @@ return [
         'total_payed'       => 'Total Pagado',
         'total_refunded'    => 'Total Devuelto',
         'total_spent'       => 'Total Gastado',
-        'total_final_sales' => 'Total Final Ventas',
+        'total_charges'     => 'Total en Pagos/Cobros',
+        'total_final_sales' => 'Total en Ventas',
         'user'              => 'Usuario'
     ],
     'breadcrumb' => [
