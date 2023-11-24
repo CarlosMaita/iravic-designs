@@ -46,7 +46,7 @@ class VisitController extends Controller
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                         }
 
-                        if (Auth::user()->can('delete', $row) && !$row->existsAssignedResponsible() ) {
+                        if (Auth::user()->can('delete', $row) && !$row->existsAssignedResponsible() && !$row->is_completed ) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-visit" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
                         // return $row->existsAssignedResponsible();

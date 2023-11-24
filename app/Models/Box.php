@@ -281,4 +281,5 @@ class Box extends Model
     {
         return  $this->closed == 1 ? true : false;
     }
+
 }

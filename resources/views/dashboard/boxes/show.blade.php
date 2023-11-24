@@ -210,7 +210,7 @@
                                     <!--  -->
                                     <div class="tab-pane fade @if($showOrdersTab) show active @endif" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                                         @can('create', App\Models\Order::class)
-                                            @if (!$box->isClosed())
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a href="{{ route('ventas.create') }}?box={{ $box->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
@@ -228,7 +228,7 @@
                                     @if (count($box->orders))
                                     <div class="tab-pane fade" id="refunds" role="tabpanel" aria-labelledby="refunds-tab">
                                         @can('create', App\Models\Refund::class)
-                                            @if (!$box->isClosed())
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a href="{{ route('devoluciones.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                             </div>
@@ -246,7 +246,7 @@
                                     <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                                         @can('create', App\Models\Payment::class)
-                                            @if (!$box->isClosed())
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a id="btn-create-payment" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
@@ -263,7 +263,7 @@
                                     <!--  -->
                                     <div class="tab-pane fade" id="spendings" role="tabpanel" aria-labelledby="spendings-tab">
                                         @can('create', App\Models\Spending::class)
-                                            @if (!$box->isClosed())
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a id="btn-create-spending" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
@@ -283,7 +283,7 @@
                                 <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
                             @endcan
                             @can ('update', $box)
-                                 @if (!$box->isClosed())
+                                 @if (!$box->isClosed() && $boxIsMine)
                                 <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
                                 @endif
                             @endcan

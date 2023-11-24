@@ -54,20 +54,18 @@ class PaymentController extends Controller
                     ->addColumn('action', function($row){
 
                         $btn = '<div style="display:flex">';
-                                             
-                        if (Auth::user()->can('update', $row)) {
-                            if(!$row->box->isClosed())
-                            {
-                                $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-payment mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
+                        $box = $row->box;
+                        if(isset($box))
+                        {
+                            $boxIsMine = Auth::user()->id ==  $box->user_id ?  true : false;
+                            if (Auth::user()->can('update', $row) && !$box->isClosed() && $boxIsMine) {
+                                    $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-payment mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                             }
-                        }
-
-                        if (Auth::user()->can('delete', $row)) {
-                            if(!$row->box->isClosed())
-                            {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-payment mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+    
+                            if (Auth::user()->can('delete', $row) && !$box->isClosed() && $boxIsMine) {
+                                $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-payment mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                             }
-                        }
+                        }             
                         $btn .= '</div>';
 
                         return $btn;

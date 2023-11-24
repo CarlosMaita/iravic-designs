@@ -37,14 +37,14 @@ class BoxController extends Controller
 
         if ($request->ajax()) {
             $boxes = $this->boxRepository->allQuery();
-
+           
             return datatables()->eloquent($boxes)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        
+                        $boxIsMine =  $row->user_id == Auth::user()->id ? true : false;
                         $btn = '<div style="display:flex">';
                         
-                        if (Auth::user()->can('update', $row) && $row->closed == 0) {
+                        if (Auth::user()->can('update', $row) && !$row->isClosed()) {
                             $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-warning btn-action-icon close-box mb-2" title="Cerrar Caja" data-toggle="tooltip"><i class="fas fa-lock"></i></button>';
                         }
 
@@ -52,7 +52,7 @@ class BoxController extends Controller
                             $btn .= '<a href="'. route('cajas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        if (Auth::user()->can('update', $row) && !$row->isClosed()) {
+                        if (Auth::user()->can('update', $row) && !$row->isClosed() && $boxIsMine) {
                             $btn .= '<a href="'. route('cajas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
 
@@ -126,9 +126,11 @@ class BoxController extends Controller
         $customers = $this->customerRepository->all();
         $orders = $caja->orders()->orderBy('date', 'desc')->get();
         $showOrdersTab = isset($request->ventas) ? true : false; // Para determinar si hay que abrir el tab de ordenes en el collapse
+        $boxIsMine =  $caja->user_id == Auth::user()->id ? true : false;
         return view('dashboard.boxes.show')
                 ->withCustomers($customers)
                 ->withBox($caja)
+                ->withBoxIsMine($boxIsMine)
                 ->withOrders($orders)
                 ->withShowOrdersTab($showOrdersTab);
     }
