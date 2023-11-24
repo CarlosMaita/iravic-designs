@@ -19,6 +19,10 @@ class Refund extends Model
         'total_refund_debit'
     ];
 
+    public $appends = [
+        'total_str'
+    ];
+
     # Relationships
     public function box()
     {
@@ -75,5 +79,9 @@ class Refund extends Model
         }
 
         return null;
+    }
+
+    public function getTotalStrAttribute(){
+        return '$ ' . number_format($this->total, 2, '.', ',');
     }
 }

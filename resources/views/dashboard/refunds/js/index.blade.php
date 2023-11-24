@@ -21,6 +21,7 @@
                 columns: [
                     {data: 'id'},
                     {data: 'customer.name'},
+                    {data: 'total_str'},
                     {data: 'date'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]

@@ -3,6 +3,7 @@
         <tr>
             <th scope="col">{{ __('dashboard.refunds.id') }}</th>
             <th scope="col">{{ __('dashboard.refunds.customer') }}</th>
+            <th scope="col">{{ __('dashboard.refunds.total') }}</th>
             <th scope="col">{{ __('dashboard.refunds.date') }}</th>
             <th></th>
         </tr>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{ $refund->id }}</td>
                 <td>{{ optional($refund->customer)->name }}</td>
+                <td>{{ $refund->total_str }}</td>
                 <td>{{ $refund->date }}</td>
                 <td>
                     @if (Auth::user()->can('view', $refund))
