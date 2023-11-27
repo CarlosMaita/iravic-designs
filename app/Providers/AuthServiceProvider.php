@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Category'               => 'App\Policies\CategoryPolicy',
         'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
         'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
+        'App\Models\Debt'                   => 'App\Policies\DebtPolicy',
         'App\Models\Order'                  => 'App\Policies\OrderPolicy',
         'App\Models\Payment'                => 'App\Policies\PaymentPolicy',
         'App\Models\Permission'             => 'App\Policies\PermissionPolicy',
