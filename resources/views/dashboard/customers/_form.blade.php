@@ -86,7 +86,11 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="days_to_notify_debt">{{ __('dashboard.form.fields.customers.days_to_notify_debt') }}</label>
+                <label for="days_to_notify_debt">{{ __('dashboard.form.fields.customers.days_to_notify_debt') }} 
+                    <span class="help-icon" title="{{ __('dashboard.customers.help_days_to_notify_debt') }}">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </label>
                 <input class="form-control" id="days_to_notify_debt" name="days_to_notify_debt" type="number" step="1" value="{{ old("days_to_notify_debt", $customer->days_to_notify_debt) }}">
             </div>
         </div>

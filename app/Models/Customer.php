@@ -412,18 +412,23 @@ class Customer extends Model
     }
 
     /**
-     * Retorna fecha del ultimo pago/deuda registrada
+     * Retorna fecha del ultimo pago/deuda/orden registrada
      */
     public function getLastDateForDebtNotification()
     {
+        #primero considera la fecha del pago mas reciente
         if ($payment = $this->payments()->latest()->first()) {
             return Carbon::parse($payment->date);
         }
-
-        if ($debt = $this->debts()->latest()->first()) {
+        #segundo considera la fecha de la ultima deuda
+        if ($debt = $this->debts()->oldest()->first()) {
             return Carbon::parse($debt->date);
         }
-
+        #tercero considera la fecha de la ultima ordenes
+        if($order = $this->orders()->oldest()->first()){
+            return Carbon::parse($order->date);
+        }
+        #by default
         return now();
     }
     

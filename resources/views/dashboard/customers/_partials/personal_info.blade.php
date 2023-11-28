@@ -74,7 +74,11 @@
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
-                    <label>{{ __('dashboard.form.fields.customers.days_to_notify_debt') }}</label>
+                    <label>{{ __('dashboard.form.fields.customers.days_to_notify_debt') }}
+                        <span class="help-icon" title="{{ __('dashboard.customers.help_days_to_notify_debt') }}">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
                     <input class="form-control" type="text" value="{{ $customer->days_to_notify_debt }}" readOnly>
                 </div>
             </div>
