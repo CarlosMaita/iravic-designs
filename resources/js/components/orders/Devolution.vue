@@ -266,6 +266,7 @@
                                         <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: {{ customerSelected.max_credit_str }}</p>
                                             <p class="font-weight-bold text-dark mb-1">Saldo: {{ customerSelected.balance }}</p>
+                                            <p class="font-weight-bold text-dark mb-1">Crédito Disponible:: {{ customerSelected.available_credit_str }}</p>
                                             <hr>
                                             <div class="row mb-4">
                                                 <div class="col-sm-6">

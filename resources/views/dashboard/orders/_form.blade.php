@@ -31,6 +31,7 @@
                                                                     data-dni="{{ $customer->dni }}"
                                                                     data-max-credit="{{ $customer->max_credit }}"
                                                                     data-max-credit-str="{{ $customer->max_credit_str }}"
+                                                                    data-available-credit-str="{{ $customer->available_credit_str }}"
                                                                     data-name="{{ $customer->name }}"
                                                                     data-email="{{ $customer->email }}"
                                                                     data-telephone="{{ $customer->telephone }}"
@@ -224,6 +225,7 @@
                                         <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: <span class="max-credit">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Saldo: <span class="customer-balance">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark mb-1">Crédito Disponible: <span class="available-credit">$ 0.00</span></p>
                                             <hr>
                                             <div>
                                                 <span>Quiere aplicar algun descuento?</span>

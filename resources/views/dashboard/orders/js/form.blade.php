@@ -242,18 +242,19 @@
          * Captura evento de cambio de cliente seleccionado
          */
         select_customer.on('change', function(e) {
-            var container       = $('#customer-selected-container'),
-                selected        = $('#customer').find(':selected'),
-                address         = selected.data('address'),
-                balance         = selected.data('balance'),
-                balance_numeric = selected.data('balance-numeric'),
-                dni             = selected.data('dni'),
-                maxcredit       = selected.data('max-credit'),
-                maxcredit_str   = selected.data('max-credit-str'),
-                name            = selected.data('name'),
-                email           = selected.data('email'),
-                qualification   = selected.data('qualification'),
-                telephone       = selected.data('telephone');
+            var container           = $('#customer-selected-container'),
+                selected            = $('#customer').find(':selected'),
+                address             = selected.data('address'),
+                balance             = selected.data('balance'),
+                balance_numeric     = selected.data('balance-numeric'),
+                dni                 = selected.data('dni'),
+                maxcredit           = selected.data('max-credit'),
+                maxcredit_str       = selected.data('max-credit-str'),
+                availablecredit_str = selected.data('available-credit-str'),
+                name                = selected.data('name'),
+                email               = selected.data('email'),
+                qualification       = selected.data('qualification'),
+                telephone           = selected.data('telephone');
 
             container.find('#selected-customer-address').text(address);
             container.find('#selected-customer-balance').text(balance);
@@ -269,6 +270,7 @@
             $customer_max_credit = maxcredit;
             $('.max-credit').text(maxcredit_str);
             $('.customer-balance').text(balance);
+            $('.available-credit').text(availablecredit_str)
         });
 
         /**

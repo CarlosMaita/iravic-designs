@@ -43,6 +43,7 @@ class Customer extends Model
         'balance_numeric',
         'date_next_visit',
         'max_credit_str',
+        'available_credit_str',
         'total_buyed',
         'total_credit',
         'total_debt',
@@ -136,6 +137,16 @@ class Customer extends Model
         }
 
         return '$ 0.00';
+    }
+
+     /**
+     * Retorna en formato moneda, el credito disponible del cliente
+     */
+    public function getAvailableCreditStrAttribute()
+    {
+        $used_credit = $this->getBalance() <= 0 ?  $this->getBalance() : 0 ;
+        $available_credit = $this->max_credit + $used_credit > 0 ? ($this->max_credit + $used_credit) : 0;
+        return '$ ' . number_format($available_credit, 2, '.', ',');
     }
 
     /**
