@@ -62,6 +62,7 @@
     const is_creating_order = true;
     const $products = @json($products);
   </script>
+ 
   <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
 
   @include('plugins.datepicker')
@@ -71,4 +72,11 @@
   @include('dashboard.customers.js.customer-map')
   @include('dashboard.customers.js.form')
   @include('dashboard.orders.js.form')
+  @if (!empty($customerParam))
+  <script>
+     $(function(){
+      $("select#customer").val({{ $customerParam->id}}).trigger("change");
+     })
+  </script>
+@endif
 @endpush
