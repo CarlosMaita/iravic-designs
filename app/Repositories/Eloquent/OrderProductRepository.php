@@ -6,6 +6,7 @@ use App\Models\OrderProduct;
 use App\Repositories\OrderProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class OrderProductRepository extends BaseRepository implements OrderProductRepositoryInterface
 {
@@ -29,41 +30,26 @@ class OrderProductRepository extends BaseRepository implements OrderProductRepos
     public function availableForRefund($customer_id): Collection
     {
         $products = new Collection;
-        #nota old query usado para conseguir las ordenes de producto, estaba generando error en local. 
-        // $orders_products = $this->model->with('color', 'product', 'size')
-        //                     ->whereHas('order', function ($q) use ($customer_id) {
-        //                         $q->whereDoesntHave('refund', function($q) use ($customer_id) {
-        //                             $q->where('customer_id', '<>', $customer_id);
-        //                         })
-        //                         ->where('customer_id', $customer_id);
-        //                     })
-        //                     ->where(function($q) {
-        //                         $q->whereHas('refunds_products', function ($query){
-        //                             $query->havingRaw('orders_products.qty>sum(qty)');
-        //                             $query->groupBy('order_product_id');
-        //                         })
-        //                         ->orWhereDoesntHave('refunds_products');
-        //                     })
-        //                     ->get();
 
         $orders_products = $this->model->with('color', 'product', 'size')
-                        ->whereHas('order', function ($q) use ($customer_id) {
-                            $q->whereDoesntHave('refund', function ($q) use ($customer_id) {
-                                $q->where('customer_id', '<>', $customer_id);
-                            })
-                            ->where('customer_id', $customer_id);
-                        })
-                        ->where(function ($q) {
-                            $q->whereExists(function ($query) {
-                                $query->select('order_product_id')
-                                    ->from('refunds_products')
-                                    ->whereColumn('orders_products.id', 'refunds_products.order_product_id')
-                                    ->groupBy('order_product_id')
-                                    ->havingRaw('orders_products.qty > SUM(refunds_products.qty)');
-                            })
-                            ->orWhereDoesntHave('refunds_products');
-                        })
-                        ->get();
+            ->whereHas('order', function ($q) use ($customer_id) {
+                $q->whereDoesntHave('refund', function ($q) use ($customer_id) {
+                    $q->where('customer_id', '<>', $customer_id);
+                })
+                    ->where('customer_id', $customer_id)
+                    ->where('created_at', '>', DB::raw('DATE_SUB(NOW(), INTERVAL 6 MONTH)'));
+            })
+            ->where(function ($q) {
+                $q->whereExists(function ($query) {
+                    $query->select('order_product_id')
+                        ->from('refunds_products')
+                        ->whereColumn('orders_products.id', 'refunds_products.order_product_id')
+                        ->groupBy('order_product_id')
+                        ->havingRaw('orders_products.qty > SUM(refunds_products.qty)');
+                })
+                    ->orWhereDoesntHave('refunds_products');
+            })
+            ->get();
 
         foreach ($orders_products as $order_product) {
             $product = $order_product->product;
@@ -72,7 +58,7 @@ class OrderProductRepository extends BaseRepository implements OrderProductRepos
                 $product = $parent_product;
             }
 
-            $index = $products->search(function($p) use ($product) {
+            $index = $products->search(function ($p) use ($product) {
                 return $p->id === $product->id;
             });
 
