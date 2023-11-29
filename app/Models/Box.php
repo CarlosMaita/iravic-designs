@@ -134,11 +134,22 @@ class Box extends Model
      */
     public function getTotalCashInBoxAttribute()
     {
+        return '$ ' . number_format($this->getTotalCashInBox(), 2, '.', ','); 
+    }
+
+      /**
+     * Retorna en formato numerico, el total de efectivo luego de descontar gastos 
+     * Se toma en cuenta el efectivo inicial
+     */
+    public function getTotalCashInBox()
+    {
         $total = $this->getTotalByPaymentMethod('cash');
         $total += $this->getOriginal('cash_initial');
         $total -= $this->getTotalSpent();
-        return '$ ' . number_format($total, 2, '.', ','); 
+        return $total;
     }
+
+
     
     /**
      * Retorn en formato moneda, 

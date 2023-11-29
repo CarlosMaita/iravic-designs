@@ -107,7 +107,7 @@ class RefundRequest extends FormRequest
     public function withValidator($validator)
     {
         /**
-         * Para realizar una venta, el usuario debe tener una caja abierta
+         * Para realizar una devolucion, el usuario debe tener una caja abierta
          */
         if (!$this->box_id) {
             $validator->after(function ($validator) {
@@ -116,7 +116,7 @@ class RefundRequest extends FormRequest
         }
 
         /** 
-         * Si en el formulario de la venta, se habilita pautar una visita, debe seleccionar la fecha
+         * Si en el formulario de la devolucion, se habilita pautar una visita, debe seleccionar la fecha
          */
         if (!empty($this->enable_new_visit)) {
             if (!$this->visit_date) {
