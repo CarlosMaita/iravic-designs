@@ -1,4 +1,4 @@
-<div class="tab-pane fade @if(!$showOrdersTab) show active @endif" id="info" role="tabpanel" aria-labelledby="info-tab">
+<div class="tab-pane fade @if(!$showOrdersTab && !$showRefundsTab) show active @endif" id="info" role="tabpanel" aria-labelledby="info-tab">
     <div class="row mb-4 mt-3">
         <div class="col-12">
             <small class="form-text text-muted font-weight-bold text-success">{{ __('dashboard.form.labels.customer_personal_info') }}</small>

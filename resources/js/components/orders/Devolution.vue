@@ -709,6 +709,7 @@
         async mounted() {
             if (typeof this.customerParam.id != 'undefined' ) {
                 this.customerSelected = this.customerParam;
+                this.customer_id = this.customerParam.id;
             }
 
             this.productsAvailableForRefund = this.productsForRefund; // Setea productos disponibles para devolucion

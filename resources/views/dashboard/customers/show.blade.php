@@ -12,7 +12,7 @@
                                 <!--  -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link @if(!$showOrdersTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                        <a class="nav-link @if(!$showOrdersTab && !$showRefundsTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
