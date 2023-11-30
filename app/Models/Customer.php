@@ -330,16 +330,16 @@ class Customer extends Model
     public function getBalance()
     {
         $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
-        $total_credit_refund = $this->getTotalRefundCredit();
         $total_debts = $this->getTotalDebt();
         $total_payments = $this->payments()->sum('amount');
+        $total_credit_refund = $this->getTotalRefundCredit();
         $total_debit_refunded_balance = $this->getTotalDebitRefundedBalance();
     
         return ($total_payments + $total_credit_refund - $total_credit - $total_debts + $total_debit_refunded_balance);
     }
 
     /**
-     * Retorna en formato numerico, el total devvuelto con compra pagada a debito
+     * Retorna en formato numerico, el total devuelto con compra pagada a debito
      */
     public function getTotalDebitRefundedBalance()
     {
