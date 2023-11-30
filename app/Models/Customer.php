@@ -35,7 +35,8 @@ class Customer extends Model
         'qualification',
         'is_pending_to_schedule',
         'telephone',
-        'cellphone'
+        'cellphone',
+        'solvency_date'
     ];
 
     public $appends = [
@@ -54,7 +55,8 @@ class Customer extends Model
         'url_receipt',
         'url_card_front',
         'url_card_back',
-        'whatsapp_number'
+        'whatsapp_number',
+        'is_solvent'
     ];
 
     const DISK_ADDRESS = 'customers_address';
@@ -292,6 +294,12 @@ class Customer extends Model
 
         return null;
     }
+     /**
+     * Retorna si es es solvente
+     */
+    public function getIsSolventAttribute(){
+        return $this->getBalance() >= 0 ? true :false;
+    }
 
     # Methods
     /**
@@ -313,6 +321,8 @@ class Customer extends Model
 
         return $url;
     }
+
+   
 
     /**
      * Retorna balance del cliente
@@ -407,25 +417,25 @@ class Customer extends Model
                 return true;
             }
         }
-        
         return false;
     }
 
     /**
-     * Retorna fecha del ultimo pago/deuda/orden registrada
+     * Retorna fecha del ultimo pago/deuda/orden registrada despues de la fecha de solvencia
      */
     public function getLastDateForDebtNotification()
     {
-        #primero considera la fecha del pago mas reciente
-        if ($payment = $this->payments()->latest()->first()) {
-            return Carbon::parse($payment->date);
+        $solvencyDate = Carbon::parse($this->solvency_date)->format('Y-m-d H:i:s');
+        $latestPayment = $this->payments()->where('date', '>', $solvencyDate)->latest()->first();
+        if ($latestPayment) {
+            return Carbon::parse($latestPayment->date);
         }
-        #segundo considera la fecha de la ultima deuda
-        if ($debt = $this->debts()->oldest()->first()) {
+        #segundo considera la fecha de la ultima deuda despues de la fecha de solvencia
+        if ($debt = $this->debts()->where('date', '>', $solvencyDate)->oldest()->first()) {
             return Carbon::parse($debt->date);
         }
-        #tercero considera la fecha de la ultima ordenes
-        if($order = $this->orders()->oldest()->first()){
+        #tercero considera la fecha de la ultima orden a credito despues de la fecha de solvencia
+        if($order = $this->orders()->where('payed_credit', '1')->where('date', '>', $solvencyDate)->oldest()->first()){
             return Carbon::parse($order->date);
         }
         #by default
