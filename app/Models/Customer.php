@@ -350,7 +350,8 @@ class Customer extends Model
         ->where('payed_credit', 0)
         ->sum('total');
         
-        return $refunded - $ordered;;
+        #cuando se llevan mas del monto devuelto pagando con debito. el saldo queda negativo, cuando deberia quedar en 0
+        return $refunded - $ordered >= 0 ? ($refunded - $ordered) : 0 ;
     }
 
     /**
