@@ -737,6 +737,7 @@
              */
             setCustomerIdSelected(value) {
                 this.customer_id = value.id;
+                this.resetDevolution();
             },
 
             /**
@@ -1117,6 +1118,10 @@
                         // return false;
                     });
                 });
+            },
+            resetDevolution(){
+                this.productsSelectedForRefund = [];
+                this.productForRefundSelected = [];
             }
         },
         watch: {
