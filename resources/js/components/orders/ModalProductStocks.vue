@@ -186,6 +186,7 @@
                         this.$emit('addProduct', data);
                         this.closeModal();
                     }
+                    this.qty = 0;
                 } else {
                     new Noty({
                             text: "Ingresa una cantidad válida",
