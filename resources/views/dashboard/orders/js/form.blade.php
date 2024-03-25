@@ -7,6 +7,7 @@
         const FORM_RESOURCE_ORDERS = $("#form-orders");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
         const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
+        const URL_CUSTOMER = "{{ route('clientes.index') }}";
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');
@@ -242,36 +243,58 @@
          * Captura evento de cambio de cliente seleccionado
          */
         select_customer.on('change', function(e) {
-            var container           = $('#customer-selected-container'),
-                selected            = $('#customer').find(':selected'),
-                address             = selected.data('address'),
-                balance             = selected.data('balance'),
-                balance_numeric     = selected.data('balance-numeric'),
-                dni                 = selected.data('dni'),
-                maxcredit           = selected.data('max-credit'),
-                maxcredit_str       = selected.data('max-credit-str'),
-                availablecredit_str = selected.data('available-credit-str'),
-                name                = selected.data('name'),
-                email               = selected.data('email'),
-                qualification       = selected.data('qualification'),
-                telephone           = selected.data('telephone');
-
-            container.find('#selected-customer-address').text(address);
-            container.find('#selected-customer-balance').text(balance);
-            container.find('#selected-customer-dni').text(dni);
-            container.find('#selected-customer-maxcredit').text(maxcredit_str);
-            container.find('#selected-customer-name').text(name);
-            container.find('#selected-customer-email').text(email);
-            container.find('#selected-customer-qualification').text(qualification);
-            container.find('#selected-customer-telephone').text(telephone);
-            container.removeClass('d-none');
-            
-            $customer_balance = balance_numeric;
-            $customer_max_credit = maxcredit;
-            $('.max-credit').text(maxcredit_str);
-            $('.customer-balance').text(balance);
-            $('.available-credit').text(availablecredit_str)
+            e.preventDefault();
+            //get customer data from ajax   
+            var selected = $(this).find(':selected');
+            let customer_id = selected.data('id');
+            getCustomerDataAjax(customer_id);
         });
+
+        /**
+         * Retorna la data del customer mediante una peticion ajax
+        */
+        function getCustomerDataAjax(customer_id){
+            
+            return $.ajax({
+                url: `${URL_CUSTOMER}/${customer_id}`,
+                type: "GET",
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    // console.log(res);
+                    let container = $('#customer-selected-container');
+                    let address = res.address;
+                    let balance = res.balance;
+                    let balance_numeric = res.balance_numeric;
+                    let dni = res.dni;
+                    let maxcredit = res.max_credit;
+                    let maxcredit_str = res.max_credit_str;
+                    let availablecredit_str = res.available_credit_str;
+                    let name = res.name;
+                    let email = res.email;
+                    let qualification = res.qualification;
+                    let telephone = res.telephone;
+
+
+                    $customer_balance = balance;
+                    $customer_max_credit = maxcredit;
+
+                    container.find('#selected-customer-address').text(address);
+                    container.find('#selected-customer-balance').text(balance);
+                    container.find('#selected-customer-dni').text(dni);
+                    container.find('#selected-customer-maxcredit').text(maxcredit_str);
+                    container.find('#selected-customer-name').text(name);
+                    container.find('#selected-customer-email').text(email);
+                    container.find('#selected-customer-qualification').text(qualification);
+                    container.find('#selected-customer-telephone').text(telephone);
+                    container.removeClass('d-none');
+
+                    $('.max-credit').text(maxcredit_str);
+                    $('.customer-balance').text(balance);
+                    $('.available-credit').text(availablecredit_str)
+                }
+            });
+        }
 
         /**
          * Retorna el total de la venta

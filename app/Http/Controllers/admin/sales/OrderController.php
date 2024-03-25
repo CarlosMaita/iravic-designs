@@ -93,7 +93,8 @@ class OrderController extends Controller
     {
         $this->authorize('create', 'App\Models\Order');
         $boxParam = $this->boxRepository->findOnly($request->box);
-        $customers = $this->customerRepository->all();
+        // $customers = $this->customerRepository->all();
+        $customers = $this->customerRepository->allOnlyName();
         $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();

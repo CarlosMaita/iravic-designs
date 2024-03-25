@@ -211,6 +211,9 @@ class CustomerController extends Controller
      */
     public function show(Request $request, Customer $cliente)
     {
+        if($request->ajax()){
+            return response()->json($cliente);
+        }
         $this->authorize('view', $cliente);
         $orders = $cliente->orders()->orderBy('date', 'desc')->get();
         $refunds = $cliente->refunds()->orderBy('date', 'desc')->get();

@@ -27,18 +27,19 @@
                                                         <option selected disabled>Seleccionar</option>
                                                         @foreach ($customers as $customer)
                                                             <option value="{{ $customer->id }}" 
-                                                                    data-address="{{ $customer->address }}"
-                                                                    data-dni="{{ $customer->dni }}"
-                                                                    data-max-credit="{{ $customer->max_credit }}"
-                                                                    data-max-credit-str="{{ $customer->max_credit_str }}"
-                                                                    data-available-credit-str="{{ $customer->available_credit_str }}"
-                                                                    data-name="{{ $customer->name }}"
-                                                                    data-email="{{ $customer->email }}"
-                                                                    data-telephone="{{ $customer->telephone }}"
-                                                                    data-qualification="{{ $customer->qualification }}"
-                                                                    data-debt="{{ $customer->total_debt }}"
-                                                                    data-balance="{{ $customer->balance }}"
-                                                                    data-balance-numeric="{{ $customer->balance_numeric }}"
+                                                                    data-id="{{ $customer->id }}"
+                                                                    {{-- data-address="{{ $customer->address }}" --}}
+                                                                    {{-- data-dni="{{ $customer->dni }}" --}}
+                                                                    {{-- data-max-credit="{{ $customer->max_credit }}" --}}
+                                                                    {{-- data-max-credit-str="{{ $customer->max_credit_str }}" --}}
+                                                                    {{-- data-available-credit-str="{{ $customer->available_credit_str }}" --}}
+                                                                    {{-- data-name="{{ $customer->name }}" --}}
+                                                                    {{-- data-email="{{ $customer->email }}" --}}
+                                                                    {{-- data-telephone="{{ $customer->telephone }}" --}}
+                                                                    {{-- data-qualification="{{ $customer->qualification }}" --}}
+                                                                    {{-- data-debt="{{ $customer->total_debt }}" --}}
+                                                                    {{-- data-balance="{{ $customer->balance }}" --}}
+                                                                    {{-- data-balance-numeric="{{ $customer->balance_numeric }}" --}}
                                                                     @if(!empty($customerParam) && $customerParam->id == $customer->id) selected @endif
                                                             >{{ $customer->name }}</option>
                                                         @endforeach
