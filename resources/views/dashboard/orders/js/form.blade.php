@@ -261,7 +261,6 @@
                 processData: false,
                 contentType: false,
                 success: function(res) {
-                    // console.log(res);
                     let container = $('#customer-selected-container');
                     let address = res.address;
                     let balance = res.balance;
@@ -274,7 +273,6 @@
                     let email = res.email ?? 'Sin correo registrado';
                     let qualification = res.qualification;
                     let telephone = res.telephone;
-
 
                     $customer_balance = balance;
                     $customer_max_credit = maxcredit;

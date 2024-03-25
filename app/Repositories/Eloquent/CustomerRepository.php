@@ -28,10 +28,20 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     {
         return $this->model->with('zone')->orderBy('name')->get();
     }
+    /**
+     * Retrieve all records with only 'id' and 'name' fields from the model.
+     *
+     * @return Collection
+     */
     public function allOnlyName(): Collection{
         return $this->model->select(["id", "name"])->orderBy('name')->get();
     }
 
+    /**
+     * Retorna listado de clientes
+     * 
+     * @return Collection
+     */
     public function allQuery()
     {
         return $this->model->with('zone')->orderBy('name');
