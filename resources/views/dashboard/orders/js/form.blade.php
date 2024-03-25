@@ -271,7 +271,7 @@
                     let maxcredit_str = res.max_credit_str;
                     let availablecredit_str = res.available_credit_str;
                     let name = res.name;
-                    let email = res.email;
+                    let email = res.email ?? 'Sin correo registrado';
                     let qualification = res.qualification;
                     let telephone = res.telephone;
 
