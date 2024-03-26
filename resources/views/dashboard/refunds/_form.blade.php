@@ -5,13 +5,14 @@
             <devolution-form
                 crsf="{{ csrf_token() }}"
                 :customer-param="{{ $customerParam ? $customerParam : json_encode(new stdClass()) }}"
-                :customers="{{ $customers }}"
+                :customers="{{ $customers }}"  
                 :products-available-to-buy="{{ $products }}"
                 :products-for-refund="{{ $productsForRefund }}"
                 url-discount="{{ route('config.discount') }}"
                 url-products="{{ route('productos.index') }}"
                 url-refund="{{ route('devoluciones.store') }}"
                 url-refund-products="{{ route('devoluciones.create') }}"
+                url-customer="{{ route('clientes.index') }}"
             ></devolution-form>
         </div>
     </div>

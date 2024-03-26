@@ -14,7 +14,7 @@ class Customer extends Model
 
     protected $table = 'customers';
 
-    public $fillable = [
+    protected $fillable = [
         'zone_id',
         'address',
         'address_picture',
@@ -39,7 +39,7 @@ class Customer extends Model
         'solvency_date'
     ];
 
-    public $appends = [
+    protected $appends = [
         'balance',
         'balance_numeric',
         'date_next_visit',

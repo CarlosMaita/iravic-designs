@@ -566,6 +566,10 @@
                 type: String,
                 default: ''  
             },
+            urlCustomer: {
+                type: String,
+                default: ''
+            },
             urlProducts: {
                 type: String,
                 default: ''
@@ -1050,6 +1054,37 @@
                 this.productsSelectedForRefund[index].qty = qty;
             },
 
+            getCustomerDataAjax(customer_id){
+                try {
+                    var url = `${this.urlCustomer}/${customer_id}`;
+                    var self = this;
+                    $.get(url, function(res) {
+                        if(self.customerSelected.dni !== res.dni ) {
+                            self.customerSelected = res;
+                        }
+                    })
+                    .fail(function() {
+                        // self.customerSelected = [];
+    
+                        new Noty({
+                            text: "No se ha podido obtener la información del cliente en este momento.",
+                            type: 'error'
+                        }).show();
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+                // $.ajax({
+                //     url: `${URL_CUSTOMER}/${customer_id}`,
+                //     type: "GET",
+                //     processData: false,
+                //     contentType: false,
+                //     success: function(res) {
+                //        return res;
+                //     }
+                // }); 
+            },
+
             /**
              * Peticion HTTP para obtener el listado de productos disponibles que tiene el cliente para devolucion
              */
@@ -1070,6 +1105,7 @@
                     }).show();
                 });
             },
+            
 
             /**
              * Retorna label de producto para ser impreso en el select vue
@@ -1130,7 +1166,8 @@
              * Llama a metodo HTTP para obtener productos disponibles que tiene el cliente para devolucion
              */
             customerSelected: function(value) {
-                if (this.customerSelected) {
+                if (this.customerSelected && this.customerSelected.dni !== null) {
+                    this.getCustomerDataAjax(this.customerSelected.id);
                     this.httpGetProductsForRefund();
                 }
             }

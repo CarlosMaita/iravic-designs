@@ -105,7 +105,7 @@ class RefundController extends Controller
             return response()->json($productsForRefund);
         }
 
-        $customers = $this->customerRepository->all();
+        $customers = $this->customerRepository->allOnlyName();
         $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
 
