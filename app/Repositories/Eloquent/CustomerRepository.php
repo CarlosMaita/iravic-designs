@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\Customer;
 use Illuminate\Support\Collection;
 use App\Repositories\CustomerRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class CustomerRepository extends BaseRepository implements CustomerRepositoryInterface
 {
@@ -34,7 +35,10 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      * @return Collection
      */
     public function allOnlyName(): Collection{
-        return $this->model->select(["id", "name"])->orderBy('name')->get();
+        return DB::table($this->model->getTable())
+            ->select(['id', 'name'])
+            ->orderBy('name')
+            ->get();
     }
 
     /**
