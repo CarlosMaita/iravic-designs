@@ -37,6 +37,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     public function allOnlyName(): Collection{
         return DB::table($this->model->getTable())
             ->select(['id', 'name'])
+            ->whereNull('deleted_at')
             ->orderBy('name')
             ->get();
     }
