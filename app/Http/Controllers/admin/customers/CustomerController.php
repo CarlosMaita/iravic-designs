@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\customers;
 
+use App\Constants\CustomerConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CustomerRequest;
 use App\Models\Customer;
@@ -79,6 +80,9 @@ class CustomerController extends Controller
             $customers = $this->customerRepository->debtorsToNotify();
             return datatables()->of($customers)
                     ->addIndexColumn()
+                    ->addColumn('lastdatefordebt', function($customer){
+                        return $customer->getLastDateForDebtNotification();
+                    })
                     ->addColumn('action', function($row){
                         $btn = '';
 
@@ -95,6 +99,37 @@ class CustomerController extends Controller
         return view('dashboard.customers.index_debtors');
     }
 
+       /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexPendingToSchedule(Request $request)
+    {
+        Gate::authorize('view-customers-pending-to-schedule');
+
+        if ($request->ajax()) {
+            $customers = $this->customerRepository->pendingToScheduleToNotify();
+            return datatables()->of($customers)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '';
+
+                        if (Auth::user()->can('view', $row)) {
+                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        }
+
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('dashboard.customers.index_pending_to_schedule');
+    }
+
+    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -106,6 +141,7 @@ class CustomerController extends Controller
         $zones = $this->zoneRepository->all();
         return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
+                ->withQualifications(CustomerConstants::QUALIFICATIONS)
                 ->withZones($zones);
     }
 
@@ -122,17 +158,30 @@ class CustomerController extends Controller
             DB::beginTransaction();
             $attributes = array_merge(
                 array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
-                array('dni_picture' => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
+                array('dni_picture'     => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
                 array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
-                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                array('card_front'      => ImageService::save(Customer::CARD, $request->file('card_front'))),
+                array('card_back'       => ImageService::save(Customer::CARD, $request->file('card_back'))),
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'email', 'qualification', 'telephone', 'zone_id')
             );
+
             $customer = $this->customerRepository->create($attributes);
+            
             DB::commit();
 
-            if (!isset($request->without_flash)) {
+            if (isset($request->from_orders)) {
                 flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
+                return response()->json([
+                        'success' => true,
+                        'data' => [
+                            'customer' => $customer,
+                            'redirect' => route('ventas.create'), 
+                            'from_orders' => true 
+                        ]
+                ]);
             }
             
+            flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
             return response()->json([
                     'success' => true,
                     'data' => [
@@ -162,6 +211,9 @@ class CustomerController extends Controller
      */
     public function show(Request $request, Customer $cliente)
     {
+        if($request->ajax()){
+            return response()->json($cliente);
+        }
         $this->authorize('view', $cliente);
         $orders = $cliente->orders()->orderBy('date', 'desc')->get();
         $refunds = $cliente->refunds()->orderBy('date', 'desc')->get();
@@ -188,6 +240,7 @@ class CustomerController extends Controller
         $zones = $this->zoneRepository->all();
         return view('dashboard.customers.edit')
                 ->withCustomer($cliente)
+                ->withQualifications(CustomerConstants::QUALIFICATIONS)
                 ->withZones($zones);
     }
 
@@ -208,7 +261,9 @@ class CustomerController extends Controller
                 array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
                 array('receipt_picture' => $cliente->updateImage(Customer::DISK_RECEIPT, $cliente->receipt_picture, $request->receipt_picture, 
                 $request->delete_receipt_picture)),
-                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'qualification', 'telephone', 'zone_id')
+                array('card_front'     => $cliente->updateImage(Customer::CARD, $cliente->card_front, $request->card_front, $request->delete_card_front)),
+                array('card_back'       => $cliente->updateImage(Customer::CARD, $cliente->card_back, $request->card_back, $request->delete_card_back)),
+                $request->only('address', 'cellphone', 'contact_name', 'contact_telephone', 'contact_dni', 'days_to_notify_debt', 'dni', 'latitude', 'longitude', 'max_credit', 'name', 'email', 'qualification', 'telephone', 'zone_id')
             );
             $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();
@@ -244,6 +299,13 @@ class CustomerController extends Controller
     {
         try {
             $this->authorize('delete', $cliente);
+              #validar existencia de ordenes o visitas antes de eliminar
+              if ($cliente->existsOrders() || $cliente->existsVisits() ){
+                  return response()->json([
+                      'success' => false,
+                      'message' => "El cliente no ha podido ser eliminada existe ordenes y/o visitas asociadas"
+                  ]); 
+              }
             DB::beginTransaction();
             $cliente->delete();
             DB::commit();

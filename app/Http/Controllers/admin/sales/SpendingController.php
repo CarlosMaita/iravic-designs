@@ -40,15 +40,17 @@ class SpendingController extends Controller
             return Datatables::of($results)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
-                        
-                        if (Auth::user()->can('update', $row)) {
+                        $btn = '<div style="display:flex">';
+                        $boxIsMine = Auth::user()->id ==  $row->user_id ?  true : false;
+
+                        if (Auth::user()->can('update', $row) && !$row->box->isClosed() && $boxIsMine ) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-spending mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                         }
 
-                        if (Auth::user()->can('delete', $row)) {
+                        if (Auth::user()->can('delete', $row) && !$row->box->isClosed() && $boxIsMine) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-spending mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
+                        $btn .= '</div>';
 
                         return $btn;
                     })

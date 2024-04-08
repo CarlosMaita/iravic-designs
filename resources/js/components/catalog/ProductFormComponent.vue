@@ -21,7 +21,7 @@
                 <!--  -->
                 <div class="row mt-3">
                     <div class="col-12">
-                        <div class="form-check form-check-inline mb-4">
+                        <div v-show="!is_updating" class="form-check form-check-inline mb-4">
                             <input class="form-check-input" type="checkbox" name="is_regular" id="is_regular" value="1" 
                             v-model="is_regular">
                             <label class="form-check-label" for="is_regular">Es producto regular (Sin combinaciones)</label>
@@ -65,7 +65,7 @@
                                         v-model="category"
                                         @input="setCategorySelected">
                             </v-select>
-                            <input type="hidden" name="category_id" v-model="product.category_id">
+                            <input type="hidden" name="category_id" v-model="categoryId">
                         </div>
                     </div>
                     <div class="col-6">
@@ -77,7 +77,7 @@
                                         v-model="brand"
                                         @input="setBrandSelected">
                             </v-select>
-                            <input type="hidden" name="brand_id" v-model="product.brand_id">
+                            <input type="hidden" name="brand_id" v-model="brandId">
                         </div>
                     </div>
                 </div>
@@ -292,6 +292,10 @@
             urlProductsCombinations: {
                 type: String,
                 default: ''
+            },
+            is_updating: {
+                type: Boolean,
+                default: false
             }
         },
         data: () => ({
@@ -304,6 +308,22 @@
             mounted: false
         }),
 	    computed: {
+            categoryId: function(){
+                let ids = this.categories.map( obj => obj.id)
+                if(this.category){
+                    if(!ids.includes(this.category.id) ) this.category = null;
+                    return this.category.id
+                }
+                return null;
+            },
+            brandId: function(){
+                let ids = this.brands.map( obj => obj.id);
+                if(this.brand){
+                    if(!ids.includes(this.brand.id) ) this.brand.id = null;
+                    return this.brand.id;
+                }
+                return null;
+            }
 	    },
         async mounted() {
             this.mounted = true;
@@ -315,9 +335,9 @@
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
                 }
-
-                this.brand = this.product.brand.name;
-                this.category = this.product.category.name;
+                this.brand = this.product.brand;
+                this.category = this.product.category;
+               
                 this.gender = this.product.gender;
 
                 if (this.product.product_combinations) {

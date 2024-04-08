@@ -3,6 +3,7 @@
 namespace App\Http\Requests\admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ZoneRequest extends FormRequest
 {
@@ -12,7 +13,8 @@ class ZoneRequest extends FormRequest
             'address_destination.required' => 'El campo dirección destino es obligatorio.',
             'name.required' => 'El campo nombre es obligatorio.',
             'name.max' => 'El campo nombre no puede tener mas de :max caracteres.',
-            'name.unique' => 'Ya existe una zona con el nombre ingresado.'
+            'name.unique' => 'Ya existe una zona con el nombre ingresado.',
+            'position.max' => 'El campo de posición debe tener máximo :max caracteres.'
         ];
     }
 
@@ -34,13 +36,20 @@ class ZoneRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'address_destination' => 'required'
+            'address_destination' => 'required',
+            'position'            => 'max:9'
         ];
 
         if ($this->isMethod('POST')) {
             $rules['name'] = 'required|max:100|unique:zones,name,NULL,id,deleted_at,NULL';
         } else {
-            $rules['name'] = 'required|max:100|unique:zones,name,' . $this->route('zona')->id;
+            $rules['name'] = [
+                'required',
+                'max:100',
+                Rule::unique('zones', 'name')->where(function ($query) {
+                    $query->whereNull('deleted_at');
+                })->ignore($this->route('zona')->id),
+            ];
         }
 
         return $rules;

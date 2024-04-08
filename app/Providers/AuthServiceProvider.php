@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Category'               => 'App\Policies\CategoryPolicy',
         'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
         'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
+        'App\Models\Debt'                   => 'App\Policies\DebtPolicy',
         'App\Models\Order'                  => 'App\Policies\OrderPolicy',
         'App\Models\Payment'                => 'App\Policies\PaymentPolicy',
         'App\Models\Permission'             => 'App\Policies\PermissionPolicy',
@@ -51,6 +52,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('view-customers-debtors', function ($user) {
             return $user->permissions()->contains('view-customers-debtors');
+        });
+
+        Gate::define('view-customers-pending-to-schedule', function ($user) {
+            return $user->permissions()->contains('view-customers-pending-to-schedule');
         });
 
         Gate::define('sort-zones', function ($user) {

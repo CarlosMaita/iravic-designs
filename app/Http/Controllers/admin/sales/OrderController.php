@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\sales;
 
+use App\Constants\CustomerConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
@@ -74,14 +75,6 @@ class OrderController extends Controller
                             $btn .= '<a href="'. route('ventas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        // if (Auth::user()->can('update', $row)) {
-                        //     $btn .= '<a href="'. route('ventas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        // }
-
-                        // if (Auth::user()->can('delete', $row)) {
-                        //     $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-box" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        // }
-
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -100,7 +93,8 @@ class OrderController extends Controller
     {
         $this->authorize('create', 'App\Models\Order');
         $boxParam = $this->boxRepository->findOnly($request->box);
-        $customers = $this->customerRepository->all();
+        // $customers = $this->customerRepository->all();
+        $customers = $this->customerRepository->allOnlyName();
         $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();
@@ -109,6 +103,7 @@ class OrderController extends Controller
                 ->withBoxParam($boxParam)
                 ->withCustomers($customers)
                 ->withCustomerParam($customerParam)
+                ->withQualifications(CustomerConstants::QUALIFICATIONS)
                 ->withOrder(new Order())
                 ->withProducts($products)
                 ->withZones($zones);

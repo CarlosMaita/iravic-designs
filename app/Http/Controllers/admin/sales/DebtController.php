@@ -41,15 +41,20 @@ class DebtController extends Controller
             return Datatables::of($debts)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
-                        
-                        if (Auth::user()->can('update', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-debt mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
+                        $btn = '<div style="display:flex">';
+                        //Si existe una caja asignada a la deuda muestra los controles
+                        if (isset($row->box))
+                        {
+                            $boxIsMine = Auth::user()->id ==  $row->box->user_id ?  true : false;
+                            if (Auth::user()->can('update', $row) && !$row->box->isClosed() && $boxIsMine ) {
+                                    $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-debt mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
+                            }
+                            if (Auth::user()->can('delete', $row) && !$row->box->isClosed() && $boxIsMine  ) {
+                                    $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-debt mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                            }
                         }
 
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-debt mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
+                        $btn .= '</div>';
 
                         return $btn;
                     })

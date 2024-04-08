@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\PaymentRequest;
 use App\Models\Payment;
+use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\PaymentRepository;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
@@ -22,11 +23,14 @@ class PaymentController extends Controller
 
     public $visitRepository;
 
-    public function __construct(PaymentRepository $paymentRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
+    public $customerRepository;
+
+    public function __construct(PaymentRepository $paymentRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository, CustomerRepository $customerRepository)
     {
         $this->paymentRepository = $paymentRepository;
         $this->scheduleRepository = $scheduleRepository;
         $this->visitRepository = $visitRepository;
+        $this->customerRepository = $customerRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -48,18 +52,25 @@ class PaymentController extends Controller
                 $payments = array();
             }
             
+            
             return Datatables::of($payments)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
-                        
-                        if (Auth::user()->can('update', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-payment mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
-                        }
 
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-payment mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
+                        $btn = '<div style="display:flex">';
+                        $box = $row->box;
+                        if(isset($box))
+                        {
+                            $boxIsMine = Auth::user()->id ==  $box->user_id ?  true : false;
+                            if (Auth::user()->can('update', $row) && !$box->isClosed() && $boxIsMine) {
+                                    $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-payment mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
+                            }
+    
+                            if (Auth::user()->can('delete', $row) && !$box->isClosed() && $boxIsMine) {
+                                $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-payment mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                            }
+                        }             
+                        $btn .= '</div>';
 
                         return $btn;
                     })
@@ -84,7 +95,8 @@ class PaymentController extends Controller
             $attributes = $request->only('box_id', 'customer_id', 'user_id', 'amount', 'comment', 'date', 'payed_bankwire', 'payed_card', 'payed_cash');
             $pago = $this->paymentRepository->create($attributes);
             $this->visitRepository->completeByDateUser($pago->customer_id, $pago->getRawOriginal('date'));
-
+            $customer = $pago->customer;
+            
             /**
              * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
              * Si selecciona una fecha para visita, intenta crear una agenda para esa fecha si aun no existe
@@ -103,6 +115,14 @@ class PaymentController extends Controller
 
             DB::commit();
 
+            #validar solvencia 
+            if($customer->getBalance() >= 0){
+                #solvente
+                $this->customerRepository->update($customer->id, array(
+                    'solvency_date' => now()
+                ));
+            }
+        
             return response()->json([
                 'success' => true,
                 'message' => 'El pago ha sido creado con éxito',
@@ -166,6 +186,14 @@ class PaymentController extends Controller
             $this->authorize('update', $pago);
             $attributes = $request->only('amount', 'comment', 'payed_bankwire', 'payed_card', 'payed_cash');
             $this->paymentRepository->update($pago->id, $attributes);
+            $customer = $pago->customer;
+            #validar solvencia 
+            if($customer->getBalance() >= 0){
+                #solvente
+                $this->customerRepository->update($customer->id, array(
+                    'solvency_date' => now()
+                ));
+            }
             flash("El Pago <b>$request->name</b> ha sido actualizado con éxito")->success();
 
             return response()->json([
@@ -196,6 +224,19 @@ class PaymentController extends Controller
             $this->authorize('delete', $pago);
             $customer = $pago->customer;
             $pago->delete();
+            #validar solvencia 
+            if($customer->getBalance() >= 0){
+                #solvente
+                $this->customerRepository->update($customer->id, array(
+                    'solvency_date' => now()
+                ));
+            }else{
+                #No solvente
+                $this->customerRepository->update($customer->id, array(
+                    'solvency_date' => now()->subDays(7) 
+                    #resto siete dias de seguridad para los morosos. 
+                ));
+            }
             
             return response()->json([
                 'success' => true,

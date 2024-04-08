@@ -37,13 +37,14 @@ class BoxController extends Controller
 
         if ($request->ajax()) {
             $boxes = $this->boxRepository->allQuery();
-
+           
             return datatables()->eloquent($boxes)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
-
-                        if (Auth::user()->can('update', $row) && $row->closed == 0) {
+                        $boxIsMine =  $row->user_id == Auth::user()->id ? true : false;
+                        $btn = '<div style="display:flex">';
+                        
+                        if (Auth::user()->can('update', $row) && !$row->isClosed()) {
                             $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-warning btn-action-icon close-box mb-2" title="Cerrar Caja" data-toggle="tooltip"><i class="fas fa-lock"></i></button>';
                         }
 
@@ -51,13 +52,16 @@ class BoxController extends Controller
                             $btn .= '<a href="'. route('cajas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        if (Auth::user()->can('update', $row)) {
+                        if (Auth::user()->can('update', $row) && !$row->isClosed() && $boxIsMine) {
                             $btn .= '<a href="'. route('cajas.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
 
-                        if (Auth::user()->can('delete', $row)) {
+                        if (Auth::user()->can('delete', $row) && !$row->isClosed()) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-box mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
+
+                        $btn .= '</div">';
+
 
                         return $btn;
                     })
@@ -122,9 +126,11 @@ class BoxController extends Controller
         $customers = $this->customerRepository->all();
         $orders = $caja->orders()->orderBy('date', 'desc')->get();
         $showOrdersTab = isset($request->ventas) ? true : false; // Para determinar si hay que abrir el tab de ordenes en el collapse
+        $boxIsMine =  $caja->user_id == Auth::user()->id ? true : false;
         return view('dashboard.boxes.show')
                 ->withCustomers($customers)
                 ->withBox($caja)
+                ->withBoxIsMine($boxIsMine)
                 ->withOrders($orders)
                 ->withShowOrdersTab($showOrdersTab);
     }
@@ -138,6 +144,11 @@ class BoxController extends Controller
     public function edit(Box $caja)
     {
         $this->authorize('update', $caja);
+        #validar que la caja esta abierta
+        if ($caja->isClosed()){
+            flash( 'La caja no puede ser editada porque ya ha sido cerrada.' )->warning();
+            return redirect()->back();
+        }
         return view('dashboard.boxes.edit')
                 ->withBox($caja);
     }
@@ -154,7 +165,10 @@ class BoxController extends Controller
         try {
             $this->authorize('update', $caja);
             if ($request->header('close-box')) {
-                $attributes = array('closed' => 1);
+                $attributes = array(
+                    'closed' => 1,
+                    'date_end' => date('Y-m-d H:i:s'),
+                    );
                 $this->boxRepository->update($caja->id, $attributes);
             } else {
                 $this->boxRepository->update($caja->id, $request->only('cash_initial'));

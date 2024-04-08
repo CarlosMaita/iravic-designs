@@ -25,7 +25,14 @@
                     {data: 'responsable.name'},
                     {data: 'date'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ], 
+                columnDefs: [
+                {
+                    targets: 7, // Index of the "date" column
+                    type: 'date' // Specify the column type as "date"
+                }
+                ],
+                order: [[7, 'desc']]
             });
         }
 

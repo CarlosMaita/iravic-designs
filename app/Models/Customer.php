@@ -14,7 +14,7 @@ class Customer extends Model
 
     protected $table = 'customers';
 
-    public $fillable = [
+    protected $fillable = [
         'zone_id',
         'address',
         'address_picture',
@@ -28,17 +28,23 @@ class Customer extends Model
         'longitude',
         'max_credit',
         'name',
+        'email',
         'receipt_picture',
+        'card_front',
+        'card_back',
         'qualification',
+        'is_pending_to_schedule',
         'telephone',
-        'cellphone'
+        'cellphone',
+        'solvency_date'
     ];
 
-    public $appends = [
+    protected $appends = [
         'balance',
         'balance_numeric',
         'date_next_visit',
         'max_credit_str',
+        'available_credit_str',
         'total_buyed',
         'total_credit',
         'total_debt',
@@ -47,7 +53,10 @@ class Customer extends Model
         'url_address',
         'url_dni',
         'url_receipt',
-        'whatsapp_number'
+        'url_card_front',
+        'url_card_back',
+        'whatsapp_number',
+        'is_solvent'
     ];
 
     const DISK_ADDRESS = 'customers_address';
@@ -55,6 +64,8 @@ class Customer extends Model
     const DISK_DNI = 'customers_dni';
 
     const DISK_RECEIPT = 'customers_receipt';
+
+    const CARD = 'cards';
 
     # Boot
     protected static function boot()
@@ -128,6 +139,16 @@ class Customer extends Model
         }
 
         return '$ 0.00';
+    }
+
+     /**
+     * Retorna en formato moneda, el credito disponible del cliente
+     */
+    public function getAvailableCreditStrAttribute()
+    {
+        $used_credit = $this->getBalance() <= 0 ?  $this->getBalance() : 0 ;
+        $available_credit = $this->max_credit + $used_credit > 0 ? ($this->max_credit + $used_credit) : 0;
+        return '$ ' . number_format($available_credit, 2, '.', ',');
     }
 
     /**
@@ -229,6 +250,32 @@ class Customer extends Model
     }
 
     /**
+     * Retorna URL del recibo
+     */
+    public function getUrlCardFrontAttribute()
+    {
+        if (Storage::disk(self::CARD)->exists($this->card_front)) {
+            return Storage::disk(self::CARD)->url($this->card_front);
+        }
+
+        return url("/img/no_image.jpg");
+    }
+
+    /**
+     * Retorna URL del recibo
+     */
+    public function getUrlCardBackAttribute()
+    {
+        if (Storage::disk(self::CARD)->exists($this->card_back)) {
+            return Storage::disk(self::CARD)->url($this->card_back);
+        }
+
+        return url("/img/no_image.jpg");
+    }
+
+
+
+    /**
      * Retorna Link de whatsapp con mensaje a cliente sobre visita para cobrar hoy
      */
     public function getWhatsappNumberAttribute()
@@ -246,6 +293,12 @@ class Customer extends Model
         }
 
         return null;
+    }
+     /**
+     * Retorna si es es solvente
+     */
+    public function getIsSolventAttribute(){
+        return $this->getBalance() >= 0 ? true :false;
     }
 
     # Methods
@@ -269,22 +322,24 @@ class Customer extends Model
         return $url;
     }
 
+   
+
     /**
      * Retorna balance del cliente
      */
     public function getBalance()
     {
         $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
-        $total_credit_refund = $this->getTotalRefundCredit();
         $total_debts = $this->getTotalDebt();
         $total_payments = $this->payments()->sum('amount');
+        $total_credit_refund = $this->getTotalRefundCredit();
         $total_debit_refunded_balance = $this->getTotalDebitRefundedBalance();
     
         return ($total_payments + $total_credit_refund - $total_credit - $total_debts + $total_debit_refunded_balance);
     }
 
     /**
-     * Retorna en formato numerico, el total devvuelto con compra pagada a debito
+     * Retorna en formato numerico, el total devuelto con compra pagada a debito
      */
     public function getTotalDebitRefundedBalance()
     {
@@ -295,7 +350,8 @@ class Customer extends Model
         ->where('payed_credit', 0)
         ->sum('total');
         
-        return $refunded - $ordered;;
+        #cuando se llevan mas del monto devuelto pagando con debito. el saldo queda negativo, cuando deberia quedar en 0
+        return $refunded - $ordered >= 0 ? ($refunded - $ordered) : 0 ;
     }
 
     /**
@@ -358,28 +414,64 @@ class Customer extends Model
             $now = now();
             $days_to_notify = is_int($this->days_to_notify_debt) ? $this->days_to_notify_debt : 0;
             $date_last_payment = $this->getLastDateForDebtNotification();
-
-            if ($date_last_payment->addDays($days_to_notify)->diffInDays($now, false) <= 0) {
+            if ($date_last_payment->diffInDays($now, false) >= $days_to_notify) {
                 return true;
             }
         }
-        
         return false;
     }
 
     /**
-     * Retorna fecha del ultimo pago/deuda registrada
+     * Retorna fecha del ultimo pago/deuda/orden registrada despues de la fecha de solvencia
      */
     public function getLastDateForDebtNotification()
     {
-        if ($payment = $this->payments()->latest()->first()) {
-            return Carbon::parse($payment->date);
+        $solvencyDate = Carbon::parse($this->solvency_date)->format('Y-m-d H:i:s');
+        $latestPayment = $this->payments()->where('date', '>', $solvencyDate)->latest()->first();
+        if ($latestPayment) {
+            return Carbon::parse($latestPayment->date);
         }
-
-        if ($debt = $this->debts()->latest()->first()) {
+        #segundo considera la fecha de la ultima deuda despues de la fecha de solvencia
+        if ($debt = $this->debts()->where('date', '>', $solvencyDate)->oldest()->first()) {
             return Carbon::parse($debt->date);
         }
-
+        #tercero considera la fecha de la ultima orden a credito despues de la fecha de solvencia
+        if($order = $this->orders()->where('payed_credit', '1')->where('date', '>', $solvencyDate)->oldest()->first()){
+            return Carbon::parse($order->date);
+        }
+        #by default
         return now();
+    }
+    
+    /**
+     * Retorna si existen ordenes vinculadas al cliente
+     */
+    public function existsOrders() : bool
+    {
+        return count($this->orders) > 0 ? true : false;
+    }
+
+    /**
+     * Retorna si existen Visitas vinculadas al cliente
+     */
+    public function existsVisits() : bool
+    {
+        return count($this->visits) > 0? true : false;
+    }
+
+    public function haveDebtsCustomer() : bool 
+    {
+        return $this->getBalance() < 0 ? true : false;
+    }
+
+    public function isPendingToSchedule() : bool 
+    {
+        return $this->is_pending_to_schedule == 1 ? true : false ;
+    } 
+
+    public function  setPendingToSchedule ($value) : void
+    {
+        $this->is_pending_to_schedule = $value;
+        $this->save();
     }
 }

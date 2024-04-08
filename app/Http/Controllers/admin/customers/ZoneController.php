@@ -144,9 +144,16 @@ class ZoneController extends Controller
     {
         try {
             $this->authorize('delete', $zona);
-            $zona->delete();
-            flash("La zona <b>$zona->name</b> ha sido eliminada con éxito")->success();
-            
+            #validar existencia de clientes viculados a la zona
+            if ($zona->existsAssignedCustomers())
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => "La zona no ha podido ser eliminada, aún existen clientes asignados a la zona"
+                ]); 
+            }
+            #eliminar Zona
+            $zona->delete(); flash("La zona <b>$zona->name</b> ha sido eliminada con éxito")->success();
             return response()->json([
                 'success' => true,
                 'message' => "La zona ha sido eliminada con éxito"

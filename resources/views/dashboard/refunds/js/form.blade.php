@@ -8,6 +8,7 @@
         const URL_PRODUCTS = "{{ route('productos.index') }}";
         const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
         const URL_REFUND_PRODUCTS = "{{ route('devoluciones.create') }}";
+        const URL_CUSTOMER = "{{ route('clientes.index') }}";
         const btn_add_product = $('#add-product');
         const btn_add_product_refund = $('#add-product-refund');
         const btn_add_product_modal = $('#add-product-modal');
@@ -226,32 +227,88 @@
          *
          */
         select_customer.on('change', function(e) {
-            var container       = $('#customer-selected-container'),
-                selected        = $('#customer').find(':selected'),
-                address         = selected.data('address'),
-                balance         = selected.data('balance'),
-                dni             = selected.data('dni'),
-                maxcredit       = selected.data('max-credit'),
-                maxcredit_str   = selected.data('max-credit-str'),
-                name            = selected.data('name'),
-                qualification   = selected.data('qualification'),
-                telephone       = selected.data('telephone');
+            e.preventDefault();
+            var selected = $(this).find(':selected');
+            let customer_id = selected.data('id');
+            getCustomerDataAjax(customer_id);
 
-            container.find('#selected-customer-address').val(address);
-            container.find('#selected-customer-balance').val(balance);
-            container.find('#selected-customer-dni').val(dni);
-            container.find('#selected-customer-maxcredit').val(maxcredit_str);
-            container.find('#selected-customer-name').val(name);
-            container.find('#selected-customer-qualification').val(qualification);
-            container.find('#selected-customer-telephone').val(telephone);
-            container.removeClass('d-none');
+            // var container             = $('#customer-selected-container'),
+            //     selected              = $('#customer').find(':selected'),
+            //     address               = selected.data('address'),
+            //     balance               = selected.data('balance'),
+            //     dni                   = selected.data('dni'),
+            //     maxcredit             = selected.data('max-credit'),
+            //     maxcredit_str         = selected.data('max-credit-str'),
+            //     availablecredit_str   = selected.data('available-credit-str'),
+            //     name                  = selected.data('name'),
+            //     email                 = selected.data('email'),
+            //     qualification         = selected.data('qualification'),
+            //     telephone             = selected.data('telephone');
 
-            $customer_max_credit = maxcredit;
-            $('.max-credit').text(maxcredit_str);
-            $('.customer-balance').text(balance);
+            // container.find('#selected-customer-address').val(address);
+            // container.find('#selected-customer-balance').val(balance);
+            // container.find('#selected-customer-dni').val(dni);
+            // container.find('#selected-customer-maxcredit').val(maxcredit_str);
+            // container.find('#selected-customer-name').val(name);
+            // container.find('#selected-customer-email').val(email);
+            // container.find('#selected-customer-qualification').val(qualification);
+            // container.find('#selected-customer-telephone').val(telephone);
+            // container.removeClass('d-none');
 
-            httpGetProductsForRefund(select_customer.val());
+            // $customer_max_credit = maxcredit;
+            // $('.max-credit').text(maxcredit_str);
+            // $('.customer-balance').text(balance);
+            // $('.available-credit').text(availablecredit_str)
+
+        
+
+            // httpGetProductsForRefund(select_customer.val());
         });
+
+        /**
+        * Retorna la data del customer mediante una peticion ajax
+        */
+        function getCustomerDataAjax(customer_id){
+            return $.ajax({
+                url: `${URL_CUSTOMER}/${customer_id}`,
+                type: "GET",
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    let container = $('#customer-selected-container');
+                    let address = res.address;
+                    let balance = res.balance;
+                    let balance_numeric = res.balance_numeric;
+                    let dni = res.dni;
+                    let maxcredit = res.max_credit;
+                    let maxcredit_str = res.max_credit_str;
+                    let availablecredit_str = res.available_credit_str;
+                    let name = res.name;
+                    let email = res.email ?? 'Sin correo registrado';
+                    let qualification = res.qualification;
+                    let telephone = res.telephone;
+
+                    $customer_balance = balance;
+                    $customer_max_credit = maxcredit;
+
+                    container.find('#selected-customer-address').text(address);
+                    container.find('#selected-customer-balance').text(balance);
+                    container.find('#selected-customer-dni').text(dni);
+                    container.find('#selected-customer-maxcredit').text(maxcredit_str);
+                    container.find('#selected-customer-name').text(name);
+                    container.find('#selected-customer-email').text(email);
+                    container.find('#selected-customer-qualification').text(qualification);
+                    container.find('#selected-customer-telephone').text(telephone);
+                    container.removeClass('d-none');
+
+                    $('.max-credit').text(maxcredit_str);
+                    $('.customer-balance').text(balance);
+                    $('.available-credit').text(availablecredit_str)
+                    
+                    httpGetProductsForRefund(customer_id);
+                }
+            }); 
+        }
 
         /**
          *
@@ -418,7 +475,7 @@
                             <td>${product.stock_user}</td>
                             <td>
                                 <div class="form-group">
-                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" step="1" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
                                 </div>
                             </td>
                         </tr>`;
@@ -430,7 +487,7 @@
                         <td>${product.stock_user}</td>
                         <td>
                             <div class="form-group">
-                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" step="1" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
                             </div>
                         </td>
                     </tr>`;

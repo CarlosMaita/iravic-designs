@@ -7,6 +7,7 @@
         const FORM_RESOURCE_ORDERS = $("#form-orders");
         const URL_PRODUCTS = "{{ route('productos.index') }}";
         const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
+        const URL_CUSTOMER = "{{ route('clientes.index') }}";
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');
@@ -26,23 +27,11 @@
         let discount_to_apply = 0;
 
         setDatePicker();
-        select_customer.select2();
+        select_customer.select2({
+            matcher: matchCustomer
+        });
         select_product.select2({
-            matcher: function(params, data) {
-                if ($.trim(params.term) === '') {
-                    return data;
-                }
-
-                if (
-                    ($(data.element).data('brand') && $(data.element).data('brand').toString().indexOf(params.term) > -1) ||
-                    ($(data.element).data('category') && $(data.element).data('category').toString().indexOf(params.term) > -1) ||
-                    ($(data.element).data('code') && $(data.element).data('code').toString().indexOf(params.term) > -1)
-                ) {
-                    return data;
-                }
-
-                return null;
-            }
+            matcher: matchProduct
         });
 
         $('[data-toggle="tooltip"]').tooltip();
@@ -144,7 +133,7 @@
                     contentType: false,
                     success: function(res) {
                         var product = res;
-
+                        console.log(res);
                         if (product && product.stock_user > 0) {
                             handleShowProductForm(product);
                         } else if (product) {
@@ -254,32 +243,56 @@
          * Captura evento de cambio de cliente seleccionado
          */
         select_customer.on('change', function(e) {
-            var container       = $('#customer-selected-container'),
-                selected        = $('#customer').find(':selected'),
-                address         = selected.data('address'),
-                balance         = selected.data('balance'),
-                balance_numeric = selected.data('balance-numeric'),
-                dni             = selected.data('dni'),
-                maxcredit       = selected.data('max-credit'),
-                maxcredit_str   = selected.data('max-credit-str'),
-                name            = selected.data('name'),
-                qualification   = selected.data('qualification'),
-                telephone       = selected.data('telephone');
-
-            container.find('#selected-customer-address').text(address);
-            container.find('#selected-customer-balance').text(balance);
-            container.find('#selected-customer-dni').text(dni);
-            container.find('#selected-customer-maxcredit').text(maxcredit_str);
-            container.find('#selected-customer-name').text(name);
-            container.find('#selected-customer-qualification').text(qualification);
-            container.find('#selected-customer-telephone').text(telephone);
-            container.removeClass('d-none');
-            
-            $customer_balance = balance_numeric;
-            $customer_max_credit = maxcredit;
-            $('.max-credit').text(maxcredit_str);
-            $('.customer-balance').text(balance);
+            e.preventDefault();
+            //get customer data from ajax   
+            var selected = $(this).find(':selected');
+            let customer_id = selected.data('id');
+            getCustomerDataAjax(customer_id);
         });
+
+        /**
+         * Retorna la data del customer mediante una peticion ajax
+        */
+        function getCustomerDataAjax(customer_id){
+            
+            return $.ajax({
+                url: `${URL_CUSTOMER}/${customer_id}`,
+                type: "GET",
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    let container = $('#customer-selected-container');
+                    let address = res.address;
+                    let balance = res.balance;
+                    let balance_numeric = res.balance_numeric;
+                    let dni = res.dni;
+                    let maxcredit = res.max_credit;
+                    let maxcredit_str = res.max_credit_str;
+                    let availablecredit_str = res.available_credit_str;
+                    let name = res.name;
+                    let email = res.email ?? 'Sin correo registrado';
+                    let qualification = res.qualification;
+                    let telephone = res.telephone;
+
+                    $customer_balance = balance;
+                    $customer_max_credit = maxcredit;
+
+                    container.find('#selected-customer-address').text(address);
+                    container.find('#selected-customer-balance').text(balance);
+                    container.find('#selected-customer-dni').text(dni);
+                    container.find('#selected-customer-maxcredit').text(maxcredit_str);
+                    container.find('#selected-customer-name').text(name);
+                    container.find('#selected-customer-email').text(email);
+                    container.find('#selected-customer-qualification').text(qualification);
+                    container.find('#selected-customer-telephone').text(telephone);
+                    container.removeClass('d-none');
+
+                    $('.max-credit').text(maxcredit_str);
+                    $('.customer-balance').text(balance);
+                    $('.available-credit').text(availablecredit_str)
+                }
+            });
+        }
 
         /**
          * Retorna el total de la venta
@@ -386,8 +399,8 @@
         function setProductModalHeaderInfo(product) {
             modal_product.find('.product-name').text(product.name);
             modal_product.find('.product-code').text(product.real_code);
-            modal_product.find('.product-category').text(product.category?.name);
-            modal_product.find('.product-brand').text(product.brand.name);
+            modal_product.find('.product-category').text(product.category ? product.category.name : '-');
+            modal_product.find('.product-brand').text(product.brand ? product.brand.name : '-' );
         }
         
         /**
@@ -454,7 +467,7 @@
                             <td>${product.stock_user}</td>
                             <td>
                                 <div class="form-group">
-                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0"  max="${product.stock_user}"  step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
                                 </div>
                             </td>
                         </tr>`;
@@ -466,7 +479,7 @@
                         <td>${product.stock_user}</td>
                         <td>
                             <div class="form-group">
-                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0" step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0"  max="${product.stock_user}"  step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
                             </div>
                         </td>
                     </tr>`;
@@ -769,10 +782,12 @@
          * Retorna un valor numerico en formato con , y . en los decimales, milesimas correspondientemente
          */
         function replaceNumberWithCommas(number) {
+            var n = number.toFixed(2); // Limita el resultado a dos decimales
             //Seperates the components of the number
             var n= number.toString().split(".");
             //Comma-fies the first part
             n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            n[1] = n[1] ? n[1].slice(0, 2) : "00";
             //Combines the two sections
             return n.join(",");
         }

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <form id="form-customers" method="POST" action="{{ route('clientes.store') }}">
             @csrf
-            <input type="hidden" name="without_flash" value="0">
+            <input type="hidden" name="from_orders" value="0">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('dashboard.customers.create') }}</h5>

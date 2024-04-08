@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin\Catalog;
+namespace App\Http\Controllers\admin\catalog;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductStockTransferRequest;

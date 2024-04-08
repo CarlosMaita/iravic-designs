@@ -4,6 +4,7 @@ namespace App\Http\Requests\admin\Catalog;
 
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -38,7 +39,7 @@ class ProductRequest extends FormRequest
             'stock_local.required' => 'El campo Stock Local es obligatorio.',
             'stock_local.min' => 'El Stock Local no puede ser menor a :min.',
             'stock_truck.required' => 'El campo Stock Camioneta es obligatorio.',
-            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.'
+            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.',
         ];
 
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
@@ -65,6 +66,11 @@ class ProductRequest extends FormRequest
                             if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
                                 $messages['sizes_existing.' . $i . '.' . $j . '.exists'] = 'La talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no se encuentra disponible en la BD.';
                             }
+
+                            if (isset($this->codes_existing[$i][$j]) && $this->codes_existing[$i][$j]) {
+                                $messages['codes_existing.' . $i . '.' . $j . '.unique'] = 'El valor del campo codigo en la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' ya está en uso.';
+                            }
+
                         }
                     }
 
@@ -126,12 +132,38 @@ class ProductRequest extends FormRequest
             'price' => 'required|numeric|min:0'
         ];
 
+
         if ($this->isMethod('POST')) {
+            #create product
             $rules['code'] = 'required|min:1|max:100|unique:products,code,NULL,id,deleted_at,NULL';
         } else {
-            $rules['code'] = 'required||min:1|max:100|unique:products,code,' . $this->route('producto')->id;
+            #update regular product 
+            if ($this->producto->is_regular){
+                #update product
+                $rules['code'] = [
+                    'required',
+                    'min:1',
+                    'max:100',
+                    Rule::unique('products', 'code')->where(function ($query) {
+                        $query->whereNull('deleted_at');
+                    })->ignore($this->route('producto')->id),
+                ];
+            }
+            #update combination product
+            else{
+                 $rules['code'] = [
+                    'required',
+                    'min:1',
+                    'max:100',
+                    Rule::unique('products', 'code')->where(function ($query) {
+                        $query->whereNull('deleted_at');
+                        $query->where('product_id', '<>', $this->route('producto')->id)
+                            ->orWhereNull('product_id');
+                    })->ignore($this->route('producto')->id),
+                ];
+            }
         }
-        
+        // exit($this);
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
             if ($this->isMethod('POST')) {
                 $rules['combinations'] = 'required';
@@ -153,6 +185,15 @@ class ProductRequest extends FormRequest
         
                             if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
                                 $rules['sizes_existing.' . $i . '.' . $j] = 'exists:sizes,id';
+                            }
+                            
+                            if(isset($this->codes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
+                                $rules['codes_existing.' . $i . '.' . $j]  = [ Rule::unique('products', 'code')->where(function ($query) {
+                                                                                $query->whereNull('deleted_at');
+                                                                                $query->where('product_id', '<>', $this->route('producto')->id)
+                                                                                    ->orWhereNull('product_id');
+                                                                            })->ignore($this->route('producto')->id),  
+                                                                        ];
                             }
                         }
                     }
@@ -191,6 +232,7 @@ class ProductRequest extends FormRequest
      */
     public function withValidator($validator)
     {
+        
         if (!$this->is_regular && isset($this->combinations_group)) {
             foreach(array_keys($this->combinations_group) as $key) {
                 $combination_num = ($key + 1);
@@ -228,27 +270,29 @@ class ProductRequest extends FormRequest
                         }
                     }
                 }
-                
-                foreach ($this->product_combinations[$key] as $product_combination_id) {
-                    if (!empty($this->combinations_group_code[$key])) {
-                        if ($this->isMethod('POST')) {
-                            $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
-                        } else {
-                            $product_id_route = $this->route('producto')->id;
-                            $product_with_code = Product::where('code', $this->combinations_group_code[$key])
-                                                        ->where(function ($q) use ($product_id_route, $product_combination_id) {
-                                                            // $q->where('id', '<>', $product_id_route)
-                                                            //     ->orWhere('product_id', '<>', $product_id_route);
-                                                            $q->where('id', '<>', $product_combination_id)
-                                                                ->where('product_id', '<>', $product_id_route);
-                                                        })
-                                                        ->count();
-                        }
-
-                        if ($product_with_code) {
-                            $validator->after(function ($validator) use ($combination_num) {
-                                $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
-                            });
+                #validar la existencia 
+                if(isset($this->product_combinations[$key]  )){
+                    foreach ($this->product_combinations[$key] as $product_combination_id) {
+                        if (!empty($this->combinations_group_code[$key])) {
+                            if ($this->isMethod('POST')) {
+                                $product_with_code = Product::where('code', $this->combinations_group_code[$key])->count();
+                            } else {
+                                $product_id_route = $this->route('producto')->id;
+                                $product_with_code = Product::where('code', $this->combinations_group_code[$key])
+                                                            ->where(function ($q) use ($product_id_route, $product_combination_id) {
+                                                                // $q->where('id', '<>', $product_id_route)
+                                                                //     ->orWhere('product_id', '<>', $product_id_route);
+                                                                $q->where('id', '<>', $product_combination_id)
+                                                                    ->where('product_id', '<>', $product_id_route);
+                                                            })
+                                                            ->count();
+                            }
+    
+                            if ($product_with_code) {
+                                $validator->after(function ($validator) use ($combination_num) {
+                                    $validator->errors()->add('code_' . $combination_num, 'El código de la combinación ' . ($combination_num) . ' ya esta registrado para otro producto.');
+                                });
+                            }
                         }
                     }
                 }

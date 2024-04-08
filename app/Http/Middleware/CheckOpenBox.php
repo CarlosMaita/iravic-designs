@@ -27,8 +27,14 @@ class CheckOpenBox
         $user = Auth::user();
         
         if (!$this->boxRepository->getOpenByUserId($user->id)) {
+            #verificar permiso de ver caja
             flash("Usted no tiene una caja abierta.")->warning();
+            if ( !$request->user()->can('viewany', 'App\Models\Box')){
+                flash( "Usted no cuenta con los permisos suficientes para ver una Caja.")->error();
+                return redirect()->back();
+            }
             return redirect()->route('cajas.index');
+
         }
 
         return $next($request);

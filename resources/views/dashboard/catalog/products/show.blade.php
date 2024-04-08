@@ -511,13 +511,13 @@
                                                                     <span class="dropdown-item border-bottom view-stock-history"
                                                                         type="button" 
                                                                         data-id="{{ $product->id }}" 
-                                                                        data-stock-column="stock_local">Historial</span>
+                                                                        data-stock="stock_local">Historial</span>
                                                                     {{--  --}}
                                                                     @can('update', $product)
                                                                         <span class="dropdown-item border-bottom modify-stock" 
                                                                         type="button" 
                                                                         data-id="{{ $product->id }}" 
-                                                                        data-stock="stock_local"
+                                                                        data-stock-column="stock_local"
                                                                         data-qty="{{ $product->stock_local }}">Modificar</span>
                                                                     @endcan
                                                                     {{--  --}}
@@ -791,7 +791,14 @@
                             </div>
                             {{--  --}}
                             <a href="{{ route('productos.index') }}" class="btn btn-primary ml-3">{{ __('dashboard.form.back to list') }}</a>
-                            <a href="{{ route('productos.edit', [$product->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
+                            
+                            @if (Auth::user()->can('update', $product)) 
+                                <a
+                                href="{{ route('productos.edit', [$product->id]) }}"
+                                class="btn btn-success">{{
+                                __('dashboard.form.edit')
+                                }}</a>
+                            @endif
                         </div>
                     </div>
                 </div>

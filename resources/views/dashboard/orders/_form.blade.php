@@ -27,16 +27,7 @@
                                                         <option selected disabled>Seleccionar</option>
                                                         @foreach ($customers as $customer)
                                                             <option value="{{ $customer->id }}" 
-                                                                    data-address="{{ $customer->address }}"
-                                                                    data-dni="{{ $customer->dni }}"
-                                                                    data-max-credit="{{ $customer->max_credit }}"
-                                                                    data-max-credit-str="{{ $customer->max_credit_str }}"
-                                                                    data-name="{{ $customer->name }}"
-                                                                    data-telephone="{{ $customer->telephone }}"
-                                                                    data-qualification="{{ $customer->qualification }}"
-                                                                    data-debt="{{ $customer->total_debt }}"
-                                                                    data-balance="{{ $customer->balance }}"
-                                                                    data-balance-numeric="{{ $customer->balance_numeric }}"
+                                                                    data-id="{{ $customer->id }}"
                                                                     @if(!empty($customerParam) && $customerParam->id == $customer->id) selected @endif
                                                             >{{ $customer->name }}</option>
                                                         @endforeach
@@ -64,41 +55,47 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>{{ __('dashboard.form.fields.customers.dni') }}</label>
-                                                        <p id="selected-customer-dni" class="form-control h-100"></p>
+                                                        <label>{{ __('dashboard.form.fields.customers.email') }}</label>
+                                                        <p id="selected-customer-email" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>{{ __('dashboard.form.fields.customers.dni') }}</label>
+                                                        <p id="selected-customer-dni" class="form-control h-100"></p>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.telephone') }}</label>
                                                         <p id="selected-customer-telephone" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.qualification') }}</label>
                                                         <p id="selected-customer-qualification" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.max_credit') }}</label>
                                                         <p id="selected-customer-maxcredit" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.customers.balance') }}</label>
                                                         <p id="selected-customer-balance" class="form-control h-100"></p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.form.fields.customers.address') }}</label>
                                                         <p id="selected-customer-address" class="form-control h-100"></p>
@@ -124,7 +121,7 @@
                                                             @if ($product->is_regular)
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
-                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-brand="{{ optional($product->brand)->name }}"
                                                                     data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
@@ -133,7 +130,7 @@
                                                             @elseif($product->product_id)
                                                                 <option value="{{ $product->id }}" 
                                                                     data-id="{{ $product->id }}"
-                                                                    data-brand="{{ $product->brand->name }}"
+                                                                    data-brand="{{ optional($product->brand)->name }}"
                                                                     data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
@@ -217,6 +214,7 @@
                                         <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: <span class="max-credit">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Saldo: <span class="customer-balance">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark mb-1">Crédito Disponible: <span class="available-credit">$ 0.00</span></p>
                                             <hr>
                                             <div>
                                                 <span>Quiere aplicar algun descuento?</span>

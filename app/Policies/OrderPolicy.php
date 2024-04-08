@@ -53,7 +53,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        return $user->permissions()->contains('update-order');
+        // return $user->permissions()->contains('update-order');
     }
 
     /**
@@ -65,7 +65,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order)
     {
-        return $user->permissions()->contains('delete-order');
+        // return $user->permissions()->contains('delete-order');
     }
 
     /**

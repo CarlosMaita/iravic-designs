@@ -4,10 +4,13 @@
                 DATATABLE_RESOURCE = $("#datatable_payments");
 
         let btn_create_payment = $('#btn-create-payment'),
-            modal_payments = $('#modal-payments'),
-            form_payments = $('#form-payments');
+            modal_payments    = $('#modal-payments'),
+            customer_selector = $("#customer"),
+            form_payments     = $('#form-payments');
 
-        form_payments.find('select').select2();
+        form_payments.find('select').select2({
+            dropdownParent: $("#modal-payments")
+        });
 
         initDataTable();
 
@@ -35,6 +38,11 @@
             modal_payments.find('.modal-title').text('Crear pago');
             $('#payment-visit').removeClass('d-none');
         });
+
+
+        // customer_selector.select2({
+        //     dropdownParent: $("#modal-payments")
+        // });
 
         /**
          * Captura evento submit para crear un pago
@@ -251,6 +259,9 @@
             } else {
                 $('#payment-visit-fields').addClass('d-none');
             }
+            // Hack para correguir error con la libreria select2
+            form_payments.find('select').select2("open");
+            form_payments.find('select').select2("close");
         });
 
         /**
@@ -302,19 +313,21 @@
                 ordering: false,
                 columns: [
                     {data: 'id'},
-                    {
-                        render: function (data, type, row) {
-                            if (typeof $customer !== 'undefined') {
-                                return row.box ? row.box.id : '';
-                            }
+                    {data: 'box.id'},
+                    {data: 'customer.name'},
+                    // {
+                    //     render: function (data, type, row) {
+                    //         if (typeof $customer !== 'undefined') {
+                    //             return row.box ? row.box.id : '';
+                    //         }
 
-                            if (typeof $box !== 'undefined') {
-                                return row.customer ? row.customer.name : '';
-                            }
+                    //         if (typeof $box !== 'undefined') {
+                    //             return row.customer ? row.customer.name : '';
+                    //         }
 
-                            return '';
-                        }
-                    },
+                    //         return '';
+                    //     }
+                    // },
                     {data: 'date'},
                     {data: 'payment_method'},
                     {data: 'amount_str'},

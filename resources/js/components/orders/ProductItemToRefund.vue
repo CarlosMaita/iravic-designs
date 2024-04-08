@@ -69,6 +69,13 @@
         async mounted() {
             this.quantity = this.item.qty;
         },
+        created() {
+            this.$parent.$on("updateQuantityToRefund", (index,value) => {
+                if(index == this.index){
+                    this.quantity = value;
+                }
+            })
+        },
         methods: {
             /**
              * Evento para eliminar producto. Emite evento 'removeProduct' recibido de su componente padre

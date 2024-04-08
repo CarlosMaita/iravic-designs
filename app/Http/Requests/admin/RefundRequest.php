@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\admin;
 
+use App\Models\Customer;
+use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
+use App\Services\Orders\OrderService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +14,12 @@ use Illuminate\Validation\Rule;
 class RefundRequest extends FormRequest
 {
     public $productRepository;
+    public $orderProductRepository; 
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepository $productRepository, OrderProductRepository $orderProductRepository)
     {
         $this->productRepository = $productRepository;
+        $this->orderProductRepository = $orderProductRepository;
     }
 
     public function messages()
@@ -107,7 +112,7 @@ class RefundRequest extends FormRequest
     public function withValidator($validator)
     {
         /**
-         * Para realizar una venta, el usuario debe tener una caja abierta
+         * Para realizar una devolucion, el usuario debe tener una caja abierta
          */
         if (!$this->box_id) {
             $validator->after(function ($validator) {
@@ -116,7 +121,7 @@ class RefundRequest extends FormRequest
         }
 
         /** 
-         * Si en el formulario de la venta, se habilita pautar una visita, debe seleccionar la fecha
+         * Si en el formulario de la devolucion, se habilita pautar una visita, debe seleccionar la fecha
          */
         if (!empty($this->enable_new_visit)) {
             if (!$this->visit_date) {
@@ -124,6 +129,29 @@ class RefundRequest extends FormRequest
                     $validator->errors()->add('visit_date', 'Debe seleccionar la fecha de la visita.');
                 });
             }
+        }
+
+        /***
+         * Se debe validar, si la venta es a credito, que el monto no supere el saldo disponible en credito
+         */
+        if ( $this->payment_method == "credit")
+        {
+            #identificar a quien se le asignara el credito 
+            $validator->after(function ($validator) {
+                $credit_customer_id = isset($this->customer_id_new_credit) ? $this->customer_id_new_credit : $this->customer_id;
+                $customer_credit = Customer::find($credit_customer_id);
+                $balance = $customer_credit->getBalance();
+                $total_sale_with_discount = $this->getBuyTotal()['total'];
+                $max_credit = $customer_credit->max_credit ; 
+                $available_credit = $max_credit + $balance >= 0 ? $max_credit + $balance : 0;
+                $refund_credit =  $this->getRefundTotal()['total_by_credit'];
+
+                if (!$this->canRefundAndBuyOnCredit( $max_credit, $balance, $refund_credit,  $total_sale_with_discount)){
+                    $validator->errors()->add('payment_method', 'El usuario no cuenta con credito disponible para hacer la venta.
+                     Su compra debe ser menor o igual a $'. number_format(($available_credit + $refund_credit), 2, '.', ',') );
+                }
+
+            });
         }
 
         if (!$validator->fails()) {
@@ -160,5 +188,54 @@ class RefundRequest extends FormRequest
             'user_id'           => $user->id,
             'visit_date'        => $visit_date ? $visit_date->format('Y-m-d') : null
         ]);
+    }
+
+     /**
+     * Se calculan los totales de la devolucion
+     *      * @return Array
+     */
+    public function getRefundTotal()
+    {
+        $totals = OrderService::getTotalsToRefund( $this->orderProductRepository , $this->products_refund, $this->qtys_refund );
+        return [
+            'total' => $totals['total'],
+            'total_by_credit' =>$totals['total_by_credit'],
+            'total_by_debit' => $totals['total_by_debit']
+        ];
+    }
+
+
+     /**
+     * Se calculan los totales de la nueva venta(descuento incluido)
+     * @return Array
+     */
+    public function getBuyTotal()
+    {
+        $discount = isset($this->discount) && is_numeric($this->discount) ? $this->discount : 0;
+        $subtotal = 0;
+
+        foreach ($this->products as $product_id) {
+            if ($product = $this->productRepository->find($product_id)) {
+                if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
+                    $subtotal += ($product->regular_price * $this->qtys[$product_id]);
+                }
+            }
+        }
+
+        return [
+            'discount' => $discount,
+            'subtotal' => $subtotal,
+            'total' => $subtotal - $discount
+        ];
+    }
+
+     /**
+     * Se valida si el usuario puede hacer una compra a credito
+     * @return bool
+     */
+    public function canRefundAndBuyOnCredit($max_credit, $balance, $refund_credit,  $total_sale_with_discount )
+    {
+        $result = $max_credit + $balance + $refund_credit - $total_sale_with_discount ;
+        return $result >= 0 ? true : false;
     }
 }

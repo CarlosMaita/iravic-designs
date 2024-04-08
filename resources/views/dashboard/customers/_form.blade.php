@@ -13,38 +13,45 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="dni">{{ __('dashboard.form.fields.customers.dni') }}</label>
-                <input class="form-control" id="dni" name="dni" type="text" value="{{ old("dni", $customer->dni) }}">
+                <label for="email">{{ __('dashboard.form.fields.customers.email') }}</label>
+                <input class="form-control" id="email" name="email" type="text" value="{{ old("email", $customer->email) }}" autofocus>
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="dni">{{ __('dashboard.form.fields.customers.dni') }}</label>
+                <input class="form-control" id="dni" name="dni" type="text" value="{{ old("dni", $customer->dni) }}">
+            </div>
+        </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="telephone">{{ __('dashboard.form.fields.customers.telephone') }}</label>
                 <input class="form-control" id="telephone" name="telephone" type="text" value="{{ old("telephone", $customer->telephone) }}">
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="cellphone">{{ __('dashboard.form.fields.customers.cellphone') }}</label>
                 <input class="form-control" id="cellphone" name="cellphone" type="text" value="{{ old("cellphone", $customer->cellphone) }}">
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="qualification">{{ __('dashboard.form.fields.customers.qualification') }}</label>
                 <select id="qualification" class="form-control" name="qualification">
                     <option selected disabled>Seleccionar</option>
-                    <option value="Muy Bueno" @if($customer->qualification == "Muy Bueno") selected @endif>Muy Bueno</option>
-                    <option value="Bueno" @if($customer->qualification == "Bueno") selected @endif>Bueno</option>
-                    <option value="Malo" @if($customer->qualification == "Malo") selected @endif>Malo</option>
-                    <option value="Muy Malo" @if($customer->qualification == "Muy Malo") selected @endif>Muy Malo</option>
+                    @foreach($qualifications as $q)
+                    <option value="{{$q}}" @if($customer->qualification == $q) selected @endif>{{$q}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="dni_picture">{{ __('dashboard.form.fields.customers.dni_picture') }}</label>
@@ -79,7 +86,11 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label for="days_to_notify_debt">{{ __('dashboard.form.fields.customers.days_to_notify_debt') }}</label>
+                <label for="days_to_notify_debt">{{ __('dashboard.form.fields.customers.days_to_notify_debt') }} 
+                    <span class="help-icon" title="{{ __('dashboard.customers.help_days_to_notify_debt') }}">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </label>
                 <input class="form-control" id="days_to_notify_debt" name="days_to_notify_debt" type="number" step="1" value="{{ old("days_to_notify_debt", $customer->days_to_notify_debt) }}">
             </div>
         </div>
@@ -96,6 +107,42 @@
                     <img id="img-receipt_picture" class="mt-3 img-fluid  @if(!$customer->receipt_picture) d-none @endif" src="{{ $customer->url_receipt }}" alt="{{ __('dashboard.form.fields.customers.receipt_picture') }}" />
                     @if($customer->receipt_picture) 
                         <span class="delete-img position-absolute" type="button" data-target="receipt_picture"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="card_front">{{ __('dashboard.form.fields.customers.card_front') }}</label>
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="card_front" name="card_front" lang="es">
+                    <label class="custom-file-label" for="card_front">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-card_front" class="mt-3 img-fluid  @if(!$customer->card_front) d-none @endif" src="{{ $customer->url_card_front }}" alt="{{ __('dashboard.form.fields.customers.card_front') }}" />
+                    @if($customer->card_front) 
+                        <span class="delete-img position-absolute" type="button" data-target="card_front"><i class="fa fa-times-circle"></i></span>
+                        <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label for="card_back">{{ __('dashboard.form.fields.customers.card_back') }}</label>
+                <div class="custom-file">
+                    <input accept="image/*" type="file" class="custom-file-input" id="card_back" name="card_back" lang="es">
+                    <label class="custom-file-label" for="card_back">Seleccionar Archivo</label>
+                </div>
+                <div class="img-wrapper mt-3 mx-auto text-center position-relative" style="max-width: 320px;">
+                    <img id="img-card_back" class="mt-3 img-fluid  @if(!$customer->card_back) d-none @endif" src="{{ $customer->url_card_back }}" alt="{{ __('dashboard.form.fields.customers.card_back') }}" />
+                    @if($customer->card_back) 
+                        <span class="delete-img position-absolute" type="button" data-target="card_back"><i class="fa fa-times-circle"></i></span>
                         <a href="#" class="cancel-delete-img d-none badge badge-dark">Recuperar imagen</a>
                     @endif
                 </div>

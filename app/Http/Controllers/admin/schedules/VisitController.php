@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\schedules;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\VisitRequest;
 use App\Http\Requests\admin\VisitResponsableRequest;
+use App\Models\Customer;
 use App\Models\Visit;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
@@ -17,13 +18,11 @@ use Illuminate\Support\Facades\DB;
 class VisitController extends Controller
 {
     public $scheduleRepository;
-
     public $visitRepository;
 
     public function __construct(ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
-
         $this->visitRepository = $visitRepository;
     }
 
@@ -43,14 +42,14 @@ class VisitController extends Controller
                     ->addColumn('action', function($row) {
                         $btn = '';
 
-                        if (Auth::user()->can('update', $row)) {
+                        if (Auth::user()->can('update', $row) &&  !$row->is_completed ) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-success btn-action-icon edit-visit" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></button>';
                         }
 
-                        if (Auth::user()->can('delete', $row)) {
+                        if (Auth::user()->can('delete', $row) && !$row->existsAssignedResponsible() && !$row->is_completed ) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-visit" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
-
+                        // return $row->existsAssignedResponsible();
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -77,8 +76,10 @@ class VisitController extends Controller
                 $request->only('customer_id', 'user_creator_id', 'date', 'comment')
             );
             $this->visitRepository->create($attributes);
+            $customer = Customer::find($request->customer_id);
+            #bajar la bandera de pendiente por agendar 
+            $customer->setPendingToSchedule(false);
             DB::commit();
-
             return response()->json([
                     'message' => 'La visita ha sido creada con éxito',
                     'success' => true
@@ -168,8 +169,17 @@ class VisitController extends Controller
     {
         try {
             $this->authorize('delete', $visita);
+            #validar si cliente tiene deudas 
+            if($visita->customer->haveDebtsCustomer())
+            {
+                #No se puede eliminar
+                return response()->json([
+                    'success' => false,
+                    'message' => "No se pudo eliminar la visita debido a una deuda pendiente del cliente"
+                ]);   
+            }
+            #client sin deudas
             $visita->delete();
-            
             return response()->json([
                 'success' => true,
                 'message' => "La visita ha sido eliminada con éxito"
@@ -218,13 +228,41 @@ class VisitController extends Controller
     {
         try {
             $attributes = $request->only('is_completed');
-            $this->visitRepository->update($visita->id, $attributes);
-            $message = $request->is_completed ? 'La visita ha sido marcada como completa con éxito' : 'La visita ha sido marcada como NO completa con éxito';
+            if($request->is_completed)
+            {
+                #Marcar visita como COMPLETADA
+                if($visita->existsAssignedResponsible())
+                {
+                    $this->visitRepository->update($visita->id, $attributes);
+                    #vefificar si todas las visitas de la agenda han sido completadas 
+                    if ($this->scheduleRepository->checkAllVisitsCompleted($visita->schedule_id)){
+                        #completar repositorio 
+                        $this->scheduleRepository->setCompleted($visita->schedule_id, true);
+                    }
+                    $message = 'La visita ha sido marcada como completa con éxito';
+                    return response()->json([
+                        'success' => true,
+                        'message' => $message
+                    ]);
+                }else{
+                    $message = 'Falta asignar responsable a la visita';
+                    return response()->json([
+                        'success' => false,
+                        'message' => $message
+                    ]);
+                }
+            } else{
+                #Marcar visita como NO COMPLETADA
+                $this->visitRepository->update($visita->id, $attributes);
+                #Marcar agenda como NO COMPLETADA 
+                $this->scheduleRepository->setCompleted($visita->schedule_id, false);
+                 $message = 'La visita ha sido marcada como NO completa con éxito';
+                 return response()->json([
+                     'success' => true,
+                     'message' => $message
+                 ]);
+            }
 
-            return response()->json([
-                'success' => true,
-                'message' => $message
-            ]);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
@@ -270,5 +308,35 @@ class VisitController extends Controller
                 ]
             ]);
         }
+
+        
     }
+
+    /**
+     * Posponer una visita
+     */
+    public function postpone( Request $request, Visit $visita)  
+    {
+        try{
+            #subir bandera de pending to schedule 
+            $customer =  $visita->customer;
+            $customer->setPendingToSchedule(true);
+            #eliminar visita
+            $visita->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Se ha postergado la visita.'
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'No se ha podido postergar la visita.',
+                'error' => [
+                    'e' => $e->getMessage(),
+                    'trace' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
+
+    
 }

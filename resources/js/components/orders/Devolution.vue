@@ -266,6 +266,7 @@
                                         <div class="col-md-12">
                                             <p class="font-weight-bold text-dark mb-1">Crédito Máximo: {{ customerSelected.max_credit_str }}</p>
                                             <p class="font-weight-bold text-dark mb-1">Saldo: {{ customerSelected.balance }}</p>
+                                            <p class="font-weight-bold text-dark mb-1">Crédito Disponible: {{ customerSelected.available_credit_str }}</p>
                                             <hr>
                                             <div class="row mb-4">
                                                 <div class="col-sm-6">
@@ -565,6 +566,10 @@
                 type: String,
                 default: ''  
             },
+            urlCustomer: {
+                type: String,
+                default: ''
+            },
             urlProducts: {
                 type: String,
                 default: ''
@@ -708,6 +713,7 @@
         async mounted() {
             if (typeof this.customerParam.id != 'undefined' ) {
                 this.customerSelected = this.customerParam;
+                this.customer_id = this.customerParam.id;
             }
 
             this.productsAvailableForRefund = this.productsForRefund; // Setea productos disponibles para devolucion
@@ -735,6 +741,7 @@
              */
             setCustomerIdSelected(value) {
                 this.customer_id = value.id;
+                this.resetDevolution();
             },
 
             /**
@@ -917,13 +924,14 @@
              * Si no estaba seleccionado, lo agrega
              * 
              */
-            handleAddProductToBuy(product) {
-                const i = this.productsSelectedToBuy.findIndex(_item => _item.id === product.id);
+            handleAddProductToBuy(orderProduct) {
+                const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id);
 
-                if (i > -1) {
-                    Vue.set(this.productsSelectedToBuy, i, product);
+                if (index > -1) {
+                    Vue.set(this.productsSelectedToBuy, index, orderProduct);
+                    this.$emit("updateQuantityToBuy", index, orderProduct.qty)
                 } else {
-                    this.productsSelectedToBuy.push(product);
+                    this.productsSelectedToBuy.push(orderProduct);
                 }
             },
 
@@ -935,10 +943,11 @@
              */
             handleAddProductToRefund(products_to_refund) {
                 products_to_refund.forEach((orderProduct) => {
-                    const i = this.productsSelectedForRefund.findIndex(_item => _item.id === orderProduct.id);
+                    const index = this.productsSelectedForRefund.findIndex(_item => _item.id === orderProduct.id);
 
-                    if (i > -1) {
-                        Vue.set(this.productsSelectedForRefund, i, orderProduct);
+                    if (index > -1) {
+                        Vue.set(this.productsSelectedForRefund, index, orderProduct);
+                        this.$emit("updateQuantityToRefund", index, orderProduct.qty)
                     } else {
                         this.productsSelectedForRefund.push(orderProduct);
                     }
@@ -1045,6 +1054,37 @@
                 this.productsSelectedForRefund[index].qty = qty;
             },
 
+            getCustomerDataAjax(customer_id){
+                try {
+                    var url = `${this.urlCustomer}/${customer_id}`;
+                    var self = this;
+                    $.get(url, function(res) {
+                        if(self.customerSelected.dni !== res.dni ) {
+                            self.customerSelected = res;
+                        }
+                    })
+                    .fail(function() {
+                        // self.customerSelected = [];
+    
+                        new Noty({
+                            text: "No se ha podido obtener la información del cliente en este momento.",
+                            type: 'error'
+                        }).show();
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+                // $.ajax({
+                //     url: `${URL_CUSTOMER}/${customer_id}`,
+                //     type: "GET",
+                //     processData: false,
+                //     contentType: false,
+                //     success: function(res) {
+                //        return res;
+                //     }
+                // }); 
+            },
+
             /**
              * Peticion HTTP para obtener el listado de productos disponibles que tiene el cliente para devolucion
              */
@@ -1065,6 +1105,7 @@
                     }).show();
                 });
             },
+            
 
             /**
              * Retorna label de producto para ser impreso en el select vue
@@ -1113,6 +1154,10 @@
                         // return false;
                     });
                 });
+            },
+            resetDevolution(){
+                this.productsSelectedForRefund = [];
+                this.productForRefundSelected = [];
             }
         },
         watch: {
@@ -1121,7 +1166,8 @@
              * Llama a metodo HTTP para obtener productos disponibles que tiene el cliente para devolucion
              */
             customerSelected: function(value) {
-                if (this.customerSelected) {
+                if (this.customerSelected && this.customerSelected.dni !== null) {
+                    this.getCustomerDataAjax(this.customerSelected.id);
                     this.httpGetProductsForRefund();
                 }
             }

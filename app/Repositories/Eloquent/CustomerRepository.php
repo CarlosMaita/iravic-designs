@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\Customer;
 use Illuminate\Support\Collection;
 use App\Repositories\CustomerRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class CustomerRepository extends BaseRepository implements CustomerRepositoryInterface
 {
@@ -28,7 +29,24 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     {
         return $this->model->with('zone')->orderBy('name')->get();
     }
+    /**
+     * Retrieve all records with only 'id' and 'name' fields from the model.
+     *
+     * @return Collection
+     */
+    public function allOnlyName(): Collection{
+        return DB::table($this->model->getTable())
+            ->select(['id', 'name'])
+            ->whereNull('deleted_at')
+            ->orderBy('name')
+            ->get();
+    }
 
+    /**
+     * Retorna listado de clientes
+     * 
+     * @return Collection
+     */
     public function allQuery()
     {
         return $this->model->with('zone')->orderBy('name');
@@ -49,6 +67,23 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
                             })
                             ->get();
 
-        return $customers->filter->needsToNotifyDebt()->values();
+        return $customers->filter(function ($customer) {
+            return $customer->needsToNotifyDebt();
+        })->values();
+    }
+
+    /**
+     * Retorna listado de clientes que se les ha postergado la visita y necesitan ser reagendados. 
+     * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado
+     * 
+     * @return Collection
+     */
+    public function pendingToScheduleToNotify(): Collection
+    {
+        $customers = $this->model->where('is_pending_to_schedule', 1 )
+                            ->with('zone')
+                            ->get();
+
+        return $customers;
     }
 }

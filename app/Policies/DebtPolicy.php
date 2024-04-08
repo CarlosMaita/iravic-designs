@@ -41,7 +41,7 @@ class DebtPolicy
      */
     public function create(User $user)
     {
-        return $user->permissions()->contains('view-debt');
+        return $user->permissions()->contains('create-debt');
     }
 
     /**
@@ -53,7 +53,7 @@ class DebtPolicy
      */
     public function update(User $user, Debt $debt)
     {
-        return $user->permissions()->contains('view-debt');
+        return $user->permissions()->contains('update-debt');
     }
 
     /**
@@ -65,7 +65,7 @@ class DebtPolicy
      */
     public function delete(User $user, Debt $debt)
     {
-        return $user->permissions()->contains('view-debt');
+        return $user->permissions()->contains('delete-debt');
     }
 
     /**

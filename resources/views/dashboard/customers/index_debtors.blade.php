@@ -21,6 +21,12 @@
                                                 <th scope="col">{{ __('dashboard.customers.qualification') }}</th>
                                                 <th scope="col">{{ __('dashboard.customers.zone') }}</th>
                                                 <th scope="col">{{ __('dashboard.customers.balance') }}</th>
+                                                <th scope="col">
+                                                    {{ __('dashboard.customers.last_payment') }}  
+                                                    <span class="help-icon" title="{{ __('dashboard.customers.help_last_payment') }}">
+                                                    <i class="fas fa-question-circle"></i>
+                                                  </span>
+                                                </th>
                                                 <th></th>
                                             </tr>
                                         </thead>

@@ -23,6 +23,7 @@
                     {data: 'qualification'},
                     {data: 'zone.name'},
                     {data: 'balance'},
+                    {data: 'lastdatefordebt'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

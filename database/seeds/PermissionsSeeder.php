@@ -12,6 +12,10 @@ class PermissionsSeeder extends Seeder
      */
     public function run()
     {
+        // Obtener los nombres de permisos existentes
+        $existingPermissions = Permission::pluck('name')->toArray();
+        
+        // definir los permisos 
         $permissions = [
             # Configuration
             [
@@ -329,29 +333,29 @@ class PermissionsSeeder extends Seeder
             # Orders
             [
                 'name'         => 'view-order',
-                'display_name' => 'ventas Ver',
-                'description'  => 'ventas Ver',
+                'display_name' => 'Ventas Ver',
+                'description'  => 'Ventas Ver',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
                 'name'         => 'create-order',
-                'display_name' => 'ventas Crear',
-                'description'  => 'ventas Crear',
+                'display_name' => 'Ventas Crear',
+                'description'  => 'Ventas Crear',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
                 'name'         => 'update-order',
-                'display_name' => 'ventas Editar',
-                'description'  => 'ventas Editar',
+                'display_name' => 'Ventas Editar',
+                'description'  => 'Ventas Editar',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
             [
                 'name'         => 'delete-order',
-                'display_name' => 'ventas Eliminar',
-                'description'  => 'ventas Eliminar',
+                'display_name' => 'Ventas Eliminar',
+                'description'  => 'Ventas Eliminar',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
@@ -536,8 +540,21 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            [
+                'name'         => 'view-customers-pending-to-schedule',
+                'display_name' => 'Clientes pendientes por agendar Listar',
+                'description'  => 'Clientes pendientes por agendar Listar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
-        Permission::insert($permissions);
+        // Verificar y crear los permisos
+        foreach ($permissions as $permission) {
+            if (!in_array($permission['name'], $existingPermissions)) {
+                Permission::create($permission);
+            }
+        }
+
     }
 }

@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-0">
                     <div class="card">
-                        <div class="card-header">@if($box->closed) <i class="fa fa-lock" aria-hidden="true"></i> @else <i class="fa fa-unlock" aria-hidden="true"></i> @endif {{ __('dashboard.boxes.box') }} - #{{ $box->id }} </div>
+                        <div class="card-header">@if($box->isClosed()) <i class="fa fa-lock" aria-hidden="true"></i> @else <i class="fa fa-unlock" aria-hidden="true"></i> @endif {{ __('dashboard.boxes.box') }} - #{{ $box->id }} </div>
                         <div class="card-body">
                             <div class="container-fluid px-0">
                                 <!--  -->
@@ -61,7 +61,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.closed') }}</label>
-                                                        <input class="form-control" type="text" value="{{ $box->closed ? __('dashboard.general.yes') : __('dashboard.general.no') }}" readOnly>
+                                                        <input class="form-control" type="text" value="{{ $box->isClosed() ? __('dashboard.general.yes') : __('dashboard.general.no') }}" readOnly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -177,18 +177,27 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <label>{{ __('dashboard.boxes.total_charges') }}</label>
+                                                        <input class="form-control" type="text" value="{{ $box->total_charges }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_payed') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_payed }}" readOnly>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_refunded') }}</label>
                                                         <input class="form-control" type="text" value="{{ $box->total_refunded }}" readOnly>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>{{ __('dashboard.boxes.total_final_sales') }}</label>
@@ -201,9 +210,11 @@
                                     <!--  -->
                                     <div class="tab-pane fade @if($showOrdersTab) show active @endif" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                                         @can('create', App\Models\Order::class)
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a href="{{ route('ventas.create') }}?box={{ $box->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
+                                            @endif
                                         @endcan
                                         <div class="row">
                                             <div class="col-12">
@@ -217,7 +228,7 @@
                                     @if (count($box->orders))
                                     <div class="tab-pane fade" id="refunds" role="tabpanel" aria-labelledby="refunds-tab">
                                         @can('create', App\Models\Refund::class)
-                                            @if (!$box->closed)
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a href="{{ route('devoluciones.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                             </div>
@@ -235,7 +246,7 @@
                                     <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                                         @can('create', App\Models\Payment::class)
-                                            @if (!$box->closed)
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a id="btn-create-payment" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
@@ -252,7 +263,7 @@
                                     <!--  -->
                                     <div class="tab-pane fade" id="spendings" role="tabpanel" aria-labelledby="spendings-tab">
                                         @can('create', App\Models\Spending::class)
-                                            @if (!$box->closed)
+                                            @if (!$box->isClosed() && $boxIsMine)
                                             <div class="row"> 
                                                 <a id="btn-create-spending" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                             </div>
@@ -268,8 +279,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
-                            <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
+                            @can('viewAny', $box)
+                                <a href="{{ route('cajas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                            @endcan
+                            @can ('update', $box)
+                                 @if (!$box->isClosed() && $boxIsMine)
+                                <a href="{{ route('cajas.edit', [$box->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
+                                @endif
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -327,10 +344,12 @@
             });
         });
     </script>
-    
+
+    @include('plugins.datepicker')
     @include('plugins.select2')
     @include('plugins.show_bind')
     @include('plugins.sweetalert')
     @include('dashboard.payments.js.index')
     @include('dashboard.spendings.js.index')
+    @include('dashboard.visits.js.index')
 @endpush

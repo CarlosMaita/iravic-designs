@@ -53,11 +53,12 @@ class UserPolicy
      */
     public function update(User $authenticatedUser, User $user)
     {
-        return $authenticatedUser->id === $user->id || 
-                (
-                    $authenticatedUser->permissions()->contains('update-user') && 
-                    !$user->roles()->pluck('name')->contains('superadmin')
-                );
+        // return $authenticatedUser->id === $user->id || 
+        //         (
+        //             $authenticatedUser->permissions()->contains('update-user') && 
+        //             !$user->roles()->pluck('name')->contains('superadmin')
+        //         );
+        return  $authenticatedUser->permissions()->contains('update-user') &&  !$user->roles()->pluck('name')->contains('superadmin');
     }
 
     /**

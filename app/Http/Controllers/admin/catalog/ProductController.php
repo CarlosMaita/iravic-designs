@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\catalog;
 
+use App\Constants\ProductConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductRequest;
 use App\Http\Requests\admin\Catalog\ProductStockRequest;
@@ -50,7 +51,7 @@ class ProductController extends Controller
             return datatables()->eloquent($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '';
+                        $btn = '<div style="display:flex">';
 
                         if (Auth::user()->can('view', $row)) {
                             $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
@@ -67,6 +68,7 @@ class ProductController extends Controller
                         if (Auth::user()->can('delete', $row)) {
                             $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-resource" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         }
+                        $btn .= '</div>';
 
                         return $btn;
                     })
@@ -78,11 +80,13 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $genders = ProductConstants::GENDERS;
 
         return view('dashboard.catalog.products.index')
             ->withColors($colors)
             ->withSizes($sizes)
             ->withBrands($brands)
+            ->withGenders($genders)
             ->withCategories($categories);
     }
 
@@ -98,11 +102,13 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $genders = ProductConstants::GENDERS;
 
         return view('dashboard.catalog.products.create')
                 ->withBrands($brands)
                 ->withCategories($categories)
                 ->withColors($colors)
+                ->withGenders($genders)
                 ->withProduct(new Product())
                 ->withSizes($sizes);
     }
@@ -179,11 +185,13 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $genders = ProductConstants::GENDERS;
 
         return view('dashboard.catalog.products.edit')
                 ->withBrands($brands)
                 ->withCategories($categories)
                 ->withColors($colors)
+                ->withGenders($genders)
                 ->withProduct($producto)
                 ->withSizes($sizes);
     }
