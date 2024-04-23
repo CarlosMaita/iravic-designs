@@ -86,7 +86,7 @@ class CustomerRequest extends FormRequest
             'cellphone' => 'regex:/^\+?\d[\d\s]+$/u|max:20|nullable',
             'contact_telephone' => 'regex:/^\+?\d[\d\s]+$/u|max:20|nullable',
             'address' => 'required',
-            'contact_name' => 'required',
+            'contact_name' => 'sometimes',
             'max_credit' => 'required|numeric|min:0',
             'days_to_notify_debt' => 'required|integer|min:0|max:500',
             'qualification' => ['required', Rule::in(CustomerConstants::QUALIFICATIONS)],
@@ -94,9 +94,10 @@ class CustomerRequest extends FormRequest
         ];
 
         if ($this->isMethod('POST')) {
-            $rules['email'] = 'email|unique:customers,email,NULL,id|nullable';
+            $rules['email'] = 'sometimes|email|unique:customers,email,NULL,id|nullable';
         } else {
             $rules['email'] = [
+                'sometimes',
                 'email',
                 'nullable',
                 Rule::unique('customers', 'email')->where(function ($query) {
