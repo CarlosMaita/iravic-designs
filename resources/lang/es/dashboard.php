@@ -30,6 +30,7 @@ return [
     ],
     'breadcrumb' => [
         'home' => 'Inicio',
+        'dashboard' => 'Panel de Control'
     ],
     'catalog' => [
         'categories' => [

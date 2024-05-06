@@ -5,6 +5,11 @@
     </a>
 </div>
 <ul class="c-sidebar-nav">
+    {{-- dashboard --}}
+    <li class="c-sidebar-nav-item {{ $menuService->isActive($url,"/admin/", false, true) }}">
+        <a class="c-sidebar-nav-link" href="{{ route('admin.home') }}"><i class="cil-compass c-sidebar-nav-icon"></i> {{ __('dashboard.breadcrumb.home') }}</a>
+    </li>
+
     {{-- Schedule link --}}
     @if (Auth::user()->can('viewany', App\Models\Schedule::class))
     <li class="c-sidebar-nav-item {{ $menuService->isActive($url,"/admin/gestion-agendas/agendas", false, true) }}">
