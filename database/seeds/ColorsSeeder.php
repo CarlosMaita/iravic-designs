@@ -8,49 +8,51 @@ class ColorsSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * This seeder adds colors to the database if they don't already exist.
+     *
      * @return void
      */
     public function run()
     {
+        // Define the colors to be added
         $colors = [
-            # Colors
-            [
-                'name' => 'Amarillo',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Azul',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Blanco',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Marron',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Negro',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Rojo',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Verde',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
+            'Amarillo',
+            'Azul',
+            'Blanco',
+            'Marron',
+            'Negro',
+            'Rojo',
+            'Verde',
+            'Mostaza',
+            'Nude',
+            'Terracota',
+            'Chocolate',
+            'Tabaco',
+            'Havana',
+            'Naranja',
+            'Celeste',
+            'Dorado',
+            'Beige',
+            'Rosa',
+            'Turquesa',
+            'Violeta',
+            'Salmón',
+            'Gris'
         ];
 
-        Color::insert($colors);
+        // Loop through each color
+        foreach ($colors as $color) {
+            // If the color already exists in the database, skip it
+            if ($existingColor = Color::where('name', $color)->first()) {
+                continue;
+            }
+
+            // If the color doesn't exist, create it
+            Color::create([
+                'name' => $color,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
     }
 }
