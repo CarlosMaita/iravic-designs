@@ -11,7 +11,8 @@ class CategoryRequest extends FormRequest
         return [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.unique' => 'El campo nombre ya se encuentra ocupado por otra categoría',
-            'name.max' => 'El campo nombre no puede tener mas de :max caracteres.'
+            'name.max' => 'El campo nombre no puede tener mas de :max caracteres.',
+            'base_category_id.required' => 'El campo categoría base es obligatorio.',
         ];
     }
 
@@ -33,7 +34,8 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:100'
+            'name' => 'required|max:100',
+            'base_category_id' => 'required|exists:base_categories,id'
         ];
     }
 }

@@ -137,6 +137,10 @@ return [
                 'card_front'          => 'Tarjeta Frente',
                 'card_back'           => 'Tarjeta Dorso'
             ],
+            'base_categories' => [ 
+                'name' => 'Nombre',
+                'base_category' => 'Categoría Base'
+            ],
             'debts' => [
                 'amount'            => 'Monto',
                 'comment'           => 'Comentario',

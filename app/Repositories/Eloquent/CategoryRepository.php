@@ -36,6 +36,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      */
     public function allQuery()
     {
-        return $this->model->orderBy('name');
+        return $this->model->orderBy('name')
+            ->with('baseCategory');
     }
 }
