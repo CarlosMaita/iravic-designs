@@ -16,6 +16,11 @@ class Category extends Model
     protected $guarded = [];
 
     public $fillable = [
-        'name'
+        'name', 'base_category_id'
     ];
+
+    public function baseCategory()
+    {
+        return $this->hasOne(BaseCategory::class, 'id', 'base_category_id');
+    }
 }

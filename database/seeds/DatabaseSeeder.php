@@ -32,5 +32,7 @@ class DatabaseSeeder extends Seeder
         if (!Size::first()) {
             $this->call(SizesSeeder::class);
         }
+
+        $this->call(BaseCategorySeeder::class);
     }
 }

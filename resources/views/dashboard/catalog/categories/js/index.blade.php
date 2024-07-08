@@ -18,6 +18,7 @@
                 pageLength: 25,
                 columns: [
                     {data: 'name'},
+                    {data: 'base_category.name'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
