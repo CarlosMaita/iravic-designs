@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin\catalog;
 
-use App\Constants\ProductConstants;
+use App\Constants\genderConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductRequest;
 use App\Http\Requests\admin\Catalog\ProductStockRequest;
@@ -80,7 +80,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $genders = ProductConstants::GENDERS;
+        $genders = genderConstants::ALL;
 
         return view('dashboard.catalog.products.index')
             ->withColors($colors)
@@ -102,7 +102,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $genders = ProductConstants::GENDERS;
+        $genders = genderConstants::ALL;
 
         return view('dashboard.catalog.products.create')
                 ->withBrands($brands)
@@ -185,7 +185,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $genders = ProductConstants::GENDERS;
+        $genders = genderConstants::ALL;
 
         return view('dashboard.catalog.products.edit')
                 ->withBrands($brands)
