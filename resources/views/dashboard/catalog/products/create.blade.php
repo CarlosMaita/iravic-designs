@@ -18,6 +18,7 @@
                                     v-bind:colors="{{ json_encode($colors) }}"
                                     v-bind:genders="{{ json_encode($genders) }}"
                                     v-bind:sizes="{{ json_encode($sizes) }}"
+                                    v-bind:type_sizes="{{ json_encode($typeSizes) }}"
                                     url-products="{{ route('productos.index') }}"
                                     url-products-combinations="{{ route('productos.delete_combinations') }}"
                                 ></product-form>
