@@ -18,7 +18,7 @@ class CreateTypeSizesTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('base_category_id')->references('id')->on('base_categories')->constrained();
-            $table->enum('gender', GenderConstants::ALL )->nullable();
+            $table->string('genders')->nullable();
             $table->timestamps();
         });
     }

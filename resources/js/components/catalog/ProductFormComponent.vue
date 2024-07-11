@@ -63,7 +63,8 @@
                                         :options="categories" 
                                         label="name" 
                                         v-model="category"
-                                        @input="setCategorySelected">
+                                        @input="setCategorySelected"
+                                       >
                             </v-select>
                             <input type="hidden" name="category_id" v-model="categoryId">
                         </div>
@@ -75,7 +76,8 @@
                                         :options="brands" 
                                         label="name" 
                                         v-model="brand"
-                                        @input="setBrandSelected">
+                                        @input="setBrandSelected"
+                                        >
                             </v-select>
                             <input type="hidden" name="brand_id" v-model="brandId">
                         </div>
@@ -183,8 +185,8 @@
                                         <div class="form-group">
                                             <label :for="`size-${index}-${index_size}`">Talla <b>#{{ (index_size + 1)}}</b>  <button class="btn btn-sm btn-danger" type="button" @click="removeSize(index_size, index, size.id)"><i class="fas fa-trash-alt"></i></button></label>
                                             <v-select placeholder="Seleccionar"
-                                                        :options="sizes" 
                                                         label="name" 
+                                                        :options="SizesFiltered" 
                                                         v-model="combinations[index].sizes[index_size].size_prop"
                                                         :selectable="(option) => !combination.sizes.map(function(size) {return size.size_id;}).includes(option.id)"
                                                         @input="setCombinationSizeSelected(combinations[index].sizes[index_size].size_prop, index, index_size)">
@@ -285,6 +287,10 @@
                 type: Array,
                 default: []
             },
+            type_sizes: {
+                type: Array,
+                default: []
+            },
             urlProducts: {
                 type: String,
                 default: ''
@@ -323,7 +329,21 @@
                     return this.brand.id;
                 }
                 return null;
-            }
+            },
+            SizesFiltered: function(){
+                if (!this.category || !this.gender) return null;
+             
+                let base_category_id = this.category.base_category_id;
+                let type_size_filtered = this.type_sizes.filter(
+                    (type_size) => {
+                        let genders = type_size.genders.split(',');
+                        return type_size.base_category_id == base_category_id && genders.includes(this.gender)
+                    }
+                );
+                let type_size_filtered_id = type_size_filtered.length > 0 ? type_size_filtered[0].id : null;
+                // this.resetCombinations();
+                return this.sizes.filter( (size) =>  type_size_filtered_id === size.type_size_id );
+            } 
 	    },
         async mounted() {
             this.mounted = true;
@@ -403,6 +423,7 @@
              * Setea la categoria seleccionada. Porque el select vue retorna el objeto
              */
             setCategorySelected(value) {
+                this.resetCombinations();
                 this.product.category_id = value ? value.id : null;
             },
 
@@ -410,6 +431,7 @@
              * Setea el genero seleccionado. Porrque el select vue retorna el objeto
              */
             setGenderSelected(value) {
+                this.resetCombinations();
                 this.product.gender = value;
             },
 
@@ -431,6 +453,15 @@
              * Agrega al listado de combinaciones, un objeto combinacion sin datos
              */
             addCombination() {
+
+                if ( !this.category && !this.gender ) {
+                    new Noty({
+                            text: 'Debe seleccionar la categoría y el genero del producto ',
+                            type: 'error'
+                        }).show();
+                    return false;
+                }
+
                 let new_combination = {
                     code: null,
                     color_prop: null,
@@ -638,6 +669,12 @@
                 } else {
                     self.combinations[index_combination].sizes.splice(index, 1);
                 }
+            },
+            resetCombinations() {
+                if(this.combinations.length > 0 ){ 
+                    this.combinations = [];
+                }
+                console.log(this.combinations)
             }
         }
     }

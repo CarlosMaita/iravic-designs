@@ -176,11 +176,19 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
 
         $product = $this->model->find($id);
+        $category_id_old = $product->category_id;
+        $gender_old = $product->gender;
+        
+        // Update product 
         $product->update($attributes);
 
         if ($product->is_regular) {
             $product->product_combinations()->delete();
         }else if (!$product->is_regular && isset($request->combinations_group)) {
+            // Delete combinations
+            if($category_id_old != $request->category_id || $gender_old != $request->gender) {
+                $product->product_combinations()->delete();
+            }
             foreach(array_keys($request->combinations_group) as $key) {
                 if (isset($request->product_combinations[$key])) {
                     foreach ($request->product_combinations[$key] as $product_combination_id) {

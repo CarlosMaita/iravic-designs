@@ -12,6 +12,7 @@ use App\Models\Size;
 use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
+use App\TypeSize;
 use DataTables;
 use Dompdf\Dompdf;
 use Exception;
@@ -102,6 +103,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $type_sizes = TypeSize::all();
         $genders = genderConstants::ALL;
 
         return view('dashboard.catalog.products.create')
@@ -110,7 +112,8 @@ class ProductController extends Controller
                 ->withColors($colors)
                 ->withGenders($genders)
                 ->withProduct(new Product())
-                ->withSizes($sizes);
+                ->withSizes($sizes)
+                ->withTypeSizes($type_sizes);
     }
 
     /**
@@ -185,6 +188,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $type_sizes = TypeSize::all();
         $genders = genderConstants::ALL;
 
         return view('dashboard.catalog.products.edit')
@@ -193,7 +197,8 @@ class ProductController extends Controller
                 ->withColors($colors)
                 ->withGenders($genders)
                 ->withProduct($producto)
-                ->withSizes($sizes);
+                ->withSizes($sizes)
+                ->withTypeSizes($type_sizes);
     }
 
     /**
