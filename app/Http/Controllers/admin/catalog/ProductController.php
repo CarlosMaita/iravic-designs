@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin\catalog;
 
-use App\Constants\genderConstants;
+use App\Constants\GenderConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductRequest;
 use App\Http\Requests\admin\Catalog\ProductStockRequest;
@@ -105,7 +105,7 @@ class ProductController extends Controller
         $colors = Color::all();
         $sizes = Size::all();
         $type_sizes = TypeSize::all();
-        $genders = genderConstants::ALL;
+        $genders = GenderConstants::ALL;
         
         // temporary code
         $temp_code = Str::random(10);
