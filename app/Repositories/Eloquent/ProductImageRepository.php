@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\ProductImage;
 use Illuminate\Support\Collection;
 use App\Repositories\ProductImageRepositoryInterface;
+use App\Services\Images\ImageService;
 
 class ProductImageRepository extends BaseRepository implements ProductImageRepositoryInterface
 {

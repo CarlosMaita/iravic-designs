@@ -4,7 +4,7 @@
             <li class="nav-item">
                 <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
             </li>
-            <li class="nav-item">
+            <li v-if="is_regular" class="nav-item">
                 <a class="nav-link" id="multimedia-tab" data-toggle="tab" href="#multimedia" role="tab" aria-controls="multimedia" aria-selected="true">Multimedia</a>
             </li>
             <li v-if="is_regular" class="nav-item">
@@ -92,6 +92,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- hidden input -->
+                <input type="hidden" name="temp_code" :value="temp_code">
             </div>
             <!--  -->
             <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
@@ -166,6 +168,28 @@
                                     <label for="name">Código</label>
                                     <!-- <input class="form-control" :id="`code-${index}`" type="text" :name="getCombinationInputName('codes', combination, index)" v-model="combination.code"> -->
                                     <input class="form-control" :id="`code-${index}`" :name="`combinations_group_code[${index}]`" type="text" v-model="combination.code">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- selector de images de combinacion -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <v-dropzone :ref="`dropzone-${index}`" 
+                                    :id="`dropzone-${index}`"
+                                    :options="dropzoneOptions"
+                                    @vdropzone-sending-multiple="sendingEvent"
+                                    @vdropzone-removed-file="removeFile"
+                                v-once ></v-dropzone>
+                            </div>
+                        </div>
+                        <!-- imagenes de la combinacion  -->
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="img-container" v-for="(image, index_image) in images.filter( image => image.combination_index == index)" :key="`imagen-${index_image}`">
+                                    <span class="btn-img-remove" type="button" @click="removeImage($event, image.id)">
+                                        <i class="fas fa-times"></i> 
+                                    </span>
+                                    <img :src="image.url_img" class="img-thumbnail" :data-combination-id="`${image.combination_index}`">
                                 </div>
                             </div>
                         </div>
@@ -287,9 +311,17 @@
                 type: Array,
                 default: []
             },
+            images: {
+                type: Array,
+                default: []
+            },
             type_sizes: {
                 type: Array,
                 default: []
+            },
+            temp_code: {
+                type: String,
+                default: ''
             },
             urlProducts: {
                 type: String,
@@ -298,6 +330,14 @@
             urlProductsCombinations: {
                 type: String,
                 default: ''
+            },
+            urlResource: {
+            type: String,
+            default: "",
+            },
+            urlDeleteResource: {
+                type: String,
+                default: "",
             },
             is_updating: {
                 type: Boolean,
@@ -311,7 +351,20 @@
             is_regular: 1,
             combinations: [],
             loading: false,
-            mounted: false
+            mounted: false,
+            dropzoneOptions: {
+                url: "",
+                acceptedFiles: "image/*",
+                autoProcessQueue: true,
+                uploadMultiple: true,
+                parallelUploads: 10,
+                maxFiles: 10,
+                maxFilesize: 2,
+                addRemoveLinks: true,
+                thumbnailWidth: 150,
+                autoDiscover: false,
+            },
+
         }),
 	    computed: {
             categoryId: function(){
@@ -347,6 +400,26 @@
 	    },
         async mounted() {
             this.mounted = true;
+
+            Object.assign(this.dropzoneOptions, {
+                url: this.urlResource,
+                dictDefaultMessage: "Arrastra los archivos aquí para subirlos",
+                dictFallbackMessage: "Su navegador no admite la carga de archivos mediante la función de arrastrar y soltar.",
+                dictFallbackText: "Utilice el formulario de respaldo a continuación para cargar sus archivos como en los viejos tiempos.",
+                dictFileTooBig: "El archivo es demasiado grande (0MiB). Máx .: 0MiB.",
+                dictInvalidFileType: "No puede cargar archivos de este tipo.",
+                dictResponseError: "El servidor respondió con el código statusCode.",
+                dictCancelUpload: "Cancelar carga",
+                dictCancelUploadConfirmation: "¿Estás seguro de que deseas cancelar esta carga?",
+                dictRemoveFile: "Remover archivo",
+                dictMaxFilesExceeded: "No puede cargar más archivos.", 
+                headers: {
+                    "X-CSRF-TOKEN": document
+                        .querySelector('input[name="_token"]')
+                        .getAttribute("value"),
+                }
+            });
+
             
             /**
              * Si el producto existe, se asignan sus datos a los models, y se crean items para sus combinaciones y tallas.
@@ -370,6 +443,7 @@
                                 code: combination.code,
                                 color_id: combination.color_id,
                                 color_prop: combination.color,
+                                
                                 sizes: [
                                     {
                                         id: combination.id,
@@ -404,6 +478,9 @@
             }
         },
         methods: {
+
+            
+
             /**
              * Retorna indice de un color dentro del listado de combinaciones del producto
              */
@@ -675,7 +752,75 @@
                     this.combinations = [];
                 }
                 console.log(this.combinations)
+            }, 
+            sendingEvent(file, xhr, formData) {
+            
+                let ref =  file[0].previewElement.parentElement.id;
+                let combination_index = ref.replace("dropzone-", "");
+             
+                formData.append('combination_index', combination_index);
+                formData.append('temp_code', this.temp_code);
+            },
+            removeFile(file, error, xhr){
+                let response = JSON.parse(file.xhr.response);
+                let combination_index = response.data[0].combination_index
+                
+                // make a request to your server to delete the file
+                axios({
+                    url: this.urlDeleteResource,
+                    method: 'post',
+                    headers: { 
+                    "X-CSRF-TOKEN": document
+                        .querySelector('input[name="_token"]')
+                        .getAttribute("value"),
+                    },
+                    data: {
+                        fileName: file.name,
+                        combinationIndex: combination_index
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            removeImage(e, image_id) {
+                
+
+                let url = this.urlDeleteResource;
+
+                swal({
+                        title: '',
+                        text: "¿Seguro desea eliminar esta imagen?",
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Si',
+                        cancelButtonText: 'No'
+                    }).then(function ()  {
+                        axios({
+                            url: url,
+                            method: 'post',
+                            headers: { 
+                            "X-CSRF-TOKEN": document
+                                .querySelector('input[name="_token"]')
+                                .getAttribute("value"),
+                            },
+                            data: {
+                                image_id
+                            }
+                        }).then(response => {
+                            // remover imagen en DOM
+                            e.target.parentElement.parentElement.remove();
+                            console.log(response.data);
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                       
+                    }).catch(swal.noop);
+
+               
             }
+
         }
     }
 </script>
@@ -686,5 +831,24 @@
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 37px;
+    }
+
+    .vue-dropzone {
+        border: 2px dashed gray;
+    }
+    .img-container{
+        position: relative;
+        margin-left: 10px;
+    }
+
+    .btn-img-remove{
+        position: absolute;
+        top: 0px;
+        right: 5px;
+    }
+
+    .img-thumbnail{
+        width: 100px;
+        height: 100px;
     }
 </style>
