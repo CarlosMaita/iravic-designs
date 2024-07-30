@@ -12,7 +12,11 @@ class ProductImage extends Model
 
     public $fillable = [
         'product_id',
-        'url'
+        'url',
+        'color_id' ,
+        'combination_index',
+        'temp_code',
+        'url_original'
     ];
 
     public $appends = [

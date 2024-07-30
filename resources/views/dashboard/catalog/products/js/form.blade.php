@@ -99,12 +99,14 @@
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
 
-            if (myDropzone.files.length > 0) { 
+            //identificar si es producto regular o No 
+            if ( isProductRegular() && myDropzone.files.length > 0) {
+                // Producto Regular con fotos
                 myDropzone.processQueue();
             } else {
                 var form = $('#form-products')[0];
                 var formData = new FormData(form);
-            
+                // Enviando formulario
                 $.ajax({
                     url: FORM_RESOURCE.attr('action'),
                     type: FORM_RESOURCE.attr('method'),
@@ -230,5 +232,21 @@
                 });
             }).catch(swal.noop);
         });
+
+
+        /** Metodos **/
+
+        /**
+         * Determines if the product is regular.
+         *
+         * @return {boolean} Returns true if the product is regular, false otherwise.
+         */
+        const isProductRegular = () => {
+            if ($('input[name="is_regular"]:checked').val() == 1) {
+                return true
+            }
+            return false
+        }
+    
     });
 </script>

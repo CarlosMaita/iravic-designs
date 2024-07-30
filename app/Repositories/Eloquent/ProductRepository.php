@@ -3,8 +3,10 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Repositories\ProductRepositoryInterface;
 use App\Services\Images\ImageService;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Collection;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
@@ -32,7 +34,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function onlyPrincipalsQuery($criteria = null)
     {
         $query = $this->model->doesntHave('product_parent')->with(['brand', 'category']);
-        
+
         if (isset($criteria['brand']) && is_array($criteria['brand'])) {
             $query->whereInBrand($criteria['brand']);
         }
@@ -74,7 +76,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function onlyPrincipals($criteria = null): Collection
     {
         $query = $this->model->doesntHave('product_parent')->with(['brand', 'category']);
-        
+
         if (isset($criteria['brand']) && is_array($criteria['brand'])) {
             $query->whereInBrand($criteria['brand']);
         }
@@ -114,21 +116,67 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function createByRequest($request): void
     {
-        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name', 
-        'price');
-
-        if (isset($request->is_regular) && $request->is_regular) {
-            $attributes = array_merge(
-                $attributes,
-                $request->only('stock_depot', 'stock_local', 'stock_truck')
-            );
+        if ($request->has('is_regular') && $request->is_regular) {
+            $this->createRegularProduct( $request);
+        } else {
+            $this->createNonRegularProduct( $request);
         }
+    }
+
+    /**
+     * Crea un producto regular
+     * 
+     * @param $request
+     * @return void
+     */
+    private function createRegularProduct( $request): void
+    {
+        $attributes = $request->only(
+            'brand_id',
+            'category_id',
+            'code',
+            'gender',
+            'is_regular',
+            'name',
+            'price',
+            'stock_depot',
+            'stock_local',
+            'stock_truck'
+        );
+
+        $product = $this->create($attributes);
+        
+        // atach images if exists
+        $files = $request->file('file', []);
+        if (!empty($files)) {
+            $this->saveImages($product, $files);
+        }
+       
+    }
+
+    /**
+     * Crea un producto NO regular
+     * 
+     * @param $request
+     * @return void
+     */
+    private function createNonRegularProduct($request): void
+    {
+        $attributes = $request->only(
+            'brand_id',
+            'category_id',
+            'code',
+            'gender',
+            'is_regular',
+            'name',
+            'price'
+        );
 
         $product = $this->create($attributes);
 
         // Create new combinations
-        if ((!isset($request->is_regular) || !$request->is_regular ) && isset($request->combinations_group)) {
-            foreach(array_keys($request->combinations_group) as $key) {
+        if ((!isset($request->is_regular) || !$request->is_regular) && isset($request->combinations_group)) {
+            foreach (array_keys($request->combinations_group) as $key) {
                 if (isset($request->combinations[$key])) {
                     foreach (array_keys($request->combinations[$key]) as $key_new_combination) {
                         $attributes = array_merge(
@@ -144,17 +192,35 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
-                        
+
                         $this->create($attributes);
                     }
+
+                    // attach images if exists
+                    if (isset($request->temp_code)) {
+                        $productImages = ProductImage::where('temp_code', $request->temp_code)
+                            ->where('combination_index', $key)
+                            ->get();
+                        ProductImage::where('temp_code', $request->temp_code)
+                            ->where('combination_index', $key)
+                            ->update([
+                                'product_id' => $product->id,
+                                'color_id' => $request->colors[$key][0],
+                                'temp_code' => null
+                            ]);
+                    }
+
                 }
             }
         }
+        // Clean Storage Images
+        $this->cleanStorageImages();
+    }
 
-        // Images
-        if (isset($request->file)) {
-            $this->saveImages($product, $request->file);
-        }
+    
+    private function cleanStorageImages(): void
+    {
+        ProductImage::where('temp_code', '!=' , null)->delete();
     }
 
     /**
@@ -165,15 +231,50 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function updateByRequest($id, $request): void
     {
-        $attributes = $request->only('brand_id', 'category_id', 'code', 'gender', 'is_regular', 'name', 
-        'price');
-
-        if (isset($request->is_regular) && $request->is_regular) {
-            $attributes = array_merge(
-                $attributes,
-                $request->only('stock_depot', 'stock_local', 'stock_truck')
-            );
+        if ($request->has('is_regular') && $request->is_regular) {
+            $this->updateRegularProduct($id, $request);
+        } else {
+            $this->updateNonRegularProduct($id, $request);
         }
+    }
+
+    private function updateRegularProduct($id, $request): void
+    {
+        $attributes = $request->only(
+            'brand_id',
+            'category_id',
+            'code',
+            'gender',
+            'is_regular',
+            'name',
+            'price',
+            'stock_depot',
+            'stock_local',
+            'stock_truck'
+        );
+
+        $product = $this->model->find($id);
+        $product->update($attributes);
+        $product->product_combinations()->delete();
+
+        // atach images if exists
+        $files = $request->file('file', []);
+        if (!empty($files)) {
+            $this->saveImages($product, $files);
+        }
+    }
+
+    private function updateNonRegularProduct($id, $request): void
+    {
+        $attributes = $request->only(
+            'brand_id',
+            'category_id',
+            'code',
+            'gender',
+            'is_regular',
+            'name',
+            'price',
+        );
 
         $product = $this->model->find($id);
         $category_id_old = $product->category_id;
@@ -181,15 +282,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         
         // Update product 
         $product->update($attributes);
-
-        if ($product->is_regular) {
-            $product->product_combinations()->delete();
-        }else if (!$product->is_regular && isset($request->combinations_group)) {
+        
+        if (isset($request->combinations_group)){
             // Delete combinations
-            if($category_id_old != $request->category_id || $gender_old != $request->gender) {
+            if ($category_id_old != $request->category_id || $gender_old != $request->gender) {
                 $product->product_combinations()->delete();
             }
-            foreach(array_keys($request->combinations_group) as $key) {
+            foreach (array_keys($request->combinations_group) as $key) {
                 if (isset($request->product_combinations[$key])) {
                     foreach ($request->product_combinations[$key] as $product_combination_id) {
                         $product_combination = $product->product_combinations()->find($product_combination_id);
@@ -211,12 +310,27 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             $this->update($product_combination->id, $attributes);
                         }
                     }
+
+                      // attach images if exists
+                      if (isset($request->temp_code)) {
+                        $productImages = ProductImage::where('temp_code', $request->temp_code)
+                            ->where('combination_index', $key)
+                            ->get();
+                        ProductImage::where('temp_code', $request->temp_code)
+                        ->where('combination_index', $key)
+                        ->update([
+                            'product_id' => $product->id,
+                            'color_id' =>  $request->colors_existing[$key][$request->product_combinations[$key][0] ],
+                            'temp_code' => null
+                        ]);
+                      }
+
                 }
                 
                 if (isset($request->combinations[$key])) {
-                    $total_existing = isset($request->product_combinations[$key]) && is_array($request->product_combinations[$key]) 
-                                        ? count($request->product_combinations[$key]) 
-                                        : 0;
+                    $total_existing = isset($request->product_combinations[$key]) && is_array($request->product_combinations[$key])
+                        ? count($request->product_combinations[$key])
+                        : 0;
                     foreach (array_keys($request->combinations[$key]) as $key_new_combination) {
                         $attributes = array_merge(
                             array(
@@ -234,13 +348,43 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
                         $this->create($attributes);
                     }
+
+                     // attach images if exists
+                     if (isset($request->temp_code)) {
+                        $productImages = ProductImage::where('temp_code', $request->temp_code)
+                            ->where('combination_index', $key)
+                            ->get();
+                        ProductImage::where('temp_code', $request->temp_code)
+                            ->where('combination_index', $key)
+                            ->update([
+                                'product_id' => $product->id,
+                                'color_id' => $request->colors[$key][0],
+                                'temp_code' => null
+                            ]);
+                    }
+
                 }
             }
         }
 
-        // Images
-        if (isset($request->file)) {
-            $this->saveImages($product, $request->file);
+        // Clean Storage Images
+        $this->cleanStorageImages();
+    }
+
+    private function attachImagesToProduct($product_id, $request, $key): void
+    {
+         // attach images if exists
+         if (isset($request->temp_code)) {
+            $productImages = ProductImage::where('temp_code', $request->temp_code)
+                ->where('combination_index', $key)
+                ->get();
+            ProductImage::where('temp_code', $request->temp_code)
+                ->where('combination_index', $key)
+                ->update([
+                    'product_id' => $product_id,
+                    'color_id' => $request->colors[$key][0],
+                    'temp_code' => null
+                ]);
         }
     }
 
