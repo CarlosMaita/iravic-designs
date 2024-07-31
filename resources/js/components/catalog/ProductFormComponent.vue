@@ -156,7 +156,6 @@
                                                 :options="colors" 
                                                 label="name" 
                                                 v-model="combinations[index].color_prop"
-                                                :selectable="(option) => !combinations.map(function(combination) {return combination.color_id;}).includes(option.id)"
                                                 @input="setCombinationColorSelected(combinations[index].color_prop, index)">
                                     </v-select>
                                     <!-- <input type="hidden" :name="getCombinationInputName('colors', combination, index)" v-model="combinations[index].color_id"> -->
@@ -430,18 +429,18 @@
                 }
                 this.brand = this.product.brand;
                 this.category = this.product.category;
-               
                 this.gender = this.product.gender;
 
                 if (this.product.product_combinations) {
                     for (var i=0; i<this.product.product_combinations.length; i++) {
                         const combination = this.product.product_combinations[i];
-                        var index = this.getIndex(combination.color_id);
+                        var index = this.getIndex(combination.combination_index);
 
                         if (index < 0) {
                             var new_combination = {
                                 code: combination.code,
                                 color_id: combination.color_id,
+                                combination_index: combination.combination_index,
                                 color_prop: combination.color,
                                 
                                 sizes: [
@@ -482,10 +481,10 @@
             
 
             /**
-             * Retorna indice de un color dentro del listado de combinaciones del producto
+             * Retorna indice de la combinacion  del listado de combinaciones del producto
              */
-            getIndex(color_id) {
-                var index = this.combinations.map(e => e.color_id).indexOf(color_id);
+            getIndex(combination_index) {
+                var index = this.combinations.map(e => e.combination_index).indexOf(combination_index);
                 return index;
             },
 

@@ -182,6 +182,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         $attributes = array_merge(
                             array(
                                 'product_id' => $product->id,
+                                'combination_index' => $key,
                                 'code' => $request->codes[$key][$key_new_combination],
                                 'color_id' => $request->colors[$key][$key_new_combination],
                                 'size_id' => $request->sizes[$key][$key_new_combination],
@@ -335,6 +336,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         $attributes = array_merge(
                             array(
                                 'product_id' => $product->id,
+                                'combination_index' => $key,
                                 'code' => $request->codes[$key][($key_new_combination + $total_existing)],
                                 'color_id' => $request->colors[$key][($key_new_combination + $total_existing)],
                                 'size_id' => $request->sizes[$key][($key_new_combination + $total_existing)],
@@ -358,7 +360,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             ->where('combination_index', $key)
                             ->update([
                                 'product_id' => $product->id,
-                                'color_id' => $request->colors[$key][0],
+                                'color_id' => $request->colors[$key][($key_new_combination + $total_existing)],
                                 'temp_code' => null
                             ]);
                     }
@@ -371,22 +373,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $this->cleanStorageImages();
     }
 
-    private function attachImagesToProduct($product_id, $request, $key): void
-    {
-         // attach images if exists
-         if (isset($request->temp_code)) {
-            $productImages = ProductImage::where('temp_code', $request->temp_code)
-                ->where('combination_index', $key)
-                ->get();
-            ProductImage::where('temp_code', $request->temp_code)
-                ->where('combination_index', $key)
-                ->update([
-                    'product_id' => $product_id,
-                    'color_id' => $request->colors[$key][0],
-                    'temp_code' => null
-                ]);
-        }
-    }
 
     /**
      * Elimina grupo de productos por sus ids

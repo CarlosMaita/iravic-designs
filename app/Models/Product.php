@@ -30,7 +30,8 @@ class Product extends Model
         'is_child_size',
         'stock_depot',
         'stock_local',
-        'stock_truck'
+        'stock_truck',
+        'combination_index'
     ];
 
     protected $softCascade = [
