@@ -185,6 +185,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 'combination_index' => $key,
                                 'code' => $request->codes[$key][$key_new_combination],
                                 'color_id' => $request->colors[$key][$key_new_combination],
+                                'text_color' => $request->text_colors[$key][$key_new_combination],
                                 'size_id' => $request->sizes[$key][$key_new_combination],
                                 'price' => $request->prices[$key][$key_new_combination],
                                 'stock_depot' => $request->stocks_depot[$key][$key_new_combination],
@@ -288,17 +289,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             // Delete combinations
             if ($category_id_old != $request->category_id || $gender_old != $request->gender) {
                 $product->product_combinations()->delete();
+                $product->images()->delete();
             }
             foreach (array_keys($request->combinations_group) as $key) {
                 if (isset($request->product_combinations[$key])) {
                     foreach ($request->product_combinations[$key] as $product_combination_id) {
                         $product_combination = $product->product_combinations()->find($product_combination_id);
+                        $old_combination_index = $product_combination->combination_index;
 
                         if ($product_combination) {
                             $attributes = array_merge(
                                 array(
+                                    'combination_index' => $key,
                                     'code' => $request->codes_existing[$key][$product_combination_id],
                                     'color_id' => $request->colors_existing[$key][$product_combination_id],
+                                    'text_color' => $request->text_colors_existing[$key][$product_combination_id],
                                     'size_id' => $request->sizes_existing[$key][$product_combination_id],
                                     'price' => $request->prices_existing[$key][$product_combination_id],
                                     'stock_depot' => $request->stocks_depot_existing[$key][$product_combination_id],
@@ -310,21 +315,29 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
                             $this->update($product_combination->id, $attributes);
                         }
+
+                        // update images if exists - combination_index
+                        ProductImage::where('product_id', $product->id)
+                            ->where('combination_index', $old_combination_index)
+                            ->update([
+                                'combination_index' => $key
+                            ]);
                     }
 
-                      // attach images if exists
-                      if (isset($request->temp_code)) {
-                        $productImages = ProductImage::where('temp_code', $request->temp_code)
-                            ->where('combination_index', $key)
-                            ->get();
-                        ProductImage::where('temp_code', $request->temp_code)
+
+                    // attach images if exists
+                    if (isset($request->temp_code)) {
+                    $productImages = ProductImage::where('temp_code', $request->temp_code)
                         ->where('combination_index', $key)
-                        ->update([
-                            'product_id' => $product->id,
-                            'color_id' =>  $request->colors_existing[$key][$request->product_combinations[$key][0] ],
-                            'temp_code' => null
-                        ]);
-                      }
+                        ->get();
+                    ProductImage::where('temp_code', $request->temp_code)
+                    ->where('combination_index', $key)
+                    ->update([
+                        'product_id' => $product->id,
+                        'color_id' =>  $request->colors_existing[$key][$request->product_combinations[$key][0] ],
+                        'temp_code' => null
+                    ]);
+                    }
 
                 }
                 
@@ -339,6 +352,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 'combination_index' => $key,
                                 'code' => $request->codes[$key][($key_new_combination + $total_existing)],
                                 'color_id' => $request->colors[$key][($key_new_combination + $total_existing)],
+                                'text_color' => $request->text_colors[$key][($key_new_combination + $total_existing)],
                                 'size_id' => $request->sizes[$key][($key_new_combination + $total_existing)],
                                 'price' => $request->prices[$key][($key_new_combination + $total_existing)],
                                 'stock_depot' => $request->stocks_depot[$key][($key_new_combination + $total_existing)],
@@ -382,6 +396,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     */
     public function deleteByIds($ids): bool
     {
+        $products = $this->model->with('product_parent', 'product_parent.images')->whereIn('id', $ids)->get();
+        foreach ($products as $product) {
+            // dd($product);
+            $product->product_parent
+                ->images()
+                ->where('combination_index', $product->combination_index)
+                ->delete();
+        }
+
         return $this->model->whereIn('id', $ids)->delete();
     }
 

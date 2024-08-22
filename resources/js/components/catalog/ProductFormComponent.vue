@@ -149,7 +149,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <!-- color -->
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label :for="`color-${index}`">Color</label>
                                     <v-select placeholder="Seleccionar"
@@ -162,6 +163,16 @@
                                     <input type="hidden" :name="`combinations_group_colors[${index}]`" v-model="combinations[index].color_id">
                                 </div>
                             </div>
+                            <!-- text color -->
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label :for="`text_color-${index}`">Color en texto</label>
+                                    <input class="form-control" :id="`text_color-${index}`" :name="`combinations_group_text_colors[${index}]`" type="text" 
+                                    v-model="combinations[index].text_color">
+                                </div>
+                            </div>
+
+                            <!-- codigo -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">Código</label>
@@ -184,7 +195,7 @@
                         <!-- imagenes de la combinacion  -->
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="img-container" v-for="(image, index_image) in images.filter( image => image.combination_index == index)" :key="`imagen-${index_image}`">
+                                <div class="img-container" v-for="(image, index_image) in images.filter( image => image.combination_index == combination.combination_index)" :key="`imagen-${index_image}`">
                                     <span class="btn-img-remove" type="button" @click="removeImage($event, image.id)">
                                         <i class="fas fa-times"></i> 
                                     </span>
@@ -200,6 +211,7 @@
                                         <input v-if="!size.product_id" type="hidden" :name="`combinations[${index}][]`" :value="index_size">
                                         <input v-if="size.product_id" type="hidden" :name="`product_combinations[${index}][]`" :value="size.id">
                                         <input type="hidden" :name="getCombinationInputName('colors', size, index, index_size)" v-model="combination.color_id">
+                                        <input type="hidden" :name="getCombinationInputName('text_colors', size, index, index_size)" v-model="combination.text_color">
                                         <input type="hidden" :name="getCombinationInputName('codes', size, index, index_size)" v-model="combination.code">
                                     </div>
                                 </div>
@@ -431,6 +443,9 @@
                 this.category = this.product.category;
                 this.gender = this.product.gender;
 
+                // ordenar productos combinados por combinacion index
+                this.product.product_combinations.sort((a, b) => a.combination_index - b.combination_index);
+
                 if (this.product.product_combinations) {
                     for (var i=0; i<this.product.product_combinations.length; i++) {
                         const combination = this.product.product_combinations[i];
@@ -440,6 +455,7 @@
                             var new_combination = {
                                 code: combination.code,
                                 color_id: combination.color_id,
+                                text_color: combination.text_color,
                                 combination_index: combination.combination_index,
                                 color_prop: combination.color,
                                 
@@ -473,6 +489,7 @@
                             this.combinations[index].sizes.push(new_size);
                         }
                     }
+
                 }
             }
         },
@@ -542,6 +559,7 @@
                     code: null,
                     color_prop: null,
                     color_id: null,
+                    text_color: null,
                     sizes: [
                         {
                             id: null,

@@ -134,7 +134,7 @@
                                                                     data-category="{{ optional($product->category)->name }}"
                                                                     data-code="{{ $product->code }}"
                                                                 >
-                                                                    {{ $product->name }} (T: {{ optional($product->size)->name }} - Color: {{ optional($product->color)->name }})
+                                                                    {{ $product->name }} (Talla: {{ strtoupper(optional($product->size)->name) }} - Color: {{ optional($product->color)->name }} {{ $product->text_color ? ' - ' . strtoupper($product->text_color) : '' }}  )
                                                                 </option>
                                                             @endif
                                                         @endforeach
