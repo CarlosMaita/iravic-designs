@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\catalog;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\CategoryRequest;
+use App\Models\BaseCategory;
 use App\Models\Category;
 use App\Repositories\Eloquent\CategoryRepository;
 use DataTables;
@@ -63,7 +64,8 @@ class CategoryController extends Controller
     {
         $this->authorize('create', 'App\Models\Category');
         return view('dashboard.catalog.categories.create')
-                ->withCategory(new Category());
+                ->withCategory(new Category())
+                ->with( 'base_categories', BaseCategory::all());
     }
 
     /**
@@ -76,7 +78,7 @@ class CategoryController extends Controller
     {
         try {
             $this->authorize('create', 'App\Models\Category');
-            $this->categoryRepository->create($request->only('name'));
+            $this->categoryRepository->create($request->only(['name', 'base_category_id']));
             flash("La categoría <b>$request->name</b> ha sido creada con éxito")->success();
 
             return response()->json([
@@ -106,7 +108,8 @@ class CategoryController extends Controller
     {
         $this->authorize('update', $categoria);
         return view('dashboard.catalog.categories.edit')
-                ->withCategory($categoria);
+                ->withCategory($categoria)
+                ->with( 'base_categories', BaseCategory::all());
     }
 
     /**
@@ -120,7 +123,7 @@ class CategoryController extends Controller
     {
         try {
             $this->authorize('update', $categoria);
-            $this->categoryRepository->update($categoria->id, $request->only('name'));
+            $this->categoryRepository->update($categoria->id, $request->only(['name', 'base_category_id']));
             flash("La categoría <b>$request->name</b> ha sido actualizada con éxito")->success();
 
             return response()->json([

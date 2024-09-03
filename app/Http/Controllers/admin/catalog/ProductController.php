@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin\catalog;
 
-use App\Constants\ProductConstants;
+use App\Constants\GenderConstants;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\Catalog\ProductRequest;
 use App\Http\Requests\admin\Catalog\ProductStockRequest;
@@ -12,12 +12,14 @@ use App\Models\Size;
 use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
+use App\TypeSize;
 use DataTables;
 use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -80,7 +82,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $genders = ProductConstants::GENDERS;
+        $genders = genderConstants::ALL;
 
         return view('dashboard.catalog.products.index')
             ->withColors($colors)
@@ -102,7 +104,11 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $genders = ProductConstants::GENDERS;
+        $type_sizes = TypeSize::all();
+        $genders = GenderConstants::ALL;
+        
+        // temporary code
+        $temp_code = Str::random(10);
 
         return view('dashboard.catalog.products.create')
                 ->withBrands($brands)
@@ -110,7 +116,9 @@ class ProductController extends Controller
                 ->withColors($colors)
                 ->withGenders($genders)
                 ->withProduct(new Product())
-                ->withSizes($sizes);
+                ->withSizes($sizes)
+                ->withTypeSizes($type_sizes)
+                ->withTempCode($temp_code);
     }
 
     /**
@@ -185,7 +193,11 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
-        $genders = ProductConstants::GENDERS;
+        $type_sizes = TypeSize::all();
+        $genders = genderConstants::ALL;
+
+         // temporary code
+         $temp_code = Str::random(10);
 
         return view('dashboard.catalog.products.edit')
                 ->withBrands($brands)
@@ -193,7 +205,9 @@ class ProductController extends Controller
                 ->withColors($colors)
                 ->withGenders($genders)
                 ->withProduct($producto)
-                ->withSizes($sizes);
+                ->withSizes($sizes)
+                ->withTypeSizes($type_sizes)
+                ->withTempCode($temp_code);
     }
 
     /**
@@ -208,7 +222,9 @@ class ProductController extends Controller
         try {
             $this->authorize('update', $producto);
             DB::beginTransaction();
+
             $this->productRepository->updateByRequest($producto->id, $request);
+            
             DB::commit();
             flash("El producto <b>$request->name</b> ha sido actualizado con éxito")->success();
 

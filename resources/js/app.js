@@ -10,6 +10,9 @@ import vSelect from 'vue-select'
 
 import 'vue-select/dist/vue-select.css';
 
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
 // import vueble from 'vueble'
 
 window.Vue = require('vue');
@@ -41,7 +44,7 @@ Vue.component('product-item-to-refund', require('./components/orders/ProductItem
 Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
 
 Vue.component('v-select', vSelect)
-// Vue.component('vueble', vueble)
+Vue.component('v-dropzone', vue2Dropzone)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

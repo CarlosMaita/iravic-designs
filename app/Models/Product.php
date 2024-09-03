@@ -19,6 +19,7 @@ class Product extends Model
         'brand_id',
         'category_id',
         'color_id',
+        'text_color',
         'product_id',
         'size_id',
         'name',
@@ -30,7 +31,8 @@ class Product extends Model
         'is_child_size',
         'stock_depot',
         'stock_local',
-        'stock_truck'
+        'stock_truck',
+        'combination_index'
     ];
 
     protected $softCascade = [
@@ -75,6 +77,8 @@ class Product extends Model
                 $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_truck');
             }
         });
+
+        
     }
 
     # Relationships

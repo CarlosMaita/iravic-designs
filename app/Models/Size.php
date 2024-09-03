@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\TypeSize;
 use Illuminate\Database\Eloquent\Model;
 
 class Size extends Model
@@ -13,4 +14,12 @@ class Size extends Model
     public $fillable = [
         'name'
     ];
+
+    public $timestamps = true;
+
+    public function type_size()
+    {
+        return $this->belongsTo(TypeSize::class);
+    }
+
 }

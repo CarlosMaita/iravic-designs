@@ -4,7 +4,7 @@
             <li class="nav-item">
                 <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
             </li>
-            <li class="nav-item">
+            <li v-if="is_regular" class="nav-item">
                 <a class="nav-link" id="multimedia-tab" data-toggle="tab" href="#multimedia" role="tab" aria-controls="multimedia" aria-selected="true">Multimedia</a>
             </li>
             <li v-if="is_regular" class="nav-item">
@@ -63,7 +63,8 @@
                                         :options="categories" 
                                         label="name" 
                                         v-model="category"
-                                        @input="setCategorySelected">
+                                        @input="setCategorySelected"
+                                       >
                             </v-select>
                             <input type="hidden" name="category_id" v-model="categoryId">
                         </div>
@@ -75,7 +76,8 @@
                                         :options="brands" 
                                         label="name" 
                                         v-model="brand"
-                                        @input="setBrandSelected">
+                                        @input="setBrandSelected"
+                                        >
                             </v-select>
                             <input type="hidden" name="brand_id" v-model="brandId">
                         </div>
@@ -90,6 +92,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- hidden input -->
+                <input type="hidden" name="temp_code" :value="temp_code">
             </div>
             <!--  -->
             <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
@@ -145,25 +149,57 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <!-- color -->
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label :for="`color-${index}`">Color</label>
                                     <v-select placeholder="Seleccionar"
                                                 :options="colors" 
                                                 label="name" 
                                                 v-model="combinations[index].color_prop"
-                                                :selectable="(option) => !combinations.map(function(combination) {return combination.color_id;}).includes(option.id)"
                                                 @input="setCombinationColorSelected(combinations[index].color_prop, index)">
                                     </v-select>
                                     <!-- <input type="hidden" :name="getCombinationInputName('colors', combination, index)" v-model="combinations[index].color_id"> -->
                                     <input type="hidden" :name="`combinations_group_colors[${index}]`" v-model="combinations[index].color_id">
                                 </div>
                             </div>
+                            <!-- text color -->
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label :for="`text_color-${index}`">Color en texto</label>
+                                    <input class="form-control" :id="`text_color-${index}`" :name="`combinations_group_text_colors[${index}]`" type="text" 
+                                    v-model="combinations[index].text_color">
+                                </div>
+                            </div>
+
+                            <!-- codigo -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">Código</label>
                                     <!-- <input class="form-control" :id="`code-${index}`" type="text" :name="getCombinationInputName('codes', combination, index)" v-model="combination.code"> -->
                                     <input class="form-control" :id="`code-${index}`" :name="`combinations_group_code[${index}]`" type="text" v-model="combination.code">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- selector de images de combinacion -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <v-dropzone :ref="`dropzone-${index}`" 
+                                    :id="`dropzone-${index}`"
+                                    :options="dropzoneOptions"
+                                    @vdropzone-sending-multiple="sendingEvent"
+                                    @vdropzone-removed-file="removeFile"
+                                v-once ></v-dropzone>
+                            </div>
+                        </div>
+                        <!-- imagenes de la combinacion  -->
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="img-container" v-for="(image, index_image) in images.filter( image => image.combination_index == combination.combination_index)" :key="`imagen-${index_image}`">
+                                    <span class="btn-img-remove" type="button" @click="removeImage($event, image.id)">
+                                        <i class="fas fa-times"></i> 
+                                    </span>
+                                    <img :src="image.url_img" class="img-thumbnail" :data-combination-id="`${image.combination_index}`">
                                 </div>
                             </div>
                         </div>
@@ -175,6 +211,7 @@
                                         <input v-if="!size.product_id" type="hidden" :name="`combinations[${index}][]`" :value="index_size">
                                         <input v-if="size.product_id" type="hidden" :name="`product_combinations[${index}][]`" :value="size.id">
                                         <input type="hidden" :name="getCombinationInputName('colors', size, index, index_size)" v-model="combination.color_id">
+                                        <input type="hidden" :name="getCombinationInputName('text_colors', size, index, index_size)" v-model="combination.text_color">
                                         <input type="hidden" :name="getCombinationInputName('codes', size, index, index_size)" v-model="combination.code">
                                     </div>
                                 </div>
@@ -183,8 +220,8 @@
                                         <div class="form-group">
                                             <label :for="`size-${index}-${index_size}`">Talla <b>#{{ (index_size + 1)}}</b>  <button class="btn btn-sm btn-danger" type="button" @click="removeSize(index_size, index, size.id)"><i class="fas fa-trash-alt"></i></button></label>
                                             <v-select placeholder="Seleccionar"
-                                                        :options="sizes" 
                                                         label="name" 
+                                                        :options="SizesFiltered" 
                                                         v-model="combinations[index].sizes[index_size].size_prop"
                                                         :selectable="(option) => !combination.sizes.map(function(size) {return size.size_id;}).includes(option.id)"
                                                         @input="setCombinationSizeSelected(combinations[index].sizes[index_size].size_prop, index, index_size)">
@@ -285,6 +322,18 @@
                 type: Array,
                 default: []
             },
+            images: {
+                type: Array,
+                default: []
+            },
+            type_sizes: {
+                type: Array,
+                default: []
+            },
+            temp_code: {
+                type: String,
+                default: ''
+            },
             urlProducts: {
                 type: String,
                 default: ''
@@ -292,6 +341,14 @@
             urlProductsCombinations: {
                 type: String,
                 default: ''
+            },
+            urlResource: {
+            type: String,
+            default: "",
+            },
+            urlDeleteResource: {
+                type: String,
+                default: "",
             },
             is_updating: {
                 type: Boolean,
@@ -305,7 +362,20 @@
             is_regular: 1,
             combinations: [],
             loading: false,
-            mounted: false
+            mounted: false,
+            dropzoneOptions: {
+                url: "",
+                acceptedFiles: "image/*",
+                autoProcessQueue: true,
+                uploadMultiple: true,
+                parallelUploads: 10,
+                maxFiles: 10,
+                maxFilesize: 2,
+                addRemoveLinks: true,
+                thumbnailWidth: 150,
+                autoDiscover: false,
+            },
+
         }),
 	    computed: {
             categoryId: function(){
@@ -323,10 +393,44 @@
                     return this.brand.id;
                 }
                 return null;
-            }
+            },
+            SizesFiltered: function(){
+                if (!this.category || !this.gender) return null;
+             
+                let base_category_id = this.category.base_category_id;
+                let type_size_filtered = this.type_sizes.filter(
+                    (type_size) => {
+                        let genders = type_size.genders.split(',');
+                        return type_size.base_category_id == base_category_id && genders.includes(this.gender)
+                    }
+                );
+                let type_size_filtered_id = type_size_filtered.length > 0 ? type_size_filtered[0].id : null;
+                // this.resetCombinations();
+                return this.sizes.filter( (size) =>  type_size_filtered_id === size.type_size_id );
+            } 
 	    },
         async mounted() {
             this.mounted = true;
+
+            Object.assign(this.dropzoneOptions, {
+                url: this.urlResource,
+                dictDefaultMessage: "Arrastra los archivos aquí para subirlos",
+                dictFallbackMessage: "Su navegador no admite la carga de archivos mediante la función de arrastrar y soltar.",
+                dictFallbackText: "Utilice el formulario de respaldo a continuación para cargar sus archivos como en los viejos tiempos.",
+                dictFileTooBig: "El archivo es demasiado grande (0MiB). Máx .: 0MiB.",
+                dictInvalidFileType: "No puede cargar archivos de este tipo.",
+                dictResponseError: "El servidor respondió con el código statusCode.",
+                dictCancelUpload: "Cancelar carga",
+                dictCancelUploadConfirmation: "¿Estás seguro de que deseas cancelar esta carga?",
+                dictRemoveFile: "Remover archivo",
+                dictMaxFilesExceeded: "No puede cargar más archivos.", 
+                headers: {
+                    "X-CSRF-TOKEN": document
+                        .querySelector('input[name="_token"]')
+                        .getAttribute("value"),
+                }
+            });
+
             
             /**
              * Si el producto existe, se asignan sus datos a los models, y se crean items para sus combinaciones y tallas.
@@ -337,19 +441,24 @@
                 }
                 this.brand = this.product.brand;
                 this.category = this.product.category;
-               
                 this.gender = this.product.gender;
+
+                // ordenar productos combinados por combinacion index
+                this.product.product_combinations.sort((a, b) => a.combination_index - b.combination_index);
 
                 if (this.product.product_combinations) {
                     for (var i=0; i<this.product.product_combinations.length; i++) {
                         const combination = this.product.product_combinations[i];
-                        var index = this.getIndex(combination.color_id);
+                        var index = this.getIndex(combination.combination_index);
 
                         if (index < 0) {
                             var new_combination = {
                                 code: combination.code,
                                 color_id: combination.color_id,
+                                text_color: combination.text_color,
+                                combination_index: combination.combination_index,
                                 color_prop: combination.color,
+                                
                                 sizes: [
                                     {
                                         id: combination.id,
@@ -380,15 +489,19 @@
                             this.combinations[index].sizes.push(new_size);
                         }
                     }
+
                 }
             }
         },
         methods: {
+
+            
+
             /**
-             * Retorna indice de un color dentro del listado de combinaciones del producto
+             * Retorna indice de la combinacion  del listado de combinaciones del producto
              */
-            getIndex(color_id) {
-                var index = this.combinations.map(e => e.color_id).indexOf(color_id);
+            getIndex(combination_index) {
+                var index = this.combinations.map(e => e.combination_index).indexOf(combination_index);
                 return index;
             },
 
@@ -403,6 +516,7 @@
              * Setea la categoria seleccionada. Porque el select vue retorna el objeto
              */
             setCategorySelected(value) {
+                this.resetCombinations();
                 this.product.category_id = value ? value.id : null;
             },
 
@@ -410,6 +524,7 @@
              * Setea el genero seleccionado. Porrque el select vue retorna el objeto
              */
             setGenderSelected(value) {
+                this.resetCombinations();
                 this.product.gender = value;
             },
 
@@ -431,10 +546,20 @@
              * Agrega al listado de combinaciones, un objeto combinacion sin datos
              */
             addCombination() {
+
+                if ( !this.category && !this.gender ) {
+                    new Noty({
+                            text: 'Debe seleccionar la categoría y el genero del producto ',
+                            type: 'error'
+                        }).show();
+                    return false;
+                }
+
                 let new_combination = {
                     code: null,
                     color_prop: null,
                     color_id: null,
+                    text_color: null,
                     sizes: [
                         {
                             id: null,
@@ -638,7 +763,81 @@
                 } else {
                     self.combinations[index_combination].sizes.splice(index, 1);
                 }
+            },
+            resetCombinations() {
+                if(this.combinations.length > 0 ){ 
+                    this.combinations = [];
+                }
+                console.log(this.combinations)
+            }, 
+            sendingEvent(file, xhr, formData) {
+            
+                let ref =  file[0].previewElement.parentElement.id;
+                let combination_index = ref.replace("dropzone-", "");
+             
+                formData.append('combination_index', combination_index);
+                formData.append('temp_code', this.temp_code);
+            },
+            removeFile(file, error, xhr){
+                let response = JSON.parse(file.xhr.response);
+                let combination_index = response.data[0].combination_index
+                
+                // make a request to your server to delete the file
+                axios({
+                    url: this.urlDeleteResource,
+                    method: 'post',
+                    headers: { 
+                    "X-CSRF-TOKEN": document
+                        .querySelector('input[name="_token"]')
+                        .getAttribute("value"),
+                    },
+                    data: {
+                        fileName: file.name,
+                        combinationIndex: combination_index
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            removeImage(e, image_id) {
+                
+
+                let url = this.urlDeleteResource;
+
+                swal({
+                        title: '',
+                        text: "¿Seguro desea eliminar esta imagen?",
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Si',
+                        cancelButtonText: 'No'
+                    }).then(function ()  {
+                        axios({
+                            url: url,
+                            method: 'post',
+                            headers: { 
+                            "X-CSRF-TOKEN": document
+                                .querySelector('input[name="_token"]')
+                                .getAttribute("value"),
+                            },
+                            data: {
+                                image_id
+                            }
+                        }).then(response => {
+                            // remover imagen en DOM
+                            e.target.parentElement.parentElement.remove();
+                            console.log(response.data);
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                       
+                    }).catch(swal.noop);
+
+               
             }
+
         }
     }
 </script>
@@ -649,5 +848,24 @@
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 37px;
+    }
+
+    .vue-dropzone {
+        border: 2px dashed gray;
+    }
+    .img-container{
+        position: relative;
+        margin-left: 10px;
+    }
+
+    .btn-img-remove{
+        position: absolute;
+        top: 0px;
+        right: 5px;
+    }
+
+    .img-thumbnail{
+        width: 100px;
+        height: 100px;
     }
 </style>

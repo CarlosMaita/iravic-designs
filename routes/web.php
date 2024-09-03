@@ -11,18 +11,16 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes(['register' => false]);
 
 // Route::get('/', 'HomeController@index')->name('homepage');
 Route::get('/', function () { return redirect('/login'); });
 
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
-    Route::get('/', function () { 
-        return view('dashboard.homepage');
-    })
-    ->name('admin.home')
-    ->middleware('redirect.home.role');
-
+    Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
     #
     Route::get('mi-perfil/edit', 'MyProfileController@edit')->name('my-profile.edit');
     #
@@ -45,7 +43,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('stock-transferencias', 'ProductStockTransferController')->except('create');
         #
-        Route::resource('producto-imagen', 'ProductImageController')->only('index', 'destroy');
+        Route::resource('producto-imagen', 'ProductImageController')->only('index' , 'store', 'update' , 'destroy');
+        Route::post('producto-imagen-dropzone', 'ProductImageController@destroyWithRequest')->name('producto-imagen.dropzone.destroy');
         #
         Route::get('download', 'ProductController@download')->name('catalog.download');
     });

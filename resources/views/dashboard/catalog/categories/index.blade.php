@@ -22,6 +22,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
+                                                <th scope="col">{{ __('dashboard.form.fields.base_categories.base_category') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
