@@ -51,6 +51,9 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::get('inventario', 'InventoryController@index')->name('catalog.inventory.index');
         #
+        Route::get('inventario/download', 'InventoryController@download')->name("catalog.inventory.download");
+        #
+        Route::post('inventario/upload', 'InventoryController@upload')->name("catalog.inventory.upload");
     });
 
     # Customers Routes

@@ -48,6 +48,10 @@ return [
             'create'    => 'Crear nuevo producto',
             'edit'      => 'Editar producto'
         ],
+        'inventory' => [
+            'index'     => 'Listado de Inventario',
+        ],
+    
     ],
     'customers' => [
         'balance'               => 'Saldo',
@@ -186,6 +190,13 @@ return [
                 'size'              => 'Talla',
                 'available'         => 'Disponible',
                 'qty'               => 'Cantidad'
+            ],
+            'inventories' => [
+                'is_regular' => 'Producto regular',
+                'gender_size_color' => 'Género/Talla/Color',
+                'stock_deposito' => 'Stock Depósito',
+                'stock_local' => 'Stock Local',
+                'stock_camioneta' => 'Stock Camioneta',
             ],
             'spendings' => [
                 'id'      => 'ID',
