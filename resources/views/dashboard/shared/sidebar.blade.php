@@ -88,6 +88,12 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/stocks-transferencias")}}" href="{{ route('stock-transferencias.index') }}"></span>{{ __('dashboard.sidebar.products_transfers') }}</a>
                     </li>
                 @endcan
+                {{-- Inventary --}}
+                @can('viewany', App\Models\Product::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/inventario")}}" href="{{ route('catalog.inventory.index') }}"></span>{{ __('dashboard.sidebar.inventory') }}</a>
+                    </li>
+                @endcan
             </ul>
         </li>
     @endif

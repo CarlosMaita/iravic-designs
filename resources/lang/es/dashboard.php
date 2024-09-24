@@ -299,6 +299,7 @@ return [
         'categories'            => 'Categorías',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
+        'inventory'             => 'Inventario',
         'debtors'               => 'Morosos',
         'pending-to-schedule'   => 'Pendientes por agendar',
         'refunds'               => 'Devoluciones',
