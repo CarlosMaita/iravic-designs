@@ -1,28 +1,15 @@
 <script>
     $(function () {
-        const DATATABLE_RESOURCE = $("#datatable_products");
-        const URL_RESOURCE = "{{ route('productos.index') }}";
+        const DATATABLE_RESOURCE = $("#datatable_inventory");
+        const URL_RESOURCE = "{{ route('catalog.inventory.index') }}";
         const URL_DOWNLOAD = "{{ route('catalog.download') }}";
 
-        let form_advanced_search = $('#form-advanced-search'),
-            advanced_search = $('#adv-search'),
-            btn_advanced_search = $('#btn-advanced-search'),
-            btn_clear_filter = form_advanced_search.find('.clear-form'),
-            btn_close_filter = form_advanced_search.find('#close-advance-search'),
-            btn_download = $('#btn-download'),
-            modal_stocks_qty = $('#modal-stock-qty')
-            select_brand = $('#brand'),
-            select_category = $('#category'),
-            select_gender = $('#gender'),
-            select_color = $('#color'),
-            select_size = $('#size');
 
         $('select').select2({
             allowClear: true,
             placeholder: "Seleccionar"
         });
 
-        initAdvanceFilterData();
         initDataTable();   
 
         /**
@@ -139,98 +126,16 @@
             }).catch(swal.noop);
         });
 
-        /**
-         * Captura evento submit de busqueda avanzada para filtrar productos
-         */
-        form_advanced_search.on('submit', function(e) {
-            e.preventDefault();
-            
-            localStorage.setItem('brand', $('#brand').val());
-            localStorage.setItem('category', $('#category').val());
-            localStorage.setItem('color', $('#color').val());
-            localStorage.setItem('gender', $('#gender').val());
-            localStorage.setItem('size', $('#size').val());
-            localStorage.setItem('price_from', $('#price-from').val());
-            localStorage.setItem('price_to', $('#price-to').val());
-            DATATABLE_RESOURCE.DataTable().ajax.reload();
-        });
-
-        /**
-         * Captura evento para abrir o cerrar formulario de busqueda avanzada
-         */
-        btn_advanced_search.click(function() {
-            if (advanced_search.hasClass('show')) {
-                advanced_search.collapse('hide');
-            } else {
-                advanced_search.collapse('show');
-            }
-        });
-
-        /**
-         * Captura evento para vaciar filtro de busqueda avanzada
-         */
-        btn_clear_filter.click(function() {
-            select_brand.val('Todas').trigger('change');
-            select_category.val('Todas').trigger('change');
-            select_gender.val('Todos').trigger('change');
-            select_color.val('Todos').trigger('change');
-            select_size.val('Todas').trigger('change');
-
-            localStorage.setItem('brand', null);
-            localStorage.setItem('category', null);
-            localStorage.setItem('color', null);
-            localStorage.setItem('gender', null);
-            localStorage.setItem('size', null);
-            localStorage.setItem('price_from', null);
-            localStorage.setItem('price_to', null);
-        });
-
-        /**
-         * Captura evento para cerrar filtro de busqueda avanzada
-         */
-        btn_close_filter.click(function() {
-            advanced_search.collapse('hide');
-        });
         
-        /**
-         * Captura evento para descargar catalogo PDF
-         * Redirecciona para descarga automaticamente
-         */
-        btn_download.click(function(e) {
-            e.preventDefault();
-            var data = form_advanced_search.serialize();
-            window.location = `${URL_DOWNLOAD}?${data}`;
-        });
 
-        /**
-         * Captura evento de cerrar modal de stocks de un producto
-         */
-        modal_stocks_qty.on('hidden.coreui.modal', function(e) {
-            modal_stocks_qty.find('.modal-title span').text('');
-            modal_stocks_qty.find('.modal-body').empty();
-        });
+       
 
-        /**
-         * Inicializa filtro de busqueda avanzada
-         * Se guarda los datos en localstorage
-         */
-        function initAdvanceFilterData() {
-            var brand = localStorage.getItem('brand'),
-                category = localStorage.getItem('category'),
-                color = localStorage.getItem('color'),
-                gender = localStorage.getItem('gender'),
-                size = localStorage.getItem('size'),
-                price_from = localStorage.getItem('price_from'),
-                price_to = localStorage.getItem('price_to');
+      
 
-            select_brand.val(brand ? brand.split(',') : 'Todas').trigger('change');
-            select_category.val(category ? category.split(',') : 'Todas').trigger('change');
-            select_color.val(color ? color.split(',') : 'Todos').trigger('change');
-            select_gender.val(gender ? gender.split(',') : 'Todos').trigger('change');
-            select_size.val(size ? size.split(',') : 'Todas').trigger('change');
-            form_advanced_search.find("input[name='price_from']").val(price_from);
-            form_advanced_search.find("input[name='price_to']").val(price_to);
-        }
+     
+      
+
+      
 
         /**
          * Inicializa datatable de productos
@@ -276,10 +181,6 @@
          */
         function updateModalStocksContent(product) {
             var html_content = getModalStocksContentHtml(product);
-            modal_stocks_qty.modal('show');
-            modal_stocks_qty.find('.modal-title span').text(product.name);
-            modal_stocks_qty.find('.modal-body').append(html_content);
-
             
             $('#datatable_stocks').DataTable({
                 responsive: true

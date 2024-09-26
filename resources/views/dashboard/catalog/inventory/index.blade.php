@@ -30,7 +30,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <table id="datatable_products" class="table" width="100%">
+                                        <table id="datatable_inventory" class="table" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
@@ -60,5 +60,5 @@
 @push('js')
     @include('plugins.select2')
     @include('plugins.sweetalert')
-    {{-- @include('dashboard.catalog.inventory.js.index') --}}
+    @include('dashboard.catalog.inventory.js.index')
 @endpush
