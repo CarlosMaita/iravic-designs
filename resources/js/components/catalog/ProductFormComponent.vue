@@ -21,7 +21,7 @@
                 <!--  -->
                 <div class="row mt-3">
                     <div class="col-12">
-                        <div v-show="!is_updating" class="form-check form-check-inline mb-4">
+                        <div  class="form-check form-check-inline mb-4">
                             <input class="form-check-input" type="checkbox" name="is_regular" id="is_regular" value="1" 
                             v-model="is_regular">
                             <label class="form-check-label" for="is_regular">Es producto regular (Sin combinaciones)</label>

@@ -277,6 +277,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'name',
             'price',
         );
+        // Reset stock
+        $attributes['stock_depot'] = 0;
+        $attributes['stock_local'] = 0;
+        $attributes['stock_truck'] = 0;
 
         $product = $this->model->find($id);
         $category_id_old = $product->category_id;
