@@ -191,13 +191,6 @@ return [
                 'available'         => 'Disponible',
                 'qty'               => 'Cantidad'
             ],
-            'inventories' => [
-                'is_regular' => 'Producto regular',
-                'gender_size_color' => 'Género/Talla/Color',
-                'stock_deposito' => 'Stock Depósito',
-                'stock_local' => 'Stock Local',
-                'stock_camioneta' => 'Stock Camioneta',
-            ],
             'spendings' => [
                 'id'      => 'ID',
                 'date'    => 'Fecha',

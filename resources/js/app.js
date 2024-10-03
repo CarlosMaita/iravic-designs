@@ -42,6 +42,7 @@ Vue.component('modal-add-producto-stock', require('./components/orders/ModalProd
 Vue.component('modal-producto-to-refund', require('./components/orders/ModalProductToRefund.vue').default);
 Vue.component('product-item-to-refund', require('./components/orders/ProductItemToRefund.vue').default);
 Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
+Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
 
 Vue.component('v-select', vSelect)
 Vue.component('v-dropzone', vue2Dropzone)

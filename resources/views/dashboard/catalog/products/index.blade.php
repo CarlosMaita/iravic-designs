@@ -17,11 +17,26 @@
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.catalog.products.index') }}</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 d-flex justify-content-between">
-                                    <a id="btn-download" href="#"><i class="fa fa-download"></i> Descargar Catálogo</a>
-                                    @can('create', App\Models\Product::class)
-                                        <a href="{{ route('productos.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
-                                    @endcan
+                                <div class="col-12 d-flex  justify-content-between">
+                                    <div>
+                                        <a id="btn-download" href="#"><i class="fa fa-download"></i> Descargar Catálogo</a>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <div>
+                                            <a id="btn-download-inventory" href="{{route('catalog.inventory.download')}}" class="btn btn-primary mr-2" ><i class="fa fa-download"></i> Descargar Inventario</a>
+                                        </div>
+                                        <div>
+                                            <button id="btn-upload" class="btn btn-primary mr-2" data-toggle="modal" data-target="#view_import_inventory">
+                                                <i class="fa fa-upload"></i>
+                                                Subir Inventario
+                                            </button>
+                                        </div>
+                                        @can('create', App\Models\Product::class)
+                                        <div>
+                                            <a href="{{ route('productos.create') }}" class="btn btn-primary ml-auto">{{ __('dashboard.general.new_o') }}</a>
+                                        </div>
+                                        @endcan
+                                    </div>
                                 </div>
                             </div>
                             <br>
@@ -56,6 +71,7 @@
     </div>
     {{--  --}}
     @include('dashboard.catalog.products._modal_stock_qty')
+    @include('dashboard.catalog.products._modal_import_inventory')
 @endsection
 
 @push('js')
