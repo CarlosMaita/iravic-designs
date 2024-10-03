@@ -105,10 +105,10 @@ class InventoryController extends Controller
 
                     $product = Product::find($id);
                     if ($product){
-                        $price = $row[$price_row] ? $price_row : 0;
-                        $stock_depot = $row[$stock_depot_row] ? $stock_depot_row : 0;
-                        $stock_local = $row[$stock_local_row] ? $stock_local_row : 0;
-                        $stock_truck = $row[$stock_truck_row] ? $stock_truck_row : 0;
+                        $price = $row[$price_row] ? $row[$price_row] : 0;
+                        $stock_depot = $row[$stock_depot_row] ? $row[$stock_depot_row] : 0;
+                        $stock_local = $row[$stock_local_row] ? $row[$stock_local_row] : 0;
+                        $stock_truck = $row[$stock_truck_row] ? $row[$stock_truck_row] : 0;
 
                         if ( (is_numeric($stock_depot) && is_numeric($stock_local)  && is_numeric($stock_truck) && is_numeric($price)) ){
                             $product->price = $price;
