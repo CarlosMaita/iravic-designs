@@ -224,8 +224,11 @@
                                             <p class="font-weight-bold text-dark mb-1">Subtotal: <span class="subtotal">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Descuento: <span class="discount">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Total: <span class="total">$ 0.00</span></p>
+                                            <input type="hidden" id="total-order" value="0">
                                         </div>
                                     </div>
+                                    {{-- Informacion de credito --}}
+                                    <credit-information class="d-none" id="credit-info"></credit-information>
                                 </div> 
                                 {{--  --}}
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>

@@ -41,6 +41,7 @@ Vue.component('modal-producto-to-refund', require('./components/orders/ModalProd
 Vue.component('product-item-to-refund', require('./components/orders/ProductItemToRefund.vue').default);
 Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
 Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
+Vue.component('credit-information', require('./components/orders/CreditInformationComponent.vue').default);
 
 Vue.component('v-select', vSelect)
 Vue.component('v-dropzone', vue2Dropzone)

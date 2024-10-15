@@ -8,6 +8,7 @@ use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
 use App\Repositories\Eloquent\BoxRepository;
+use App\Repositories\Eloquent\CollectionRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
@@ -39,10 +40,18 @@ class OrderController extends Controller
 
     public $zoneRepository;
 
+    public $collectionRepository;
+
     /**
      * Construct
      */
-    public function __construct(BoxRepository $boxRepository, CustomerRepository $customerRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository, ZoneRepository $zoneRepository)
+    public function __construct(
+        BoxRepository $boxRepository, CustomerRepository $customerRepository,
+        OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
+        ProductRepository $productRepository, ScheduleRepository $scheduleRepository, 
+        VisitRepository $visitRepository, ZoneRepository $zoneRepository, 
+        CollectionRepository $collectionRepository
+    )
     {
         $this->boxRepository = $boxRepository;
         $this->customerRepository = $customerRepository;
@@ -52,6 +61,7 @@ class OrderController extends Controller
         $this->scheduleRepository = $scheduleRepository;
         $this->visitRepository = $visitRepository;
         $this->zoneRepository = $zoneRepository;
+        $this->collectionRepository = $collectionRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -122,7 +132,11 @@ class OrderController extends Controller
             DB::beginTransaction();
             $attributes = array_merge(
                 array('total_real' => $request->total),
-                $request->only('box_id', 'customer_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 'discount' ,'subtotal', 'total')
+                $request->only(
+                    'box_id', 'customer_id', 'user_id', 'date', 
+                    'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 
+                    'discount' ,'subtotal', 'total',
+                )
             );
             $order = $this->orderRepository->create($attributes);
 
@@ -146,6 +160,24 @@ class OrderController extends Controller
                         $this->orderProductRepository->create($attributes);
                     }
                 }
+            }
+
+            /**
+             * Si el pago es acredito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+             */
+            if ($request->payed_credit) {
+                $attributes = array(
+                    'order_id' => $order->id,
+                    'quota' => $request->input('amount-quotas'),
+                    'amount_quotas' => $request->input('amount-quotas'),
+                    'frequency' => $request->input('frequency-payment'),
+                    'start_date' => $request->input('start-quotas'),
+                    'total' => $request->total,   
+                    'balance' => $request->total,
+                    'paid' => 0
+
+                );
+                $this->collectionRepository->create($attributes);
             }
 
             /**

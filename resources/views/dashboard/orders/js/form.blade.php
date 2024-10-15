@@ -324,6 +324,7 @@
             var totals = getOrderTotal();
             $('.subtotal').text(`$ ${replaceNumberWithCommas(totals.subtotal)}`);
             $('.total').text(`$ ${replaceNumberWithCommas(totals.total)}`);
+            $("#total-order").val(totals.total);
         }
 
         /**
@@ -910,6 +911,7 @@
             $(this).parent().find('input').prop("checked", false);
             $(this).addClass('selected');
             $(this).find('input').prop("checked", true);
+            $(this).data('value') == 'credit' ? $('#credit-info').removeClass('d-none') : $('#credit-info').addClass('d-none');
         });
 
         /**
