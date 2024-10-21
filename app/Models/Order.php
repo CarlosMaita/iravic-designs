@@ -65,6 +65,11 @@ class Order extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function collection(){
+
+        return $this->hasOne('App\Models\Collection');
+    }
+
     # Boot
     protected static function boot()
     {

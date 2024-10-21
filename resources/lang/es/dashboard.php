@@ -151,7 +151,10 @@ return [
                 'customer'          => 'Cliente'
             ],
             'general' => [
-                'name' => 'Nombre'
+                'name'              => 'Nombre',
+                'amount_quotas'     => 'Cant. Cuotas',
+                'frequency'         => 'Frecuencia',
+                'start_date'        => 'Fecha de inicio'
             ],
             'orders' => [
                 'customer'              => 'Cliente',
@@ -264,6 +267,17 @@ return [
         'total'             => 'Total',
         'user'              => 'Usuario'
     ],
+    'collections' => [
+        'index'             => 'Listado de colecciones',
+        'create'            => 'Crear nueva colección',
+        'edit'              => 'Editar colección',
+        'id'                => 'ID',
+        'frequency'         => 'Frecuencia',
+        'balance'           => 'Balance',
+        'start_date'        => 'Fecha de Inicio',
+        'amount_quotas'     => 'Cantidad de Cuotas',
+        'quotas'            => 'Monto por Cuotas',
+    ],
     'payments' => [
         'id'                => 'ID',
         'amount'            => 'Monto',
@@ -303,6 +317,7 @@ return [
         'categories'            => 'Categorías',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
+        'collections'           => 'Cobros',
         'inventory'             => 'Inventario',
         'debtors'               => 'Morosos',
         'pending-to-schedule'   => 'Pendientes por agendar',

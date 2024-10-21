@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Collection;
 use App\Repositories\CollectionRepositoryInterface;
+use Illuminate\Support\Collection as SupportCollection;
 
 class CollectionRepository extends BaseRepository implements CollectionRepositoryInterface
 {
@@ -29,6 +30,19 @@ class CollectionRepository extends BaseRepository implements CollectionRepositor
     public function create(array $attributes) : Collection
     {
         return $this->model->create($attributes);
+    }
+
+
+    /**
+     *  get all collections
+     *  
+     *  
+     * 
+     * */
+
+    public function all() : SupportCollection
+    {
+        return $this->model->all();
     }
 
    

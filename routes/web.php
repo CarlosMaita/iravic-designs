@@ -103,7 +103,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::get('ventas-descuento', 'OrderController@calculateDiscount')->name('ventas.discount');
         #
-        Route::resource('cobros', 'CollectionController')->only('index');
+        Route::resource('cobros', 'CollectionController')->only('index', 'edit', 'update');
     });
 
     # Config Routes

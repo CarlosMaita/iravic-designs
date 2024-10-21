@@ -1,12 +1,8 @@
 <template>
    <div class="row">
-        <div class="col-md-12">
-            <hr>
-            <h3 class="fs-title">Información de crédito</h3>
-        </div>
         <div class="col-md-4">
-            <label for="amount-quotas">Cantidad de cuotas</label>
-            <input @change="calculateQuotas" v-model="amountQuotas" type="number" step="1" min="1" name="amount-quotas" id="amount-quotas" class="form-control" placeholder="Ingrese la cantidad de cuotas">
+            <label for="amount_quotas">Cantidad de cuotas</label>
+            <input @change="calculateQuotas" v-model="amountQuotas" type="number" step="1" min="1" name="amount_quotas" id="amount_quotas" class="form-control" placeholder="Ingrese la cantidad de cuotas">
         </div>
         <div class="col-md-4">
             <label for="frequency-payment">Frecuencia de Pago</label>
@@ -16,24 +12,30 @@
                 v-model="frequencyPayment"
                 >
             </v-select>
-            <input type="hidden" name="frequency-payment" v-model="frequencyPayment">
+            <input type="hidden" name="frequency" v-model="frequencyPayment">
         </div>
       
         <div class="col-md-4">
-            <label for="start-quotas">Fecha de inicio de Pago </label>
-            <input v-model="startQuotas" type="date" name="start-quotas" id="start-quotas" class="form-control" placeholder="Ingrese la Fecha de inicio de Pago">
+            <label for="start_date">Fecha de inicio de Pago </label>
+            <input v-model="startQuotas" type="date" name="start_date" id="start_date" class="form-control" placeholder="Ingrese la Fecha de inicio de Pago">
         </div>
         <div class="col-md-12">
             <p class="font-weight-bold text-dark mt-1">Monto por cuota: <span class="quotas">$ {{ replaceNumberWithCommas(Quotas) }}</span></p>
-            <input type="hidden" name="quotas" v-model="Quotas">
+            <input type="hidden" name="quota" v-model="Quotas">
         </div>
     </div>
 </template>
 
 <script>
 export default {
-  components: {},
+  components: {
+    
+  },
   props: {
+    collection : {
+      type: Object,
+      default: () => {}
+    }
   },
 
   data: () => ({
@@ -46,12 +48,15 @@ export default {
   }),
   computed: {},
   async mounted() {
-    this.calculateQuotas()
+    this.frequencyPayment = this.collection.frequency
+    this.amountQuotas = this.collection.amount_quotas
+    this.startQuotas = this.collection.start_date
+    this.totalOrder = this.collection.total
+    this.calculateQuotas();
   },
   methods: {
     calculateQuotas() {
-      this.totalOrder = Number(document.getElementById('total-order').value);
-      this.Quotas = this.totalOrder / this.amountQuotas || 0 ;
+        this.Quotas = this.totalOrder / this.amountQuotas || 0
     },
     replaceNumberWithCommas(number) {
             var n = number.toFixed(2); // Limita el resultado a dos decimales

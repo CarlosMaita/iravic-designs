@@ -168,7 +168,7 @@ class OrderController extends Controller
             if ($request->payed_credit) {
                 $attributes = array(
                     'order_id' => $order->id,
-                    'quota' => $request->input('amount-quotas'),
+                    'quota' => $request->input('quotas'),
                     'amount_quotas' => $request->input('amount-quotas'),
                     'frequency' => $request->input('frequency-payment'),
                     'start_date' => $request->input('start-quotas'),
