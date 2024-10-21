@@ -22,7 +22,7 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <div  class="form-check form-check-inline mb-4">
-                            <input class="form-check-input" type="checkbox" name="is_regular" id="is_regular" value="1" 
+                            <input class="form-check-input" type="checkbox" name="is_regular" id="is_regular" value="1"  
                             v-model="is_regular">
                             <label class="form-check-label" for="is_regular">Es producto regular (Sin combinaciones)</label>
                         </div>
@@ -32,7 +32,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label for="name">Nombre</label>
-                            <input class="form-control" id="name" name="name" type="text" v-model="product.name" autofocus>
+                            <input class="form-control" id="name" name="name" type="text" v-model="product.name"   autofocus>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="code">Código</label>
-                            <input class="form-control" id="code" name="code" type="text" v-model="product.code">
+                            <input class="form-control" id="code" name="code" type="text" v-model="product.code"  >
                         </div>
                     </div>
                     <div class="col-6">
@@ -409,8 +409,17 @@
                 return this.sizes.filter( (size) =>  type_size_filtered_id === size.type_size_id );
             } 
 	    },
+        beforeMount() {
+            this.hasChanges = false;
+            window.addEventListener('beforeunload', (e) => {
+                e.preventDefault();
+                e.returnValue = "¿Seguro que quieres salir?";
+            })  
+
+        },
         async mounted() {
             this.mounted = true;
+          
 
             Object.assign(this.dropzoneOptions, {
                 url: this.urlResource,
@@ -617,6 +626,7 @@
 
                 return input_name;
             },
+
 
             /**
              * Peticion HTTP a la api para eliminar una talla de una combinacion
@@ -838,7 +848,8 @@
                
             }
 
-        }
+        }, 
+        
     }
 </script>
 
