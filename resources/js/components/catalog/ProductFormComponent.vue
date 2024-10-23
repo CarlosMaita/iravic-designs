@@ -409,17 +409,8 @@
                 return this.sizes.filter( (size) =>  type_size_filtered_id === size.type_size_id );
             } 
 	    },
-        beforeMount() {
-            this.hasChanges = false;
-            window.addEventListener('beforeunload', (e) => {
-                e.preventDefault();
-                e.returnValue = "¿Seguro que quieres salir?";
-            })  
-
-        },
         async mounted() {
             this.mounted = true;
-          
 
             Object.assign(this.dropzoneOptions, {
                 url: this.urlResource,

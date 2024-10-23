@@ -90,7 +90,15 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
-        
+
+        const handlerBeforeUnload = function (event) {
+            event.preventDefault();
+            event.returnValue = "Any changes will be lost";
+            return "Any changes will be lost";
+        }
+        window.addEventListener('beforeunload', handlerBeforeUnload);
+
+
         /**
          * Captura evento submit de formulario de producto
          * Si no hay imagenes el dropzone entra en el else
@@ -98,6 +106,9 @@
          */
         FORM_RESOURCE.on('submit', function (e) {
             e.preventDefault();
+
+            // remove the handler
+            window.removeEventListener('beforeunload', handlerBeforeUnload);
 
             //identificar si es producto regular o No 
             if ( isProductRegular() && myDropzone.files.length > 0) {
