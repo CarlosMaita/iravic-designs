@@ -43,6 +43,7 @@ Vue.component('product-item-to-buy', require('./components/orders/ProductItemToB
 Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
 Vue.component('credit-information', require('./components/orders/CreditInformationComponent.vue').default);
 Vue.component('collection-form', require('./components/collections/CollectionFormComponent.vue').default);
+Vue.component('collection-show', require('./components/collections/CollectionShowComponent.vue').default);
 
 Vue.component('v-select', vSelect)
 Vue.component('v-dropzone', vue2Dropzone)

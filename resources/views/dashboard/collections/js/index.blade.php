@@ -42,6 +42,43 @@
             }, 1000);
         });
 
+        /** 
+         * Delete collection 
+         * 
+         * */
+        $('body').on('click', 'tbody .delete-collection', function (e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            let token = $("input[name=_token]").val();
+            let url = `${URL_RESOURCE}/${id}`;
+            
+            swal({
+                title: '',
+                text: "{{ __('dashboard.general.delete_resource') }}",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            _token: token,
+                            _method: 'DELETE'
+                        },
+                        success: function (data) {
+                            DATATABLE_RESOURCE.DataTable().ajax.reload();
+                        },
+                        error: function (data) {
+                            console.log('Error:', data);
+                        }
+                    });
+                }
+            });
+        });
+
       
 
     });

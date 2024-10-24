@@ -16,6 +16,7 @@ use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
+use Carbon\Carbon;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -178,7 +179,24 @@ class OrderController extends Controller
 
                 );
                 $this->collectionRepository->create($attributes);
+                
+                /**
+                 * Crear visitas para el cliente apartir de la fecha inicial de cobro y cuotas
+                 * 
+                 */
+                $this->createVisitsCollections (
+                     $request->input('start-quotas'),
+                     $request->input('amount-quotas'), 
+                     $request->input('frequency-payment'), 
+                     $request->input('quotas'), 
+                     $order, 
+                     $request->user_id);
+
             }
+
+
+
+
 
             /**
              * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
@@ -223,6 +241,46 @@ class OrderController extends Controller
                 ]
             ]);
         }
+    }
+
+    // private function createVisitsCollections( Request $request, Order $order)
+    private function createVisitsCollections($startDate, $amountQuotas, $frequencyPayment, $quotas , Order $order , $user_id)  
+    {
+        $date = Carbon::parse($startDate);
+
+        if ($amountQuotas > 1) {
+            for ($i = 0; $i < $amountQuotas; $i++) {
+
+                $dateVisit = $date->format('Y-m-d');
+                $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $dateVisit));
+                $attributes = array(
+                    'customer_id' => $order->customer_id,
+                    'order_id' => $order->id,
+                    'schedule_id' => $schedule->id,
+                    'user_id' => $user_id,
+                    'comment' => 'COBRO A CREDITO - CUOTA #'. ( $i + 1 ) . ': ' . $quotas,
+                    'date' => $dateVisit
+                );
+                $this->visitRepository->create($attributes);
+
+                $daysSum = 0 ;
+                switch ($frequencyPayment) {
+                    case 'semanal':
+                        $daysSum = 7;
+                        break;  
+                    case 'quincenal':
+                        $daysSum = 14;
+                        break;
+                    case 'mensual':
+                        $daysSum = 28;
+                        break;
+                }
+
+                // Proxima Fecha 
+                $date->addDays($daysSum);
+            }
+        }
+
     }
 
     /**
