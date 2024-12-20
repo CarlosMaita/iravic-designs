@@ -22,6 +22,11 @@ class CreateCreditsTable extends Migration
             $table->string('status')->nullable();
             // link soft to order 
             $table->unsignedBigInteger('order_id')->nullable();
+            // link to customer
+            $table->foreignId('customer_id')
+                ->references('id')
+                ->on('customers');
+
            
             $table->timestamps();
         });

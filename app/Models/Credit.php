@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Collection;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,7 @@ class Credit extends Model
         'total', 
         'status',
         'order_id',
+        'customer_id',
      ]; 
      
 
@@ -25,6 +27,11 @@ class Credit extends Model
      public function order()
      {
          return $this->belongsTo(Order::class, 'order_id', 'id');
+     }
+
+     public function customer()
+     {
+            return $this->belongsTo(Customer::class, 'customer_id', 'id');
      }
 
      public function collections()
