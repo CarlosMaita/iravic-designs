@@ -13,6 +13,7 @@ class Collection extends Model
     protected $fillable = [
         'date',
         'amount', 
+        'number',
         'is_completed'
      ]; 
 

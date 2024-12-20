@@ -17,7 +17,9 @@ class CreateCollectionsTable extends Migration
             $table->id();
             $table->date('date');
             $table->double('amount');
+            $table->unsignedInteger('number')->nullable();
             $table->tinyInteger('is_completed')->default(0);
+
 
             // link to order 
             $table->foreignId('credit_id')
