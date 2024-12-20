@@ -15,17 +15,12 @@ class CreateCollectionsTable extends Migration
     {
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
-            $table->double('quota');
-            $table->integer('amount_quotas')->default(1);
-            $table->string('frequency');
-            $table->date('start_date');
-            $table->double('total')->default(0);
-            $table->double('paid')->default(0);
-            $table->double('balance')->default(0);
-            $table->string('status')->nullable();
-            $table->boolean('is_overdue')->default(false); 
+            $table->date('date');
+            $table->double('amount');
+            $table->tinyInteger('is_completed')->default(0);
+
             // link to order 
-            $table->foreignId('order_id')
+            $table->foreignId('credit_id')
                 ->references('id')
                 ->on('orders')
                 ->onDelete('cascade');

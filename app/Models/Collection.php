@@ -2,53 +2,39 @@
 
 namespace App\Models;
 
+use App\Credit;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Type\Integer;
 
 class Collection extends Model
 {
 
 
     protected $fillable = [
-        'order_id',
-        'quota', 
-        'amount_quotas', 
-        'frequency',
-        'start_date',
-        'total', 
-        'paid', 
-        'balance', 
-        'status', 
-        'is_overdue'
-     ];
+        'date',
+        'amount', 
+        'is_completed'
+     ]; 
 
+     public $appends = ['amount_formatted'];
 
-    # Retorna en formato moneda el total de la venta
-    public function getQuotaAttribute($value)
-    {
-        return $this->getAmountFormated($value);
+    public function credit(){
+        return $this->belongsTo(Credit::class);
     }
 
-    # Retorna en formato moneda el total de la venta
-    public function getBalanceAttribute($value)
-    {
-        return $this->getAmountFormated($value);
-    }
     
-
-    # Retorna monto de la venta en formato moneda
-    public function getAmountFormated($value)
+    # Retorna en formato moneda el total de la venta
+    public function getAmountFormattedAttribute($value)
     {
-        if ($value) {
-            return '$ ' . number_format($value, 2, '.', ',');
-        }
-
-        return '$ 0,00';
+        return $this->getAmountFormatted($value);
     }
 
-    // link with order
-    public function order()
+    # Retorna monto en formato moneda
+    public function getAmountFormatted($value)
     {
-        return $this->belongsTo(Order::class, 'order_id', 'id');
+        return $value ? '$ ' . number_format($value, 2, '.', ',') : '$ 0,00';
     }
+
+   
 
 }

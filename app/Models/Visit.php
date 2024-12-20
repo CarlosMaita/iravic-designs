@@ -19,7 +19,9 @@ class Visit extends Model
         'date',
         'position',
         'is_completed',
-        'completed_date'
+        'completed_date',
+        'is_collection', 
+        'is_paid',
     ];
 
     # Boot
