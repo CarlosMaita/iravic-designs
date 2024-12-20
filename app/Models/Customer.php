@@ -36,7 +36,8 @@ class Customer extends Model
         'is_pending_to_schedule',
         'telephone',
         'cellphone',
-        'solvency_date'
+        'solvency_date',
+        'collection_frequency',
     ];
 
     protected $appends = [
