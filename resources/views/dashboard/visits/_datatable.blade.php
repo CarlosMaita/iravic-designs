@@ -7,6 +7,7 @@
             @else
                 <th scope="col">{{ __('dashboard.visits.customer') }}</th>
             @endif
+            <th scope="col">{{ __('dashboard.visits.suggested_collection') }}</th>
             <th scope="col">{{ __('dashboard.visits.responsable') }}</th>
             <th scope="col">{{ __('dashboard.visits.completed') }}</th>
             <th></th>

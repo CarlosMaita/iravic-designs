@@ -267,6 +267,11 @@
                     },
                     {
                         render: function (data, type, row) {
+                            return row.suggested_collection ? row.suggested_collection : '';
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
                             return row.responsable ? row.responsable.name : '';
                         }
                     },

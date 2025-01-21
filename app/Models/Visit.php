@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -74,6 +75,13 @@ class Visit extends Model
     }
 
     # Accessors
+    public function getSuggestedCollectionAttribute($value)
+    {
+        if (!$this->is_collection) {
+            return "N/A";
+        }
+        return FormatHelper::formatCurrency($value);
+    }
 
     public function getSuggestedCollectionAmountAttribute()
     {
@@ -86,7 +94,7 @@ class Visit extends Model
                 $query->where('customer_id', $customer_id); 
             })->where('date', $this->getRawOriginal('date'))->sum('amount');
 
-        return $this->getAmountFormated($suggested_amount);
+        return FormatHelper::formatCurrency($suggested_amount);
     }
 
    
@@ -148,14 +156,5 @@ class Visit extends Model
     public function existsAssignedResponsible() : bool 
     {
         return  $this->responsable ? true : false;
-    }
-
-    private function getAmountFormated($value)
-    {
-        if ($value) {
-            return '$ ' . number_format($value, 2, '.', ',');
-        }
-
-        return '$ 0,00';
     }
 }

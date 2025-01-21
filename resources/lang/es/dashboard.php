@@ -366,6 +366,7 @@ return [
         'date'          => 'Fecha',
         'responsable'   => 'Responsable',
         'schedule'      => 'Agenda',
+        'suggested_collection'      => 'Cobro sugerido',
         'whatsapp'      => 'Whatsapp',
         'zone'          => 'Zona'
     ],
