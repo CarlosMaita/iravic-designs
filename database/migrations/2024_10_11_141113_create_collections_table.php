@@ -24,7 +24,7 @@ class CreateCollectionsTable extends Migration
             // link to order 
             $table->foreignId('credit_id')
                 ->references('id')
-                ->on('orders')
+                ->on('credits')
                 ->onDelete('cascade');
 
             $table->timestamps();

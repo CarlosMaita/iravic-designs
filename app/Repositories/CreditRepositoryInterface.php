@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-interface CollectionRepositoryInterface
+interface CreditRepositoryInterface
 {
     
 }

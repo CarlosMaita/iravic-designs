@@ -9,6 +9,7 @@ use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\PaymentRepository;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
+use Carbon\Carbon;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
@@ -25,7 +26,11 @@ class PaymentController extends Controller
 
     public $customerRepository;
 
-    public function __construct(PaymentRepository $paymentRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository, CustomerRepository $customerRepository)
+    public function __construct(
+        PaymentRepository $paymentRepository, 
+        ScheduleRepository $scheduleRepository,
+        VisitRepository $visitRepository, 
+        CustomerRepository $customerRepository)
     {
         $this->paymentRepository = $paymentRepository;
         $this->scheduleRepository = $scheduleRepository;
@@ -94,7 +99,7 @@ class PaymentController extends Controller
             DB::beginTransaction();
             $attributes = $request->only('box_id', 'customer_id', 'user_id', 'amount', 'comment', 'date', 'payed_bankwire', 'payed_card', 'payed_cash');
             $pago = $this->paymentRepository->create($attributes);
-            $this->visitRepository->completeByDateUser($pago->customer_id, $pago->getRawOriginal('date'));
+            $this->visitRepository->completeByDateUser($pago->customer_id,  Carbon::parse($request->input('visit_date_now'))->format('Y-m-d'));
             $customer = $pago->customer;
             
             /**

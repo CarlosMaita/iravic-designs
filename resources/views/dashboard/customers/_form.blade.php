@@ -95,6 +95,10 @@
             </div>
         </div>
     </div>
+
+    {{-- day and frequency of collection --}}
+    <frequency-collection :customer="{{ json_encode($customer) }}" > </frequency-collection>
+
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="form-group">

@@ -5,11 +5,18 @@
 
         let btn_create_payment = $('#btn-create-payment'),
             modal_payments    = $('#modal-payments'),
+            modal_payments_installments = $('#modal-payments-installments'),
             customer_selector = $("#customer"),
-            form_payments     = $('#form-payments');
+            form_payments     = $('#form-payments'),
+            form_payment_installments = $('#form-payment-installments');
 
+        //Select of payments 
         form_payments.find('select').select2({
             dropdownParent: $("#modal-payments")
+        });
+        
+        form_payment_installments.find('select').select2({
+            dropdownParent: $("#modal-payments-installments")
         });
 
         initDataTable();
@@ -38,6 +45,104 @@
             modal_payments.find('.modal-title').text('Crear pago');
             $('#payment-visit').removeClass('d-none');
         });
+
+
+         /**
+         * captura evento para mostrar modal de pago de cuota
+         * 
+         * 
+         * */
+         $('body').on('click', 'tbody .btn-payment-installments', function (e) {
+            e.preventDefault();
+            let customer = $(this).data('customer'),
+                motive = $(this).data('motive'),
+                customer_id = $(this).data('customer_id'),
+                visit_date_now = $(this).data('visit_date_now'),
+                suggested_collection_amount = $(this).data('suggested_collection_amount');
+            
+            form_payment_installments.find('#motive').val(motive);
+            form_payment_installments.find('#customer_id').val(customer_id);
+            form_payment_installments.find('#visit_date_now').val(visit_date_now);
+            form_payment_installments.find('#suggested_collection_amount').val(suggested_collection_amount);
+            form_payment_installments.attr('action', URL_RESOURCE);
+            form_payment_installments.attr('method', 'POST');
+            modal_payments_installments.modal('show');
+            modal_payments_installments.find('.modal-title').text('Pagos de cuotas');
+            modal_payments_installments.find('#customer').val(customer);
+        })
+
+        /**
+         * captura evento para mostrar modal de pago de visita
+         * 
+         *
+         * */
+         form_payment_installments.on('submit', function(e) {
+            e.preventDefault();
+
+            var url = form_payment_installments.attr('action');
+            var form = $('#form-payment-installments')[0];
+            var formData = new FormData(form);
+            
+            $.ajax({
+                    url: url,
+                    type: form_payment_installments.attr('method'),
+                    enctype: 'multipart/form-data',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        new Noty({
+                            text: response.message,
+                            type: 'success'
+                        }).show();
+                        
+                        $customer = response.customer;
+                        clearModalForm();
+                        modal_payments_installments.modal('hide');
+                        location.reload();
+                    } else if (response.error) {
+                        new Noty({
+                            text: response.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    if (e.responseJSON.errors) {
+                        $.each(e.responseJSON.errors, function (index, element) {
+                            if ($.isArray(element)) {
+                                new Noty({
+                                    text: element[0],
+                                    type: 'error'
+                                }).show();
+                            }
+                        });
+                    } else if (e.responseJSON.message){
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else if (e.responseJSON.error){
+                        new Noty({
+                            text: e.responseJSON.error,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
+        });
+
 
 
         // customer_selector.select2({

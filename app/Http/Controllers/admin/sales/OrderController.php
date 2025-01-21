@@ -8,7 +8,7 @@ use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
 use App\Repositories\Eloquent\BoxRepository;
-use App\Repositories\Eloquent\CollectionRepository;
+use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
@@ -41,7 +41,7 @@ class OrderController extends Controller
 
     public $zoneRepository;
 
-    public $collectionRepository;
+    public $creditRepository;
 
     /**
      * Construct
@@ -51,7 +51,7 @@ class OrderController extends Controller
         OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
         ProductRepository $productRepository, ScheduleRepository $scheduleRepository, 
         VisitRepository $visitRepository, ZoneRepository $zoneRepository, 
-        CollectionRepository $collectionRepository
+        CreditRepository $creditRepository
     )
     {
         $this->boxRepository = $boxRepository;
@@ -62,7 +62,7 @@ class OrderController extends Controller
         $this->scheduleRepository = $scheduleRepository;
         $this->visitRepository = $visitRepository;
         $this->zoneRepository = $zoneRepository;
-        $this->collectionRepository = $collectionRepository;
+        $this->creditRepository = $creditRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -104,7 +104,6 @@ class OrderController extends Controller
     {
         $this->authorize('create', 'App\Models\Order');
         $boxParam = $this->boxRepository->findOnly($request->box);
-        // $customers = $this->customerRepository->all();
         $customers = $this->customerRepository->allOnlyName();
         $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
@@ -164,39 +163,37 @@ class OrderController extends Controller
             }
 
             /**
-             * Si el pago es acredito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+             * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
              */
             if ($request->payed_credit) {
+                /**
+                 * Crear Credito para el cliente
+                 */
                 $attributes = array(
-                    'order_id' => $order->id,
                     'quota' => $request->input('quotas'),
                     'amount_quotas' => $request->input('amount-quotas'),
-                    'frequency' => $request->input('frequency-payment'),
                     'start_date' => $request->input('start-quotas'),
                     'total' => $request->total,   
-                    'balance' => $request->total,
-                    'paid' => 0
-
+                    'order_id' => $order->id,   
+                    'customer_id' => $request->customer_id,
                 );
-                $this->collectionRepository->create($attributes);
-                
+                $credit = $this->creditRepository->create($attributes);
+
                 /**
-                 * Crear visitas para el cliente apartir de la fecha inicial de cobro y cuotas
+                 * Crear Cobros para el cliente apartir de la fecha inicial de cobro 
                  * 
                  */
-                $this->createVisitsCollections (
-                     $request->input('start-quotas'),
-                     $request->input('amount-quotas'), 
-                     $request->input('frequency-payment'), 
-                     $request->input('quotas'), 
-                     $order, 
-                     $request->user_id);
+                $attributes = array(
+                    'start_date' => $request->input('start-quotas'),
+                    'amount_quotas' => $request->input('amount-quotas'),
+                    'quota' => $request->input('quotas'),
+                    'credit_id' => $credit->id,
+                    'customer_id' => $request->customer_id,
+                    'user_id' => Auth::user()->id,
+                ); 
+                $this->creditRepository->createCollectionsAndVisits($attributes);
 
             }
-
-
-
-
 
             /**
              * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
@@ -243,45 +240,6 @@ class OrderController extends Controller
         }
     }
 
-    // private function createVisitsCollections( Request $request, Order $order)
-    private function createVisitsCollections($startDate, $amountQuotas, $frequencyPayment, $quotas , Order $order , $user_id)  
-    {
-        $date = Carbon::parse($startDate);
-
-        if ($amountQuotas > 1) {
-            for ($i = 0; $i < $amountQuotas; $i++) {
-
-                $dateVisit = $date->format('Y-m-d');
-                $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $dateVisit));
-                $attributes = array(
-                    'customer_id' => $order->customer_id,
-                    'order_id' => $order->id,
-                    'schedule_id' => $schedule->id,
-                    'user_id' => $user_id,
-                    'comment' => 'COBRO A CREDITO - CUOTA #'. ( $i + 1 ) . ': ' . $quotas,
-                    'date' => $dateVisit
-                );
-                $this->visitRepository->create($attributes);
-
-                $daysSum = 0 ;
-                switch ($frequencyPayment) {
-                    case 'semanal':
-                        $daysSum = 7;
-                        break;  
-                    case 'quincenal':
-                        $daysSum = 14;
-                        break;
-                    case 'mensual':
-                        $daysSum = 28;
-                        break;
-                }
-
-                // Proxima Fecha 
-                $date->addDays($daysSum);
-            }
-        }
-
-    }
 
     /**
      * Calculate totals, including discount.

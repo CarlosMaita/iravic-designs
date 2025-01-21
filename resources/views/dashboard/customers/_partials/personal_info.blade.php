@@ -82,6 +82,11 @@
                     <input class="form-control" type="text" value="{{ $customer->days_to_notify_debt }}" readOnly>
                 </div>
             </div>
+        </div>
+        {{-- day and frequency of collection --}}
+        <frequency-collection :customer="{{ json_encode($customer) }}" :readonly="true" > </frequency-collection>
+
+        <div class="row">
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label for="receipt_picture">{{ __('dashboard.form.fields.customers.receipt_picture') }}</label>
@@ -94,6 +99,8 @@
                 </div>
             </div>
         </div>
+
+
         <div class="row">
             @if ($customer->card_front)
                 <div class="col-md-6 col-sm-12">

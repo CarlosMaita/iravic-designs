@@ -12,6 +12,7 @@
             modal_visits = $('#modal-visits'),
             modal_responsable = $('#modal-responsable'),
             modal_map = $('#modal-map'),
+            modal_payments = $('#modal-payments'),
             visit_editing_id = null,
             role_select = $('#role-map'),
             zone_select = $('#zones-map'),
@@ -90,6 +91,9 @@
             form_responsable.find('#visit-responsable').val('Seleccionar').trigger('change');
             $visit_editing_id = null;
         });
+
+        
+       
 
         /**
          * Captura evento de submit del formulario de una visita
@@ -255,6 +259,8 @@
                 });
             }).catch(swal.noop);
         });
+
+
 
         /**
         * Captura evento de editar responsable de una visita.

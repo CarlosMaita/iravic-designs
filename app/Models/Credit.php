@@ -1,11 +1,8 @@
 <?php
 
-namespace App;
 
-use App\Models\Collection;
-use App\Models\Customer;
-use App\Models\Order;
-use App\Models\Payment;
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Credit extends Model
@@ -14,7 +11,6 @@ class Credit extends Model
         'quota', 
         'amount_quotas', 
         'start_date',
-        'frequency',
         'total', 
         'status',
         'order_id',
@@ -44,16 +40,16 @@ class Credit extends Model
      }
  
      # Retorna en formato moneda el total de la venta
-     public function getQuotaFormattedAttribute($value)
+     public function getQuotaFormattedAttribute()
      {
-         return $this->getAmountFormatted($value);
+         return $this->formatCurrency($this->quota);
      }
  
      
       # Retorna en formato moneda el total de la venta
       public function getTotalFormattedAttribute()
       {
-          return $this->getAmountFormatted($this->total);
+          return $this->formatCurrency($this->total);
       }
      
  

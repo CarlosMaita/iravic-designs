@@ -14,7 +14,6 @@ class Visit extends Model
         'schedule_id',
         'user_creator_id',
         'user_responsable_id',
-        'order_id',
         'comment',
         'date',
         'position',
@@ -22,6 +21,10 @@ class Visit extends Model
         'completed_date',
         'is_collection', 
         'is_paid',
+    ];
+
+    public $appends = [
+        'suggested_collection_amount',
     ];
 
     # Boot
@@ -59,11 +62,6 @@ class Visit extends Model
         return $this->belongsTo('App\User', 'user_creator_id', 'id');
     }
 
-    public function order()
-    {
-        return $this->belongsTo('App\Models\Order');
-    }
-
     public function responsable()
     {
         return $this->belongsTo('App\User', 'user_responsable_id', 'id');
@@ -76,6 +74,22 @@ class Visit extends Model
 
     # Accessors
 
+    public function getSuggestedCollectionAmountAttribute()
+    {
+        if (!$this->is_collection) {
+            return "N/A";
+        }
+
+        $customer_id = $this->customer_id;       
+        $suggested_amount = Collection::whereHas( 'credit', function ($query) use ($customer_id) {
+                $query->where('customer_id', $customer_id); 
+            })->where('date', $this->getRawOriginal('date'))->sum('amount');
+
+        return $this->getAmountFormated($suggested_amount);
+    }
+
+   
+
     # Modifica la fecha en formato d-m-Y
     public function getDateAttribute($value)
     {
@@ -85,6 +99,8 @@ class Visit extends Model
 
         return null;
     }
+
+
 
     # Scopes
     public function scopeJoinCustomers($query)
@@ -131,5 +147,14 @@ class Visit extends Model
     public function existsAssignedResponsible() : bool 
     {
         return  $this->responsable ? true : false;
+    }
+
+    private function getAmountFormated($value)
+    {
+        if ($value) {
+            return '$ ' . number_format($value, 2, '.', ',');
+        }
+
+        return '$ 0,00';
     }
 }

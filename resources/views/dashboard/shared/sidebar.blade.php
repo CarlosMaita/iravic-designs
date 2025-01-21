@@ -47,10 +47,10 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/ventas")}}" href="{{ route('ventas.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
                     </li>
                 @endcan
-                {{-- Collections --}}
-                @can('viewany', App\Models\Collection::class)
+                {{-- Credits --}}
+                @can('viewany', App\Models\Credit::class)
                     <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link" href="{{ route('cobros.index') }}"></span>{{ __('dashboard.sidebar.collections') }}</a>
+                        <a class="c-sidebar-nav-link" href="{{ route('creditos.index') }}"></span>{{ __('dashboard.sidebar.credits') }}</a>
                     </li>
                 @endcan
             </ul>

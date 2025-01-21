@@ -133,7 +133,6 @@
                     contentType: false,
                     success: function(res) {
                         var product = res;
-                        console.log(res);
                         if (product && product.stock_user > 0) {
                             handleShowProductForm(product);
                         } else if (product) {

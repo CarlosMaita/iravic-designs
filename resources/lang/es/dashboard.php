@@ -152,7 +152,7 @@ return [
             ],
             'general' => [
                 'name'              => 'Nombre',
-                'amount_quotas'     => 'Cant. Cuotas',
+                'amount_quotas'     => 'Nº Cuotas',
                 'frequency'         => 'Frecuencia',
                 'start_date'        => 'Fecha de inicio'
             ],
@@ -174,10 +174,11 @@ return [
                 'payment_information'   => 'Información de Pago'
             ],
             'payments' => [
-                'amount'            => 'Monto',
+                'amount'            => 'Monto a pagar',
                 'comment'           => 'Comentario',
                 'customer'          => 'Cliente',
-                'payment_method'    => 'Método de pago'
+                'payment_method'    => 'Método de pago',
+                'suggested_collection_amount' => 'Monto sugerido de cobro'
             ],
             'products' => [
                 'brand'             => 'Marca',
@@ -273,10 +274,24 @@ return [
         'edit'              => 'Editar colección',
         'id'                => 'ID',
         'frequency'         => 'Frecuencia',
-        'balance'           => 'Balance',
+        'customer'          => 'Cliente',
+        'balance'           => 'Por Pagar',
         'start_date'        => 'Fecha de Inicio',
-        'amount_quotas'     => 'Cantidad de Cuotas',
+        'amount_quotas'     => 'N° Cuotas',
         'quotas'            => 'Monto por Cuotas',
+        'total'             => 'Deuda Total',
+    ],
+    'credits' => [
+        'index'             => 'Listado de créditos',
+        'create'            => 'Crear nuevo crédito',
+        'edit'              => 'Editar crédito',
+        'id'                => 'ID',
+        'frequency'         => 'Frecuencia',
+        'customer'          => 'Cliente',
+        'start_date'        => 'Fecha de Inicio',
+        'amount_quotas'     => 'N° Cuotas',
+        'quotas'            => 'Monto por Cuotas',
+        'total'             => 'Deuda Total',
     ],
     'payments' => [
         'id'                => 'ID',
@@ -315,6 +330,7 @@ return [
         'brands'                => 'Marcas',
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',
+        'credits'               => 'Créditos',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
         'collections'           => 'Cobros',

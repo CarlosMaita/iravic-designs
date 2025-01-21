@@ -1,10 +1,9 @@
 <script>
     $(function () {
-        const   URL_RESOURCE = "{{ route('cobros.index') }}",
-                DATATABLE_RESOURCE = $("#datatable_collections");
+        const   URL_RESOURCE = "{{ route('creditos.index') }}",
+                DATATABLE_RESOURCE = $("#datatable_credits");
 
         initDataTable();
-
         /**
          * Inicializa datatable de cobros
          */
@@ -18,12 +17,12 @@
                 pageLength: 25,
                 ordering: false,
                 columns: [
-                    {data: 'id'},
+                    {data: 'id' , name: 'id' , visible: false},
+                    {data: 'order.customer.name'},
                     {data: 'start_date'},
                     {data: 'amount_quotas'},
-                    {data: 'frequency'},
-                    {data: 'quota'},
-                    {data: 'balance'},
+                    {data: 'quota_formatted'},
+                    {data: 'total_formatted'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
@@ -55,7 +54,7 @@
             swal({
                 title: '',
                 text: "{{ __('dashboard.general.delete_resource') }}",
-                type: 'question',
+                type: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si',
                 cancelButtonText: 'No'

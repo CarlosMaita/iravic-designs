@@ -6,13 +6,13 @@
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
-                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.collections.index') }}</div>
+                        <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.credits.index') }}</div>
                         <div class="card-body">
                             {{-- Datatable --}}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        @include('dashboard.collections._datatable')
+                                        @include('dashboard.credits._datatable')
                                     </div>
                                 </div>
                             </div>
@@ -26,5 +26,5 @@
 
 @push('js')
     @include('plugins.sweetalert')
-    @include('dashboard.collections.js.index')
+    @include('dashboard.credits.js.index')
 @endpush

@@ -55,6 +55,7 @@
 
     @include('dashboard.schedules._modal_map')
     @include('dashboard.schedules._modal_responsable')
+    @include('dashboard.payments.modal_installment_form')
     @include('dashboard.visits.modal_form')
 @endsection
 
@@ -73,4 +74,6 @@
     @include('dashboard.schedules.js.routes')
     @include('dashboard.schedules.js.schedule_map')
     @include('dashboard.schedules.js.show')
+    @include('dashboard.payments.js.index')
+
 @endpush

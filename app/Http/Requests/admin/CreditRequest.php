@@ -4,7 +4,7 @@ namespace App\Http\Requests\admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CollectionRequest extends FormRequest
+class CreditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class CollectionRequest extends FormRequest
         return [
             'start_date' => 'required',
             'amount_quotas' => 'required | numeric| min:1',
-            'frequency' => 'required',
         ];
     }
 
@@ -43,7 +42,6 @@ class CollectionRequest extends FormRequest
             'amount_quotas.required' => 'La cantidad de cuotas es obligatoria.',
             'amount_quotas.min' => 'La cantidad de cuotas debe ser mayor a 0.',
             'amount_quotas.max' => 'La cantidad de cuotas debe ser menor a 30.',
-            'frequency.required' => 'La frecuencia es obligatoria.',
         ];
     }
 }

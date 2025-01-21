@@ -60,8 +60,25 @@
                                     @if ($visit->is_completed)
                                         <button data-id="{{ $visit->id }}" data-to-complete="0" class="btn btn-sm btn-danger btn-action-icon btn-complete-visit" title="Cancelar" data-toggle="tooltip"><i class="fas fa-times"></i></button>
                                     @else
-                                        <button data-id="{{ $visit->id }}" data-to-complete="1" class="btn btn-sm btn-primary btn-action-icon btn-complete-visit" title="Completar" data-toggle="tooltip"><i class="fas fa-check"></i></button>
-                                        <button data-id="{{ $visit->id }}" class="btn btn-sm btn-success btn-action-icon edit-visit" title="Cambiar fecha" data-toggle="tooltip"><i class="fas fa-calendar-alt"></i></button>
+                                    @can ('create', App\Models\Payment::class)
+                                    @if( $visit->is_collection && !$visit->is_paid)
+                                            <button
+                                                data-id="{{ $visit->id }}" 
+                                                data-customer_id="{{ $visit->customer_id }}" 
+                                                data-customer="{{ $visit->customer->name }}" 
+                                                data-motive="{{ $visit->comment}}" 
+                                                data-visit_date_now = "{{ $visit->date }}"
+                                                data-suggested_collection_amount="{{ $visit->suggested_collection_amount}}" 
+                                                class="btn btn-sm btn-success btn-action-icon btn-payment-installments" 
+                                                title="Pagar Couta" 
+                                                data-toggle="tooltip">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </button>
+                                            @else
+                                                <button data-id="{{ $visit->id }}" data-to-complete="1" class="btn btn-sm btn-primary btn-action-icon btn-complete-visit" title="Completar" data-toggle="tooltip"><i class="fas fa-check"></i></button>
+                                            @endif
+                                        @endcan
+                                        <button data-id="{{ $visit->id }}" class="btn btn-sm btn-info btn-action-icon edit-visit" title="Cambiar fecha" data-toggle="tooltip"><i class="fas fa-calendar-alt"></i></button>
                                         <button data-id="{{ $visit->id }}" class="btn btn-sm btn-danger btn-action-icon btn-pending-to-visit" title="Postergar" data-toggle="tooltip"><i class="fas fa-arrow-circle-right"></i></button>
                                     @endif
                                 @endif

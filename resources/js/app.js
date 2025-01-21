@@ -42,8 +42,9 @@ Vue.component('product-item-to-refund', require('./components/orders/ProductItem
 Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
 Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
 Vue.component('credit-information', require('./components/orders/CreditInformationComponent.vue').default);
-Vue.component('collection-form', require('./components/collections/CollectionFormComponent.vue').default);
-Vue.component('collection-show', require('./components/collections/CollectionShowComponent.vue').default);
+Vue.component('credit-form', require('./components/credits/CreditFormComponent.vue').default);
+Vue.component('credit-show', require('./components/credits/CreditShowComponent.vue').default);
+Vue.component('frequency-collection', require('./components/orders/FrequencyCollectionComponent.vue').default);
 
 Vue.component('v-select', vSelect)
 Vue.component('v-dropzone', vue2Dropzone)

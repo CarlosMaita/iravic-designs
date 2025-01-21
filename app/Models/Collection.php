@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Credit;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Type\Integer;
 
 class Collection extends Model
 {
@@ -14,7 +12,8 @@ class Collection extends Model
         'date',
         'amount', 
         'number',
-        'is_completed'
+        'is_completed',
+        'credit_id'
      ]; 
 
      public $appends = ['amount_formatted'];

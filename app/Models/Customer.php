@@ -38,6 +38,7 @@ class Customer extends Model
         'cellphone',
         'solvency_date',
         'collection_frequency',
+        'collection_day'
     ];
 
     protected $appends = [

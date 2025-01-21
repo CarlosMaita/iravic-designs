@@ -228,7 +228,7 @@
                                         </div>
                                     </div>
                                     {{-- Informacion de credito --}}
-                                    <credit-information class="d-none" id="credit-info"></credit-information>
+                                    <credit-information ref="creditInformation" class="d-none" id="credit-info"></credit-information>
                                 </div> 
                                 {{--  --}}
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
