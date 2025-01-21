@@ -114,6 +114,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
             if ($visit) {
                 $visit->comment = 'COBRO DE CREDITO';
                 $visit->is_collection = true;
+                $visit->suggested_collection += $quota; // add the new quota to the suggested collection 
                 $visit->save();
             } else {
                 Visit::create(
@@ -123,7 +124,8 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
                         'user_id' => $user_id,
                         'comment' => 'COBRO DE CREDITO',
                         'date' => $date->format('Y-m-d'), 
-                        'is_collection' => true
+                        'is_collection' => true,
+                        'suggested_collection' => $quota 
                     )
                 );
             }
