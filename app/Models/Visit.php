@@ -21,6 +21,7 @@ class Visit extends Model
         'completed_date',
         'is_collection', 
         'is_paid',
+        'suggested_collection'
     ];
 
     public $appends = [
