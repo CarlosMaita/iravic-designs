@@ -170,7 +170,7 @@ class VisitController extends Controller
         try {
             $this->authorize('delete', $visita);
             #validar si cliente tiene deudas 
-            if($visita->customer->haveDebtsCustomer())
+            if($visita->customer->haveDebtsCustomer() && $visita->is_collection)
             {
                 #No se puede eliminar
                 return response()->json([
