@@ -213,6 +213,7 @@ return [
             'visits' => [
                 'comment' => 'Comentario',
                 'date'  => 'Fecha',
+                'suggested_collection' => 'Cobro sugerido',
             ]
         ],
         'labels' => [

@@ -111,6 +111,8 @@
             form_resource.attr('method', '');
             form_resource.find('#visit-date').val('');
             form_resource.find('#visit-comment').val('');
+            form_resource.find('#suggested-collection').val('');
+            form_resource.find('#is-collection').prop('checked', false);
             form_resource.find('.modal-title').text('');
         });
 
@@ -203,6 +205,18 @@
                     form_resource.attr('action', url);
                     form_resource.attr('method', 'POST');
                     form_resource.find('#visit-date').val(response.date);
+                    form_resource.find('#is-collection').val(response.is_collection);
+                    if (response.is_collection) {
+                        form_resource.find('#div-suggested-collection').removeClass('d-none');
+                        form_resource.find('#suggested-collection').val(response.suggested_collection);
+                        form_resource.find('#is-collection-checkbox').prop('checked', true);
+                        form_resource.find('#is-collection-hidden').val(1);
+                    }else{
+                        form_resource.find('#div-suggested-collection').addClass('d-none');
+                        form_resource.find('#suggested-collection').val(response.suggested_collection);
+                        form_resource.find('#is-collection-checkbox').prop('checked', false);
+                        form_resource.find('#is-collection-hidden').val(0);
+                    }
                     form_resource.find('#visit-comment').val(response.comment);
                     modal_resource.modal('show');
                     modal_resource.find('.modal-title').text('Editar Visita');
@@ -238,6 +252,19 @@
         });
 
         /**
+         * Captura evento para mostrar el campo de monto sugerido
+         */
+         form_resource.find('#is-collection-checkbox').on('change', function(e) {
+            if ($(this).is(':checked')) {
+                form_resource.find('#is-collection-hidden').val(1);
+                form_resource.find('#div-suggested-collection').removeClass('d-none');
+            } else {
+                form_resource.find('#is-collection-hidden').val(0);
+                form_resource.find('#div-suggested-collection').addClass('d-none');
+            }
+        });
+
+        /**
          * Inicializa el datatable de las visitas
          */
         function initDataTable() {
@@ -267,7 +294,7 @@
                     },
                     {
                         render: function (data, type, row) {
-                            return row.suggested_collection ? row.suggested_collection : '';
+                            return row.suggested_collection_formatted ? row.suggested_collection_formatted : 'N/A';
                         }
                     },
                     {

@@ -73,7 +73,7 @@
 
     @include('dashboard.debts.modal_form')
     @include('dashboard.payments.modal_form')
-    @include('dashboard.visits.modal_form')
+    @include('dashboard.visits.modal_form_to_customer')
 @endsection
 
 @push('css')

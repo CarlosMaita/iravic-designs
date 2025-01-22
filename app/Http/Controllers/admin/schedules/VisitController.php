@@ -73,7 +73,7 @@ class VisitController extends Controller
             $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->date));
             $attributes = array_merge(
                 array('schedule_id' => $schedule->id),
-                $request->only('customer_id', 'user_creator_id', 'date', 'comment')
+                $request->only('customer_id', 'user_creator_id', 'date', 'comment', 'is_collection', 'suggested_collection')
             );
             $this->visitRepository->create($attributes);
             $customer = Customer::find($request->customer_id);
@@ -129,7 +129,7 @@ class VisitController extends Controller
             $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->date));
             $attributes = array_merge(
                 array('schedule_id' => $schedule->id),
-                $request->only('date', 'comment')
+                $request->only('date', 'comment', 'is_collection', 'suggested_collection')
             );
             $this->visitRepository->update($visita->id, $attributes);
             

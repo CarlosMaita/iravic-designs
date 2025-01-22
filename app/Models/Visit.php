@@ -27,6 +27,7 @@ class Visit extends Model
 
     public $appends = [
         'suggested_collection_amount',
+        'suggested_collection_formatted',
     ];
 
     # Boot
@@ -75,12 +76,12 @@ class Visit extends Model
     }
 
     # Accessors
-    public function getSuggestedCollectionAttribute($value)
+    public function getSuggestedCollectionFormattedAttribute()
     {
         if (!$this->is_collection) {
             return "N/A";
         }
-        return FormatHelper::formatCurrency($value);
+        return FormatHelper::formatCurrency($this->suggested_collection);
     }
 
     public function getSuggestedCollectionAmountAttribute()
