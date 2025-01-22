@@ -68,7 +68,7 @@
                                                 data-customer="{{ $visit->customer->name }}" 
                                                 data-motive="{{ $visit->comment}}" 
                                                 data-visit_date_now = "{{ $visit->date }}"
-                                                data-suggested_collection_amount="{{ $visit->suggested_collection_amount}}" 
+                                                data-suggested_collection_amount="{{ $visit->suggested_collection}}" 
                                                 class="btn btn-sm btn-success btn-action-icon btn-payment-installments" 
                                                 title="Pagar Couta" 
                                                 data-toggle="tooltip">

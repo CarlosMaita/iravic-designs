@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-12">
         <div class="form-group">
-            <label for="amount">{{ __('dashboard.form.fields.payments.amount') }}</label>
+            <label for="amount">{{ __('dashboard.form.fields.payments.amount_collection') }}</label>
             <input class="form-control" id="amount" name="amount" type="number" min="0" step="any">
         </div>
     </div>

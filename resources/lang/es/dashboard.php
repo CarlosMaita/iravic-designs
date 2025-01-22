@@ -175,10 +175,11 @@ return [
             ],
             'payments' => [
                 'amount'            => 'Monto a pagar',
+                'amount_collection' => 'Monto cobrado',
                 'comment'           => 'Comentario',
                 'customer'          => 'Cliente',
                 'payment_method'    => 'Método de pago',
-                'suggested_collection_amount' => 'Monto sugerido de cobro'
+                'suggested_collection_amount' => 'Monto de cobro sugerido'
             ],
             'products' => [
                 'brand'             => 'Marca',
