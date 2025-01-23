@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
-
-// Route::get('/', 'HomeController@index')->name('homepage');
-Route::get('/', function () { return redirect('/login'); });
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
