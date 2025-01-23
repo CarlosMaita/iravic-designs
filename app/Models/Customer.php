@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use App\Services\Images\ImageService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -119,8 +120,7 @@ class Customer extends Model
      */
     public function getBalanceAttribute()
     {
-        $total = $this->getBalance();
-        return '$ ' . number_format($total, 2, '.', ',');
+        return FormatHelper::formatCurrency($this->getBalance());
     }
 
     /**
@@ -137,10 +137,9 @@ class Customer extends Model
     public function getMaxCreditStrAttribute()
     {
         if ($this->max_credit) {
-            return '$ ' . number_format($this->max_credit, 2, '.', ',');
+            return FormatHelper::formatCurrency($this->max_credit);
         }
-
-        return '$ 0.00';
+        return FormatHelper::formatCurrency(0);
     }
 
      /**
@@ -150,7 +149,7 @@ class Customer extends Model
     {
         $used_credit = $this->getBalance() <= 0 ?  $this->getBalance() : 0 ;
         $available_credit = $this->max_credit + $used_credit > 0 ? ($this->max_credit + $used_credit) : 0;
-        return '$ ' . number_format($available_credit, 2, '.', ',');
+        return FormatHelper::formatCurrency($available_credit);
     }
 
     /**
@@ -173,8 +172,7 @@ class Customer extends Model
      */
     public function getTotalBuyedAttribute()
     {
-        $total = $this->getTotalBuyed();
-        return '$ ' . number_format($total, 2, '.', ',');
+        return FormatHelper::formatCurrency($this->getTotalBuyed());
     }
 
     /**
@@ -182,8 +180,7 @@ class Customer extends Model
      */
     public function getTotalCreditAttribute()
     {
-        $total = $this->getTotalCredit();
-        return '$ ' . number_format($total, 2, '.', ',');
+        return FormatHelper::formatCurrency($this->getTotalCredit());
     }
 
     /**
@@ -192,9 +189,7 @@ class Customer extends Model
     public function getTotalDebtAttribute()
     {
         $total = $this->getTotalDebt();
-        $totalFormat = number_format($total, 2, '.', ',');
-        $symb = $total > 0 ? '$ -' : '$ ';
-        return $symb . $totalFormat;
+        return FormatHelper::formatCurrency($total, $total > 0 ? '$ -' : '$ ');
     }
 
     /**
@@ -202,8 +197,7 @@ class Customer extends Model
      */
     public function getTotalPaymentsAttribute()
     {
-        $total = $this->getTotalPayments();
-        return '$ ' . number_format($total, 2, '.', ',');
+        return FormatHelper::formatCurrency($this->getTotalPayments());
     }
 
     /**
@@ -211,8 +205,7 @@ class Customer extends Model
      */
     public function getTotalRefundCreditAttribute()
     {
-        $total = $this->getTotalRefundCredit();
-        return '$ ' . number_format($total, 2, '.', ',');
+        return FormatHelper::formatCurrency($this->getTotalRefundCredit());
     }
 
     /**
@@ -475,5 +468,26 @@ class Customer extends Model
     {
         $this->is_pending_to_schedule = $value;
         $this->save();
+    }
+
+    public function getPlanningCollection(){
+        $balance = $this->getBalance();
+        $suggestedCollectionTotal = $this->getSuggestedCollectionTotal();
+        $rest = round($suggestedCollectionTotal + $balance) ;
+
+        return array(
+            'check' => isset($rest) && $rest == 0,
+            'rest' => $rest,
+            'rest_formatted' => FormatHelper::formatCurrency($rest ?? 0),
+            'customer_name' => $this->name,
+        );
+    }
+
+    private function getSuggestedCollectionTotal(){
+        return  $this->visits()
+            ->where('is_collection', true)
+            ->whereDate('date', '>=', now())
+            ->sum('suggested_collection');
+
     }
 }

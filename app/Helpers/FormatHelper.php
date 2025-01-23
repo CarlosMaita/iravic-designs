@@ -13,6 +13,6 @@ class FormatHelper
      */
     public static function formatCurrency($amount, $currencySymbol = '$')
     {
-        return $currencySymbol . number_format($amount, 2);
+        return $currencySymbol . number_format($amount, 2, '.', ',');
     }
 }

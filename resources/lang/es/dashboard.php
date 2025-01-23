@@ -369,6 +369,11 @@ return [
         'responsable'   => 'Responsable',
         'schedule'      => 'Agenda',
         'suggested_collection'      => 'Cobro sugerido',
+        'planning_collection'       => 'Revisar visitas',
+        'planning_collection_negative_alert'  => 'La planificación de cobranza de :customer NO CUBRE la deuda total con las visitas programadas en la agenda.
+                                         Se recomienda crear una nueva visita o modificar las existentes ajustando el cobro sugerido faltante de :suggested_collection_total.',
+        'planning_collection_positive_alert'  => 'La planificación de cobranza de :customer tiene un EXCEDENTE en la suma total de cobros sugeridos de las visitas programadas en la agenda.
+                                         Se recomienda eliminar o modificar las visitas existentes  ajustando el cobro sugerido excedente de :suggested_collection_total.',                           
         'whatsapp'      => 'Whatsapp',
         'zone'          => 'Zona'
     ],

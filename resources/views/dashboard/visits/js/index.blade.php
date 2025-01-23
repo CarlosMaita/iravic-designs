@@ -3,6 +3,9 @@
         const   URL_RESOURCE = "{{ route('visitas.index') }}",
                 DATATABLE_RESOURCE = $("#datatable_visits");
 
+        let suggested_collection_negative_alert = `{{ __('dashboard.visits.planning_collection_negative_alert') }}`,
+            suggested_collection_positive_alert = `{{ __('dashboard.visits.planning_collection_positive_alert') }}`;
+
         let btn_create_visit = $('#btn-create-visit'),
             modal_resource = $('#modal-visits'),
             form_resource = $('#form-visits');
@@ -60,6 +63,7 @@
                         
                         modal_resource.modal('hide');
                         DATATABLE_RESOURCE.DataTable().ajax.reload();
+                        setPlanningCollectionAlert( response.planning_collection);
                     } else if (response.error) {
                         new Noty({
                             text: response.error,
@@ -102,6 +106,23 @@
             });
         });
 
+
+        /**
+         * Ajusta alerta de planificacion de cobro
+         */
+        function setPlanningCollectionAlert ( planningCollection){
+            if (planningCollection.check) {
+                $('#planning-collection-alert').addClass('d-none');
+            } else {
+                $('#planning-collection-alert').removeClass('d-none');
+                if (planningCollection.rest > 0) {
+                    $('#planning-collection-alert').find('#message-alert').text(suggested_collection_positive_alert.replace(':customer', planningCollection.customer_name).replace(':suggested_collection_total', planningCollection.rest_formatted));
+                } else {
+                    $('#planning-collection-alert').find('#message-alert').text(suggested_collection_negative_alert.replace(':customer', planningCollection.customer_name).replace(':suggested_collection_total', planningCollection.rest_formatted));
+                }
+            }
+        }
+
         /**
          * Limpia formulario de visita cuando cierra el modal
          */
@@ -111,9 +132,13 @@
             form_resource.attr('method', '');
             form_resource.find('#visit-date').val('');
             form_resource.find('#visit-comment').val('');
-            form_resource.find('#suggested-collection').val('');
             form_resource.find('#is-collection').prop('checked', false);
             form_resource.find('.modal-title').text('');
+            //suggested collection
+            form_resource.find('#div-suggested-collection').addClass('d-none');
+            form_resource.find('#suggested-collection').val('');
+            form_resource.find('#is-collection-checkbox').prop('checked', false);
+            form_resource.find('#is-collection-hidden').val(0);
         });
 
         /**
@@ -141,7 +166,7 @@
                     success: function (response) {
                         if (response.success) {
                             DATATABLE_RESOURCE.DataTable().ajax.reload();
-
+                            setPlanningCollectionAlert( response.planning_collection);
                             new Noty({
                                 text: response.message,
                                 type: 'success'

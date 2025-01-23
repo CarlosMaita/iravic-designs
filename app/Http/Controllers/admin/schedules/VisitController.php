@@ -75,13 +75,17 @@ class VisitController extends Controller
                 array('schedule_id' => $schedule->id),
                 $request->only('customer_id', 'user_creator_id', 'date', 'comment', 'is_collection', 'suggested_collection')
             );
-            $this->visitRepository->create($attributes);
+            $visit = $this->visitRepository->create($attributes);
             $customer = Customer::find($request->customer_id);
             #bajar la bandera de pendiente por agendar 
             $customer->setPendingToSchedule(false);
             DB::commit();
+            // get planning collection
+            $planningCollection = $customer->getPlanningCollection();
             return response()->json([
                     'message' => 'La visita ha sido creada con éxito',
+                    'visita' => $visit->load('customer'),
+                    'planning_collection' => $planningCollection,
                     'success' => true
             ]);
         } catch (Exception $e) {
@@ -141,10 +145,13 @@ class VisitController extends Controller
             }
             DB::commit();
 
+            $planningCollection = $visita->customer->getPlanningCollection();
+
             return response()->json([
                 'message' => "La visita ha sido actualizada con éxito",
                 'success' => 'true',
                 'visita' => $visita->refresh()->load('customer'),
+                'planning_collection' => $planningCollection,
                 'prev_schedule' => $prev_schedule->fresh()
             ]);
         } catch (Exception $e) {
@@ -170,19 +177,23 @@ class VisitController extends Controller
         try {
             $this->authorize('delete', $visita);
             #validar si cliente tiene deudas 
-            if($visita->customer->haveDebtsCustomer() && $visita->is_collection)
-            {
-                #No se puede eliminar
-                return response()->json([
-                    'success' => false,
-                    'message' => "No se pudo eliminar la visita debido a una deuda pendiente del cliente"
-                ]);   
-            }
+            // if($visita->customer->haveDebtsCustomer() && $visita->is_collection)
+            // {
+            //     #No se puede eliminar
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => "No se pudo eliminar la visita debido a una deuda pendiente del cliente"
+            //     ]);   
+            // }
             #client sin deudas
+            $customer = $visita->customer;
             $visita->delete();
+            // get planning collection
+            $planningCollection = $customer->getPlanningCollection();
             return response()->json([
                 'success' => true,
-                'message' => "La visita ha sido eliminada con éxito"
+                'message' => "La visita ha sido eliminada con éxito",
+                'planning_collection' => $planningCollection,
             ]);
         } catch (Exception $e) {
             return response()->json([

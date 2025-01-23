@@ -233,21 +233,24 @@ class CustomerController extends Controller
      */
     public function show(Request $request, Customer $cliente)
     {
+        $customer = $cliente;
         if($request->ajax()){
-            return response()->json($cliente);
+            return response()->json($customer);
         }
-        $this->authorize('view', $cliente);
-        $orders = $cliente->orders()->orderBy('date', 'desc')->get();
-        $refunds = $cliente->refunds()->orderBy('date', 'desc')->get();
+        $this->authorize('view', $customer);
+        $orders = $customer->orders()->orderBy('date', 'desc')->get();
+        $refunds = $customer->refunds()->orderBy('date', 'desc')->get();
         $showOrdersTab = isset($request->pedidos) ? true : false;
         $showRefundsTab = isset($request->devoluciones) ? true : false;
+        $planningCollection = $customer->getPlanningCollection();
 
         return view('dashboard.customers.show')
-                ->withCustomer($cliente)
+                ->withCustomer($customer)
                 ->withOrders($orders)
                 ->withRefunds($refunds)
                 ->withShowOrdersTab($showOrdersTab)
-                ->withShowRefundsTab($showRefundsTab);
+                ->withShowRefundsTab($showRefundsTab)
+                ->withPlanningCollection($planningCollection);
     }
 
     /**

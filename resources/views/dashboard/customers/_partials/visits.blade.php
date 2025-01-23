@@ -4,6 +4,28 @@
             <a id="btn-create-visit" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
         </div>
     @endcan
+   
+    {{-- @if(!$planningCollection['check'])  --}}
+    {{-- alert to show summary --}}
+    <div id="planning-collection-alert" class="row {{ !$planningCollection['check'] ?  '' : 'd-none' }}">
+        <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+                <h4 class="alert-heading">{{ __('dashboard.visits.planning_collection') }}</h4>
+                @if( $planningCollection['rest'] > 0)
+                <p id="message-alert">{{ __('dashboard.visits.planning_collection_positive_alert', array( 'customer' => $customer->name , 'suggested_collection_total'=> $planningCollection['rest_formatted'])) }}</p>
+                @else
+                <p  id="message-alert">{{ __('dashboard.visits.planning_collection_negative_alert', array( 'customer' => $customer->name , 'suggested_collection_total'=> $planningCollection['rest_formatted'])) }}</p>
+                @endif
+            </div>
+        </div>
+    </div>
+    {{-- @endif --}}
+
     <div class="row mt-3">
         <div class="col-12">
             <div class="table-responsive">
