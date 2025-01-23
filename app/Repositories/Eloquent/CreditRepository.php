@@ -10,6 +10,7 @@ use App\Models\Schedule;
 use App\Models\Visit;
 use App\Repositories\CreditRepositoryInterface;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection as SupportCollection;
 
 class CreditRepository extends BaseRepository implements CreditRepositoryInterface
@@ -72,78 +73,82 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
 
         $date = self::getDateSync($startDate, $customer_id);
         
-        for ($i = 0; $i < $quotasNumber; $i++) {
-             // fecha de hoy es menor que la fecha de la cuota - no crear visita
-            if ($date->lt(Carbon::now())) {
-                // Próxima Fecha 
-                $date = self::setNextDate($date, $collection_day, $collection_frequency); 
-                $i--;
-                continue;
-            }
-
-             /**
-             * Crear Cobro
-             * */ 
-            Collection::create(
-                 array(
-                    'date' => $date->format('Y-m-d'), 
-                    'amount' => $quota,
-                    'is_completed' => 0,
-                    'number' => $i + 1,
-                    'credit_id' => $credit_id
-                )
-            );
-
-            /**
-             * Crear Agenda si no existe
-             * */ 
-            $schedule =  Schedule::firstOrCreate(
-                array(
-                    'date' => $date->format('Y-m-d')
-                )
-            ) ;
-            
-             /**
-             * Si tiene Visita actualizarla, sino creala
-             * */
-            $visit = Visit::where('customer_id', $customer_id)
-                ->where('date', $date->format('Y-m-d'))
-                ->where('is_collection', true)
-                ->first();
-
-            if ($visit) {
-                $visit->comment = 'COBRO DE CREDITO';
-                $visit->is_collection = true;
-                $visit->suggested_collection += $quota; // add the new quota to the suggested collection 
-                $visit->save();
-            } else {
-                Visit::create(
+        try {
+            BD::beginTransaction();
+            for ($i = 0; $i < $quotasNumber; $i++) {
+                // fecha de hoy es menor que la fecha de la cuota - no crear visita
+               if ($date->lt(Carbon::now())) {
+                   // Próxima Fecha 
+                   $date = self::setNextDate($date, $collection_day, $collection_frequency); 
+                   $i--;
+                   continue;
+               }
+   
+                /**
+                * Crear Cobro
+                * */ 
+               Collection::create(
                     array(
-                        'customer_id' => $customer_id,
-                        'schedule_id' => $schedule->id,
-                        'user_id' => $user_id,
-                        'comment' => 'COBRO DE CREDITO',
-                        'date' => $date->format('Y-m-d'), 
-                        'is_collection' => true,
-                        'suggested_collection' => $quota 
-                    )
-                );
-            }
+                       'date' => $date->format('Y-m-d'), 
+                       'amount' => $quota,
+                       'is_completed' => 0,
+                       'number' => $i + 1,
+                       'credit_id' => $credit_id
+                   )
+               );
+   
+               /**
+                * Crear Agenda si no existe
+                * */ 
+               $schedule =  Schedule::firstOrCreate(
+                   array(
+                       'date' => $date->format('Y-m-d')
+                   )
+               ) ;
+               
+                /**
+                * Si tiene Visita actualizarla, sino creala
+                * */
+               $visit = Visit::where('customer_id', $customer_id)
+                   ->where('date', $date->format('Y-m-d'))
+                   ->where('is_collection', true)
+                   ->first();
+   
+               if ($visit) {
+                   $visit->comment = 'COBRO DE CREDITO';
+                   $visit->is_collection = true;
+                   $visit->suggested_collection += $quota; // add the new quota to the suggested collection 
+                   $visit->save();
+               } else {
+                   Visit::create(
+                       array(
+                           'customer_id' => $customer_id,
+                           'schedule_id' => $schedule->id,
+                           'user_id' => $user_id,
+                           'comment' => 'COBRO DE CREDITO',
+                           'date' => $date->format('Y-m-d'), 
+                           'is_collection' => true,
+                           'suggested_collection' => $quota 
+                       )
+                   );
+               }
+   
+               // Próxima Fecha
+               $date = self::setNextDate($date, $collection_day, $collection_frequency); 
+           }
 
-            // Próxima Fecha
-            $date = self::setNextDate($date, $collection_day, $collection_frequency); 
+           BD::commit();
+
+        }catch (Exception $e) {
+            BD::rollBack();
+            return $e->getMessage();
         }
     }
 
     private static function setNextDate($date, $collection_day, $collection_frequency): Carbon
     {
-        
-        if(in_array($collection_frequency, [ 
-            FrequencyCollectionConstants::CADA_SEMANA,
-            FrequencyCollectionConstants::CADA_DOS_SEMANAS ])
-        ){
-            return $date->addDays( self::periodToDays($collection_frequency));
-        }elseif( in_array( $collection_frequency, [
+        // cada mes
+        if( in_array( $collection_frequency, [
             FrequencyCollectionConstants::CADA_MES_PRIMERA_SEMANA,
             FrequencyCollectionConstants::CADA_MES_SEGUNDA_SEMANA,
             FrequencyCollectionConstants::CADA_MES_TERCERA_SEMANA,
@@ -160,8 +165,10 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
             $date->addWeeks($numberWeek - 1);
 
             return $date;
-            
         }
+
+        // cada semana o dos semanas
+        return $date->addDays( self::periodToDays($collection_frequency));        
     }
 
 /**
@@ -287,15 +294,14 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
     private static function periodToDays( String $quotas_period) : int
     {
         switch ($quotas_period) {
-            case 'Cada semana':
+            case FrequencyCollectionConstants::CADA_SEMANA:
                 return 7;
                 break;  
-            case 'Cada dos semanas':
+            case FrequencyCollectionConstants::CADA_DOS_SEMANAS:
                 return 14;
                 break;
+            default:
+                return 7;
         }
     }
-
-
-   
 }
