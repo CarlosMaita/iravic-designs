@@ -12,6 +12,7 @@ use App\Repositories\CreditRepositoryInterface;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\DB;
 
 class CreditRepository extends BaseRepository implements CreditRepositoryInterface
 {
@@ -73,8 +74,8 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
 
         $date = self::getDateSync($startDate, $customer_id);
         
+        DB::beginTransaction();
         try {
-            BD::beginTransaction();
             for ($i = 0; $i < $quotasNumber; $i++) {
                 // fecha de hoy es menor que la fecha de la cuota - no crear visita
                if ($date->lt(Carbon::now())) {
@@ -137,10 +138,10 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
                $date = self::setNextDate($date, $collection_day, $collection_frequency); 
            }
 
-           BD::commit();
+           DB::commit();
 
         }catch (Exception $e) {
-            BD::rollBack();
+            DB::rollBack();
             return $e->getMessage();
         }
     }
