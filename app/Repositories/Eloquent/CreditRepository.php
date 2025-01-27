@@ -80,7 +80,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
                 // fecha de hoy es menor que la fecha de la cuota - no crear visita
                if ($date->lt(Carbon::now())) {
                    // Próxima Fecha 
-                   $date = self::setNextDate($date, $collection_day, $collection_frequency); 
+                   $date = self::setNextDate($date, $collection_day, $collection_frequency, $customer_id); 
                    $i--;
                    continue;
                }
@@ -135,7 +135,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
                }
    
                // Próxima Fecha
-               $date = self::setNextDate($date, $collection_day, $collection_frequency); 
+               $date = self::setNextDate($date, $collection_day, $collection_frequency, $customer_id); 
            }
 
            DB::commit();
@@ -146,39 +146,90 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         }
     }
 
-    private static function setNextDate($date, $collection_day, $collection_frequency): Carbon
+    private static function setNextDate($date, $collection_day, $collection_frequency, $customer_id): Carbon
     {
-        // cada mes
-        if( in_array( $collection_frequency, [
-            FrequencyCollectionConstants::CADA_MES_PRIMERA_SEMANA,
-            FrequencyCollectionConstants::CADA_MES_SEGUNDA_SEMANA,
-            FrequencyCollectionConstants::CADA_MES_TERCERA_SEMANA,
-            FrequencyCollectionConstants::CADA_MES_CUARTA_SEMANA ])
-            )
+        // Hay fecha programada para el cobro? 
+        $futureDate = self::getDateFuture($date,  $collection_frequency, $customer_id);
+        if (is_null($futureDate))
         {
-
             $numberDay = self::collectionDayToNumber($collection_day);
             $numberWeek = self::getWeekWithCollectionFrequency($collection_frequency);
-
-            $date->addMonth();
-            $date->startOfMonth();
-            $date->next($numberDay);
-            $date->addWeeks($numberWeek - 1);
-
+            /* No hay fecha programada para el cobro, Crea una nueva fecha de cobro */
+            // cada mes
+            switch ($collection_frequency) {
+                case FrequencyCollectionConstants::CADA_MES_PRIMERA_SEMANA:
+                case FrequencyCollectionConstants::CADA_MES_SEGUNDA_SEMANA:
+                case FrequencyCollectionConstants::CADA_MES_TERCERA_SEMANA:
+                case FrequencyCollectionConstants::CADA_MES_CUARTA_SEMANA:
+                    $date->addMonth();
+                    $date->startOfMonth();
+                    $date->next( $numberDay );
+                    $date->addWeeks($numberWeek - 1);
+                    break;
+                case FrequencyCollectionConstants::CADA_DOS_SEMANAS:
+                    $date->next( $numberDay );
+                    $date->next( $numberDay );
+                    break;
+                case FrequencyCollectionConstants::CADA_SEMANA:
+                    $date->next( $numberDay );
+                    break;
+                default:
+                    break;
+            }
+                    
             return $date;
         }
 
-        // cada semana o dos semanas
-        return $date->addDays( self::periodToDays($collection_frequency));        
+        return $futureDate;;
+
+       
     }
 
-/**
- * Determines the week number corresponding to the given collection frequency.
- *
- * @param string $collection_frequency The frequency of collection, which should be one of the predefined constants
- *                                     representing specific weeks of the month.
- * @return int The week number (1 to 4) corresponding to the collection frequency.
- */
+    private static function getDateFuture($date, $collection_frequency, $customer_id)
+    {
+        $visit = Visit::where('customer_id', $customer_id)
+            ->where('date', '>', $date->format('Y-m-d'))
+            ->where('is_collection', true)
+            ->orderBy('date', 'asc')
+            ->first();
+        
+        if ($visit) {
+            // Hay que limitar el rango de búsqueda de visitas futuras se plantea un condicional que limite la búsqueda
+            // Ej. : semanal (Max 14 días), quincenal (Max 28 días), mensual (Max 56 días) 
+            Switch ($collection_frequency) {
+                case FrequencyCollectionConstants::CADA_SEMANA:
+                    if (Carbon::parse($date)->diffInDays($visit->date) > 14) {
+                        return null;
+                    }
+                    break;
+                case FrequencyCollectionConstants::CADA_DOS_SEMANAS:
+                    if (Carbon::parse($date)->diffInDays($visit->date) > 28) {
+                        return null;
+                    }
+                    break;
+                case FrequencyCollectionConstants::CADA_MES_PRIMERA_SEMANA:
+                case FrequencyCollectionConstants::CADA_MES_SEGUNDA_SEMANA:
+                case FrequencyCollectionConstants::CADA_MES_TERCERA_SEMANA:
+                case FrequencyCollectionConstants::CADA_MES_CUARTA_SEMANA:
+                    if (Carbon::parse($date)->diffInDays($visit->date) > 56) {
+                        return null;
+                    }
+                    break;
+            }
+               
+            return Carbon::parse($visit->date);
+        }
+
+        return null;
+    }
+
+    /**
+     * Determines the week number corresponding to the given collection frequency.
+     *
+     * @param string $collection_frequency The frequency of collection, which should be one of the predefined constants
+     *                                     representing specific weeks of the month.
+     * @return int The week number (1 to 4) corresponding to the collection frequency.
+     */
     private static function getWeekWithCollectionFrequency($collection_frequency): int
     {
         switch ($collection_frequency) {
@@ -204,15 +255,14 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         /**
          *  Obtener la fecha de sicnronizacion con la fecha de inicio de cuota de crédito del cliente en los cobros 
          */
-        $syncCollection =  Collection::whereHas('credit', function ($query) use ($customer_id) 
-        {
-            $query->where('customer_id', $customer_id);
-        })
-        ->where('date', '>=', $startDate)
-        ->orderBy('date', 'asc')->first();
+        $syncVisit = Visit::where('customer_id', $customer_id)
+            ->where('date', '>=', Carbon::parse($startDate))
+            ->where('is_collection', true)
+            ->orderBy('date', 'asc')
+            ->first();
 
-        if ($syncCollection) {
-            return Carbon::parse($syncCollection->date);
+        if ($syncVisit) {
+            return Carbon::parse($syncVisit->date);
         }
 
         /**

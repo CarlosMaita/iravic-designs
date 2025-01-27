@@ -4,8 +4,8 @@ namespace App\Constants;
 
 final class FrequencyCollectionConstants
 {
-    const CADA_SEMANA =            "Cada semana";
-    const CADA_DOS_SEMANAS =        "Cada dos semana";
+    const CADA_SEMANA =             "Cada semana";
+    const CADA_DOS_SEMANAS =        "Cada dos semanas";
     const CADA_MES_PRIMERA_SEMANA = "Cada mes - primera semana";
     const CADA_MES_SEGUNDA_SEMANA = "Cada mes - segunda semana";
     const CADA_MES_TERCERA_SEMANA = "Cada mes - tercera semana";

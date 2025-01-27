@@ -948,6 +948,32 @@
                     }).show();
                     return false;
                 }
+                if ($("input[name='payment_method']:checked", '#form-orders').val() == 'credit') {
+                    if (!$('#start-quotas').val()) {
+                        new Noty({
+                            text: "Debe ingresar la fecha de inicio de cobro.",
+                            type: 'error'
+                        }).show();
+                        return false;
+                    }
+                   
+                    if (!$("input[name='amount-quotas']").val() ) {
+                        new Noty({
+                            text: "Debe ingresar la cantidad de cuotas.",
+                            type: 'error'
+                        }).show();
+                        return false;
+                    }
+                    if ($("input[name='amount-quotas']").val() <= 0) {
+                        new Noty({
+                            text: "La cantidad de cuotas debe ser mayor a 0.",
+                            type: 'error'
+                        }).show();
+                        return false;
+                    }
+
+                }
+                
             }
 
             return true;

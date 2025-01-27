@@ -8,12 +8,14 @@
        <!-- collection frequency -->
         <div class="col-md-4">
             <label  for="amount-quotas">Cantidad de cuotas</label>
-            <input @change="calculateQuotas" v-model="amountQuotas" type="number" step="1" min="1" name="amount-quotas" id="amount-quotas" class="form-control" placeholder="Ingrese la cantidad de cuotas">
+            <input @change="calculateQuotas" v-model="amountQuotas" type="number" step="1" min="1" name="amount-quotas" 
+                    id="amount-quotas" class="form-control" placeholder="Ingrese la cantidad de cuotas" required>
         </div>
         <!-- start date -->
         <div class="col-md-4">
             <label for="start-quotas">Fecha de inicio de Pago </label>
-            <input v-model="startQuotas" type="date" name="start-quotas" id="start-quotas" class="form-control" placeholder="Ingrese la Fecha de inicio de Pago">
+            <input v-model="startQuotas" type="date" name="start-quotas" id="start-quotas" class="form-control" 
+                  placeholder="Ingrese la Fecha de inicio de Pago" required>
         </div>
         <!-- Quotas -->
         <div class="col-md-12">
