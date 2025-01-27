@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Constants\DaysConstants;
 use App\Constants\FrequencyCollectionConstants;
 use App\Models\Credit;
 use App\Models\Collection;
@@ -152,8 +153,8 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         $futureDate = self::getDateFuture($date,  $collection_frequency, $customer_id);
         if (is_null($futureDate))
         {
-            $numberDay = self::collectionDayToNumber($collection_day);
-            $numberWeek = self::getWeekWithCollectionFrequency($collection_frequency);
+            $numberDay = DaysConstants::collectionDayToNumber($collection_day);
+            $numberWeek = FrequencyCollectionConstants::getWeekWithCollectionFrequency($collection_frequency);
             /* No hay fecha programada para el cobro, Crea una nueva fecha de cobro */
             // cada mes
             switch ($collection_frequency) {
@@ -223,32 +224,6 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         return null;
     }
 
-    /**
-     * Determines the week number corresponding to the given collection frequency.
-     *
-     * @param string $collection_frequency The frequency of collection, which should be one of the predefined constants
-     *                                     representing specific weeks of the month.
-     * @return int The week number (1 to 4) corresponding to the collection frequency.
-     */
-    private static function getWeekWithCollectionFrequency($collection_frequency): int
-    {
-        switch ($collection_frequency) {
-            case FrequencyCollectionConstants::CADA_MES_PRIMERA_SEMANA:
-                return 1;
-                break;  
-            case FrequencyCollectionConstants::CADA_MES_SEGUNDA_SEMANA:
-                return 2;
-                break;
-            case FrequencyCollectionConstants::CADA_MES_TERCERA_SEMANA:
-                return 3;
-                break;
-            case FrequencyCollectionConstants::CADA_MES_CUARTA_SEMANA:
-                return 4;
-                break;
-            default:
-                return 0;
-        }   
-    }
 
     private static function getDateSync($startDate, $customer_id)  : Carbon
     {
@@ -280,7 +255,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
     private static function getFirstDate($startDate, $collection_day, $collection_frequency) : Carbon
     {
         $date = Carbon::parse($startDate);
-        $numberDay = self::collectionDayToNumber($collection_day);
+        $numberDay = DaysConstants::collectionDayToNumber($collection_day);
         $date->next($numberDay);
         
         if( $collection_frequency == FrequencyCollectionConstants::CADA_DOS_SEMANAS ){
@@ -292,7 +267,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
             FrequencyCollectionConstants::CADA_MES_CUARTA_SEMANA ])
             )
         {
-            $numberWeek = self::getWeekWithCollectionFrequency($collection_frequency);
+            $numberWeek = FrequencyCollectionConstants::getWeekWithCollectionFrequency($collection_frequency);
             do{
                 $date->addMonth();
                 $date->startOfMonth();
@@ -307,52 +282,4 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         return $date; 
     }
 
-
-/**
- * Convert a day of the week from Spanish to its corresponding Carbon constant.
- *
- * @param string $collection_day The day of the week in Spanish (e.g., 'Lunes', 'Martes').
- * @return int The corresponding Carbon constant for the day of the week.
- */
-
-    private static function collectionDayToNumber($collection_day) 
-    {
-        switch ($collection_day) {
-            case 'Lunes':
-                return Carbon::MONDAY;
-                break;
-            case 'Martes':
-                return Carbon::TUESDAY;
-                break;
-            case 'Miercoles':
-                return Carbon::WEDNESDAY;
-                break;
-            case 'Jueves':
-                return Carbon::THURSDAY;
-                break;
-            case 'Viernes':
-                return Carbon::FRIDAY;
-                break;
-            case 'Sabado':
-                return Carbon::SATURDAY;
-                break;
-            case 'Domingo':
-                return Carbon::SUNDAY;
-                break;
-        }
-    }
-
-    private static function periodToDays( String $quotas_period) : int
-    {
-        switch ($quotas_period) {
-            case FrequencyCollectionConstants::CADA_SEMANA:
-                return 7;
-                break;  
-            case FrequencyCollectionConstants::CADA_DOS_SEMANAS:
-                return 14;
-                break;
-            default:
-                return 7;
-        }
-    }
 }

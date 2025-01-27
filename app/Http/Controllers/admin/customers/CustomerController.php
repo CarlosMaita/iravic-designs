@@ -281,6 +281,13 @@ class CustomerController extends Controller
         try {
             $this->authorize('update', $cliente);
             DB::beginTransaction();
+            // Actualizar fecha de las visitas si la frecuencia o dia de cobro cambia.
+            if ( $cliente->collection_frequency != $request->collection_frequency ||
+                 $cliente->collection_day != $request->collection_day ) 
+            {
+                // Actualiza las visitas con la nueva frecuencia de cobro.
+                $this->customerRepository->updateVisits( $request->collection_frequency, $request->collection_day, $cliente->id);
+            }
             $attributes = array_merge(
                 array('address_picture' => $cliente->updateImage(Customer::DISK_ADDRESS, $cliente->address_picture, $request->address_picture, $request->delete_address_picture)),
                 array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
