@@ -3,9 +3,9 @@
         <tr>
             <th scope="col">{{ __('dashboard.orders.id') }}</th>
             <th scope="col">{{ __('dashboard.orders.customer') }}</th>
-            <th scope="col">{{ __('dashboard.orders.date') }}</th>
             <th scope="col">{{ __('dashboard.orders.payment_method') }}</th>
             <th scope="col">{{ __('dashboard.orders.total') }}</th>
+            <th scope="col">{{ __('dashboard.orders.date') }}</th>
             <th></th>
         </tr>
     </thead>

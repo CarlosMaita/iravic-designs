@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4486e4f044f42794e4f400e679e0f3d",
+    "content-hash": "41bcab3bc27097c60c15b665bfc0d771",
     "packages": [
         {
             "name": "askedio/laravel-soft-cascade",

@@ -17,11 +17,11 @@ use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use Carbon\Carbon;
-use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables as DataTables;
 
 class OrderController extends Controller
 {
@@ -76,7 +76,34 @@ class OrderController extends Controller
         $this->authorize('viewany', 'App\Models\Order');
         
         if ($request->ajax()) {
-            $orders = $this->orderRepository->all();
+            // Consulta base
+            $query = $this->orderRepository->query();
+            
+            // Formatear la respuesta para DataTables
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('actions', function (Order $order) {
+                    $buttons = '';
+
+                    if (Auth::user()->can('view', $order)) {
+                        $buttons .= '<a href="' . route('ventas.show', $order->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="View" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                    }
+
+                    return $buttons;
+                })
+                ->rawColumns(['actions'])
+                ->toJson();
+        }
+
+        return view('dashboard.orders.index');
+    }
+
+    public function index_old(Request $request)
+    {
+        $this->authorize('viewany', 'App\Models\Order');
+        
+        if ($request->ajax()) {
+            $orders = $this->orderRepository->query();
             return Datatables::of($orders)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -89,7 +116,7 @@ class OrderController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.orders.index');

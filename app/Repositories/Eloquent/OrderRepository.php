@@ -30,6 +30,9 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         return $this->model->with(['customer', 'user'])->orderBy('date', 'DESC')->get();
     }
 
+    public function query(){
+        return $this->model->with(['customer', 'user'])->orderBy('date', 'DESC');
+    }
     
     /**
      * Calculates the total sales for a given number of months.
