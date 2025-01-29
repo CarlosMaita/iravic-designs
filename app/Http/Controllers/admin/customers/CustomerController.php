@@ -10,14 +10,13 @@ use App\Models\Customer;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use App\Services\Images\ImageService;
-use DataTables;
 use Exception;
-use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class CustomerController extends Controller
 {
@@ -42,8 +41,7 @@ class CustomerController extends Controller
 
         if ($request->ajax()) {
             $customers = $this->customerRepository->allQuery();
-
-            return datatables()->eloquent($customers)
+            return DataTables::of($customers)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -63,7 +61,7 @@ class CustomerController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.customers.index');

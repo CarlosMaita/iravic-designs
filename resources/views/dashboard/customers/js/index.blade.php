@@ -3,29 +3,26 @@
         const URL_RESOURCE = "{{ route('clientes.index') }}";
         const DATATABLE_RESOURCE = $("#datatable_customers");
 
-        initDataTable();
-
         /**
-         * Inicializa la datatable de clientes
-         */
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
+        * Inicializa la datatable de clientes
+        */
+        DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
                 processing: false,
                 responsive: true,
                 serverSide: true,
                 ajax: URL_RESOURCE,
-                pageLength: 25,
+                pageLength: 10,
+                searchDelay : 1000,
                 columns: [
                     {data: 'name'},
                     {data: 'dni'},
-                    {data: 'telephone'},
-                    {data: 'qualification'},
-                    {data: 'zone.name'},
+                    {data: 'telephone' , searchable: false},
+                    {data: 'qualification' ,searchable: false},
+                    {data: 'zone.name' },
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
-            });
-        }
+        });
 
         /**
          * Captura evento de eliminar cliente
