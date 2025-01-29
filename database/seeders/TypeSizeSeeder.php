@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Constants\BaseCategoryConstants;
 use App\Constants\GenderConstants;
 use App\TypeSize;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Constants\TypeSizeConstants;
 use App\Models\Size;
 use App\TypeSize;
