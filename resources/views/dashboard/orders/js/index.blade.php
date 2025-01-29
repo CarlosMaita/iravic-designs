@@ -17,7 +17,7 @@
             ],
             deferRender: true,
             order: [[4, 'desc']],
-            pageLength: 25,
+            pageLength: 10,
             processing: false,
             responsive: true,
             serverSide: true,
