@@ -59,6 +59,11 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
     {
         return $this->model->with('order.customer')->get();
     }
+
+    public function queryWithCustomer () 
+    {
+        return $this->model->with('order.customer');
+    }
     
     public function createCollectionsAndVisits($attributes){
         $user_id = $attributes['user_id'];
