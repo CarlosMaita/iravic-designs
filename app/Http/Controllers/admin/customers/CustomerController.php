@@ -77,8 +77,8 @@ class CustomerController extends Controller
         Gate::authorize('view-customers-debtors');
 
         if ($request->ajax()) {
-            $customers = $this->customerRepository->debtorsToNotify();
-            return datatables()->of($customers)
+            $customers = $this->customerRepository->debtorsToNotifyQuery();
+            return DataTables::of($customers)
                     ->addIndexColumn()
                     ->addColumn('lastdatefordebt', function($customer){
                         return $customer->getLastDateForDebtNotification();
@@ -93,7 +93,7 @@ class CustomerController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.customers.index_debtors');
@@ -109,8 +109,8 @@ class CustomerController extends Controller
         Gate::authorize('view-customers-pending-to-schedule');
 
         if ($request->ajax()) {
-            $customers = $this->customerRepository->pendingToScheduleToNotify();
-            return datatables()->of($customers)
+            $customers = $this->customerRepository->pendingToScheduleToNotifyQuery();
+            return DataTables::of($customers)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -122,7 +122,7 @@ class CustomerController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.customers.index_pending_to_schedule');

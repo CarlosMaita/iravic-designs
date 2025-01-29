@@ -79,6 +79,18 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         })->values();
     }
 
+    public function debtorsToNotifyQuery()
+    {
+        return $this->model
+            ->with('zone')
+            ->whereHas('debts')
+            ->orWhereHas('orders', function ( $query) {
+                $query->where('payed_credit', true);
+            })
+            ->get()
+            ->filter(fn (Customer $customer) => $customer->needsToNotifyDebt());
+    }
+
     /**
      * Retorna listado de clientes que se les ha postergado la visita y necesitan ser reagendados. 
      * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado
@@ -92,6 +104,13 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
                             ->get();
 
         return $customers;
+    }
+
+    public function pendingToScheduleToNotifyQuery()
+    {
+        return $this->model
+            ->where('is_pending_to_schedule', 1)
+            ->with('zone');
     }
 
     public function updateVisits( $collection_frequency, $collection_day, $customer_id ){
