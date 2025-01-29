@@ -253,18 +253,13 @@
                         d.price_to   = $("#price-to").val() ? $("#price-to").val() : null;
                     },
                 },
-                pageLength: 25,
+                pageLength: 10,
                 columns: [
                     {data: 'name'},
                     {data: 'code'},
                     {data: 'gender'},
                     {data: 'brand.name'},
                     {data: 'category.name'},
-                    // {
-                    //     render: function (data, type, row) {
-                    //         return row.is_regular ? 'No' : 'Si';
-                    //     }
-                    // },
                     {data: 'regular_price_str', searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]

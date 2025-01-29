@@ -13,13 +13,13 @@ use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\TypeSize;
-use DataTables;
 use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -47,10 +47,8 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
             $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
-            // $products = $this->productRepository->onlyPrincipals($criteria);
             $products = $this->productRepository->onlyPrincipalsQuery($criteria);
-            
-            return datatables()->eloquent($products)
+            return Datatables::of($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '<div style="display:flex">';
@@ -75,7 +73,7 @@ class ProductController extends Controller
                         return $btn;
                     })
                     // ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         $brands = $this->brandRepository->all();
