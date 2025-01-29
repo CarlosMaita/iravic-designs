@@ -20,7 +20,7 @@ class CreditController extends Controller
     public function index( Request $request )
     {
         if ($request->ajax()) {
-            $credits = $this->creditRepository->allWithCustomer();
+            $credits = $this->creditRepository->queryWithCustomer();
             return DataTables::of($credits)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -32,7 +32,7 @@ class CreditController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.credits.index');

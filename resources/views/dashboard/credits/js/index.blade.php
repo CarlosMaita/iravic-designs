@@ -3,30 +3,27 @@
         const   URL_RESOURCE = "{{ route('creditos.index') }}",
                 DATATABLE_RESOURCE = $("#datatable_credits");
 
-        initDataTable();
         /**
          * Inicializa datatable de cobros
          */
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
+        DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
                 processing: false,
                 responsive: true,
                 serverSide: true,
-                ajax: URL_RESOURCE ,
-                pageLength: 25,
+                ajax: URL_RESOURCE,
+                pageLength: 10,
                 ordering: false,
                 columns: [
-                    {data: 'id' , name: 'id' , visible: false},
-                    {data: 'order.customer.name'},
+                    {data: 'id'},
+                    {data: 'customer.name'},
                     {data: 'start_date'},
-                    {data: 'amount_quotas'},
-                    {data: 'quota_formatted'},
-                    {data: 'total_formatted'},
+                    {data: 'amount_quotas', searchable: false},
+                    {data: 'quota_formatted', searchable: false},
+                    {data: 'total_formatted', searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
-            });
-        }
+                ],
+        });
 
         /**
          * Captura evento de click en la pestana pagos
