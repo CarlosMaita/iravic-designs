@@ -16,11 +16,11 @@ use App\Repositories\Eloquent\RefundProductRepository;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use App\Services\Orders\OrderService;
-use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class RefundController extends Controller
 {
@@ -72,8 +72,8 @@ class RefundController extends Controller
         $this->authorize('viewany', 'App\Models\Refund');
         
         if ($request->ajax()) {
-            $results = $this->refundRepository->all();
-            return Datatables::of($results)
+            $results = $this->refundRepository->allQuery();
+            return DataTables::of($results)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -85,7 +85,7 @@ class RefundController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.refunds.index');

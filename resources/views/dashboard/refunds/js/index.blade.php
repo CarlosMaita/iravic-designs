@@ -12,19 +12,21 @@
         function initDataTable() {
             datatable_resource.DataTable({
                 fixedHeader: true,
+                paging : true,
                 processing: false,
                 responsive: true,
                 serverSide: true,
                 ajax: URL_RESOURCE,
-                pageLength: 25,
-                ordering: false,
+                pageLength: 10,
                 columns: [
                     {data: 'id'},
                     {data: 'customer.name'},
-                    {data: 'total_str'},
+                    {data: 'total_str', searchable: false},
                     {data: 'date'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
+                ],
+                order: [[3, 'desc']],
+                searchDelay : 1000,
             });
         }
 

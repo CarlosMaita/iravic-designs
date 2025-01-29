@@ -30,6 +30,11 @@ class RefundRepository extends BaseRepository implements RefundRepositoryInterfa
         return $this->model->with(['customer', 'user'])->orderBy('date', 'DESC')->get();
     }
 
+    public function allQuery()
+    {
+        return $this->model->with(['customer', 'user'])->orderBy('date', 'DESC');
+    }
+
     /**
      * Calculates the total refunds for a given number of months.
      *
