@@ -281,6 +281,7 @@
             Noty.overrideDefaults({
                 layout   : 'topRight',
                 theme    : 'bootstrap-v4',
+                timeout: 3000,
                 // closeWith: ['click', 'button'],
                 // animation: {
                 //     open : 'animated fadeInRight',
