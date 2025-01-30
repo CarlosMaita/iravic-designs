@@ -8,11 +8,11 @@ use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
-use DataTables;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class ScheduleController extends Controller
 {
@@ -40,10 +40,9 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewany', 'App\Models\Schedule');
-
         if ($request->ajax()) {
-            $schedules = $this->scheduleRepository->all();
-            return Datatables::of($schedules)
+            $schedules = $this->scheduleRepository->allQuery($request->draw == 1 ? true : false);
+            return DataTables::of($schedules)
                     ->addIndexColumn()
                     ->addColumn('action', function($row) {
                         $btn = '';
@@ -51,16 +50,14 @@ class ScheduleController extends Controller
                         if (Auth::user()->can('view', $row)) {
                             $btn .= '<a href="'. route('agendas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
-
                         #Nadie podra eliminar agenda - code commented
                         // if (Auth::user()->can('delete', $row) && !$row->completed ) {
                         //     $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-schedule" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         // }
-
                         return $btn;
                     })
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->toJson();
         }
 
         return view('dashboard.schedules.index');

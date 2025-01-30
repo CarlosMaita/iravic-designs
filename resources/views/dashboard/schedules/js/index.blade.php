@@ -3,27 +3,24 @@
         const URL_RESOURCE = "{{ route('agendas.index') }}";
         const DATATABLE_RESOURCE = $("#datatable_schedules");
 
-        initDataTable();
-
         /**
          * Inicializa la datatable de las aagendas
          */
-        function initDataTable() {
-            DATATABLE_RESOURCE.DataTable({
+         DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
                 processing: false,
                 responsive: true,
                 serverSide: true,
-                ordering: false,
+                ordering: true,
                 ajax: URL_RESOURCE,
                 pageLength: 25,
+                order : [[ 1, "Asc" ]],
                 columns: [
                     {data: 'id'},
-                    {data: 'date'},
+                    {data: 'date' },
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
-        }
 
         /**
          * Captura evento para eliminar una agenda. Realiza peticion HTTP para eliminarla de la BD

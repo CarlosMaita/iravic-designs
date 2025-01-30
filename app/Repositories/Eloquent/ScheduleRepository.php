@@ -39,6 +39,21 @@ class ScheduleRepository extends BaseRepository implements ScheduleRepositoryInt
         return $query->get();
     }
 
+    public function allQuery( $first = false )
+    {
+        $user = Auth::user();
+        $user_roles = $user->roles->flatten()->pluck('name');
+        $query = $this->model->query();
+        // consigue la fecha mas cercana
+        !$first ?: $query->orderByRaw('ABS(DATEDIFF(date, CURDATE()))');
+        
+        if (!$user_roles->contains('superadmin') && !$user_roles->contains('admin') ) {
+            $query->whereHasVisitasByResponsable($user->id);
+        }
+
+        return $query;
+    }
+
     /**
      * Crea o "actualiza", una agenda para una fecha si esta no existe.
      */
