@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
 use Exception;
+use Intervention\Image\Exception\NotReadableException;
 
 class ProductImageController extends Controller
 {
@@ -52,21 +53,38 @@ class ProductImageController extends Controller
 
     
     public function store ( Request $request){
+       try {
+            $this->authorize('create', 'App\Models\ProductImage');
+            if(!isset( $request->file )){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No hay imagen'
+                ]);
+            }
+            $filenames = $this->saveImages(null, $request);
 
-        $this->authorize('create', 'App\Models\ProductImage');
+            return response()->json([
+                'success' => true,
+                'data' => $filenames
+            ]);
+       } catch (Exception $e) {
         
-        if(!isset( $request->file )){
+        if( $e instanceof NotReadableException ) {
             return response()->json([
                 'success' => false,
-                'message' => 'No hay imagen'
-            ]);
+                'message' => __('dashboard.catalog.products.product_image.image_not_accepted'),
+                'error' => $e->getMessage(),
+            ] , 404);
         }
-        $filenames = $this->saveImages(null, $request);
 
         return response()->json([
-            'success' => true,
-            'data' => $filenames
-        ]);
+            'success' => false,
+            'message' => __('dashboard.general.operation_error'),
+            'error' => $e->getMessage(),
+        ], 404);
+      
+       }
+        
     }
 
     private function saveImages($product = null, $request): array
@@ -94,11 +112,6 @@ class ProductImageController extends Controller
         
         return $filesname;
     }
-
-    public function update ( Request $request, ProductImage $producto_imagen){
-        
-    }
-
 
     /**
      * Remove the specified resource from storage.

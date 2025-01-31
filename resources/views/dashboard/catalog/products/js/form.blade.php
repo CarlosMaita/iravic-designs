@@ -166,6 +166,8 @@
                                 type: 'error'
                             }).show();
                         }
+                        // add the handler again
+                        window.addEventListener('beforeunload', handlerBeforeUnload);
                     }
                 });
             }

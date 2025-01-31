@@ -41,7 +41,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('stock-transferencias', 'ProductStockTransferController')->except('create');
         #
-        Route::resource('producto-imagen', 'ProductImageController')->only('index' , 'store', 'update' , 'destroy');
+        Route::resource('producto-imagen', 'ProductImageController')->only('index' , 'store', 'destroy');
         #
         Route::post('producto-imagen-dropzone', 'ProductImageController@destroyWithRequest')->name('producto-imagen.dropzone.destroy');
         #

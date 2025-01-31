@@ -46,7 +46,10 @@ return [
         'products' => [
             'index'     => 'Listado de Productos',
             'create'    => 'Crear nuevo producto',
-            'edit'      => 'Editar producto'
+            'edit'      => 'Editar producto',
+            'product_image' => [
+                'image_not_accepted' => 'Formato de imagen no aceptado. Solo se permiten imagenes con extensiones jpg, png, jpeg o webp'
+            ]
         ],
         'inventory' => [
             'index'     => 'Listado de Inventario',

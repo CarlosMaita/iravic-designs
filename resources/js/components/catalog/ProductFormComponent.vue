@@ -188,7 +188,8 @@
                                     :id="`dropzone-${index}`"
                                     :options="dropzoneOptions"
                                     @vdropzone-sending-multiple="sendingEvent"
-                                    @vdropzone-removed-file="removeFile"
+                                    @vdropzone-removed-file="removedFileEvent"
+                                    @vdropzone-error="errorEvent"
                                 v-once ></v-dropzone>
                             </div>
                         </div>
@@ -414,10 +415,10 @@
 
             Object.assign(this.dropzoneOptions, {
                 url: this.urlResource,
-                dictDefaultMessage: "Arrastra los archivos aquí para subirlos",
+                dictDefaultMessage: "Arrastra los archivos aquí para subirlos (Max 2MB)",
                 dictFallbackMessage: "Su navegador no admite la carga de archivos mediante la función de arrastrar y soltar.",
                 dictFallbackText: "Utilice el formulario de respaldo a continuación para cargar sus archivos como en los viejos tiempos.",
-                dictFileTooBig: "El archivo es demasiado grande (0MiB). Máx .: 0MiB.",
+                dictFileTooBig: "El archivo es demasiado grande. Máx: 2MB.",
                 dictInvalidFileType: "No puede cargar archivos de este tipo.",
                 dictResponseError: "El servidor respondió con el código statusCode.",
                 dictCancelUpload: "Cancelar carga",
@@ -769,17 +770,30 @@
                 if(this.combinations.length > 0 ){ 
                     this.combinations = [];
                 }
-                console.log(this.combinations)
             }, 
             sendingEvent(file, xhr, formData) {
-            
                 let ref =  file[0].previewElement.parentElement.id;
                 let combination_index = ref.replace("dropzone-", "");
-             
                 formData.append('combination_index', combination_index);
                 formData.append('temp_code', this.temp_code);
             },
-            removeFile(file, error, xhr){
+            errorEvent(file, message, xhr) {
+                if (typeof message !== 'string') {
+                    //Es un mensaje de validación de laravel
+                    message = message.message
+                }
+               
+                // remover file 
+                new Noty({
+                        text: message,
+                        type: 'error'
+                    }).show();
+
+
+                let ref =  file.previewElement.parentElement.id;
+                this.$refs[ref][0].removeFile(file)
+            }, 
+            removedFileEvent(file, error, xhr){
                 let response = JSON.parse(file.xhr.response);
                 let combination_index = response.data[0].combination_index
                 
@@ -797,9 +811,12 @@
                         combinationIndex: combination_index
                     }
                 }).then(response => {
-                    console.log(response.data);
+                    new Noty({
+                        text: 'Imagen removida con exito.',
+                        type: 'success'
+                    }).show();
                 }).catch(error => {
-                    console.log(error);
+                    // console.log(error);
                 });
             },
             removeImage(e, image_id) {
@@ -829,15 +846,19 @@
                         }).then(response => {
                             // remover imagen en DOM
                             e.target.parentElement.parentElement.remove();
-                            console.log(response.data);
+                            new Noty({
+                                text: 'Imagen removida con exito.',
+                                type: 'success'
+                            }).show();
+                            return false;
                         }).catch(error => {
-                            console.log(error);
+                            // console.log(error);
                         });
                        
                     }).catch(swal.noop);
 
                
-            }
+            },
 
         }, 
         
@@ -869,5 +890,9 @@
     .img-thumbnail{
         width: 100px;
         height: 100px;
+    }
+
+    .dz-error-message {
+        display: none !important;
     }
 </style>
