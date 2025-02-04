@@ -124,15 +124,12 @@ class ProductImageController extends Controller
     public function destroy(ProductImage $producto_imagen)
     {
         try {
-            // si puede editar el producto entonces puede eliminar sus imagenes
             $product = $producto_imagen->product;
-            $this->authorize('update', $product);
-
             $producto_imagen->delete();
-            
+
             return response()->json([
                 'success' => true,
-                'message' => "La imagen ha sido eliminada con éxito"
+                'message' => __('dashboard.catalog.products.product_image.image_deleted')
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -170,15 +167,16 @@ class ProductImageController extends Controller
             {
                 return response()->json([
                     'success' => false,
-                    'message' => __('dashboard.product_image.image_not_found'),
+                    'message' => __('dashboard.catalog.products.product_image.image_not_found')
                 ]); 
             }
 
-            //Si puede editar el producto entonces puede eliminar sus imagenes
-            $product = $productImage->product;
-            $this->authorize('update', $product);
-
             $productImage->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('dashboard.catalog.products.product_image.image_deleted')
+            ]);
 
         }catch(Exception $e){
             return response()->json([

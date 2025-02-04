@@ -48,7 +48,9 @@ return [
             'create'    => 'Crear nuevo producto',
             'edit'      => 'Editar producto',
             'product_image' => [
-                'image_not_accepted' => 'Formato de imagen no aceptado. Solo se permiten imagenes con extensiones jpg, png, jpeg o webp'
+                'image_not_accepted' => 'Formato de imagen no aceptado. Solo se permiten imagenes con extensiones jpg, png, jpeg o webp',
+                'image_deleted' => 'Imagen eliminada con éxito',
+                'image_not_found' => 'Imagen no encontrada',
             ]
         ],
         'inventory' => [
