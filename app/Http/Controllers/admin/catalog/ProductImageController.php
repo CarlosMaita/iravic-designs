@@ -8,9 +8,9 @@ use App\Repositories\Eloquent\ProductImageRepository;
 use App\Services\Images\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DataTables;
 use Exception;
 use Intervention\Image\Exception\NotReadableException;
+use Yajra\DataTables\DataTables;
 
 class ProductImageController extends Controller
 {
@@ -29,11 +29,11 @@ class ProductImageController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewany', 'App\Models\ProductImage');
+        $this->authorize('viewany', 'App\Models\Product');
 
         if ($request->ajax()) {
             $images = isset($request->producto) ? $this->productoImageRepository->all($request->producto) : array();
-            return Datatables::of($images)
+            return DataTables::of($images)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
@@ -54,7 +54,9 @@ class ProductImageController extends Controller
     
     public function store ( Request $request){
        try {
-            $this->authorize('create', 'App\Models\ProductImage');
+            // si puede crear productos entonces puede subir imagenes
+            $this->authorize('create', 'App\Models\Product');
+
             if(!isset( $request->file )){
                 return response()->json([
                     'success' => false,
@@ -122,7 +124,10 @@ class ProductImageController extends Controller
     public function destroy(ProductImage $producto_imagen)
     {
         try {
-            $this->authorize('delete', $producto_imagen);
+            // si puede editar el producto entonces puede eliminar sus imagenes
+            $product = $producto_imagen->product;
+            $this->authorize('update', $product);
+
             $producto_imagen->delete();
             
             return response()->json([
@@ -169,7 +174,9 @@ class ProductImageController extends Controller
                 ]); 
             }
 
-            $this->authorize('delete', $productImage);
+            //Si puede editar el producto entonces puede eliminar sus imagenes
+            $product = $productImage->product;
+            $this->authorize('update', $product);
 
             $productImage->delete();
 

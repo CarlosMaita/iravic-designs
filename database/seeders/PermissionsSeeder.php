@@ -187,21 +187,6 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
-            # Products images
-            [
-                'name'         => 'view-products-image',
-                'display_name' => 'Productos Imágenes Ver',
-                'description'  => 'Productos Imágenes Ver',
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ],
-            [
-                'name'         => 'delete-products-image',
-                'display_name' => 'Productos Imágenes Eliminar',
-                'description'  => 'Productos Imágenes Eliminar',
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ],
             # Products Transfers
             [
                 'name'         => 'view-transfer',
@@ -272,6 +257,20 @@ class PermissionsSeeder extends Seeder
                 'name'         => 'view-customer',
                 'display_name' => 'Clientes Ver',
                 'description'  => 'Clientes Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'view-customers-debtors',
+                'display_name' => 'Morosos Listar',
+                'description'  => 'Morosos Listar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'view-customers-pending-to-schedule',
+                'display_name' => 'Clientes pendientes por agendar Listar',
+                'description'  => 'Clientes pendientes por agendar Listar',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
@@ -551,10 +550,19 @@ class PermissionsSeeder extends Seeder
             ],
         ];
 
+
         // Verificar y crear los permisos
         foreach ($permissions as $permission) {
             if (!in_array($permission['name'], $existingPermissions)) {
                 Permission::create($permission);
+            }
+        }
+
+        // Remover permisos no encontrados
+        $permissions = array_column($permissions, 'name');
+        foreach ($existingPermissions as $existingPermission) {
+            if (!in_array($existingPermission, $permissions)) {
+                Permission::where('name', $existingPermission)->delete();
             }
         }
 
