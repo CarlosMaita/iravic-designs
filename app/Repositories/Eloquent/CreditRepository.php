@@ -77,10 +77,6 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         $customer = Customer::find($customer_id);
             $collection_day = $customer->collection_day;
             $collection_frequency = $customer->collection_frequency;
-            $balance = $customer->getBalance();
-
-        if ($balance < ) {
-    
 
         $date = self::getDateSync($startDate, $customer_id);
         
