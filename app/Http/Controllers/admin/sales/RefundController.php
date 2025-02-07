@@ -133,7 +133,8 @@ class RefundController extends Controller
             $productsRefund = array();
             $productsOrder = array();
             $totals = OrderService::getOrderTotalsByRefund($request->only('discount', 'products', 'qtys', 'products_refund', 'qtys_refund', 'payment_method', 'is_credit_shared'), $this->productRepository, $this->orderProductRepository);
-            /** Refund **/
+          
+            #create refund 
             $attributes = array_merge(
                 array(
                     'total' => $totals['total_refund'],
@@ -142,9 +143,8 @@ class RefundController extends Controller
                 ),
                 $request->only('box_id', 'customer_id', 'user_id', 'date')
             );
-
-            #create refund 
             $refund = $this->refundRepository->create($attributes);
+            
             #Se guardan los productos devueltos 
             foreach ($request->products_refund as $product_id) {
                 if ($product = $this->orderProductRepository->find($product_id)) {
@@ -168,10 +168,19 @@ class RefundController extends Controller
                 }
             }
 
+            /** Se ajustan los montos sugeridos de las visitas, a partir de la devolucion */
+            $customer = $this->customerRepository->find($request->customer_id);
+            $balance = $customer->getBalance();
+            $total_refund = $refund->total;
+            $newBalance = $balance - $total_refund;
+            $customer->balance = $newBalance;
+            $customer->save();
+
             /** Se crea una Nueva Order && Previous Debt**/
             if (!empty($request->products)) {
 
-                    $customer_id = $is_credit_shared ? $request->customer_id_new_credit : $request->customer_id;               
+                    $customer_id = $is_credit_shared ? $request->customer_id_new_credit : $request->customer_id;  
+                    $customer = $this->customerRepository->find($customer_id);             
                     $attributesOrder = array_merge(
                         array(
                             'customer_id' => $customer_id,
@@ -186,6 +195,7 @@ class RefundController extends Controller
                         ),
                         $request->only('box_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit')
                     );
+                    
                     #Create order
                     $order = $this->orderRepository->create($attributesOrder);
                     #Se guardan los productos de la nueva venta (Productos que se llevan)
@@ -208,6 +218,20 @@ class RefundController extends Controller
                             }
                         }
                     }
+
+                /*** Modificar Cobros sugeridos en las visitas */
+                $balance = $customer->getBalance();
+                $total_refund = $refund->total;
+                $total_order = $order->total;
+                $total_refund_credit = $refund->total_refund_credit;
+                $total_refund_debit = $refund->total_refund_debit;
+                if ($balance > 0) {
+                    $this->debtRepository->updateSuggestedPayments($customer_id, $balance);
+                }esle{
+                    // remover las visitas de cobro pendientes
+                    $this->visitRepository->removePendingVisits($customer_id);
+                }
+                
 
                 if ($is_credit_shared)
                 {
@@ -283,6 +307,7 @@ class RefundController extends Controller
                         'redirect' => $redirect
                     ]
             ]);
+
         } catch (Exception $e) {
             DB::rollback();
             return response()->json([

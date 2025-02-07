@@ -223,6 +223,7 @@
                                             <hr>
                                             <p class="font-weight-bold text-dark mb-1">Subtotal: <span class="subtotal">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Descuento: <span class="discount">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-dark mb-1">Saldo a favor: <span class="positive-balance">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Total: <span class="total">$ 0.00</span></p>
                                             <input type="hidden" id="total-order" value="0">
                                         </div>

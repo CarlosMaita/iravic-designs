@@ -25,6 +25,7 @@
         let datatable_products = $('#datatable_products');
         let datatable_products_resume = $('#datatable_products_resume');
         let discount_to_apply = 0;
+        let positive_balance_numeric = 0;
 
         setDatePicker();
         select_customer.select2({
@@ -274,6 +275,8 @@
                     let telephone = res.telephone;
 
                     $customer_balance = balance;
+                    positive_balance_numeric = balance_numeric > 0 ? balance_numeric : 0;
+
                     $customer_max_credit = maxcredit;
 
                     container.find('#selected-customer-address').text(address);
@@ -288,6 +291,7 @@
 
                     $('.max-credit').text(maxcredit_str);
                     $('.customer-balance').text(balance);
+                    $('.positive-balance').text(balance_numeric > 0 ?  balance : '$ 0,00');
                     $('.available-credit').text(availablecredit_str)
                 }
             });
@@ -309,7 +313,7 @@
 
             return {
                 'subtotal': subtotal,
-                'total': subtotal - discount_to_apply
+                'total'   : subtotal - discount_to_apply - positive_balance_numeric
             };
 
             return total;
