@@ -293,6 +293,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- frequency collection component -->
+                                            <input type="hidden" id="total-order" :value="totalCancelar">
+                                            <credit-information-component v-if="paymentMethodSelected  == 'credit'"></credit-information-component>
+                                            <!-- end frequency collection component -->
+                                            <hr> 
                                             <div v-if="paymentMethodSelected == 'credit' && totalCompra > totalDevolucionCredito" class="row">
                                                 <div class="col-12">
                                                     <div class="row">
@@ -532,6 +537,7 @@
     import ModalProductToRefund from './ModalProductToRefund.vue'
     import ProductItemToRefund from './ProductItemToRefund.vue'
     import ProductItemToBuy from './ProductItemToBuy.vue'
+    import CreditInformationComponent from './CreditInformationComponent.vue'
 
     export default {
         components: {
@@ -539,7 +545,8 @@
             ModalProductStock,
             ModalProductToRefund,
             ProductItemToRefund,
-            ProductItemToBuy
+            ProductItemToBuy,
+            CreditInformationComponent
         },
         props: {
             crsf: {
@@ -699,15 +706,16 @@
              * Toma el cuenta el total devuelto de productos comprados a credito y a debito si la deuda es compartida
              */
             totalCancelar: function () {
-                if (
-                    this.paymentMethodSelected == 'credit' 
-                    && this.totalCompra > this.totalDevolucionCredito  
-                    && this.isCreditShared == 1
-                ) {
-                    return this.totalCompra - this.totalDevolucionDebito - this.totalDevolucionCredito;
-                }
+                // if (
+                //     this.paymentMethodSelected == 'credit' 
+                // ) {
+                //     if( this.totalCompra > this.totalDevolucionCredito && this.isCreditShared == 1) {
+                //         return this.totalCompra - (this.totalDevolucion + this.customerSelected.balance_numeric);
+                //     }
+                //     return this.totalCompra - (this.totalDevolucion + this.customerSelected.balance_numeric);
+                // }
 
-                return this.totalCompra;
+                return this.totalCompra - (this.totalDevolucion + this.customerSelected.balance_numeric);
             }
 	    },
         async mounted() {

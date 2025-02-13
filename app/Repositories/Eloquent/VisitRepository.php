@@ -6,6 +6,7 @@ use App\Models\Visit;
 use App\Repositories\VisitRepositoryInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\Cast\Double;
 
 class VisitRepository extends BaseRepository implements VisitRepositoryInterface
 {
@@ -112,4 +113,42 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
                         ->whereDate('date', $date)
                         ->count();
     }
+
+    public function removeVisitsOfCollection($customer_id)
+    {
+        // remover visitas que son de cobro, y que son mayores a la fecha actual
+        $this->model->where('customer_id', $customer_id)
+                    ->where('is_collection', 1)
+                    ->where('date', '>', now())
+                    ->delete();
+    }
+    public function updateCollectionsInFutureVisits(int $customerId, float $amountRefund): void
+    {
+        $futureVisitsCount = $this->countFutureVisitsCollection($customerId);
+        $adjustedQuote = $this->calculateQuota($amountRefund, $futureVisitsCount);
+        
+        $this->reduceQuotaInFutureVisits($customerId, $adjustedQuote);
+        // dd( $adjustedQuote);
+    }
+
+    private function calculateQuota( float $amountRefund, float $countFutureVisits) : float
+    {
+        return $amountRefund / $countFutureVisits;
+    }  
+    
+    private function countFutureVisitsCollection(int $customerId): int
+    {
+        return $this->model->where('customer_id', $customerId)
+                            ->where('is_collection', 1)
+                            ->where('date', '>', now())
+                            ->count();
+    }
+   
+    private function reduceQuotaInFutureVisits(int $customer_id, $quoteAdjusted){
+        $this->model->where('customer_id', $customer_id)
+                    ->where('is_collection', 1)
+                    ->where('date', '>', now())
+                    ->decrement('suggested_collection', $quoteAdjusted);
+    }
+
 }

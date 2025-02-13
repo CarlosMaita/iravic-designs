@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\RefundRequest;
 use App\Models\Refund;
+use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\DebtRepository;
 use App\Repositories\Eloquent\DebtOrderProductRepository;
@@ -42,12 +43,26 @@ class RefundController extends Controller
 
     public $scheduleRepository;
 
+    public $creditRepository;
+
     public $visitRepository;
 
     /**
      * Construct
      */
-    public function __construct(CustomerRepository $customerRepository, DebtRepository $debtRepository, DebtOrderProductRepository $debtOrderProductRepository, OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, ProductRepository $productRepository, RefundRepository $refundRepository, RefundProductRepository $refundProductRepository, ScheduleRepository $scheduleRepository, VisitRepository $visitRepository)
+    public function __construct(
+        CustomerRepository $customerRepository,
+        DebtRepository $debtRepository,
+        DebtOrderProductRepository $debtOrderProductRepository,
+        OrderRepository $orderRepository,
+        OrderProductRepository $orderProductRepository, 
+        ProductRepository $productRepository, 
+        RefundRepository $refundRepository, 
+        RefundProductRepository $refundProductRepository, 
+        ScheduleRepository $scheduleRepository, 
+        CreditRepository $creditRepository,
+        VisitRepository $visitRepository
+    )
     {
         $this->customerRepository = $customerRepository;
         $this->debtRepository = $debtRepository;
@@ -59,6 +74,7 @@ class RefundController extends Controller
         $this->refundProductRepository = $refundProductRepository;
         $this->scheduleRepository = $scheduleRepository;
         $this->visitRepository = $visitRepository;
+        $this->creditRepository = $creditRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -126,7 +142,6 @@ class RefundController extends Controller
     public function store(RefundRequest $request)
     {
         try {
-
             $this->authorize('create', 'App\Models\Refund');
             DB::beginTransaction();
             $is_credit_shared = isset($request->is_credit_shared) ? 1 : 0;
@@ -169,69 +184,99 @@ class RefundController extends Controller
             }
 
             /** Se ajustan los montos sugeridos de las visitas, a partir de la devolucion */
-            $customer = $this->customerRepository->find($request->customer_id);
+            $customer_id = $request->customer_id;
+            $customer = $this->customerRepository->find($customer_id); 
             $balance = $customer->getBalance();
-            $total_refund = $refund->total;
-            $newBalance = $balance - $total_refund;
-            $customer->balance = $newBalance;
-            $customer->save();
+            $total_refund = $totals['total_refund'];
+            // dd($balance, $total_refund);
+            if( $balance >= 0)
+            {
+                // remover las visitas de cobro pendientes
+                $this->visitRepository->removeVisitsOfCollection($customer_id);
+            }else{
+                // Re-ajusto los montos sugeridos de las visitas futuras
+                $this->visitRepository->updateCollectionsInFutureVisits($customer_id, $total_refund);
+            }
 
             /** Se crea una Nueva Order && Previous Debt**/
             if (!empty($request->products)) {
 
-                    $customer_id = $is_credit_shared ? $request->customer_id_new_credit : $request->customer_id;  
-                    $customer = $this->customerRepository->find($customer_id);             
-                    $attributesOrder = array_merge(
-                        array(
-                            'customer_id' => $customer_id,
-                            'refund_id' => $refund->id,
-                            'discount' => $totals['discount'],
-                            'subtotal' => $totals['subtotal'],
-                            'total_real' => $totals['total_order'],
-                            'total' => $totals['total_cancel'],
-                            'total_refund_credit' => $totals['total_refund_credit'],
-                            'total_refund_debit' => $totals['total_refund_debit'],
-                            'is_credit_shared' => $is_credit_shared 
-                        ),
-                        $request->only('box_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit')
-                    );
-                    
-                    #Create order
-                    $order = $this->orderRepository->create($attributesOrder);
-                    #Se guardan los productos de la nueva venta (Productos que se llevan)
-                    foreach ($request->products as $product_id) {
-                        if ($product = $this->productRepository->find($product_id)) {
-                            if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
-                                $attributes = array(
-                                    'color_id'          => $product->color_id,
-                                    'order_id'          => $order->id,
-                                    'product_id'        => $product->id,
-                                    'product_name'      => $product->name,
-                                    'product_price'     => $product->regular_price,
-                                    'qty'               => $request->qtys[$product_id],
-                                    'size_id'           => $product->size_id,
-                                    'stock_type'        => $request->stock_type,
-                                    'total'             => ($product->regular_price * $request->qtys[$product_id])
-                                );
-                                $orderProduct = $this->orderProductRepository->create($attributes);
-                                array_push($productsOrder, $orderProduct);
-                            }
+                $customer_id = $is_credit_shared ? $request->customer_id_new_credit : $request->customer_id;  
+                $attributesOrder = array_merge(
+                    array(
+                        'customer_id' => $customer_id,
+                        'refund_id' => $refund->id,
+                        'discount' => $totals['discount'],
+                        'subtotal' => $totals['subtotal'],
+                        'total_real' => $totals['total_order'],
+                        'total' => $totals['total_cancel'],
+                        'total_refund_credit' => $totals['total_refund_credit'],
+                        'total_refund_debit' => $totals['total_refund_debit'],
+                        'is_credit_shared' => $is_credit_shared 
+                    ),
+                    $request->only('box_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit')
+                );
+                $order = $this->orderRepository->create($attributesOrder); //Create order
+                
+                #Se guardan los productos de la nueva venta (Productos que se llevan)
+                foreach ($request->products as $product_id) {
+                    if ($product = $this->productRepository->find($product_id)) {
+                        if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
+                            $attributes = array(
+                                'color_id'          => $product->color_id,
+                                'order_id'          => $order->id,
+                                'product_id'        => $product->id,
+                                'product_name'      => $product->name,
+                                'product_price'     => $product->regular_price,
+                                'qty'               => $request->qtys[$product_id],
+                                'size_id'           => $product->size_id,
+                                'stock_type'        => $request->stock_type,
+                                'total'             => ($product->regular_price * $request->qtys[$product_id])
+                            );
+                            $orderProduct = $this->orderProductRepository->create($attributes);
+                            array_push($productsOrder, $orderProduct);
                         }
                     }
-
-                /*** Modificar Cobros sugeridos en las visitas */
-                $balance = $customer->getBalance();
-                $total_refund = $refund->total;
-                $total_order = $order->total;
-                $total_refund_credit = $refund->total_refund_credit;
-                $total_refund_debit = $refund->total_refund_debit;
-                if ($balance > 0) {
-                    $this->debtRepository->updateSuggestedPayments($customer_id, $balance);
-                }esle{
-                    // remover las visitas de cobro pendientes
-                    $this->visitRepository->removePendingVisits($customer_id);
                 }
-                
+
+                /**
+                 * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+                 */
+                if ($request->payed_credit) {
+                    $quota = $request->input('quotas');
+                    $amount_quotas = $request->input('amount-quotas');
+                    $start_date = $request->input('start-quotas');
+
+                    /**
+                     * Crear Credito para el cliente
+                     */
+                    $attributes = array(
+                        'start_date' => $start_date,
+                        'amount_quotas' => $amount_quotas,
+                        'quota' => $quota,
+                        'total' => $totals['total_order'],   
+                        'order_id' => $order->id,   
+                        'customer_id' => $customer_id,
+                    );
+                    $credit = $this->creditRepository->create($attributes);
+
+                    /**
+                     * Crear Cobros para el cliente apartir de la fecha inicial de cobro 
+                     * 
+                     */
+                    $attributes = array(
+                        'start_date' => $start_date,
+                        'amount_quotas' => $amount_quotas,
+                        'quota' => $quota,
+                        'credit_id' => $credit->id,
+                        'customer_id' => $customer_id,
+                        'user_id' => Auth::user()->id,
+                    ); 
+                    $this->creditRepository->createCollectionsAndVisits($attributes);
+
+                }
+
+               
 
                 if ($is_credit_shared)
                 {
@@ -311,12 +356,13 @@ class RefundController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             return response()->json([
+                'success' => false,
                 'message' => __('dashboard.general.operation_error'),
                 'error' => [
                     'e' => $e->getMessage(),
                     'trace' => $e->getTrace()
                 ]
-            ]);
+            ], 500);
         }
     }
 

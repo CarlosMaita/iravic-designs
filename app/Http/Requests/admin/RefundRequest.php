@@ -63,6 +63,13 @@ class RefundRequest extends FormRequest
             }
         }
 
+        if (isset($this->payment_method) && $this->payment_method == 'credit') {
+            $messages['amount-quotas.required'] = 'El campo cantidad de cuotas es obligatorio.';
+            $messages['amount-quotas.min'] = 'El campo cantidad de cuotas debe ser mayor a :min.';
+            $messages['start-quotas.required'] = 'El campo Fecha de inicio de Pago es obligatorio.';
+            $messages['quotas.required'] = 'required';
+        }
+
         return $messages;
     }
     
@@ -101,6 +108,12 @@ class RefundRequest extends FormRequest
 
         if (isset($this->needs_customer_debt)) {
             $rules['customer_id_new_credit'] = 'required|exists:customers,id';
+        }
+
+        if (isset($this->payment_method) && $this->payment_method == 'credit') {
+            $rules['amount-quotas'] = 'required|numeric|min:1';
+            $rules['start-quotas'] = 'required|date';
+            $rules['quotas'] = 'required';
         }
 
         return $rules;

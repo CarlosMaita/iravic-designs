@@ -160,12 +160,20 @@ class OrderController extends Controller
             $attributes = array_merge(
                 array('total_real' => $request->total),
                 $request->only(
-                    'box_id', 'customer_id', 'user_id', 'date', 
-                    'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit', 
-                    'discount' ,'subtotal', 'total',
+                    'customer_id',
+                    'box_id',
+                    'user_id',
+                    'date',
+                    'payed_bankwire',
+                    'payed_card',
+                    'payed_cash',
+                    'payed_credit', 
+                    'discount' ,
+                    'subtotal',
+                    'total',
                 )
             );
-            $order = $this->orderRepository->create($attributes);
+            $order = $this->orderRepository->create($attributes); //create order
 
             /**
              * Se guardan los productos de la venta
@@ -193,13 +201,16 @@ class OrderController extends Controller
              * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
              */
             if ($request->payed_credit) {
+                $quota = $request->input('quotas');
+                $amount_quotas = $request->input('amount-quotas');
+                $start_date = $request->input('start-quotas');
                 /**
                  * Crear Credito para el cliente
                  */
                 $attributes = array(
-                    'quota' => $request->input('quotas'),
-                    'amount_quotas' => $request->input('amount-quotas'),
-                    'start_date' => $request->input('start-quotas'),
+                    'start_date' => $start_date,
+                    'amount_quotas' => $amount_quotas,
+                    'quota' => $quota,
                     'total' => $request->total,   
                     'order_id' => $order->id,   
                     'customer_id' => $request->customer_id,
@@ -211,9 +222,9 @@ class OrderController extends Controller
                  * 
                  */
                 $attributes = array(
-                    'start_date' => $request->input('start-quotas'),
-                    'amount_quotas' => $request->input('amount-quotas'),
-                    'quota' => $request->input('quotas'),
+                    'start_date' => $start_date,
+                    'amount_quotas' => $amount_quotas,
+                    'quota' => $quota,
                     'credit_id' => $credit->id,
                     'customer_id' => $request->customer_id,
                     'user_id' => Auth::user()->id,

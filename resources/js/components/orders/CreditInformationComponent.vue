@@ -8,14 +8,14 @@
        <!-- collection frequency -->
         <div class="col-md-4">
             <label  for="amount-quotas">Cantidad de cuotas</label>
-            <input @change="calculateQuotas" v-model="amountQuotas" type="number" step="1" min="1" name="amount-quotas" 
-                    id="amount-quotas" class="form-control" placeholder="Ingrese la cantidad de cuotas" required>
+            <input @change="calculateQuotas" v-model="amountQuotas" type="number" step="1" min="0" name="amount-quotas" 
+                    id="amount-quotas" class="form-control" placeholder="Ingrese la cantidad de cuotas" >
         </div>
         <!-- start date -->
         <div class="col-md-4">
             <label for="start-quotas">Fecha de inicio de Pago </label>
             <input v-model="startQuotas" type="date" name="start-quotas" id="start-quotas" class="form-control" 
-                  placeholder="Ingrese la Fecha de inicio de Pago" required>
+                  placeholder="Ingrese la Fecha de inicio de Pago" >
         </div>
         <!-- Quotas -->
         <div class="col-md-12">
@@ -29,14 +29,6 @@
 <script>
 
 export default {
-  components: {},
-  props: {
-    CollectionFrequency: {
-      type: String,
-      default: "",
-    }
-  },
-
   data: () => ({
     amountQuotas: 0,
     startQuotas: null,
@@ -49,7 +41,12 @@ export default {
   methods: {
     calculateQuotas() {
       this.totalOrder = Number(document.getElementById('total-order').value);
+      if (this.totalOrder <= 0) {
+        this.Quotas = 0;
+        return;
+      }
       this.Quotas = this.totalOrder / this.amountQuotas ;
+      
     },
     replaceNumberWithCommas(number) {
             var n = number.toFixed(2); // Limita el resultado a dos decimales
