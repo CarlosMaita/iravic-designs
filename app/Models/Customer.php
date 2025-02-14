@@ -474,9 +474,8 @@ class Customer extends Model
         $balance = $this->getBalance();
         $suggestedCollectionTotal = $this->getSuggestedCollectionTotal();
         $rest = round($suggestedCollectionTotal + $balance) ;
-
         return array(
-            'check' => isset($rest) && $rest == 0,
+            'check' => (isset($rest) && $rest == 0 ) || $balance >= 0 ,
             'rest' => $rest,
             'rest_formatted' => FormatHelper::formatCurrency($rest ?? 0),
             'customer_name' => $this->name,
