@@ -706,16 +706,8 @@
              * Toma el cuenta el total devuelto de productos comprados a credito y a debito si la deuda es compartida
              */
             totalCancelar: function () {
-                // if (
-                //     this.paymentMethodSelected == 'credit' 
-                // ) {
-                //     if( this.totalCompra > this.totalDevolucionCredito && this.isCreditShared == 1) {
-                //         return this.totalCompra - (this.totalDevolucion + this.customerSelected.balance_numeric);
-                //     }
-                //     return this.totalCompra - (this.totalDevolucion + this.customerSelected.balance_numeric);
-                // }
-
-                return this.totalCompra - (this.totalDevolucion + this.customerSelected.balance_numeric);
+                const saldoAfavor = Math.max(0, this.customerSelected.balance_numeric);
+                return this.totalCompra - this.totalDevolucion - saldoAfavor;
             }
 	    },
         async mounted() {

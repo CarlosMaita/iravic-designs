@@ -35,13 +35,10 @@ export default {
     Quotas: 0, 
     totalOrder: 0, 
   }),
-  async mounted() {
-
-  },
   methods: {
     calculateQuotas() {
       this.totalOrder = Number(document.getElementById('total-order').value);
-      if (this.totalOrder <= 0) {
+      if (this.totalOrder <= 0 || this.amountQuotas <= 0) {
         this.Quotas = 0;
         return;
       }
