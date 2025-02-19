@@ -58,6 +58,8 @@ class CustomerRequest extends FormRequest
             'card_front.mimes' => 'la foto del frente de la tarjeta  debe debe ser de tipo jpeg, jpg, png o webp.',
             'card_back.mimes' => 'La foto del dorso de la tarjeta debe debe ser de tipo jpeg, jpg, png o webp.',
             'address_picture.mimes' => 'La foto del frente de la casa debe debe ser de tipo jpeg, jpg, png o webp.',
+            'collection_day.required' => 'El campo día de cobro es obligatorio.',
+            'collection_frequency.required' => 'El campo frecuencia de cobro es obligatorio.',
         ];
     }
 
@@ -91,6 +93,8 @@ class CustomerRequest extends FormRequest
             'days_to_notify_debt' => 'required|integer|min:0|max:500',
             'qualification' => ['required', Rule::in(CustomerConstants::QUALIFICATIONS)],
             'zone_id' => 'required|exists:zones,id',
+            'collection_day' => 'required',
+            'collection_frequency' => 'required',
         ];
 
         if ($this->isMethod('POST')) {
