@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Config;
 use App\Models\Role;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -39,6 +40,19 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showLoginForm()
+    {
+        $logo_img     = Config::getConfig('logo_img');
+        return view('auth.login')
+                ->with( 'logoImg', $logo_img);
     }
 
     /**

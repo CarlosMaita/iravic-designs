@@ -20,7 +20,9 @@
       <div class="row justify-content-center">
         <div id="form-wrap" class="col-md-8">
           <div class="mb-3 text-center">
-            <img class="img-fluid" src="{{ asset('img/logo-black.png') }}" alt="Logo" width="120">
+            @isset($logoImg->value)
+            <img class="img-fluid" src="{{ asset('storage/img/configs/'. $logoImg->value) }}" alt="Logo" width="120">
+            @endisset
           </div>
           <div class="card-group">
             <div class="card p-2">

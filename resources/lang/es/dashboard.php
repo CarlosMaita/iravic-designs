@@ -123,7 +123,9 @@ return [
                 'cash_initial' => 'Efectivo inicial'
             ],
             'config' => [
-                'discount_password' => 'Contraseña para descuentos'
+                'discount_password' => 'Contraseña para descuentos',
+                'name_project'      => 'Nombre de la Aplicación',
+                'logo_img'          => 'Logo de la Aplicación'
             ],
             'customers' => [
                 'address'             => 'Dirección',

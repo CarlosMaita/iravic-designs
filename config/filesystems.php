@@ -105,6 +105,13 @@ return [
             'url' => env('APP_URL').'/storage/img/spendings',
             'visibility' => 'public',
         ],
+
+        'configs' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/img/configs'),
+            'url' => env('APP_URL').'/storage/img/configs',
+            'visibility' => 'public',
+        ],
     ],
 
 ];
