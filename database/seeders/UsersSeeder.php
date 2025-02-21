@@ -17,10 +17,7 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        $numberOfUsers = 10;
-        $faker = Faker::create();
         $role_admin = Role::where('name', 'superadmin')->first();
-
         /*  insert users   */
         $user = User::create([ 
             'name' => 'admin',
@@ -31,8 +28,10 @@ class UsersSeeder extends Seeder
         ]);
         
         $user->assignRole($role_admin);
-
+        
         /*
+        $numberOfUsers = 10;
+        $faker = Faker::create();
         for ($i = 0; $i<$numberOfUsers; $i++) {
             $user = User::create([ 
                 'name' => $faker->name(),

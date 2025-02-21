@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             $this->call(RolesSeeder::class);
         }
 
-        $this->call('UsersSeeder');
+        $this->call(UsersSeeder::class);
 
         if (!Color::first()) {
             $this->call(ColorsSeeder::class);
