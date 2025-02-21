@@ -28,6 +28,8 @@ class Product extends Model
         'is_regular',
         'gender',
         'price',
+        'price2',
+        'price3',
         'is_child_size',
         'stock_depot',
         'stock_local',
