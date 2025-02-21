@@ -10,11 +10,11 @@ class ImageService
     /**
      * Almacena una imagen un disco especificado por parametro
      */
-    public static function save($disk, $file)
+    public static function save($disk, $file , $extension = 'jpg')
     {
         if ($file) {
-            $image = Image::make($file)->encode('jpg',80);
-            $filename = $disk . '_' . time() . '_' . uniqid() . '.jpg';
+            $image = Image::make($file)->encode($extension,80);
+            $filename = $disk . '_' . time() . '_' . uniqid() . '.' . $extension;
             Storage::disk($disk)->put($filename, $image);
 
             return $filename;

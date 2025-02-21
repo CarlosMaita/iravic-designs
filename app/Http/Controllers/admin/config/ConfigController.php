@@ -58,7 +58,8 @@ class ConfigController extends Controller
             }
             // guardar la nueva imagen
             $file = $request->file('logo_img');
-            $url = ImageService::save($this->filedisk, $file);
+            $extension = $file->getClientOriginalExtension();
+            $url = ImageService::save($this->filedisk, $file, $extension);
             $logo_img->value = !empty($url) ? $url : '';
             $logo_img->save();
         } 
