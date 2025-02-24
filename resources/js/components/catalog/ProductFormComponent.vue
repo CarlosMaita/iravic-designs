@@ -229,7 +229,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label :for="`size-${index}-${index_size}`">Talla <b>#{{ (index_size + 1)}}</b>  <button class="btn btn-sm btn-danger" type="button" @click="removeSize(index_size, index, size.id)"><i class="fas fa-trash-alt"></i></button></label>
                                             <v-select placeholder="Seleccionar"
@@ -242,10 +242,22 @@
                                             <input type="hidden" :name="getCombinationInputName('sizes', size, index, index_size)" v-model="combinations[index].sizes[index_size].size_id">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label :for="`price-${index}-${index_size}`">Precio</label>
                                             <input class="form-control" :id="`price-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices', size, index, index_size)" v-model="combination.sizes[index_size].price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label :for="`price2-${index}-${index_size}`">Precio 2</label>
+                                            <input class="form-control" :id="`price2-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices2', size, index, index_size)" v-model="combination.sizes[index_size].price2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label :for="`price3-${index}-${index_size}`">Precio 3</label>
+                                            <input class="form-control" :id="`price3-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices3', size, index, index_size)" v-model="combination.sizes[index_size].price3">
                                         </div>
                                     </div>
                                 </div>
@@ -479,8 +491,8 @@
                                         size_id: combination.size_id,
                                         size_prop: combination.size,
                                         price: combination.price,
-                                        price3: combination.price2,
-                                        price2: combination.price3,
+                                        price2: combination.price2,
+                                        price3: combination.price3,
                                         stock_depot: combination.stock_depot,
                                         stock_local: combination.stock_local,
                                         stock_truck: combination.stock_truck
@@ -496,6 +508,8 @@
                                 size_id: combination.size_id,
                                 size_prop: combination.size,
                                 price: combination.price,
+                                price2: combination.price2,
+                                price3: combination.price3,
                                 stock_depot: combination.stock_depot,
                                 stock_local: combination.stock_local,
                                 stock_truck: combination.stock_truck
