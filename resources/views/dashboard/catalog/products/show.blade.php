@@ -417,10 +417,22 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Precio</label>
                                             <input class="form-control" value="{{ $product->regular_price_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Precio 2</label>
+                                            <input class="form-control" value="{{ $product->regular_price2_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Precio 3</label>
+                                            <input class="form-control" value="{{ $product->regular_price3_str }}" readOnly>
                                         </div>
                                     </div>
                                 </div>

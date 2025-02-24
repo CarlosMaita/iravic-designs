@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,10 @@ class Product extends Model
         'real_code',
         'regular_price',
         'regular_price_str',
+        'regular_price2',
+        'regular_price2_str',
+        'regular_price3',
+        'regular_price3_str',
         'stock_user',
         'stock_total'
     ];
@@ -174,7 +179,17 @@ class Product extends Model
      */
     public function getRegularPriceAttribute()
     {
-        return $this->getRegularPrice();
+        return  $this->price ? $this->price : $this->product_parent->price ?? 0;
+    }
+
+    public function getRegularPrice2Attribute()
+    {
+        return  $this->price2 ? $this->price2 : $this->product_parent->price2 ?? 0;
+    }
+
+    public function getRegularPrice3Attribute()
+    {
+        return  $this->price3 ? $this->price3 : $this->product_parent->price3 ?? 0;
     }
     
     /**
@@ -182,7 +197,17 @@ class Product extends Model
      */
     public function getRegularPriceStrAttribute()
     {
-        return '$ ' . number_format($this->regular_price, 2, '.', ',');
+        return  FormatHelper::formatCurrency($this->regular_price);
+    }
+
+    public function getRegularPrice2StrAttribute()
+    {
+        return  FormatHelper::formatCurrency($this->regular_price2);
+    }
+
+    public function getRegularPrice3StrAttribute()
+    {
+        return  FormatHelper::formatCurrency($this->regular_price3);
     }
 
     /**
@@ -279,13 +304,7 @@ class Product extends Model
         $this->stocks_history()->create($attributes);
     }
 
-    /**
-     * Retorna el precio del producto. Si es combinancion, devolvera su precio si lo tiene, sino, devuelve el del producto base
-     */
-    public function getRegularPrice()
-    {
-        return $this->price ? $this->price : $this->product_parent->price;
-    }
+  
 
     /**
      * Agrega/Devuelve cantidad devuelta, al stock asociado al usuario logueado.

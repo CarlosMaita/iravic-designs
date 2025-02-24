@@ -85,10 +85,22 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="price">Precio</label>
                             <input class="form-control" name="price" type="number" min="0" step="any" v-model="product.price">
+                        </div>
+                    </div>
+                    <div  class="col-4">
+                        <div class="form-group">
+                            <label for="price2">Precio 2</label>
+                            <input class="form-control" name="price2" type="number" min="0" step="any" v-model="product.price2">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="price3">Precio 3</label>
+                            <input class="form-control" name="price3" type="number" min="0" step="any" v-model="product.price3">
                         </div>
                     </div>
                 </div>
@@ -467,6 +479,8 @@
                                         size_id: combination.size_id,
                                         size_prop: combination.size,
                                         price: combination.price,
+                                        price3: combination.price2,
+                                        price2: combination.price3,
                                         stock_depot: combination.stock_depot,
                                         stock_local: combination.stock_local,
                                         stock_truck: combination.stock_truck
@@ -570,6 +584,8 @@
                             size_prop: null,
                             code: null,
                             price: null,
+                            price2: null,
+                            price3: null,
                             stock_depot: null,
                             stock_local: null,
                             stock_truck: null,
@@ -592,6 +608,8 @@
                             size_id: null,
                             size_prop: null,
                             price: null,
+                            price2: null,
+                            price3: null,
                             stock_depot: null,
                             stock_local: null,
                             stock_truck: null,
