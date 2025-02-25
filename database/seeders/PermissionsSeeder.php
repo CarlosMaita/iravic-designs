@@ -548,6 +548,13 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            [
+                'name'         => 'prices-per-method-payment',
+                'display_name' => 'Precios por Método de Pago',
+                'description'  => 'Precios por Método de Pago',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
 
