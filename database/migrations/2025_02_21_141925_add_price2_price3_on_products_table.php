@@ -14,8 +14,8 @@ class AddPrice2Price3OnProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->float('price2', 12, 2)->nullable();
-            $table->float('price3', 12, 2)->nullable();
+            $table->float('price_card_credit', 12, 2)->nullable(); //precio por tarjeta de credito
+            $table->float('price_credit', 12, 2)->nullable(); //precio por credito
         });
     }
 
@@ -27,8 +27,8 @@ class AddPrice2Price3OnProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('price2');
-            $table->dropColumn('price3');
+            $table->dropColumn('price_card_credit');
+            $table->dropColumn('price_credit');
         });
     }
 }

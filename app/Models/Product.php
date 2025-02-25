@@ -29,8 +29,8 @@ class Product extends Model
         'is_regular',
         'gender',
         'price',
-        'price2',
-        'price3',
+        'price_card_credit',
+        'price_credit',
         'is_child_size',
         'stock_depot',
         'stock_local',
@@ -47,10 +47,10 @@ class Product extends Model
         'real_code',
         'regular_price',
         'regular_price_str',
-        'regular_price2',
-        'regular_price2_str',
-        'regular_price3',
-        'regular_price3_str',
+        'regular_price_card_credit',
+        'regular_price_card_credit_str',
+        'regular_price_credit',
+        'regular_price_credit_str',
         'stock_user',
         'stock_total'
     ];
@@ -182,14 +182,14 @@ class Product extends Model
         return  $this->price ? $this->price : $this->product_parent->price ?? 0;
     }
 
-    public function getRegularPrice2Attribute()
+    public function getRegularPriceCardCreditAttribute()
     {
-        return  $this->price2 ? $this->price2 : $this->product_parent->price2 ?? 0;
+        return  $this->price_card_credit ? $this->price_card_credit : $this->product_parent->price_card_credit ?? 0;
     }
 
-    public function getRegularPrice3Attribute()
+    public function getRegularPriceCreditAttribute()
     {
-        return  $this->price3 ? $this->price3 : $this->product_parent->price3 ?? 0;
+        return  $this->price_credit ? $this->price_credit : $this->product_parent->price_credit ?? 0;
     }
     
     /**
@@ -200,14 +200,14 @@ class Product extends Model
         return  FormatHelper::formatCurrency($this->regular_price);
     }
 
-    public function getRegularPrice2StrAttribute()
+    public function getRegularPriceCardCreditStrAttribute()
     {
-        return  FormatHelper::formatCurrency($this->regular_price2);
+        return  FormatHelper::formatCurrency($this->regular_price_card_credit);
     }
 
-    public function getRegularPrice3StrAttribute()
+    public function getRegularPriceCreditStrAttribute()
     {
-        return  FormatHelper::formatCurrency($this->regular_price3);
+        return  FormatHelper::formatCurrency($this->regular_price_credit);
     }
 
     /**
