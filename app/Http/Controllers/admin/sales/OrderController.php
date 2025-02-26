@@ -293,7 +293,14 @@ class OrderController extends Controller
             foreach ($request->products as $product_id) {
                 if ($product = $this->productRepository->find($product_id)) {
                     if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
-                        $subtotal += ($product->regular_price * $request->qtys[$product_id]);
+
+                        $regular_price =  $product->regular_price; // Precio regular por defecto
+
+                        if ($request->payment_method == "card" || $request->payment_method == "credit") {
+                            $regular_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                        }
+                        
+                        $subtotal += ($regular_price * $request->qtys[$product_id]);
                     }
                 }
             }

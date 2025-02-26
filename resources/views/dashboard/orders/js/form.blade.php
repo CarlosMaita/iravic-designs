@@ -26,6 +26,7 @@
         let datatable_products_resume = $('#datatable_products_resume');
         let discount_to_apply = 0;
         let positive_balance_numeric = 0;
+        let payment_method_selected = 'cash';
 
         setDatePicker();
         select_customer.select2({
@@ -59,7 +60,7 @@
 
             var form = $('#form-orders')[0];
             var formData = new FormData(form);
-            
+
             $.ajax({
                     url: FORM_RESOURCE_ORDERS.attr('action'),
                     type: FORM_RESOURCE_ORDERS.attr('method'),
@@ -300,23 +301,31 @@
         /**
          * Retorna el total de la venta
          */
-        function getOrderTotal() {
+        function getOrderTotal( ) {
             var subtotal = 0,
                 total = 0;
 
             $('.input-product-qty').not("tr.child .input-product-qty").each(function(index, item) {
-                var price = Number($(item).data('price')),
-                    val = Number(item.value);
+                
+                const price = $(item).data('price'),
+                      priceCardCredit = $(item).data('price-card-credit'),
+                      priceCredit = $(item).data('price-credit'),
+                      val = Number(item.value);
+                let finalPrice = price;
+                if(payment_method_selected == "card") {
+                    finalPrice = priceCardCredit;
+                } else if(payment_method_selected == "credit") {
+                    finalPrice = priceCredit;
+                }
+                
 
-                subtotal += (price * val);
+                subtotal += (finalPrice * val);
             });
 
             return {
                 'subtotal': subtotal,
                 'total'   : subtotal - discount_to_apply - positive_balance_numeric
             };
-
-            return total;
         }
 
         /**
@@ -549,7 +558,7 @@
                 product.size ? product.size.name : '-',
                 product.regular_price_str,
                 product.stock_user,
-                `<input name="qtys[${product.id}]" class="form-control input-product-qty" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-name="${product.name}" data-price="${product.regular_price}" data-stock="${product.stock_user}" value="${value}">`,
+                `<input name="qtys[${product.id}]" class="form-control input-product-qty" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-name="${product.name}" data-price="${product.regular_price}" data-price-card-credit="${product.regular_price_card_credit}" data-price-credit="${product.regular_price_credit}" data-stock="${product.stock_user}" value="${value}">`,
                 `<input type="hidden" name="products[]" value="${product.id}">
                 <button type="button" data-id="${product.id}" data-name="${product.name}" class="btn btn-sm btn-danger btn-action-icon remove-product" title="Eliminar" data-toggle="tooltip" style="width: auto;"><i class="fas fa-trash-alt"></i></button>`
             ]).draw(false);
@@ -571,6 +580,7 @@
 
             $(row).addClass(`tr-product-${product.id}`);
         }
+        
 
         /**
          * Retorna el producto seleccionado a agregar a la venta del array de productos del cliente seleccionado
@@ -915,6 +925,9 @@
             $(this).addClass('selected');
             $(this).find('input').prop("checked", true);
             $(this).data('value') == 'credit' ? $('#credit-info').removeClass('d-none') : $('#credit-info').addClass('d-none');
+            // actualizar el metodo de pago
+            payment_method_selected = $(this).data('value');
+            updateOrderTotal();
         });
 
         /**

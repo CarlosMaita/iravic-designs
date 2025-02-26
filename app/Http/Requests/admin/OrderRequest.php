@@ -127,8 +127,8 @@ class OrderRequest extends FormRequest
                 'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0, 
                 'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
                 'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0,
-                'discount'          => $totals['discount'],
                 'subtotal'          => $totals['subtotal'],
+                'discount'          => $totals['discount'],
                 'total'             => $totals['total']
             ]);
         }
@@ -166,14 +166,21 @@ class OrderRequest extends FormRequest
         foreach ($this->products as $product_id) {
             if ($product = $this->productRepository->find($product_id)) {
                 if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
-                    $subtotal += ($product->regular_price * $this->qtys[$product_id]);
+
+                    $regular_price =  $product->regular_price; // Precio regular por defecto
+
+                    if ($this->payment_method == "card" || $this->payment_method == "credit") {
+                        $regular_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                    }
+
+                    $subtotal += ($regular_price * $this->qtys[$product_id]);
                 }
             }
         }
 
         return [
-            'discount' => $discount,
             'subtotal' => $subtotal,
+            'discount' => $discount,
             'total' => $subtotal - $discount
         ];
     }
