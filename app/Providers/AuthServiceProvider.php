@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Category'               => 'App\Policies\CategoryPolicy',
         'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
         'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
+        'App\Models\Credit'                  => 'App\Policies\CreditPolicy',
         'App\Models\Debt'                   => 'App\Policies\DebtPolicy',
         'App\Models\Order'                  => 'App\Policies\OrderPolicy',
         'App\Models\Payment'                => 'App\Policies\PaymentPolicy',
@@ -45,7 +46,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function (User $user) {
-            if (!empty(array_intersect(array('superadmin', 'admin'), $user->roles->pluck('name')->toArray()))) {
+            if (!empty(array_intersect(array('superadmin'), $user->roles->pluck('name')->toArray()))) {
                 return true;
             }
         });
@@ -60,6 +61,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('sort-zones', function ($user) {
             return $user->permissions()->contains('sort-zones');
+        });
+
+        Gate::define('prices-per-method-payment', function ($user) {
+            return $user->permissions()->contains('prices-per-method-payment');
         });
     }
 }

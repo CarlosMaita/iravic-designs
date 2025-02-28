@@ -168,11 +168,11 @@ class OrderRequest extends FormRequest
                 if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
 
                     $regular_price =  $product->regular_price; // Precio regular por defecto
-
-                    if ($this->payment_method == "card" || $this->payment_method == "credit") {
-                        $regular_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                    if(auth()->user()->can('prices-per-method-payment') ) {
+                        if ($this->payment_method == "card" || $this->payment_method == "credit") {
+                            $regular_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                        }
                     }
-
                     $subtotal += ($regular_price * $this->qtys[$product_id]);
                 }
             }

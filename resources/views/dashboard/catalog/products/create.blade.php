@@ -18,12 +18,14 @@
                                     v-bind:colors="{{ json_encode($colors) }}"
                                     v-bind:genders="{{ json_encode($genders) }}"
                                     v-bind:sizes="{{ json_encode($sizes) }}"
+                                    v-bind:images="{{ json_encode($product->images) }}"
                                     v-bind:type_sizes="{{ json_encode($typeSizes) }}"
                                     v-bind:temp_code="{{ json_encode($tempCode) }}"
                                     url-products="{{ route('productos.index') }}"
                                     url-products-combinations="{{ route('productos.delete_combinations') }}"
                                     url-resource= "{{ route('producto-imagen.store') }}"
                                     url-delete-resource= "{{ route('producto-imagen.dropzone.destroy') }}"
+                                    :can-prices-per-method-payment="{{ auth()->user()->can('prices-per-method-payment') ? 'true' : 'false' }}"
                                 ></product-form>
                                 {{--  --}}
                                 <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>

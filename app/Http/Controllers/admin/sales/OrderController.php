@@ -295,9 +295,10 @@ class OrderController extends Controller
                     if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
 
                         $regular_price =  $product->regular_price; // Precio regular por defecto
-
-                        if ($request->payment_method == "card" || $request->payment_method == "credit") {
-                            $regular_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                        if(auth()->user()->can('prices-per-method-payment') ) {
+                            if ($request->payment_method == "card" || $request->payment_method == "credit") {
+                                $regular_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                            }
                         }
                         
                         $subtotal += ($regular_price * $request->qtys[$product_id]);

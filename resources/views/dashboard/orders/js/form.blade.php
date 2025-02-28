@@ -8,6 +8,8 @@
         const URL_PRODUCTS = "{{ route('productos.index') }}";
         const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
         const URL_CUSTOMER = "{{ route('clientes.index') }}";
+        const CAN_PRICES_PER_METHOD_PAYMENT = "{{ empty(auth()->user()->can('prices-per-method-payment')) ? 0:1}}"; 
+        console.log(CAN_PRICES_PER_METHOD_PAYMENT);
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');
@@ -312,10 +314,12 @@
                       priceCredit = $(item).data('price-credit'),
                       val = Number(item.value);
                 let finalPrice = price;
-                if(payment_method_selected == "card") {
-                    finalPrice = priceCardCredit;
-                } else if(payment_method_selected == "credit") {
-                    finalPrice = priceCredit;
+                if (CAN_PRICES_PER_METHOD_PAYMENT == true) {
+                    if(payment_method_selected == "card") {
+                        finalPrice = priceCardCredit;
+                    } else if(payment_method_selected == "credit") {
+                        finalPrice = priceCredit;
+                    }
                 }
                 
 

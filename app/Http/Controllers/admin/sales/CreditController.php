@@ -25,9 +25,12 @@ class CreditController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
-                        $btn .= '<a href="'. route('creditos.show', $row).'" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        $btn .= '<a href="'. route('creditos.edit', $row).'" class="btn btn-sm btn-warning btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-collection" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                        if( auth()->user()->can('view', $row) )
+                            $btn .= '<a href="'. route('creditos.show', $row).'" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        if( auth()->user()->can('update', $row) )
+                            $btn .= '<a href="'. route('creditos.edit', $row).'" class="btn btn-sm btn-warning btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
+                        if( auth()->user()->can('delete', $row) )
+                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-collection" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
 
                         return $btn;
                     })

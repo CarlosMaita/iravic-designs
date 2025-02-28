@@ -423,6 +423,7 @@
                                             <input class="form-control" value="{{ $product->regular_price_str }}" readOnly>
                                         </div>
                                     </div>
+                                    @can('prices-per-method-payment')
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Precio con Tarjeta de Credito</label>
@@ -435,6 +436,7 @@
                                             <input class="form-control" value="{{ $product->regular_price_credit_str }}" readOnly>
                                         </div>
                                     </div>
+                                    @endcan
                                 </div>
                                 <!--  -->
                                 <br>
@@ -648,6 +650,7 @@
                                                                 <input class="form-control" value="{{ $product_combination->regular_price_str }}" readOnly>
                                                             </div>
                                                         </div>
+                                                        @can('prices-per-method-payment')
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label>Precio con Tarjeta de Credito</label>
@@ -660,6 +663,7 @@
                                                                 <input class="form-control" value="{{ $product_combination->regular_price_credit_str }}" readOnly>
                                                             </div>
                                                         </div>
+                                                        @endcan
                                                     </div>
                                                     <!--  -->
                                                     <div class="row">
