@@ -278,9 +278,8 @@
                     let telephone = res.telephone;
 
                     $customer_balance = balance;
-                    positive_balance_numeric = balance_numeric > 0 ? balance_numeric : 0;
-
                     $customer_max_credit = maxcredit;
+                    positive_balance_numeric = balance_numeric > 0 ? balance_numeric : 0;
 
                     container.find('#selected-customer-address').text(address);
                     container.find('#selected-customer-balance').text(balance);
@@ -328,7 +327,8 @@
 
             return {
                 'subtotal': subtotal,
-                'total'   : subtotal - discount_to_apply - positive_balance_numeric
+                'total'   : subtotal - discount_to_apply ,
+                'total_to_collection': subtotal - discount_to_apply - positive_balance_numeric
             };
         }
 
@@ -339,8 +339,16 @@
         function updateOrderTotal() {
             var totals = getOrderTotal();
             $('.subtotal').text(`$ ${replaceNumberWithCommas(totals.subtotal)}`);
-            $('.total').text(`$ ${replaceNumberWithCommas(totals.total)}`);
-            $("#total-order").val(totals.total);
+            $('.total').text(`$ ${ replaceNumberWithCommas(totals.total) }`);
+            if ( positive_balance_numeric > 0 ) {
+              
+                const formattedTotalToCollection =  totals.total_to_collection >= 0 ?  replaceNumberWithCommas(totals.total_to_collection) :  `0,00 (${replaceNumberWithCommas(totals.total_to_collection)})`; ;
+                $('.total_to_collection').text(`$ ${formattedTotalToCollection}`);
+                $('.total_to_collection').addClass('text-danger');
+            }else{
+                $('.total_to_collection').addClass('d-none');
+            }
+            $("#total-to-collection").val( totals.total_to_collection);
         }
 
         /**
@@ -929,6 +937,13 @@
             $(this).addClass('selected');
             $(this).find('input').prop("checked", true);
             $(this).data('value') == 'credit' ? $('#credit-info').removeClass('d-none') : $('#credit-info').addClass('d-none');
+            if (positive_balance_numeric > 0 && $(this).data('value') == 'credit') {
+                $('.positive-balance').parent().removeClass('d-none');
+                $('.total_to_collection').parent().removeClass('d-none');
+            }else{
+                $('.positive-balance').parent().addClass('d-none');
+                $('.total_to_collection').parent().addClass('d-none');
+            }
             // actualizar el metodo de pago
             payment_method_selected = $(this).data('value');
             updateOrderTotal();

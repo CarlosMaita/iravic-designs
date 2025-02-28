@@ -37,7 +37,7 @@ export default {
   }),
   methods: {
     calculateQuotas() {
-      this.totalOrder = Number(document.getElementById('total-order').value);
+      this.totalOrder = Number(document.getElementById('total-to-collection').value);
       if (this.totalOrder <= 0 || this.amountQuotas <= 0) {
         this.Quotas = 0;
         return;

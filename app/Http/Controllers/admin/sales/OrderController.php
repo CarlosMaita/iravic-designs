@@ -211,7 +211,7 @@ class OrderController extends Controller
                     'start_date' => $start_date,
                     'amount_quotas' => $amount_quotas,
                     'quota' => $quota,
-                    'total' => $request->total,   
+                    'total' => $request->total_to_collection,   
                     'order_id' => $order->id,   
                     'customer_id' => $request->customer_id,
                 );

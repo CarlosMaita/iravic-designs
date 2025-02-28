@@ -108,11 +108,12 @@ class OrderRequest extends FormRequest
                 $balance = $customer->getBalance();
                 $total_sale_with_discount = $this->getTotal()['total'];
                 $max_credit = $customer->max_credit ; 
-                $avaible_credit = $max_credit + $balance >= 0 ? $max_credit + $balance : 0;
+                $available_credit = $max_credit + $balance >= 0 ? $max_credit + $balance : 0;
+
 
                 if (!$this->canBuyOnCredit($balance, $total_sale_with_discount , $max_credit)){
                     $validator->errors()->add('payment_method', 'El usuario no cuenta con credito disponible para hacer la venta.
-                     Su compra debe ser menor o igual a $'. number_format($avaible_credit, 2, '.', ',') );
+                     Su compra debe ser menor o igual a $'. number_format($available_credit, 2, '.', ',') );
                 }
 
             });
@@ -122,14 +123,15 @@ class OrderRequest extends FormRequest
             $totals = $this->getTotal();
 
             $this->merge([
-                'date'              => now(),
-                'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
-                'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0, 
-                'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
-                'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0,
-                'subtotal'          => $totals['subtotal'],
-                'discount'          => $totals['discount'],
-                'total'             => $totals['total']
+                'date'                  => now(),
+                'payed_bankwire'        => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
+                'payed_card'            => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0, 
+                'payed_cash'            => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
+                'payed_credit'          => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0,
+                'subtotal'              => $totals['subtotal'],
+                'discount'              => $totals['discount'],
+                'total'                 => $totals['total'],
+                'total_to_collection'   => $totals['total_to_collection'],
             ]);
         }
     }
@@ -178,11 +180,37 @@ class OrderRequest extends FormRequest
             }
         }
 
+        $total_to_pay = $subtotal - $discount; // El total con descuento
+        $total_to_collection = $this->getTotalToCollection($total_to_pay); // El total que se le cobrara al cliente es por default el total
+        
         return [
             'subtotal' => $subtotal,
             'discount' => $discount,
-            'total' => $subtotal - $discount
+            'total' => $total_to_pay,
+            'total_to_collection' => $total_to_collection
         ];
+    }
+
+
+    /**
+     * Calcula el total a cobrar al cliente, teniendo en cuenta si el metodo de pago es credito.
+     * Si el metodo de pago es credito y el cliente tiene un balance positivo, se le restara el balance al total a cobrar.
+     * @param int $total_to_pay El total a cobrar sin tener en cuenta el balance del cliente.
+     * @return int El total a cobrar al cliente.
+     */
+    private function getTotalToCollection($total_to_pay)
+    {
+        if ($this->payment_method != "credit") {
+            return $total_to_pay; 
+        }
+        // si es credito, el total a cobrar sera el total mas el balance positivo
+        $balance = Customer::find($this->customer_id)->getBalance();
+        if ( $balance <= 0 ) {
+            return $total_to_pay;
+        }
+        
+        $total_to_collection = max(0,  $total_to_pay - $balance);
+        return $total_to_collection;
     }
 
      /**
