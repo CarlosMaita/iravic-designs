@@ -417,12 +417,26 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Precio</label>
                                             <input class="form-control" value="{{ $product->regular_price_str }}" readOnly>
                                         </div>
                                     </div>
+                                    @can('prices-per-method-payment')
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Precio con Tarjeta de Credito</label>
+                                            <input class="form-control" value="{{ $product->regular_price_card_credit_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Precio con Credito</label>
+                                            <input class="form-control" value="{{ $product->regular_price_credit_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    @endcan
                                 </div>
                                 <!--  -->
                                 <br>
@@ -602,38 +616,54 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Color</label>
                                                                 <input class="form-control" value="{{ optional($product_combination->color)->name }}" readOnly>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Color en texto</label>
                                                                 <input class="form-control" value="{{ $product_combination->text_color }}" readOnly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label>Talla</label>
-                                                                <input class="form-control" value="{{ optional($product_combination->size)->name }}" readOnly>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
+                                                                <label>Talla</label>
+                                                                <input class="form-control" value="{{ optional($product_combination->size)->name }}" readOnly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
                                                                 <label>Código</label>
                                                                 <input class="form-control" value="{{ $product_combination->real_code }}" readOnly>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label>Precio</label>
                                                                 <input class="form-control" value="{{ $product_combination->regular_price_str }}" readOnly>
                                                             </div>
                                                         </div>
+                                                        @can('prices-per-method-payment')
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Precio con Tarjeta de Credito</label>
+                                                                <input class="form-control" value="{{ $product_combination->regular_price_card_credit_str }}" readOnly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Precio con Credito</label>
+                                                                <input class="form-control" value="{{ $product_combination->regular_price_credit_str }}" readOnly>
+                                                            </div>
+                                                        </div>
+                                                        @endcan
                                                     </div>
                                                     <!--  -->
                                                     <div class="row">

@@ -223,9 +223,10 @@
                                             <hr>
                                             <p class="font-weight-bold text-dark mb-1">Subtotal: <span class="subtotal">$ 0.00</span></p>
                                             <p class="font-weight-bold text-dark mb-1">Descuento: <span class="discount">$ 0.00</span></p>
-                                            <p class="font-weight-bold text-dark mb-1">Saldo a favor: <span class="positive-balance">$ 0.00</span></p>
-                                            <p class="font-weight-bold text-dark mb-1">Total: <span class="total">$ 0.00</span></p>
-                                            <input type="hidden" id="total-order" value="0">
+                                            <p class="font-weight-bold text-dark mb-1">Total a pagar: <span class="total">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-danger mb-1 d-none">Crédito a favor del cliente: <span class="positive-balance">$ 0.00</span></p>
+                                            <p class="font-weight-bold text-danger mb-1 d-none">Total a cobrar: <span class="total_to_collection">$ 0.00</span></p>
+                                            <input type="hidden" id="total-to-collection"  value="0">
                                         </div>
                                     </div>
                                     {{-- Informacion de credito --}}

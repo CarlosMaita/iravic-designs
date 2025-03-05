@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,8 @@ class Product extends Model
         'is_regular',
         'gender',
         'price',
+        'price_card_credit',
+        'price_credit',
         'is_child_size',
         'stock_depot',
         'stock_local',
@@ -44,6 +47,10 @@ class Product extends Model
         'real_code',
         'regular_price',
         'regular_price_str',
+        'regular_price_card_credit',
+        'regular_price_card_credit_str',
+        'regular_price_credit',
+        'regular_price_credit_str',
         'stock_user',
         'stock_total'
     ];
@@ -172,7 +179,17 @@ class Product extends Model
      */
     public function getRegularPriceAttribute()
     {
-        return $this->getRegularPrice();
+        return  $this->price ? $this->price : $this->product_parent->price ?? 0;
+    }
+
+    public function getRegularPriceCardCreditAttribute()
+    {
+        return  $this->price_card_credit ? $this->price_card_credit : $this->product_parent->price_card_credit ?? $this->price;
+    }
+
+    public function getRegularPriceCreditAttribute()
+    {
+        return  $this->price_credit ? $this->price_credit : $this->product_parent->price_credit ?? $this->price;
     }
     
     /**
@@ -180,7 +197,17 @@ class Product extends Model
      */
     public function getRegularPriceStrAttribute()
     {
-        return '$ ' . number_format($this->regular_price, 2, '.', ',');
+        return  FormatHelper::formatCurrency($this->regular_price);
+    }
+
+    public function getRegularPriceCardCreditStrAttribute()
+    {
+        return  FormatHelper::formatCurrency($this->regular_price_card_credit);
+    }
+
+    public function getRegularPriceCreditStrAttribute()
+    {
+        return  FormatHelper::formatCurrency($this->regular_price_credit);
     }
 
     /**
@@ -277,13 +304,7 @@ class Product extends Model
         $this->stocks_history()->create($attributes);
     }
 
-    /**
-     * Retorna el precio del producto. Si es combinancion, devolvera su precio si lo tiene, sino, devuelve el del producto base
-     */
-    public function getRegularPrice()
-    {
-        return $this->price ? $this->price : $this->product_parent->price;
-    }
+  
 
     /**
      * Agrega/Devuelve cantidad devuelta, al stock asociado al usuario logueado.

@@ -90,4 +90,17 @@ class ProductPolicy
     {
         //
     }
+
+
+    /**
+     * Determine whether the user can access prices per method payment.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+
+    public function pricesPerMethodPayment(User $user)
+    {
+        return $user->permissions()->contains('prices-per-method-payment');
+    }
 }

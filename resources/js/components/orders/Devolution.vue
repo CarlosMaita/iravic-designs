@@ -294,7 +294,7 @@
                                                 </div>
                                             </div>
                                             <!-- frequency collection component -->
-                                            <input type="hidden" id="total-order" :value="totalCancelar">
+                                            <input type="hidden" id="total-to-collection" :value="totalCancelar">
                                             <credit-information-component v-if="paymentMethodSelected  == 'credit'"></credit-information-component>
                                             <!-- end frequency collection component -->
                                             <hr> 

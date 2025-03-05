@@ -85,10 +85,22 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-6">
+                    <div :class="{'col-4' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }">
                         <div class="form-group">
                             <label for="price">Precio</label>
                             <input class="form-control" name="price" type="number" min="0" step="any" v-model="product.price">
+                        </div>
+                    </div>
+                    <div v-if="canPricesPerMethodPayment" :class="{'col-4' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }"  >
+                        <div class="form-group">
+                            <label for="price_card_credit">Precio con Tarjeta de Credito</label>
+                            <input class="form-control" name="price_card_credit" type="number" min="0" step="any" v-model="product.price_card_credit">
+                        </div>
+                    </div>
+                    <div v-if="canPricesPerMethodPayment" :class="{'col-4' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }" ref="">
+                        <div class="form-group">
+                            <label for="price_credit">Precio con Credito</label>
+                            <input class="form-control" name="price_credit" type="number" min="0" step="any" v-model="product.price_credit">
                         </div>
                     </div>
                 </div>
@@ -217,7 +229,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div :class="{'col-md-3' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }">
                                         <div class="form-group">
                                             <label :for="`size-${index}-${index_size}`">Talla <b>#{{ (index_size + 1)}}</b>  <button class="btn btn-sm btn-danger" type="button" @click="removeSize(index_size, index, size.id)"><i class="fas fa-trash-alt"></i></button></label>
                                             <v-select placeholder="Seleccionar"
@@ -230,10 +242,22 @@
                                             <input type="hidden" :name="getCombinationInputName('sizes', size, index, index_size)" v-model="combinations[index].sizes[index_size].size_id">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div :class="{'col-md-3' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }">
                                         <div class="form-group">
                                             <label :for="`price-${index}-${index_size}`">Precio</label>
                                             <input class="form-control" :id="`price-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices', size, index, index_size)" v-model="combination.sizes[index_size].price">
+                                        </div>
+                                    </div>
+                                    <div v-if="canPricesPerMethodPayment" class="col-md-3">
+                                        <div class="form-group">
+                                            <label :for="`price_card_credit-${index}-${index_size}`">Precio con tarjeta de credito</label>
+                                            <input class="form-control" :id="`price_card_credit-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices_card_credit', size, index, index_size)" v-model="combination.sizes[index_size].price_card_credit">
+                                        </div>
+                                    </div>
+                                    <div v-if="canPricesPerMethodPayment" class="col-md-3">
+                                        <div class="form-group">
+                                            <label :for="`price_credit-${index}-${index_size}`">Precio con credito</label>
+                                            <input class="form-control" :id="`price_credit-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices_credit', size, index, index_size)" v-model="combination.sizes[index_size].price_credit">
                                         </div>
                                     </div>
                                 </div>
@@ -311,6 +335,10 @@
                 type: Array,
                 default: []
             },
+            canPricesPerMethodPayment: {
+                type: Boolean,
+                default : false
+            },
             colors: {
                 type: Array,
                 default: []
@@ -326,6 +354,10 @@
             images: {
                 type: Array,
                 default: []
+            },
+            is_updating: {
+                type: Boolean,
+                default: false
             },
             type_sizes: {
                 type: Array,
@@ -351,10 +383,7 @@
                 type: String,
                 default: "",
             },
-            is_updating: {
-                type: Boolean,
-                default: false
-            }
+            
         },
         data: () => ({
             brand: null,
@@ -467,6 +496,8 @@
                                         size_id: combination.size_id,
                                         size_prop: combination.size,
                                         price: combination.price,
+                                        price_card_credit: combination.price_card_credit,
+                                        price_credit: combination.price_credit,
                                         stock_depot: combination.stock_depot,
                                         stock_local: combination.stock_local,
                                         stock_truck: combination.stock_truck
@@ -482,6 +513,8 @@
                                 size_id: combination.size_id,
                                 size_prop: combination.size,
                                 price: combination.price,
+                                price_card_credit: combination.price_card_credit,
+                                price_credit: combination.price_credit,
                                 stock_depot: combination.stock_depot,
                                 stock_local: combination.stock_local,
                                 stock_truck: combination.stock_truck
@@ -570,6 +603,8 @@
                             size_prop: null,
                             code: null,
                             price: null,
+                            price_card_credit: null,
+                            price_credit: null,
                             stock_depot: null,
                             stock_local: null,
                             stock_truck: null,
@@ -592,6 +627,8 @@
                             size_id: null,
                             size_prop: null,
                             price: null,
+                            price_card_credit: null,
+                            price_credit: null,
                             stock_depot: null,
                             stock_local: null,
                             stock_truck: null,

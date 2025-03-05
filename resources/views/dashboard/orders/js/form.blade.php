@@ -8,6 +8,8 @@
         const URL_PRODUCTS = "{{ route('productos.index') }}";
         const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
         const URL_CUSTOMER = "{{ route('clientes.index') }}";
+        const CAN_PRICES_PER_METHOD_PAYMENT = "{{ empty(auth()->user()->can('prices-per-method-payment')) ? 0:1}}"; 
+        console.log(CAN_PRICES_PER_METHOD_PAYMENT);
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');
@@ -26,6 +28,7 @@
         let datatable_products_resume = $('#datatable_products_resume');
         let discount_to_apply = 0;
         let positive_balance_numeric = 0;
+        let payment_method_selected = 'cash';
 
         setDatePicker();
         select_customer.select2({
@@ -59,7 +62,7 @@
 
             var form = $('#form-orders')[0];
             var formData = new FormData(form);
-            
+
             $.ajax({
                     url: FORM_RESOURCE_ORDERS.attr('action'),
                     type: FORM_RESOURCE_ORDERS.attr('method'),
@@ -275,9 +278,8 @@
                     let telephone = res.telephone;
 
                     $customer_balance = balance;
-                    positive_balance_numeric = balance_numeric > 0 ? balance_numeric : 0;
-
                     $customer_max_credit = maxcredit;
+                    positive_balance_numeric = balance_numeric > 0 ? balance_numeric : 0;
 
                     container.find('#selected-customer-address').text(address);
                     container.find('#selected-customer-balance').text(balance);
@@ -300,23 +302,34 @@
         /**
          * Retorna el total de la venta
          */
-        function getOrderTotal() {
+        function getOrderTotal( ) {
             var subtotal = 0,
                 total = 0;
 
             $('.input-product-qty').not("tr.child .input-product-qty").each(function(index, item) {
-                var price = Number($(item).data('price')),
-                    val = Number(item.value);
+                
+                const price = $(item).data('price'),
+                      priceCardCredit = $(item).data('price-card-credit'),
+                      priceCredit = $(item).data('price-credit'),
+                      val = Number(item.value);
+                let finalPrice = price;
+                if (CAN_PRICES_PER_METHOD_PAYMENT == true) {
+                    if(payment_method_selected == "card") {
+                        finalPrice = priceCardCredit;
+                    } else if(payment_method_selected == "credit") {
+                        finalPrice = priceCredit;
+                    }
+                }
+                
 
-                subtotal += (price * val);
+                subtotal += (finalPrice * val);
             });
 
             return {
                 'subtotal': subtotal,
-                'total'   : subtotal - discount_to_apply - positive_balance_numeric
+                'total'   : subtotal - discount_to_apply ,
+                'total_to_collection': subtotal - discount_to_apply - positive_balance_numeric
             };
-
-            return total;
         }
 
         /**
@@ -326,8 +339,16 @@
         function updateOrderTotal() {
             var totals = getOrderTotal();
             $('.subtotal').text(`$ ${replaceNumberWithCommas(totals.subtotal)}`);
-            $('.total').text(`$ ${replaceNumberWithCommas(totals.total)}`);
-            $("#total-order").val(totals.total);
+            $('.total').text(`$ ${ replaceNumberWithCommas(totals.total) }`);
+            if ( positive_balance_numeric > 0 ) {
+              
+                const formattedTotalToCollection =  totals.total_to_collection >= 0 ?  replaceNumberWithCommas(totals.total_to_collection) :  `0,00 (${replaceNumberWithCommas(totals.total_to_collection)})`; ;
+                $('.total_to_collection').text(`$ ${formattedTotalToCollection}`);
+                $('.total_to_collection').addClass('text-danger');
+            }else{
+                $('.total_to_collection').addClass('d-none');
+            }
+            $("#total-to-collection").val( totals.total_to_collection);
         }
 
         /**
@@ -549,7 +570,7 @@
                 product.size ? product.size.name : '-',
                 product.regular_price_str,
                 product.stock_user,
-                `<input name="qtys[${product.id}]" class="form-control input-product-qty" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-name="${product.name}" data-price="${product.regular_price}" data-stock="${product.stock_user}" value="${value}">`,
+                `<input name="qtys[${product.id}]" class="form-control input-product-qty" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-name="${product.name}" data-price="${product.regular_price}" data-price-card-credit="${product.regular_price_card_credit}" data-price-credit="${product.regular_price_credit}" data-stock="${product.stock_user}" value="${value}">`,
                 `<input type="hidden" name="products[]" value="${product.id}">
                 <button type="button" data-id="${product.id}" data-name="${product.name}" class="btn btn-sm btn-danger btn-action-icon remove-product" title="Eliminar" data-toggle="tooltip" style="width: auto;"><i class="fas fa-trash-alt"></i></button>`
             ]).draw(false);
@@ -571,6 +592,7 @@
 
             $(row).addClass(`tr-product-${product.id}`);
         }
+        
 
         /**
          * Retorna el producto seleccionado a agregar a la venta del array de productos del cliente seleccionado
@@ -915,6 +937,16 @@
             $(this).addClass('selected');
             $(this).find('input').prop("checked", true);
             $(this).data('value') == 'credit' ? $('#credit-info').removeClass('d-none') : $('#credit-info').addClass('d-none');
+            if (positive_balance_numeric > 0 && $(this).data('value') == 'credit') {
+                $('.positive-balance').parent().removeClass('d-none');
+                $('.total_to_collection').parent().removeClass('d-none');
+            }else{
+                $('.positive-balance').parent().addClass('d-none');
+                $('.total_to_collection').parent().addClass('d-none');
+            }
+            // actualizar el metodo de pago
+            payment_method_selected = $(this).data('value');
+            updateOrderTotal();
         });
 
         /**

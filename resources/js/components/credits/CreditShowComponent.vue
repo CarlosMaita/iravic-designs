@@ -34,8 +34,7 @@
             <th scope="col">N° Couta</th>
             <th scope="col">Fecha</th>
             <th scope="col">Monto</th>
-            <th scope="col">Completada</th>
-            <th></th>
+            <!-- <th scope="col">Completada</th> -->
           </tr>
         </thead>
         <tbody>
@@ -43,12 +42,7 @@
             <td scope="row">{{ visit.number }}</td>
             <td>{{ visit.date }}</td>
             <td>{{ replaceNumberWithCommas(visit.amount) }}</td>
-            <td>{{ visit.is_completed == 0 ? 'No' : 'Si'  }}</td>
-            <td> 
-              <a :href="urlScheduleIndex + '/' + visit.schedule_id" class="btn btn-sm btn-primary btn-action-icon" title="Ver agenda" data-toggle="tooltip">
-                <i class="fas fa-eye"></i>
-              </a>
-            </td>
+            <!-- <td>{{ visit.is_completed == 0 ? 'No' : 'Si'  }}</td> -->
           </tr>
         </tbody>
       </table>
