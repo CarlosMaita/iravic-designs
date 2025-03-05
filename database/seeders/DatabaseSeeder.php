@@ -6,6 +6,7 @@ use App\Models\Color;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Size;
+use App\Models\StoreType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -36,5 +37,9 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(BaseCategorySeeder::class);
+
+        if (!StoreType::first()) {
+            $this->call(StoreTypesSeeder::class);
+        }
     }
 }
