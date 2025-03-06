@@ -97,6 +97,27 @@
             </ul>
         </li>
     @endif
+
+    {{-- Stock Management links --}}
+    @if (
+        Auth::user()->can('viewany', App\Models\Store::class)
+    )
+    <li class="c-sidebar-nav-dropdown {{
+        $menuService->isActive($url,"/admin/almacenamiento/depositos", false, true) 
+    }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.stock') }}</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            {{-- Depositos --}}
+            @can('viewany', App\Models\Store::class)
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/almacenamiento/depositos")}}" href="{{ route('depositos.index') }}"></span>{{ __('dashboard.sidebar.stores') }}</a>
+            </li>
+            @endcan
+        </ul>
+    </li>
+    @endif
+
+
     {{-- Customer Management links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Customer::class) ||
