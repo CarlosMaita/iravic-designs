@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Role'                   => 'App\Policies\RolePolicy',
         'App\Models\Schedule'               => 'App\Policies\SchedulePolicy',
         'App\Models\Spending'               => 'App\Policies\SpendingPolicy',
+        'App\Models\Store'                  => 'App\Policies\StorePolicy',
         'App\Models\Visit'                  => 'App\Policies\VisitPolicy',
         'App\Models\Zone'                   => 'App\Policies\ZonePolicy',
         'App\User'                          => 'App\Policies\UserPolicy'

@@ -564,6 +564,35 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+             # Store
+             [
+                'name'         => 'view-store',
+                'display_name' => 'Depositos Ver',
+                'description'  => 'Depositos Ver',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'create-store',
+                'display_name' => 'Depositos Crear',
+                'description'  => 'Depositos Crear',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'update-store',
+                'display_name' => 'Depositos Editar',
+                'description'  => 'Depositos Editar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'name'         => 'delete-store',
+                'display_name' => 'Depositos Eliminar',
+                'description'  => 'Depositos Eliminar',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ];
 
 

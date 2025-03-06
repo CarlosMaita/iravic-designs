@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 d-flex  justify-content-end">
-                                    @can('create', App\Models\Stores::class)
+                                    @can('create', App\Models\Store::class)
                                     <div>
                                         <a href="{{ route('depositos.create') }}" class="btn btn-primary ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                     </div>
