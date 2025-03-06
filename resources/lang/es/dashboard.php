@@ -56,6 +56,11 @@ return [
         'inventory' => [
             'index'     => 'Listado de Inventario',
         ],
+        'stores' => [
+            'index'     => 'Listado de Depositos',
+            'create'    => 'Crear nuevo deposito',
+            'edit'      => 'Editar deposito'
+        ]
     
     ],
     'customers' => [
@@ -210,6 +215,10 @@ return [
                 'comment' => 'Comentario',
                 'picture' => 'Foto'
             ],
+            'stores' => [
+                'name' => 'Nombre',
+                'type' => 'Tipo',
+            ],
             'users' => [
                 'email' => 'Correo electrónico',
                 'name'  => 'Nombre',
@@ -352,6 +361,7 @@ return [
         'products'              => 'Productos',
         'products_transfers'    => 'Productos Transferencias',
         'settings'              => 'Configuración',
+        'stores'                => 'Depositos',
         'users'                 => 'Usuarios',
         'roles'                 => 'Roles',
         'schedules'             => 'Agendas',
