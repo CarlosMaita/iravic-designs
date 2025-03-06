@@ -43,8 +43,6 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('producto-imagen', 'ProductImageController')->only('index' , 'store', 'destroy');
         #
-        Route::resource('depositos' , 'StoreController');
-        #
         Route::post('producto-imagen-dropzone', 'ProductImageController@destroyWithRequest')->name('producto-imagen.dropzone.destroy');
         #
         Route::get('download', 'ProductController@download')->name('catalog.download');
@@ -54,6 +52,12 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::post('inventario/upload', 'InventoryController@upload')->name("catalog.inventory.upload");
      
 
+    });
+
+    # Stock Routes - Rutas de Almacenamiento
+    Route::group(['prefix' => 'almacenamiento', 'namespace' => 'stock'], function () {
+         #
+         Route::resource('depositos' , 'StoreController');
     });
 
     # Customers Routes

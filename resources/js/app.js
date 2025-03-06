@@ -35,7 +35,8 @@ Vue.prototype.$axios = window.axios;
 
 // catalog components
 Vue.component('product-form', require('./components/catalog/ProductFormComponent.vue').default);
-Vue.component('store-form', require('./components/catalog/StoreFormComponent.vue').default);
+// stock components
+Vue.component('store-form', require('./components/stock/StoreFormComponent.vue').default);
 // orders components
 Vue.component('devolution-form', require('./components/orders/Devolution.vue').default);
 Vue.component('modal-discount', require('./components/orders/ModalDiscount.vue').default);

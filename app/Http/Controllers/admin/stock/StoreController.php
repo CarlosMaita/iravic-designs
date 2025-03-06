@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\admin\catalog;
+namespace App\Http\Controllers\admin\stock;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\admin\Catalog\StoreRequest;
-use App\Models\Store;
+use App\Http\Requests\admin\stock\StoreRequest;
 use App\Models\StoreType;
 use App\Repositories\Eloquent\StoreRepository;
 use Illuminate\Http\Request;
@@ -39,13 +38,13 @@ class StoreController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('dashboard.catalog.stores.index');
+        return view('dashboard.stock.stores.index');
     }
 
     public function create()
     {   
         $storeTypeList = StoreType::all();
-        return view('dashboard.catalog.stores.create', compact('storeTypeList'));
+        return view('dashboard.stock.stores.create', compact('storeTypeList'));
     }
 
     public function store(StoreRequest $request)
@@ -53,7 +52,7 @@ class StoreController extends Controller
         try{
             
             $this->storeRepository->create($request->only('name', 'store_type_id'));
-            flash("La deposito <b>$request->name</b> ha sido creada con éxito")
+            flash("La depósito  <b>$request->name</b> ha sido creada con éxito")
                 ->success();
             return response()->json([
                 'success' => 'true',
@@ -74,13 +73,13 @@ class StoreController extends Controller
     public function edit($id){
         $store = $this->storeRepository->find($id);
         $storeTypeList = StoreType::all();
-        return view('dashboard.catalog.stores.edit', compact('store', 'storeTypeList'));
+        return view('dashboard.stock.stores.edit', compact('store', 'storeTypeList'));
     }
 
     public function update(StoreRequest $request, $id){
         try{
             $this->storeRepository->update($id, $request->only('name', 'store_type_id'));
-            flash("La deposito <b>$request->name</b> ha sido actualizada con éxito")
+            flash("La depósito <b>$request->name</b> ha sido actualizada con éxito")
                 ->success();
             return response()->json([
                 'success' => 'true',
@@ -104,7 +103,7 @@ class StoreController extends Controller
         return response()
         ->json([
             'success' => true, 
-            'message' => 'Deposito eliminado correctamente'
+            'message' => 'Depósito eliminado correctamente'
         ]);
     }   
     

@@ -61,14 +61,12 @@
         Auth::user()->can('viewany', App\Models\Brand::class) || 
         Auth::user()->can('viewany', App\Models\Category::class) || 
         Auth::user()->can('viewany', App\Models\Product::class) || 
-        Auth::user()->can('viewany', App\Models\ProductStockTransfer::class) ||
-        Auth::user()->can('viewany', App\Models\Stores::class)
+        Auth::user()->can('viewany', App\Models\ProductStockTransfer::class)
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
             $menuService->isActive($url,"/admin/catalogo/marcas", false, true) . " " . 
-            $menuService->isActive($url,"/admin/catalogo/productos", false, true) ." " .
-            $menuService->isActive($url,"/admin/catalogo/depositos", false, true) 
+            $menuService->isActive($url,"/admin/catalogo/productos", false, true)
         }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.catalog') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
@@ -84,13 +82,6 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/marcas")}}" href="{{ route('marcas.index') }}"></span>{{ __('dashboard.sidebar.brands') }}</a>
                     </li>
                 @endcan
-                {{-- Depositos --}}
-                @can('viewany', App\Models\Stores::class)
-                <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/depositos")}}" href="{{ route('depositos.index') }}"></span>{{ __('dashboard.sidebar.stores') }}</a>
-                </li>
-                @endcan
-
                 {{-- Productos --}}
                 @can('viewany', App\Models\Product::class)
                     <li class="c-sidebar-nav-item">
@@ -103,11 +94,30 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/stocks-transferencias")}}" href="{{ route('stock-transferencias.index') }}"></span>{{ __('dashboard.sidebar.products_transfers') }}</a>
                     </li>
                 @endcan
-
-               
             </ul>
         </li>
     @endif
+
+    {{-- Stock Management links --}}
+    @if (
+        Auth::user()->can('viewany', App\Models\Store::class)
+    )
+    <li class="c-sidebar-nav-dropdown {{
+        $menuService->isActive($url,"/admin/almacenamiento/depositos", false, true) 
+    }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.stock') }}</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            {{-- Depositos --}}
+            @can('viewany', App\Models\Stores::class)
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/almacenamiento/depositos")}}" href="{{ route('depositos.index') }}"></span>{{ __('dashboard.sidebar.stores') }}</a>
+            </li>
+            @endcan
+        </ul>
+    </li>
+    @endif
+
+
     {{-- Customer Management links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Customer::class) ||

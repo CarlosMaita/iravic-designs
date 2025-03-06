@@ -56,11 +56,7 @@ return [
         'inventory' => [
             'index'     => 'Listado de Inventario',
         ],
-        'stores' => [
-            'index'     => 'Listado de Depositos',
-            'create'    => 'Crear nuevo deposito',
-            'edit'      => 'Editar deposito'
-        ]
+      
     
     ],
     'customers' => [
@@ -365,6 +361,7 @@ return [
         'users'                 => 'Usuarios',
         'roles'                 => 'Roles',
         'schedules'             => 'Agendas',
+        'stock'                 => 'Almacenamiento',
         'permissions'           => 'Permisos',
         'privileges'            => 'Privilegios',
         'zones'                 => 'Zonas'
@@ -375,6 +372,13 @@ return [
         'amount'  => 'Monto',
         'comment' => 'Comentario',
         'picture' => 'Foto'
+    ],
+    'stock' => [
+        'stores' => [
+            'index'     => 'Listado de depósitos',
+            'create'    => 'Crear nuevo depósito',
+            'edit'      => 'Editar depósito'
+        ]
     ],
     'visits' => [
         'id'            => 'ID',
