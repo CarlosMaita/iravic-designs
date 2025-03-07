@@ -37,6 +37,15 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="description">Descripción</label>
+                            <!-- textarea -->
+                            <textarea class="form-control" id="description" name="description" v-model="product.description" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="code">Código</label>
@@ -322,6 +331,7 @@
                 type: Object,
                 default: () => ({
                     name: '',
+                    description: '',
                     code: '',
                     is_regular: 1,
                     product_combinations: []

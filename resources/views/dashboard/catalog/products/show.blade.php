@@ -389,6 +389,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Descripción</label>
+                                            <textarea class="form-control" id="description" rows="2" readOnly>{{ $product->description }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Código</label>

@@ -24,6 +24,7 @@ class Product extends Model
         'product_id',
         'size_id',
         'name',
+        'description',
         'code',
         'cover',
         'is_regular',
