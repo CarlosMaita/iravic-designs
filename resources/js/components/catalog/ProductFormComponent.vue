@@ -121,10 +121,9 @@
                     </table>
                 </div>
             </div>
-            <!--  -->
             <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
-                <!--  -->
-                <div class="row mt-3">
+                <!-- stock old  -->
+                <div class="row mt-3 d-none">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="stock-depot">Stock Depósito</label>
@@ -144,8 +143,22 @@
                         </div>
                     </div>
                 </div>
+                <!-- stock old   -->
+                <!-- stock with store -->
+                <div class="row mt-3"> 
+                    <div v-for="(product_store) in product_stores" :key="`store-${product_store.store_id}`" class="col-md-4">
+                        <div class="form-group">
+                            <label :for="`store-${product_store.store_id}`">{{ product_store.store_name }}</label>
+                            <input type="number" class="form-control" 
+                                :id="`store-${product_store.store_id}`" 
+                                :name="`stores[${product_store.store_id}]`"
+                                v-model="product_stores.find(store => store.store_id == product_store.store_id).stock">
+                        </div>
+                    </div>
+                </div>
+                <!-- end stock with store -->
             </div>
-            <!--  -->
+
             <div class="tab-pane fade" id="combinations" role="tabpanel" aria-labelledby="combinations-tab">
                 <div class="d-flex justify-content-end my-3">
                     <button class="btn btn-light" type="button" @click="addCombination"><i class="fas fa-plus"></i> Agregar Combinación</button>
@@ -261,7 +274,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row d-none">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label :for="`stock-depot-${index}-${index_size}`">Stock Depósito</label>
@@ -299,6 +312,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- store for combination  -->
+                                 <div class="row">
+                                    <div v-for="(product_store) in combination.sizes[index_size].product_stores"  :key="`store-${product_store.store_id}`"   class="col-md-4">
+                                        <div class="form-group">
+                                            <label :for="`store-${product_store.store_id}-${index}-${index_size}`">{{ product_store.store_name }}</label>
+                                            <input type="number" class="form-control" 
+                                                    :id="`store-${product_store.store_id}-${index}-${index_size}`" 
+                                                    :name="getCombinationInputName(`store_${product_store.store_id}`, size, index, index_size)" 
+                                                    v-model="combination.sizes[index_size].product_stores.find(store => store.store_id == product_store.store_id).stock">  
+                                        </div>
+                                    </div>
+                                 </div>
                                 <hr>
                             </div>
                             <div class="d-flex justify-content-end my-3">
@@ -351,6 +376,10 @@
                 type: Array,
                 default: []
             },
+            stores: {
+                type: Array,
+                default: []
+            },
             images: {
                 type: Array,
                 default: []
@@ -389,6 +418,7 @@
             brand: null,
             category: null,
             gender: null,
+            product_stores: [],
             is_regular: 1,
             combinations: [],
             loading: false,
@@ -440,6 +470,7 @@
             } 
 	    },
         async mounted() {
+           
             this.mounted = true;
 
             Object.assign(this.dropzoneOptions, {
@@ -461,7 +492,19 @@
                 }
             });
 
-            
+
+             /**
+             * Cargar stores de producto Regular
+             */
+            this.product_stores = this.stores.map((store) => {
+                const productStore =  this.product.stores?.find(pStore => pStore.id === store.id);
+                return {
+                    store_id: store.id,
+                    store_name: store.name,
+                    stock: productStore ? productStore.pivot.stock : 0
+                }
+            });
+
             /**
              * Si el producto existe, se asignan sus datos a los models, y se crean items para sus combinaciones y tallas.
              */
@@ -472,7 +515,7 @@
                 this.brand = this.product.brand;
                 this.category = this.product.category;
                 this.gender = this.product.gender;
-
+                
                 // ordenar productos combinados por combinacion index
                 this.product.product_combinations.sort((a, b) => a.combination_index - b.combination_index);
 
@@ -488,7 +531,6 @@
                                 text_color: combination.text_color,
                                 combination_index: combination.combination_index,
                                 color_prop: combination.color,
-                                
                                 sizes: [
                                     {
                                         id: combination.id,
@@ -500,7 +542,15 @@
                                         price_credit: combination.price_credit,
                                         stock_depot: combination.stock_depot,
                                         stock_local: combination.stock_local,
-                                        stock_truck: combination.stock_truck
+                                        stock_truck: combination.stock_truck,
+                                        product_stores:  this.stores.map((store) => {
+                                            const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
+                                            return {
+                                                store_id: store.id,
+                                                store_name: store.name,
+                                                stock: productStore ? productStore.pivot.stock : 0
+                                            }
+                                        })
                                     }
                                 ]
                             };
@@ -517,7 +567,15 @@
                                 price_credit: combination.price_credit,
                                 stock_depot: combination.stock_depot,
                                 stock_local: combination.stock_local,
-                                stock_truck: combination.stock_truck
+                                stock_truck: combination.stock_truck, 
+                                product_stores: this.stores.map((store) => {
+                                    const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
+                                    return {
+                                        store_id: store.id,
+                                        store_name: store.name,
+                                        stock: productStore ? productStore.pivot.stock : 0
+                                    }
+                                })
                             }
 
                             this.combinations[index].sizes.push(new_size);
@@ -608,6 +666,14 @@
                             stock_depot: null,
                             stock_local: null,
                             stock_truck: null,
+                            product_stores:  this.stores.map((store) => {
+                                return {
+                                    store_id: store.id,
+                                    store_name: store.name,
+                                    stock: 0
+                                }
+                            })
+
                         }
                     ]
                 };
@@ -632,6 +698,13 @@
                             stock_depot: null,
                             stock_local: null,
                             stock_truck: null,
+                            product_stores:  this.stores.map((store) => {
+                                return {
+                                    store_id: store.id,
+                                    store_name: store.name,
+                                    stock: 0
+                                }
+                            })
                         };
 
                 combination.sizes.push(combination_size);

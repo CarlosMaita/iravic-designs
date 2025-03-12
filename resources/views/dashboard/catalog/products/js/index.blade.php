@@ -296,6 +296,19 @@
          * Retorna el contenido de stocks de un producto que es regular (Sin combinaciones)
          */
         function getRegularStockContent(product) {
+            const getStoresTitlesAndData = (stores) => {
+                let storesTitles = '';
+                let storesData = '';
+                stores.forEach((store, index, array) => {
+                    storesTitles += `<th scope="col">${store.name}</th>`
+                    storesData += ` <td>${store.pivot.stock}</td>`
+                })
+                return {storesTitles, storesData };
+            }
+            let {storesTitles, storesData}  = getStoresTitlesAndData(product.stores);
+
+              
+
             var html = `<div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
@@ -304,9 +317,7 @@
                                             <thead>
                                                 <tr>
                                                     @if (Auth::user()->isAdmin())
-                                                        <th scope="col">Depósito</th>
-                                                        <th scope="col">Local</th>
-                                                        <th scope="col">Camión</th>
+                                                        ${storesTitles}
                                                         <th scope="col">Total</th>
                                                     @else
                                                         <th scope="col">Stock</th>
@@ -316,9 +327,7 @@
                                             <tbody>
                                                 <tr>
                                                     @if (Auth::user()->isAdmin())
-                                                        <td>${product.stock_depot}</td>
-                                                        <td>${product.stock_local}</td>
-                                                        <td>${product.stock_truck}</td>
+                                                        ${storesData}
                                                         <td>${product.stock_total}</td>
                                                     @else
                                                         <td>${product.stock_user}</td>
@@ -338,6 +347,17 @@
          * Retorna el contenido de stocks de un producto con combinaciones
          */
         function getCombinationsStockContent(product) {
+            
+            const getStoresTitles = (stores) => {
+                    let storesTitles = '';
+                    stores.forEach((store, index, array) => {
+                        storesTitles += `<th scope="col">${store.name}</th>`
+                    })
+                    return {storesTitles};
+                }
+            let {storesTitles}  = getStoresTitles(product.product_combinations[0].stores); 
+
+
             var html = `<div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
@@ -348,9 +368,7 @@
                                                     <th scope="col">Color</th>
                                                     <th scope="col">Talla</th>
                                                 @if (Auth::user()->isAdmin())
-                                                    <th scope="col">Depósito</th>
-                                                    <th scope="col">Local</th>
-                                                    <th scope="col">Camión</th>
+                                                    ${storesTitles}
                                                     <th scope="col">Total</th>
                                                 @else
                                                     <th scope="col">Stock</th>
@@ -359,15 +377,23 @@
                                             </thead>`;
 
             product.product_combinations.forEach(combination => {
+
+                const getStoresData = (stores) => {
+                    let storesData = '';
+                    stores.forEach((store, index, array) => {
+                        storesData += ` <td>${store.pivot.stock}</td>`
+                    })
+                    return {storesData, storesData };
+                }
+                let {storesData}  = getStoresData(combination.stores);
+
                 html += `<tr>
                             <td>${combination.color ? combination.color.name : ''}</td>
                             <td>${combination.size ? combination.size.name : ''}</td>`;
 
                 @if (Auth::user()->isAdmin())
-                    html += `<td>${combination.stock_depot}</td>
-                            <td>${combination.stock_local}</td>
-                            <td>${combination.stock_truck}</td>
-                            <td>${combination.stock_total}</td>`;
+                    html += storesData;
+                    html += `<td>${combination.stock_total}</td>`;
                 @else
                     html += `<td>${combination.stock_user}</td>`;
                 @endif
