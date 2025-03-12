@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Store;
 use App\Repositories\ProductRepositoryInterface;
 use App\Services\Images\ImageService;
 use GuzzleHttp\Promise\Create;
@@ -33,7 +34,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function onlyPrincipalsQuery($criteria = null)
     {
-        $query = $this->model->doesntHave('product_parent')->with(['brand', 'category']);
+        $query = $this->model->doesntHave('product_parent')->with(['brand', 'category', 'stores', 'product_combinations.stores']);
 
         if (isset($criteria['brand']) && is_array($criteria['brand'])) {
             $query->whereInBrand($criteria['brand']);
@@ -143,10 +144,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'price_credit',
             'stock_depot',
             'stock_local',
-            'stock_truck'
+            'stock_truck',
         );
 
         $product = $this->create($attributes);
+        
+        //attach stores 
+        foreach($request->stores as $store_id => $stock){
+            $product->stores()->attach($store_id, ['stock' => $stock]);
+        }
         
         // atach images if exists
         $files = $request->file('file', []);
@@ -200,8 +206,17 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
+                        
+                        $product_combination = $this->create($attributes);
 
-                        $this->create($attributes);
+                        //attach stores 
+                        $stores = Store::all();
+                        foreach($stores as $store){
+                            $input_store = $request->input("store_".$store->id);
+                            $stock = $input_store[$key][$key_new_combination];
+                            $product_combination->stores()->attach($store->id, ['stock' => $stock]);     
+                        }
+                        
                     }
 
                     // attach images if exists
@@ -267,6 +282,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $product->update($attributes);
         $product->product_combinations()->delete();
 
+        //attach stores 
+        $product->stores()->detach();
+        $stores = $request->input('stores');
+        foreach ($stores as $store_id => $stock) {
+            $product->stores()->attach($store_id, ['stock' => $stock]);
+        }
+        
+
         // atach images if exists
         $files = $request->file('file', []);
         if (!empty($files)) {
@@ -329,7 +352,23 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 $request->only('brand_id', 'category_id', 'gender', 'name')
                             );
 
-                            $this->update($product_combination->id, $attributes);
+
+                           $this->update($product_combination->id, $attributes);
+                            
+                            // Attach stores with updated stock
+                            $allStores = Store::all();
+                            foreach ($allStores as $store) {
+                                $storeStockInput = $request->input("store_{$store->id}_existing");
+                                $storeStock = $storeStockInput[$key][$product_combination_id];
+                                // Verificar si el vínculo ya existe
+                                if ($product_combination->stores()->where('store_id', $store->id)->exists()) {
+                                    // Actualizar el stock existente
+                                    $product_combination->stores()->updateExistingPivot($store->id, ['stock' => $storeStock]);
+                                } else {
+                                    // Crear un nuevo vínculo si no existe
+                                    $product_combination->stores()->attach($store->id, ['stock' => $storeStock]);
+                                }
+                            }
                         }
 
                         // update images if exists - combination_index
@@ -380,7 +419,22 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
 
-                        $this->create($attributes);
+                        $product_combination = $this->create($attributes);
+
+                         // Attach stores with updated stock
+                         $allStores = Store::all();
+                         foreach ($allStores as $store) {
+                             $storeStockInput = $request->input("store_".$store->id);
+                             $storeStock = $storeStockInput[$key][($key_new_combination + $total_existing)];
+                             // Verificar si el vínculo ya existe
+                             if ($product_combination->stores()->where('store_id', $store->id)->exists()) {
+                                 // Actualizar el stock existente
+                                 $product_combination->stores()->updateExistingPivot($store->id, ['stock' => $storeStock]);
+                             } else {
+                                 // Crear un nuevo vínculo si no existe
+                                 $product_combination->stores()->attach($store->id, ['stock' => $storeStock]);
+                             }
+                         }
                     }
 
                      // attach images if exists
@@ -416,7 +470,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         $products = $this->model->with('product_parent', 'product_parent.images')->whereIn('id', $ids)->get();
         foreach ($products as $product) {
-            // dd($product);
             $product->product_parent
                 ->images()
                 ->where('combination_index', $product->combination_index)
