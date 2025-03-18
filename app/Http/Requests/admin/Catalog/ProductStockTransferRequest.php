@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\admin\Catalog;
 
+use App\Models\Store;
 use App\Repositories\Eloquent\ProductRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -27,10 +28,8 @@ class ProductStockTransferRequest extends FormRequest
             'qty.required' => 'La cantidad a transferir es obligatoria.',
             'qty.numeric' => 'La cantidad debe ser un valor numérico.',
             'qty.min' => 'La cantidad mínima a transferir es de :min unidad.',
-            'stock_origin.required' => 'El tipo de stock es obligatorio.',
-            'stock_origin.in' => 'Solo se pueden transferir stocks de Local y Camión.',
-            'stock_destination.required' => 'El tipo de stock es obligatorio.',
-            'stock_destination.in' => 'Solo se pueden transferir stocks de Local y Camión.'
+            'stock_origin.required' => 'El deposito de origen es obligatorio.',
+            'stock_destination.required' => 'El deposito de destino es obligatorio.',
         ];
     }
 
@@ -54,8 +53,8 @@ class ProductStockTransferRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|numeric|min:1',
-            'stock_origin' => ['required', Rule::in(['stock_depot', 'stock_local', 'stock_truck'])],
-            'stock_destination' => ['required', Rule::in(['stock_depot', 'stock_local', 'stock_truck'])],
+            'stock_origin' => 'required',
+            'stock_destination' => 'required',
         ];
     }
 
@@ -66,11 +65,13 @@ class ProductStockTransferRequest extends FormRequest
     public function withValidator($validator)
     {
         if ($this->qty && !empty($this->product_id) && $product = $this->productRepository->find($this->product_id)) {
-            $stock_column = $this->stock_origin;
-            $stock = $product->$stock_column;
+
+            // get stock origin
+            $store_id = $this->stock_origin;
+            $stock = $product->stores()->find($store_id)->pivot->stock;
 
             if ($stock > 0) {
-                $pending_stock = $product->stocks_transfers()->where('is_accepted', 0)->where('stock_origin', $stock_column)->sum('qty');
+                $pending_stock = $product->stocks_transfers()->where('is_accepted', 0)->where('stock_origin',  $store_id)->sum('qty');
                 $available_stock = $stock - $pending_stock;
 
                 if ($this->qty > $available_stock) {
