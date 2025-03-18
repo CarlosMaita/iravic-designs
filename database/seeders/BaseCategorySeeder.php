@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BaseCategory;
+use FontLib\Table\Type\name;
 use Illuminate\Database\Seeder;
 
 class BaseCategorySeeder extends Seeder
@@ -16,28 +17,81 @@ class BaseCategorySeeder extends Seeder
     {
 
         $baseCategories = [
-            'Ropa',
-            'Calzado',
-            'Accesorios', 
-            'Sillones',
-            'Sommier/colchones',
-            'Dormitorio',
-            'Sala',
-            'Baño',
-            'Almohadas',
-            'Comedor',
-            'Espejos',
-            'Juguetes',
-            'Exterior/ Jardín'
+            [
+                'name' => 'Ropa',
+                'has_gender' => true,
+                'has_size' => true
+            ],
+            [
+                'name' => 'Calzado',
+                'has_gender' => true,
+                'has_size' => true
+            ],
+            [
+                'name' => 'Accesorios',
+                'has_gender' => true,
+                'has_size' => true
+            ],
+            [
+                'name' => 'Sillones',
+                'has_gender' => false,
+                'has_size' => false
+            ],
+            [
+                'name' => 'Sommier/colchones',
+                'has_gender' => false,
+                'has_size' => false
+            ],
+            [
+                'name' => 'Dormitorio',
+                'has_gender' => false,
+                'has_size' => false
+            ],
+            [
+                'name' => 'Sala',
+                'has_gender' => false,
+                'has_size' => false
+            ],            
+            [
+                'name' => 'Baño',
+                'has_gender' => false,
+                'has_size' => false
+            ],
+            [
+                'name' => 'Almohadas',
+                'has_gender' => false,
+                'has_size' => false
+            ],            
+            [
+                'name' => 'Comedor',
+                'has_gender' => false
+            ],
+            [
+                'name' => 'Espejos',
+                'has_gender' => false,
+                'has_size' => false
+            ],
+            [
+                'name' => 'Juguetes',
+                'has_gender' => false,
+                'has_size' => false
+            ],
+            [
+                'name' => 'Exterior/ Jardín',
+                'has_gender' => false,
+                'has_size' => false
+            ]
         ];
 
         foreach ($baseCategories as $category) {
-            if (BaseCategory::where('name', $category)->first()) {
+            if (BaseCategory::where('name', $category['name'])->first()) {
                 continue;
             }
 
             BaseCategory::create([
-                'name' => $category
+                'name' => $category['name'],
+                'has_gender' => $category['has_gender'] ,
+                'has_size' => $category['has_size']
             ]);
         }
 

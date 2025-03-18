@@ -405,18 +405,21 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Género</label>
-                                            <input class="form-control" value="{{ $product->gender }}" readOnly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label>Categoría</label>
                                             <input class="form-control" value="{{ optional($product->category)->name }}" readOnly>
                                         </div>
                                     </div>
+                                   
+                                </div>
+                                <div class="row">
+                                    @if($product->category->baseCategory->has_gender)
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Género</label>
+                                            <input class="form-control" value="{{ $product->gender }}" readOnly>
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Marca</label>
@@ -638,12 +641,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
+                                                        @if($product->category->baseCategory->has_size)
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Talla</label>
                                                                 <input class="form-control" value="{{ optional($product_combination->size)->name }}" readOnly>
                                                             </div>
                                                         </div>
+                                                        @endif
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Código</label>

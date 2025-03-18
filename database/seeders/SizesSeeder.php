@@ -32,6 +32,9 @@ class SizesSeeder extends Seeder
             "1" , "2" , "3" , "4" , "5" , "6" , 
             "7" , "8" , "9" , "10" , "11" , "12",
             "13" , "14" ];
+        $sizes_talla_sin_talla =[
+            "sin talla"
+        ];
 
         
             
@@ -99,13 +102,16 @@ class SizesSeeder extends Seeder
                 'updated_at' => now()
             ];
         }
+        foreach ($sizes_talla_sin_talla as $size) {
+            $sizes[] = [
+                'name' => $size,
+                'type_size_id' => null,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
+
 
         Size::insert($sizes);
-
-        
-
-
-       
-
     }
 }

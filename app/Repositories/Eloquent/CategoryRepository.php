@@ -26,7 +26,10 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      */
     public function all(): Collection
     {
-        return $this->model->orderBy('name')->get();
+        return $this->model
+            ->orderBy('name')
+            ->with('baseCategory')
+            ->get();
     }
 
     /**
@@ -36,7 +39,8 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      */
     public function allQuery()
     {
-        return $this->model->orderBy('name')
+        return $this->model
+            ->orderBy('name')
             ->with('baseCategory');
     }
 }

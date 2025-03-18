@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\admin\Catalog;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -126,12 +127,16 @@ class ProductRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|min:3|max:155',
-            'gender' => 'required',
+            // 'gender' => 'required',
             'brand_id' => 'required|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0'
         ];
 
+        $baseCategory = Category::find($this->category_id)->baseCategory;
+        if ($baseCategory->has_gender) {
+            $rules['gender'] = 'required';
+        }
 
         if ($this->isMethod('POST')) {
             #create product

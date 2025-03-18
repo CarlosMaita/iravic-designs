@@ -54,19 +54,6 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="gender">Género</label>
-                            <v-select placeholder="Seleccionar"
-                                        :options="genders"
-                                        v-model="gender"
-                                        @input="setGenderSelected">
-                            </v-select>
-                            <input type="hidden" name="gender" v-model="product.gender">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
                             <label for="category_id">Categoría</label>
                             <v-select placeholder="Seleccionar"
                                         :options="categories" 
@@ -76,6 +63,20 @@
                                        >
                             </v-select>
                             <input type="hidden" name="category_id" v-model="categoryId">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div v-if="has_gender" class="col-6">
+                        <div class="form-group">
+                            <label for="gender">Género</label>
+                            <v-select placeholder="Seleccionar"
+                                        :options="genders"
+                                        v-model="gender"
+                                        @input="setGenderSelected">
+                            </v-select>
+                            <input type="hidden" name="gender" v-model="product.gender">
                         </div>
                     </div>
                     <div class="col-6">
@@ -238,10 +239,10 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div :class="{'col-md-3' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }">
+                                    <div v-show="has_size" :class="{'col-md-3' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }">
                                         <div class="form-group">
-                                            <label :for="`size-${index}-${index_size}`">Talla <b>#{{ (index_size + 1)}}</b>  <button class="btn btn-sm btn-danger" type="button" @click="removeSize(index_size, index, size.id)"><i class="fas fa-trash-alt"></i></button></label>
-                                            <v-select placeholder="Seleccionar"
+                                            <label  v-if="has_size" :for="`size-${index}-${index_size}`">Talla <b>#{{ (index_size + 1)}}</b>  <button class="btn btn-sm btn-danger" type="button" @click="removeSize(index_size, index, size.id)"><i class="fas fa-trash-alt"></i></button></label>
+                                            <v-select  v-if="has_size" placeholder="Seleccionar"
                                                         label="name" 
                                                         :options="SizesFiltered" 
                                                         v-model="combinations[index].sizes[index_size].size_prop"
@@ -310,7 +311,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <div class="d-flex justify-content-end my-3">
+                            <div v-if="has_size" class="d-flex justify-content-end my-3">
                                 <button class="btn btn-light" type="button" @click="addSize(combination)"><i class="fas fa-plus"></i> Agregar otra Talla</button>
                             </div>
                         </div>
@@ -415,7 +416,8 @@
                 thumbnailWidth: 150,
                 autoDiscover: false,
             },
-
+            has_gender : true, 
+            has_size : true,
         }),
 	    computed: {
             categoryId: function(){
@@ -435,8 +437,16 @@
                 return null;
             },
             SizesFiltered: function(){
-                if (!this.category || !this.gender) return null;
-             
+                // Validar si el producto tiene categoria
+                if (!this.category) return null;
+                // Validar si la categoria tiene talla 
+                if (!this.has_size) {
+                    return this.sizes.filter( (size) =>  size.type_size_id === null ); // retorna la talla - sin talla
+                }
+                // Validar si el producto tiene genero
+                if (!this.gender)   return null;
+                
+
                 let base_category_id = this.category.base_category_id;
                 let type_size_filtered = this.type_sizes.filter(
                     (type_size) => {
@@ -482,6 +492,13 @@
                 this.brand = this.product.brand;
                 this.category = this.product.category;
                 this.gender = this.product.gender;
+
+                const selectedCategory = this.categories.find(category => category.id === this.product.category_id);
+                if (selectedCategory) {
+                    this.has_gender = !!selectedCategory.base_category.has_gender;
+                    this.has_size = !!selectedCategory.base_category.has_size;
+                }
+
 
                 // ordenar productos combinados por combinacion index
                 this.product.product_combinations.sort((a, b) => a.combination_index - b.combination_index);
@@ -562,6 +579,8 @@
             setCategorySelected(value) {
                 this.resetCombinations();
                 this.product.category_id = value ? value.id : null;
+                this.has_gender = !!value.base_category.has_gender;
+                this.has_size = !!value.base_category.has_size;
             },
 
             /**
@@ -621,6 +640,13 @@
                         }
                     ]
                 };
+
+                if (!this.has_size){
+                    // selecciono la talla sin talla
+                    const size_sin_talla =   this.sizes.find( (size) => size.type_size_id === null );
+                    new_combination.sizes[0].size_id = size_sin_talla.id;
+                    new_combination.sizes[0].size_prop = size_sin_talla;
+                } 
 
                 this.combinations.push(new_combination);
             },
