@@ -14,10 +14,21 @@ class BaseCategorySeeder extends Seeder
      */
     public function run()
     {
+
         $baseCategories = [
             'Ropa',
             'Calzado',
-            'Accesorios'
+            'Accesorios', 
+            'Sillones',
+            'Sommier/colchones',
+            'Dormitorio',
+            'Sala',
+            'Baño',
+            'Almohadas',
+            'Comedor',
+            'Espejos',
+            'Juguetes',
+            'Exterior/ Jardín'
         ];
 
         foreach ($baseCategories as $category) {
