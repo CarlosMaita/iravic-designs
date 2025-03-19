@@ -472,7 +472,7 @@
                                     @if($product->is_regular)
                                         <div class="tab-pane fade show active" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
                                             <!--  -->
-                                            <div class="row mt-3">
+                                            <div class="row mt-3 d-none">
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label class="d-flex justify-content-between">
@@ -606,11 +606,27 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--  Stores for product regular  -->
+                                            <div class="row mt-3">
+                                                @foreach ($product->stores as $key => $store)
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="d-flex justify-content-between">
+                                                            <span>Stock <i class="text-muted">({{ $store->name }})</i></span>
+                                                        </label>
+                                                        <input class="form-control" value="{{ $store->pivot->stock }}" readOnly>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            <!--  End stores for product regular  -->
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <p><b>Total stock:</b> {{ $product->stock_total }}</p>
                                                 </div>
                                             </div>
+                                           
                                         </div>
                                     @endif
                                     <!--  -->
@@ -679,7 +695,7 @@
                                                         @endcan
                                                     </div>
                                                     <!--  -->
-                                                    <div class="row">
+                                                    <div class="row d-none">
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
                                                                 <label class="d-flex justify-content-between">
@@ -809,6 +825,22 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    {{-- stores for product NO Regular --}}
+                                                    <div class="row mt-3">
+                                                        @foreach ($product_combination->stores as $key => $store)
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label class="d-flex justify-content-between">
+                                                                    <span>Stock <i class="text-muted">({{ $store->name }})</i></span>
+                                                                </label>
+                                                                <input class="form-control" value="{{ $store->pivot->stock }}" readOnly>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                    <!--  End stores for product regular  -->
+
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <p><b>Total stock:</b> {{ $product_combination->stock_total }}</p>

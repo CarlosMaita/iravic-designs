@@ -9,6 +9,7 @@ use App\Http\Requests\admin\Catalog\ProductStockRequest;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Size;
+use App\Models\Store;
 use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
@@ -102,6 +103,7 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $stores = Store::all();
         $type_sizes = TypeSize::all();
         $genders = GenderConstants::ALL;
         
@@ -115,6 +117,7 @@ class ProductController extends Controller
                 ->withGenders($genders)
                 ->withProduct(new Product())
                 ->withSizes($sizes)
+                ->withStores($stores)
                 ->withTypeSizes($type_sizes)
                 ->withTempCode($temp_code);
     }
@@ -162,9 +165,8 @@ class ProductController extends Controller
     public function show(Request $request, Product $producto)
     {
         $this->authorize('view', $producto);
-
         if ($request->ajax()) {
-            $producto->load('brand', 'category', 'color', 'size');
+            $producto->load('brand', 'category', 'color', 'size', 'stores');
 
             if (isset($request->stocks)) {
                 $producto->load('product_combinations.color', 'product_combinations.size');
@@ -186,11 +188,12 @@ class ProductController extends Controller
     public function edit(Product $producto)
     {
         $this->authorize('update', $producto);
-        $producto->load('brand', 'category', 'color', 'images', 'product_combinations.color', 'product_combinations.size', 'size');
+        $producto->load('brand', 'category', 'color', 'images', 'product_combinations.color', 'product_combinations.size', 'size', 'stores');
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
+        $stores = Store::all();
         $type_sizes = TypeSize::all();
         $genders = genderConstants::ALL;
 
@@ -204,6 +207,7 @@ class ProductController extends Controller
                 ->withGenders($genders)
                 ->withProduct($producto)
                 ->withSizes($sizes)
+                ->withStores($stores)
                 ->withTypeSizes($type_sizes)
                 ->withTempCode($temp_code);
     }

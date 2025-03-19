@@ -86,6 +86,7 @@ class Product extends Model
             }
         });
 
+
         
     }
 
@@ -112,7 +113,7 @@ class Product extends Model
 
     public function product_combinations()
     {
-        return $this->hasMany('App\Models\Product')->orderBy('color_id');
+        return $this->hasMany('App\Models\Product')->orderBy('color_id')->with('stores');
     }
 
     public function product_parent()
@@ -128,6 +129,15 @@ class Product extends Model
     public function size()
     {
         return $this->belongsTo('App\Models\Size');
+    }
+
+    /**
+     * Relación muchos a muchos con Store a través de la tabla pivote product_store.
+     */
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'product_store')
+                    ->withPivot('stock'); // Icluir la columna 'stock' en la relaciónn
     }
 
     public function stocks_history()
@@ -227,8 +237,8 @@ class Product extends Model
      * Retorna el total de stock, sumando todos los tipos de stocks
      */
     public function getStockTotalAttribute()
-    {
-        return ($this->stock_depot + $this->stock_local + $this->stock_truck);
+    {   
+        return $this->stores()->sum('stock');
     }
 
     # Scopes

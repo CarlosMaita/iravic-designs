@@ -15,4 +15,13 @@ class Store extends Model
     {
         return $this->belongsTo(StoreType::class, 'store_type_id');
     }
+
+    /**
+     * Relación muchos a muchos con Product a través de la tabla pivote product_store.
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_store')
+                    ->withPivot('stock'); // Incluir la columna 'stock' en la relación
+    }
 }
