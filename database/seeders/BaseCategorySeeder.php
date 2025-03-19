@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\BaseCategory;
 use FontLib\Table\Type\name;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class BaseCategorySeeder extends Seeder
 {
@@ -64,7 +65,8 @@ class BaseCategorySeeder extends Seeder
             ],            
             [
                 'name' => 'Comedor',
-                'has_gender' => false
+                'has_gender' => false,
+                'has_size' => false
             ],
             [
                 'name' => 'Espejos',
@@ -82,6 +84,9 @@ class BaseCategorySeeder extends Seeder
                 'has_size' => false
             ]
         ];
+
+        Schema::disableForeignKeyConstraints();
+        BaseCategory::truncate();
 
         foreach ($baseCategories as $category) {
             if (BaseCategory::where('name', $category['name'])->first()) {

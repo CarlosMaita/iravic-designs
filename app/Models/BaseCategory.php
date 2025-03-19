@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseCategory extends Model
 {  
-    protected $fillable = ['name']; 
+    protected $fillable = ['name', 'has_gender', 'has_size']; 
 
     /**
      * Get the categories associated with the base category.
