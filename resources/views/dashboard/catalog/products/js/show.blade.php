@@ -177,7 +177,7 @@
          */
         modal_stock_modify.on('hidden.coreui.modal', function(e) {
             form_modify.find("input[name='product_id']").val('');
-            form_modify.find("input[name='stock_column']").val('');
+            form_modify.find("input[name='stock_id']").val('');
             form_modify.find("input[name='stock_name']").val('');
             form_modify.find("input[name='stock']").val('');
             modal_stock_history.find('.stock-origin').text('');
@@ -197,15 +197,17 @@
             modal_stock_transfer.find('.stock-available').text('');
             modal_stock_transfer.find('.stock-origin').text('');
             modal_stock_transfer.find('.stock-destination').text('');
+            modal_stock_transfer.find('select[name="stock_destination"]').val('');
+            modal_stock_transfer.find('select[name="stock_destination"]').children('option').show();
         });
 
         /**
          * Captura evento de ver historial de stock (Tipo) de un producto
          */
         $('.view-stock-history').on('click', function(e) {
-            var product_id = $(this).data('id'),
-                stock_column = $(this).data('stock'),
-                stock_name = getStockName(stock_column);
+            var product_id      = $(this).data('id'),
+                stock_column    = $(this).data('stock'),
+                stock_name      = $(this).data('stock-name');
 
             modal_stock_history.modal('show');
             modal_stock_history.find('.modal-title span').text(stock_name);
@@ -221,10 +223,11 @@
             var product_id = $(this).data('id'),
                 stock_qty = $(this).data('qty'),
                 stock_column = $(this).data('stock-column'),
-                stock_name = getStockName(stock_column);
+                stock_name = $(this).data('stock-name');
+                stock_id = $(this).data('stock-id');
 
             form_modify.find("input[name='product_id']").val(product_id);
-            form_modify.find("input[name='stock_column']").val(stock_column);
+            form_modify.find("input[name='stock_id']").val(stock_id);
             form_modify.find("input[name='stock_name']").val(stock_name);
             form_modify.find("input[name='stock']").val(stock_qty);
             modal_stock_modify.modal('show');
@@ -238,18 +241,21 @@
             var product_id = $(this).data('id'),
                 stock = Number($(this).data('stock')),
                 stock_origin = $(this).data('stock-origin'),
-                stock_destination = $(this).data('stock-destination'),
-                stock_name_origin = getStockName(stock_origin),
-                stock_name_destination = getStockName(stock_destination);
+                stock_origin_id = $(this).data('stock-origin-id'),
+                // stock_destination = $(this).data('stock-destination'),
+                // stock_name_destination = getStockName(stock_destination),
+                stock_origin_name = $(this).data('stock-origin-name');
 
             modal_stock_transfer.find('input[name="product_id"]').val(product_id);
-            modal_stock_transfer.find('input[name="stock_origin"]').val(stock_origin);
-            modal_stock_transfer.find('input[name="stock_destination"]').val(stock_destination);
+            modal_stock_transfer.find('input[name="stock_origin"]').val(stock_origin_id);
+            // modal_stock_transfer.find('input[name="stock_destination"]').val(stock_destination);
             modal_stock_transfer.find('input[type="number"]').attr('max', stock);
             modal_stock_transfer.find('.stock-available').text(stock);
             modal_stock_transfer.find('#btn-max').attr('stock', stock);
-            modal_stock_transfer.find('.stock-origin').text(stock_name_origin);
-            modal_stock_transfer.find('.stock-destination').text(stock_name_destination);
+            modal_stock_transfer.find('.stock-origin').text(stock_origin_name);
+            // modal_stock_transfer.find('.stock-destination').text(stock_name_destination);
+            // esconder opcion de stock de origen
+            modal_stock_transfer.find('select[name="stock_destination"]').children('option[value="'+stock_origin_id+'"]').hide();
             modal_stock_transfer.modal('show');
         });
 

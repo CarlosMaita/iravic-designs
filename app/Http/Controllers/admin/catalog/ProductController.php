@@ -13,6 +13,7 @@ use App\Models\Store;
 use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
+use App\Repositories\Eloquent\StoreRepository;
 use App\TypeSize;
 use Dompdf\Dompdf;
 use Exception;
@@ -30,11 +31,14 @@ class ProductController extends Controller
 
     public $productRepository;
 
-    public function __construct(BrandRepository $brandRepository, CategoryRepository $categoryRepository, ProductRepository $productRepository)
+    public $storeRepository;
+
+    public function __construct(BrandRepository $brandRepository, CategoryRepository $categoryRepository, ProductRepository $productRepository, StoreRepository $storeRepository)
     {
         $this->brandRepository = $brandRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
+        $this->storeRepository = $storeRepository;
     }
 
     /**
@@ -165,6 +169,7 @@ class ProductController extends Controller
     public function show(Request $request, Product $producto)
     {
         $this->authorize('view', $producto);
+        $stores = Store::all();
         if ($request->ajax()) {
             $producto->load('brand', 'category', 'color', 'size', 'stores');
 
@@ -176,7 +181,8 @@ class ProductController extends Controller
         }
 
         return view('dashboard.catalog.products.show')
-                ->withProduct($producto);
+                ->withProduct($producto)
+                ->withStores($stores);
     }
 
     /**
@@ -260,7 +266,7 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
-            $this->productRepository->update($request->product_id, array($request->stock_column => $request->stock));
+            $this->productRepository->updateStoreStock($request->product_id, $request);
             DB::commit();
             flash("El stock <b>$request->stock_name</b> ha sido actualizado con éxito")->success();
 

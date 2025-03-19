@@ -18,8 +18,7 @@ class ProductStockRequest extends FormRequest
             'stock.required' => 'La cantidad es obligatoria.',
             'stock.integer' => 'La cantidad debe ser un valor entero.',
             'stock.min' => 'La cantidad mínima es de :min.',
-            'stock_column.required' => 'El tipo de stock es obligatorio.',
-            'stock_column.in' => 'Solo se puede modificar stocks de Depósito, Local y Camión.',
+            'stock_id.required' => 'El stock es obligatorio.',
             'stock_name.required' => 'El nombre de stock es obligatorio.'
         ];
     }
@@ -43,9 +42,9 @@ class ProductStockRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'stock_column'  => ['required', Rule::in(['stock_depot', 'stock_local', 'stock_truck'])],
             'stock' => 'required|integer|min:0',
-            'stock_name' => 'required'
+            'stock_name' => 'required',
+            'stock_id' => 'required'
         ];
     }
 }

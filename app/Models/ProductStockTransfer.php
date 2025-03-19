@@ -40,20 +40,45 @@ class ProductStockTransfer extends Model
                     return $product;
                 });
 
-                $qty = $product_stock_transfer->qty;
-                $stock_name_origin = $product_stock_transfer->stock_origin;
-                $stock_name_destination = $product_stock_transfer->stock_destination;
-                $old_stock_origin = $product->$stock_name_origin;
-                $old_stock_destination = $product->$stock_name_destination;
-                $new_stock_origin = ($old_stock_origin - $qty);
-                $new_stock_destination = ($old_stock_destination + $qty);
+                $transferQuantity = $product_stock_transfer->qty;
 
-                $product->$stock_name_origin = $new_stock_origin;
-                $product->$stock_name_destination = $new_stock_destination;
-                $product->save();
+                $originStore = Store::find($product_stock_transfer->stock_origin);
+                $destinationStore = Store::find($product_stock_transfer->stock_destination);
 
-                $product->addStockHistoryRecord($user->id, 'Transferencia hacia ' . $stock_name_destination, $new_stock_origin, $old_stock_origin, $qty, $stock_name_origin, null, $product_stock_transfer->id);
-                $product->addStockHistoryRecord($user->id, 'Transferencia desde ' . $stock_name_origin, $new_stock_destination, $old_stock_destination, $qty, $stock_name_destination, null, $product_stock_transfer->id);
+                $oldOriginStock = $product->stores()
+                    ->where('store_id', $originStore->id)
+                    ->first()->pivot->stock;
+                $oldDestinationStock = $product->stores()
+                    ->where('store_id', $destinationStore->id)
+                    ->first()->pivot->stock;
+
+                $newOriginStock = $oldOriginStock - $transferQuantity;
+                $newDestinationStock = $oldDestinationStock + $transferQuantity;
+
+                $product->stores()->updateExistingPivot( $originStore->id, ['stock' => $newOriginStock]);
+                $product->stores()->updateExistingPivot($destinationStore->id, ['stock' => $newDestinationStock]);
+
+                $product->addStockHistoryRecord(
+                    $user->id,
+                    'Transferencia hacia ' . $destinationStore->name,
+                    $newOriginStock,
+                    $oldOriginStock,
+                    $transferQuantity,
+                    $originStore->name,
+                    null,
+                    $product_stock_transfer->id
+                );
+
+                $product->addStockHistoryRecord(
+                    $user->id,
+                    'Transferencia desde ' . $originStore->name,
+                    $newDestinationStock,
+                    $oldDestinationStock,
+                    $transferQuantity,
+                    $destinationStore->name,
+                    null,
+                    $product_stock_transfer->id
+                );
             }
         });
     }
@@ -92,7 +117,8 @@ class ProductStockTransfer extends Model
      */
     public function getStockNameOriginAttribute()
     {
-        return StockService::getStockName($this->stock_origin);
+        $store = Store::find($this->stock_origin);
+        return $store->name;
     }
 
     /**
@@ -100,7 +126,8 @@ class ProductStockTransfer extends Model
      */
     public function getStockNameDestinationAttribute()
     {
-        return StockService::getStockName($this->stock_destination);
+        $store = Store::find($this->stock_destination);
+        return $store->name;
     }
 
     # Scopes

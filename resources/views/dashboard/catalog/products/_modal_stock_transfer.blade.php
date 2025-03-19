@@ -12,7 +12,6 @@
                     @csrf
                     <input type="hidden" name="product_id">
                     <input type="hidden" name="stock_origin">
-                    <input type="hidden" name="stock_destination">
                     <div class="style-dialog-body css-g4fmj2">
                         <div class="css-pmqufv"></div>
                         <div data-bn-type="text" class="css-oxzfpw">Las transferencias de stocks tienen que ser aceptadas.</div>
@@ -43,7 +42,12 @@
                                         <div class="css-1pxm4lx">
                                             <label class="css-51ezhr">A</label>
                                             <div class="css-1xcjeua">
-                                                <div class="css-1pysja1 stock-destination"></div>
+                                                <select class="css-1pysja1" name="stock_destination">
+                                                    <option value="">Seleccione una opción</option>
+                                                    @foreach ($stores as $store)
+                                                        <option value="{{ $store->id }}">{{ $store->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

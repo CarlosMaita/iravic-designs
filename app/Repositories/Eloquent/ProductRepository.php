@@ -463,6 +463,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $this->cleanStorageImages();
     }
 
+    public function updateStoreStock($id, $request): void
+    {
+        $product = $this->model->find($id);
+        if ($product) {
+            $product->stores()->updateExistingPivot($request->stock_id, ['stock' => $request->stock]);
+        }
+    }
 
     /**
      * Elimina grupo de productos por sus ids

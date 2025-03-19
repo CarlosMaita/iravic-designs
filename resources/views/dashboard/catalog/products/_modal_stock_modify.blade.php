@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     @csrf
                     <input type="hidden" name="product_id">
-                    <input type="hidden" name="stock_column">
+                    <input type="hidden" name="stock_id">
                     <input type="hidden" name="stock_name">
                     <div class="style-dialog-body css-g4fmj2">
                         <div class="css-oxzfpw">
