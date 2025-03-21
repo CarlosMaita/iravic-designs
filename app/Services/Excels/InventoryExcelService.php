@@ -67,7 +67,7 @@ class InventoryExcelService
         // create header
 		$this->createProductsRegularesHeader($sheet);
 		// create rows
-		$this->createProductsRegularesRows($sheet);
+		// $this->createProductsRegularesRows($sheet);
 		// Apply styles
 		$this->applyProductsRegularesStyles($sheet);
 		// set protection
@@ -143,7 +143,7 @@ class InventoryExcelService
         // create header
 		$this->createProductsNoRegularesHeader($sheet);
 		// create rows
-		$this->createProductsNoRegularesRows($sheet);
+		// $this->createProductsNoRegularesRows($sheet);
 		// Apply styles
 		$this->applyProductsNoRegularesStyles($sheet);
 		// set protection
