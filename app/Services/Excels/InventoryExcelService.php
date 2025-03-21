@@ -243,7 +243,7 @@ class InventoryExcelService
         $row = 2;
         foreach ($this->no_regular_products as $product) {
             if ($product->product_id == null) {
-                $sheet->getStyle('A'.($row) .':N'.($row))->applyFromArray([
+                $sheet->getStyle('A'.($row) .':'.$col.($row))->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['rgb' => 'D3D3D3'], 
