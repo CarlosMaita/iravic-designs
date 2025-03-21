@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\catalog;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Store;
 use App\Services\Excels\InventoryExcelService;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -13,21 +14,21 @@ class InventoryController extends Controller
 
     public function download()
     {
-        $regular_products = Product::where('is_regular' , 1)->get();
-        $no_regular_products = Product::where('is_regular' , 0)->orderBy('created_at', 'desc')->get();
-        // dd($no_regular_products[0]);
-        $inventory_excel = new InventoryExcelService($regular_products, $no_regular_products);
-        $inventory_excel->generate();
-
-        $path = $inventory_excel->getPath();
-
-        $headers = [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment;filename="' . 'inventario.xlsx' . '"',
-        ];
+        $stores = Store::all();
+        $regularProducts = Product::where('is_regular' , 1)->get();
+        $noRegularProducts = Product::where('is_regular' , 0)->orderBy('created_at', 'desc')->get();
+        
+        // generar excel
+        $inventoryExcel = new InventoryExcelService($regularProducts, $noRegularProducts, $stores);
+        $inventoryExcel->generate();
+        $path = $inventoryExcel->getPath();
 
         return response()
-            ->download( $path, 'inventario.xlsx' , $headers)
+            ->download( $path, 'inventario.xlsx' ,
+             [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="' . 'inventario.xlsx' . '"',
+             ])
             ->deleteFileAfterSend(true);
     }
 

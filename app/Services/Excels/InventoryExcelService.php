@@ -19,13 +19,15 @@ class InventoryExcelService
     
     private $regular_products;
     private $no_regular_products;
+    private $stores;
     public $filename;
 
     public $excel;
 
-    public function __construct($regular_products, $no_regular_products) {
+    public function __construct($regular_products, $no_regular_products, $stores){ 
         $this->regular_products = $regular_products;
         $this->no_regular_products = $no_regular_products;
+        $this->stores = $stores;
         $this->filename = $this->getFileName();
     }
 
@@ -82,9 +84,9 @@ class InventoryExcelService
         array_push($header, 'code');
         array_push($header, 'gender');
         array_push($header, 'price');
-        array_push($header, 'stock_depot');
-        array_push($header, 'stock_local');
-        array_push($header, 'stock_truck');
+        // column for store
+        foreach ($this->stores as $store) 
+            array_push($header, 'stock_'.$store->name);
 
 		$sheet->fromArray([$header], NULL, 'A1');
     }
@@ -92,18 +94,22 @@ class InventoryExcelService
     private function createProductsRegularesRows($sheet){
         $rows = array();
         foreach ($this->regular_products as $product) {
-            $rows[] = [
+            // row for product
+            $productRow = [
                 'id' => $product->id,
                 'brand_id' => $product->brand_id,
                 'category_id' => $product->category_id,
                 'name' => $product->name,
                 'code' => $product->code,
                 'gender' => $product->gender,
-                'price' => $product->price ? $product->price : "0",
-                'stock_depot' => $product->stock_depot ? $product->stock_depot : "0",
-                'stock_local' => $product->stock_local ? $product->stock_local : "0",
-                'stock_truck' => $product->stock_truck ? $product->stock_truck : "0",
+                'price' => $product->price ?? "0",
             ];
+            // column for store
+            foreach ($this->stores as $store) {
+                $productRow['stock_' . $store->name] = $product->stores()->find($store->id)->pivot->stock ?? "0";
+            }
+
+            $rows[] = $productRow;
         }
         
         $sheet->fromArray($rows, NULL, 'A2');
@@ -157,9 +163,9 @@ class InventoryExcelService
         array_push($header, 'product_id');
         array_push($header, 'size_id');
         array_push($header, 'price');
-        array_push($header, 'stock_depot');
-        array_push($header, 'stock_local');
-        array_push($header, 'stock_truck');
+         // column for store
+         foreach ($this->stores as $store) 
+         array_push($header, 'stock_'.$store->name);
 
 		$sheet->fromArray([$header], NULL, 'A1');
     }
@@ -167,7 +173,8 @@ class InventoryExcelService
     private function createProductsNoRegularesRows($sheet){
         $rows = array();
         foreach ($this->no_regular_products as $product) {
-            $rows[] = [
+            // row for product
+            $productRow[] = [
                 'id' => $product->id,
                 'brand_id' => $product->brand_id,
                 'category_id' => $product->category_id,
@@ -178,11 +185,14 @@ class InventoryExcelService
                 'text_color' => $product->text_color,
                 'product_id' => $product->product_id,
                 'size_id' => $product->size_id,
-                'price' => $product->price ? $product->price : "0",
-                'stock_depot' => $product->stock_depot ? $product->stock_depot : "0",
-                'stock_local' => $product->stock_local ? $product->stock_local : "0",
-                'stock_truck' => $product->stock_truck ? $product->stock_truck : "0",
+                'price' => $product->price ?? "0",
             ];
+            // column for store
+            foreach ($this->stores as $store) {
+                $productRow['stock_' . $store->name] = $product->stores()->find($store->id)->pivot->stock ?? "0";
+            }
+
+            $rows[] = $productRow;
             
         }
         // agregar fondo gris a las celdas donde el product_id es nulo
