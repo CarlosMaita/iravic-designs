@@ -520,8 +520,8 @@
                                                                     <span class="dropdown-item  view-stock-history"
                                                                         type="button"  
                                                                         data-id="{{ $product->id }}"
-                                                                        data-stock-name="{{ $store->name }}"
-                                                                        data-stock="stock_truck">Historial</span>
+                                                                        data-store-id="{{ $store->id }}"
+                                                                        data-stock-name="{{ $store->name }}">Historial</span>
                                                                 </div>
                                                                 {{-- end dropdown --}}
                                                             </div>
@@ -648,8 +648,8 @@
                                                                             <span class="dropdown-item  view-stock-history"
                                                                             type="button"  
                                                                             data-id="{{ $product_combination->id }}" 
-                                                                            data-stock-name="{{ $store->name }}"   
-                                                                            data-stock="stock_truck">Historial</span>
+                                                                            data-store-id="{{ $store->id }}"
+                                                                            data-stock-name="{{ $store->name }}">Historial</span>
                                                                         </div>
                                                                         {{-- end dropdown --}}
                                                                     </div>

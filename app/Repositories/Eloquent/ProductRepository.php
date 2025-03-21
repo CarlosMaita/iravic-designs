@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Events\ProductStockChanged;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Store;
@@ -153,6 +154,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         //attach stores 
         foreach($request->stores as $store_id => $stock){
             $product->stores()->attach($store_id, ['stock' => $stock]);
+            // Evento de cambio de stock
+            event(new ProductStockChanged($product->id, $store_id, 0, $stock, $stock, 'Asignacion inicial de stock' , auth()->id()));
         }
         
         // atach images if exists
@@ -216,7 +219,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         foreach($stores as $store){
                             $input_store = $request->input("store_".$store->id);
                             $stock = $input_store[$key][$key_new_combination];
-                            $product_combination->stores()->attach($store->id, ['stock' => $stock]);     
+                            $product_combination->stores()->attach($store->id, ['stock' => $stock]);   
+                            // Evento de cambio de stock
+                            event(new ProductStockChanged($product_combination->id, $store->id, 0, $stock, $stock, 'Asignacion inicial de stock' , auth()->id()));
                         }
                         
                     }
@@ -285,11 +290,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $product->update($attributes);
         $product->product_combinations()->delete();
 
+        // old_stock
+        $old_store = $product->store();
         //attach stores 
         $product->stores()->detach();
         $stores = $request->input('stores');
         foreach ($stores as $store_id => $stock) {
             $product->stores()->attach($store_id, ['stock' => $stock]);
+            $old_stock = $old_store->find($store_id)->pivot->stock;
+            // Evento de Actualizacion de stock
+            event(new ProductStockChanged($product->id, $store_id, $old_stock, $stock, ($stock - $old_stock), 'Actualizacion de stock' , auth()->id()));
         }
         
 
@@ -366,11 +376,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 $storeStock = $storeStockInput[$key][$product_combination_id];
                                 // Verificar si el vínculo ya existe
                                 if ($product_combination->stores()->where('store_id', $store->id)->exists()) {
+                                    $old_stock = $product_combination->stores()->find($store->id)->pivot->stock;
                                     // Actualizar el stock existente
                                     $product_combination->stores()->updateExistingPivot($store->id, ['stock' => $storeStock]);
+                                    // Evento de Actualizacion de stock
+                                    event(new ProductStockChanged($product_combination->id, $store->id, $old_stock, $storeStock, ($storeStock - $old_stock), 'Actualización de stock' , auth()->id()));
                                 } else {
                                     // Crear un nuevo vínculo si no existe
                                     $product_combination->stores()->attach($store->id, ['stock' => $storeStock]);
+                                    // Evento de Asignacion inicial de stock
+                                    event(new ProductStockChanged($product_combination->id, $store->id, 0, $storeStock, ($storeStock - 0), 'Asignación inicial de stock' , auth()->id()));
                                 }
                             }
                         }
@@ -432,11 +447,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                              $storeStock = $storeStockInput[$key][($key_new_combination + $total_existing)];
                              // Verificar si el vínculo ya existe
                              if ($product_combination->stores()->where('store_id', $store->id)->exists()) {
-                                 // Actualizar el stock existente
-                                 $product_combination->stores()->updateExistingPivot($store->id, ['stock' => $storeStock]);
+                                $old_stock = $product_combination->stores()->find($store->id)->pivot->stock;
+                                // Actualizar el stock existente
+                                $product_combination->stores()->updateExistingPivot($store->id, ['stock' => $storeStock]);
+                                // Evento de Actualizacion de stock
+                                event(new ProductStockChanged($product_combination->id, $store->id, $old_stock, $storeStock, ($storeStock - $old_stock), 'Actualización de stock' , auth()->id()));
                              } else {
                                  // Crear un nuevo vínculo si no existe
                                  $product_combination->stores()->attach($store->id, ['stock' => $storeStock]);
+                                 // Evento de Asignacion inicial de stock
+                                 event(new ProductStockChanged($product_combination->id, $store->id, 0, $storeStock, ($storeStock - 0), 'Asignación inicial de stock' , auth()->id()));
                              }
                          }
                     }
@@ -467,7 +487,12 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         $product = $this->model->find($id);
         if ($product) {
-            $product->stores()->updateExistingPivot($request->stock_id, ['stock' => $request->stock]);
+            $store_id = $request->stock_id;
+            $storeStock = $request->stock;
+            $old_stock = $product->stores()->find( $store_id)->pivot->stock;
+            $product->stores()->updateExistingPivot($store_id, ['stock' => $storeStock]);
+             // Evento de Actualizacion de stock
+             event(new ProductStockChanged($product->id, $store_id, $old_stock, $storeStock, ($storeStock - $old_stock), 'Actualización de stock' , auth()->id()));
         }
     }
 

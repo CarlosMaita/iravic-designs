@@ -20,12 +20,13 @@ class ProductStockHistory extends Model
         'new_stock',
         'old_stock',
         'qty',
-        'stock'
+        'stock_name',
+        'store_id'
     ];
 
     public $appends = [
         'date',
-        'stock_column'
+        'stock_column',
     ];
 
     # Relationships
