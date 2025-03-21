@@ -128,11 +128,6 @@ class InventoryExcelService
             $sheet->getColumnDimension($col)->setWidth(15); 
         }
 
-        // $sheet->getColumnDimension('H')->setWidth(11); 
-        // $sheet->getColumnDimension('I')->setWidth(10); 
-        // $sheet->getColumnDimension('J')->setWidth(10);
-        // 
-
         // titles style con bold y fondo gris
         $sheet->getStyle('A1:'.$col.'1')->applyFromArray([
             'font' => [
