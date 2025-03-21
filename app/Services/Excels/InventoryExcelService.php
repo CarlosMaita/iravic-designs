@@ -120,12 +120,21 @@ class InventoryExcelService
         //acho de columnas
         $sheet->getColumnDimension('A')->setWidth(5); 
         $sheet->getColumnDimension('D')->setWidth(50); 
-        $sheet->getColumnDimension('H')->setWidth(11); 
-        $sheet->getColumnDimension('I')->setWidth(10); 
-        $sheet->getColumnDimension('J')->setWidth(10);
+
+        // titles style con bold y fondo gris cada store
+        $col = 'G';
+        foreach ($this->stores as $store) {
+            $col = $this->getNextLeterColumn( $col ); 
+            $sheet->getColumnDimension($col)->setWidth(15); 
+        }
+
+        // $sheet->getColumnDimension('H')->setWidth(11); 
+        // $sheet->getColumnDimension('I')->setWidth(10); 
+        // $sheet->getColumnDimension('J')->setWidth(10);
+        // 
 
         // titles style con bold y fondo gris
-        $sheet->getStyle('A1:J1')->applyFromArray([
+        $sheet->getStyle('A1:'.$col.'1')->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
@@ -137,13 +146,18 @@ class InventoryExcelService
 
     }
 
+    private function getNextLeterColumn($letter){
+        // next column letter
+        return chr(ord($letter) + 1);
+    }
+
     public function createProductsNoRegularesSheet( $spreadsheet){
         $sheet = $spreadsheet->createSheet();
         $sheet->setTitle('No regulares');
         // create header
 		$this->createProductsNoRegularesHeader($sheet);
 		// create rows
-		// $this->createProductsNoRegularesRows($sheet);
+		$this->createProductsNoRegularesRows($sheet);
 		// Apply styles
 		$this->applyProductsNoRegularesStyles($sheet);
 		// set protection
@@ -165,7 +179,7 @@ class InventoryExcelService
         array_push($header, 'price');
          // column for store
          foreach ($this->stores as $store) 
-         array_push($header, 'stock_'.$store->name);
+            array_push($header, 'stock_'.$store->name);
 
 		$sheet->fromArray([$header], NULL, 'A1');
     }
@@ -174,7 +188,7 @@ class InventoryExcelService
         $rows = array();
         foreach ($this->no_regular_products as $product) {
             // row for product
-            $productRow[] = [
+            $productRow = [
                 'id' => $product->id,
                 'brand_id' => $product->brand_id,
                 'category_id' => $product->category_id,
@@ -193,10 +207,9 @@ class InventoryExcelService
             }
 
             $rows[] = $productRow;
-            
+
         }
         // agregar fondo gris a las celdas donde el product_id es nulo
-        
 
         $sheet->fromArray($rows, NULL, 'A2');
     }
@@ -207,12 +220,15 @@ class InventoryExcelService
         $sheet->getColumnDimension('D')->setWidth(50); 
         $sheet->getColumnDimension('F')->setWidth(15); 
         $sheet->getColumnDimension('I')->setWidth(10); 
-        $sheet->getColumnDimension('L')->setWidth(11); 
-        $sheet->getColumnDimension('M')->setWidth(10); 
-        $sheet->getColumnDimension('N')->setWidth(10);  
+
+        $col = 'K';
+        foreach ($this->stores as $store) {
+            $col = $this->getNextLeterColumn( $col ); 
+            $sheet->getColumnDimension($col)->setWidth(15); 
+        }
 
          // titles style con bold y fondo gris
-         $sheet->getStyle('A1:N1')->applyFromArray([
+         $sheet->getStyle('A1:'.$col.'1')->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
