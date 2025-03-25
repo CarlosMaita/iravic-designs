@@ -87,7 +87,7 @@ export default {
     };
   },
   mounted() {
-    console.log("Component mounted.");
+    // console.log("Component mounted.");
   },
   methods: {
     importInventory() {
@@ -95,6 +95,8 @@ export default {
     },
     successImportDropzone(file, response) {
         this.loading = false;
+        this.cleanIntervalEachFiveSeconds();
+
         if (!response.success) {
             swal({
                 type: "error",
@@ -112,14 +114,16 @@ export default {
                 window.location.reload();
             }, 1500);
         }
-
-        if (response.success === true) {
-            // recargar pagina 
-        }
     },
     sendingDropzone(file, xhr, formData) {
         this.loading = true;
-    }
+    },
+    cleanIntervalEachFiveSeconds() {
+      const interval = setInterval(() => {
+        clearInterval(interval);
+      }, 5000);
+    },
+
   },
 };
 </script>

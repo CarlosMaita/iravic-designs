@@ -84,6 +84,8 @@ class InventoryExcelService
         array_push($header, 'code');
         array_push($header, 'gender');
         array_push($header, 'price');
+        array_push($header, 'price_card_credit');
+        array_push($header, 'price_credit');
         // column for store
         foreach ($this->stores as $store) 
             array_push($header, 'stock_'.$store->name);
@@ -103,6 +105,8 @@ class InventoryExcelService
                 'code' => $product->code,
                 'gender' => $product->gender,
                 'price' => $product->price ?? "0",
+                'price_card_credit' => $product->price_card_credit ?? "0",
+                'price_credit' => $product->price_credit ?? "0",
             ];
             // column for store
             foreach ($this->stores as $store) {
@@ -122,7 +126,7 @@ class InventoryExcelService
         $sheet->getColumnDimension('D')->setWidth(50); 
 
         // titles style con bold y fondo gris cada store
-        $col = 'G';
+        $col = 'I';
         foreach ($this->stores as $store) {
             $col = $this->getNextLeterColumn( $col ); 
             $sheet->getColumnDimension($col)->setWidth(15); 
@@ -172,6 +176,8 @@ class InventoryExcelService
         array_push($header, 'product_id');
         array_push($header, 'size_id');
         array_push($header, 'price');
+        array_push($header, 'price_card_credit');
+        array_push($header, 'price_credit');
          // column for store
          foreach ($this->stores as $store) 
             array_push($header, 'stock_'.$store->name);
@@ -195,6 +201,8 @@ class InventoryExcelService
                 'product_id' => $product->product_id,
                 'size_id' => $product->size_id,
                 'price' => $product->price ?? "0",
+                'price_card_credit' => $product->price_card_credit ?? "0",
+                'price_credit' => $product->price_credit ?? "0",
             ];
             // column for store
             foreach ($this->stores as $store) {
@@ -216,7 +224,7 @@ class InventoryExcelService
         $sheet->getColumnDimension('F')->setWidth(15); 
         $sheet->getColumnDimension('I')->setWidth(10); 
 
-        $col = 'K';
+        $col = 'M';
         foreach ($this->stores as $store) {
             $col = $this->getNextLeterColumn( $col ); 
             $sheet->getColumnDimension($col)->setWidth(15); 
