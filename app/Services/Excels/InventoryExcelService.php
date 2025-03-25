@@ -19,13 +19,15 @@ class InventoryExcelService
     
     private $regular_products;
     private $no_regular_products;
+    private $stores;
     public $filename;
 
     public $excel;
 
-    public function __construct($regular_products, $no_regular_products) {
+    public function __construct($regular_products, $no_regular_products, $stores){ 
         $this->regular_products = $regular_products;
         $this->no_regular_products = $no_regular_products;
+        $this->stores = $stores;
         $this->filename = $this->getFileName();
     }
 
@@ -82,9 +84,11 @@ class InventoryExcelService
         array_push($header, 'code');
         array_push($header, 'gender');
         array_push($header, 'price');
-        array_push($header, 'stock_depot');
-        array_push($header, 'stock_local');
-        array_push($header, 'stock_truck');
+        array_push($header, 'price_card_credit');
+        array_push($header, 'price_credit');
+        // column for store
+        foreach ($this->stores as $store) 
+            array_push($header, 'stock_'.$store->name);
 
 		$sheet->fromArray([$header], NULL, 'A1');
     }
@@ -92,18 +96,24 @@ class InventoryExcelService
     private function createProductsRegularesRows($sheet){
         $rows = array();
         foreach ($this->regular_products as $product) {
-            $rows[] = [
+            // row for product
+            $productRow = [
                 'id' => $product->id,
                 'brand_id' => $product->brand_id,
                 'category_id' => $product->category_id,
                 'name' => $product->name,
                 'code' => $product->code,
                 'gender' => $product->gender,
-                'price' => $product->price ? $product->price : "0",
-                'stock_depot' => $product->stock_depot ? $product->stock_depot : "0",
-                'stock_local' => $product->stock_local ? $product->stock_local : "0",
-                'stock_truck' => $product->stock_truck ? $product->stock_truck : "0",
+                'price' => $product->price ?? "0",
+                'price_card_credit' => $product->price_card_credit ?? "0",
+                'price_credit' => $product->price_credit ?? "0",
             ];
+            // column for store
+            foreach ($this->stores as $store) {
+                $productRow['stock_' . $store->name] = $product->stores()->find($store->id)->pivot->stock ?? "0";
+            }
+
+            $rows[] = $productRow;
         }
         
         $sheet->fromArray($rows, NULL, 'A2');
@@ -114,12 +124,16 @@ class InventoryExcelService
         //acho de columnas
         $sheet->getColumnDimension('A')->setWidth(5); 
         $sheet->getColumnDimension('D')->setWidth(50); 
-        $sheet->getColumnDimension('H')->setWidth(11); 
-        $sheet->getColumnDimension('I')->setWidth(10); 
-        $sheet->getColumnDimension('J')->setWidth(10);
+
+        // titles style con bold y fondo gris cada store
+        $col = 'I';
+        foreach ($this->stores as $store) {
+            $col = $this->getNextLeterColumn( $col ); 
+            $sheet->getColumnDimension($col)->setWidth(15); 
+        }
 
         // titles style con bold y fondo gris
-        $sheet->getStyle('A1:J1')->applyFromArray([
+        $sheet->getStyle('A1:'.$col.'1')->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
@@ -129,6 +143,11 @@ class InventoryExcelService
             ],
         ]);
 
+    }
+
+    private function getNextLeterColumn($letter){
+        // next column letter
+        return chr(ord($letter) + 1);
     }
 
     public function createProductsNoRegularesSheet( $spreadsheet){
@@ -157,9 +176,11 @@ class InventoryExcelService
         array_push($header, 'product_id');
         array_push($header, 'size_id');
         array_push($header, 'price');
-        array_push($header, 'stock_depot');
-        array_push($header, 'stock_local');
-        array_push($header, 'stock_truck');
+        array_push($header, 'price_card_credit');
+        array_push($header, 'price_credit');
+         // column for store
+         foreach ($this->stores as $store) 
+            array_push($header, 'stock_'.$store->name);
 
 		$sheet->fromArray([$header], NULL, 'A1');
     }
@@ -167,7 +188,8 @@ class InventoryExcelService
     private function createProductsNoRegularesRows($sheet){
         $rows = array();
         foreach ($this->no_regular_products as $product) {
-            $rows[] = [
+            // row for product
+            $productRow = [
                 'id' => $product->id,
                 'brand_id' => $product->brand_id,
                 'category_id' => $product->category_id,
@@ -178,15 +200,19 @@ class InventoryExcelService
                 'text_color' => $product->text_color,
                 'product_id' => $product->product_id,
                 'size_id' => $product->size_id,
-                'price' => $product->price ? $product->price : "0",
-                'stock_depot' => $product->stock_depot ? $product->stock_depot : "0",
-                'stock_local' => $product->stock_local ? $product->stock_local : "0",
-                'stock_truck' => $product->stock_truck ? $product->stock_truck : "0",
+                'price' => $product->price ?? "0",
+                'price_card_credit' => $product->price_card_credit ?? "0",
+                'price_credit' => $product->price_credit ?? "0",
             ];
-            
+            // column for store
+            foreach ($this->stores as $store) {
+                $productRow['stock_' . $store->name] = $product->stores()->find($store->id)->pivot->stock ?? "0";
+            }
+
+            $rows[] = $productRow;
+
         }
         // agregar fondo gris a las celdas donde el product_id es nulo
-        
 
         $sheet->fromArray($rows, NULL, 'A2');
     }
@@ -197,12 +223,15 @@ class InventoryExcelService
         $sheet->getColumnDimension('D')->setWidth(50); 
         $sheet->getColumnDimension('F')->setWidth(15); 
         $sheet->getColumnDimension('I')->setWidth(10); 
-        $sheet->getColumnDimension('L')->setWidth(11); 
-        $sheet->getColumnDimension('M')->setWidth(10); 
-        $sheet->getColumnDimension('N')->setWidth(10);  
+
+        $col = 'M';
+        foreach ($this->stores as $store) {
+            $col = $this->getNextLeterColumn( $col ); 
+            $sheet->getColumnDimension($col)->setWidth(15); 
+        }
 
          // titles style con bold y fondo gris
-         $sheet->getStyle('A1:N1')->applyFromArray([
+         $sheet->getStyle('A1:'.$col.'1')->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
@@ -217,7 +246,7 @@ class InventoryExcelService
         $row = 2;
         foreach ($this->no_regular_products as $product) {
             if ($product->product_id == null) {
-                $sheet->getStyle('A'.($row) .':N'.($row))->applyFromArray([
+                $sheet->getStyle('A'.($row) .':'.$col.($row))->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['rgb' => 'D3D3D3'], 

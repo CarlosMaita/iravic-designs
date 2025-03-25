@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\admin\catalog;
 
+use App\Events\ProductStockChanged;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Store;
 use App\Services\Excels\InventoryExcelService;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -13,142 +15,102 @@ class InventoryController extends Controller
 
     public function download()
     {
-        $regular_products = Product::where('is_regular' , 1)->get();
-        $no_regular_products = Product::where('is_regular' , 0)->orderBy('created_at', 'desc')->get();
-        // dd($no_regular_products[0]);
-        $inventory_excel = new InventoryExcelService($regular_products, $no_regular_products);
-        $inventory_excel->generate();
-
-        $path = $inventory_excel->getPath();
-
-        $headers = [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment;filename="' . 'inventario.xlsx' . '"',
-        ];
+        $stores = Store::all();
+        $regularProducts = Product::where('is_regular' , 1)->get();
+        $noRegularProducts = Product::where('is_regular' , 0)->orderBy('created_at', 'desc')->get();
+        
+        // generar excel
+        $inventoryExcel = new InventoryExcelService($regularProducts, $noRegularProducts, $stores);
+        $inventoryExcel->generate();
+        $path = $inventoryExcel->getPath();
 
         return response()
-            ->download( $path, 'inventario.xlsx' , $headers)
+            ->download( $path, 'inventario.xlsx' ,
+             [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="' . 'inventario.xlsx' . '"',
+             ])
             ->deleteFileAfterSend(true);
     }
 
 
     public function upload(Request $request){
-        $file = $request->file('file');
+    ini_set('max_execution_time', 300);
+
+    try {
         $id_row = 0;
+        $file = $request->file('file');
+        $spreadsheet = IOFactory::load($file->getRealPath());
+        $data_regular_products = $spreadsheet->getSheet(0)->toArray();
+        $data_no_regular_products = $spreadsheet->getSheet(1)->toArray();
 
-        try {
-            // leer datos de excel
-            $data_regular_products 		= IOFactory::load($file->getRealPath())->getSheet(0)->toArray();
-            $data_no_regular_products 	= IOFactory::load($file->getRealPath())->getSheet(1)->toArray();
+        $this->validateTemplateAndData($data_regular_products, $data_no_regular_products, $id_row);
 
-            // validar formato de archivo
-            if (empty($data_regular_products[0][0]) == 'Id'  && empty($data_no_regular_products[0][0]) == 'Id') {
-                return response()->json([
-                    'status' => 420,
-                    'success' => false,
-                    'message' => 'El archivo no tiene el formato correcto'
-                ]);
-            }
+        $stores = Store::all();
+        $storeIds = $stores->pluck('id')->toArray();
 
-            // Validar que existen datos en el archivo
-            if (empty($data_regular_products[$id_row + 1][0]) && empty($data_no_regular_products[$id_row + 1][0])) {
-                return response()->json([
-                    'status' => 420,
-                    'success' => false,
-                    'message' => 'No se encontraron datos en el archivo'
-                ]);
-            }
+        $this->processProducts($data_regular_products, $id_row, 6, $storeIds);
+        $this->processProducts($data_no_regular_products, $id_row, 10, $storeIds, 13);
 
-           
-            // rows para productos regulares
-            $price_row = 6;
-            $stock_depot_row = 7;
-            $stock_local_row = 8;
-            $stock_truck_row = 9;
-            # Procesar productos Regulares
-            foreach($data_regular_products as $row) {
-                if(!empty($row[$id_row])){
-                    if($row[$id_row] == "Id") continue;
-                    $id =  $row[$id_row];
+        return response()->json([
+            'status' => 200,
+            'success' => true,
+            'message' => 'Se han actualizado los inventarios'
+        ]);
 
-                    $product = Product::find($id);
-                    if ($product){
-                        $price = $row[$price_row] ? $row[$price_row] : 0;
-                        $stock_depot = $row[$stock_depot_row] ? $row[$stock_depot_row] : 0;
-                        $stock_local = $row[$stock_local_row] ? $row[$stock_local_row] : 0;
-                        $stock_truck = $row[$stock_truck_row] ? $row[$stock_truck_row] : 0;
-           
-
-                        if ( (is_numeric($stock_depot) && is_numeric($stock_local)  && is_numeric($stock_truck) && is_numeric($price)) ){
-                            $product->price = $price;
-                            $product->stock_depot = $stock_depot;
-                            $product->stock_local = $stock_local;
-                            $product->stock_truck = $stock_truck;
-                            $product->save();
-                        }
-                    }                  
-                }else{
-                    break;
-                }
-            }
-
-            // rows para productos regulares
-            $price_row = 10;
-            $stock_depot_row = 11;
-            $stock_local_row = 12;
-            $stock_truck_row = 13;
-            # Procesar productos Regulares
-            foreach($data_no_regular_products as $row) {
-                if(!empty($row[$id_row])){
-                    if($row[$id_row] == "Id") continue;
-                    $id =  $row[$id_row];
-
-                    $product = Product::find($id);
-                    if ($product){
-                        $price = $row[$price_row] ? $row[$price_row] : 0;
-                        $stock_depot = $row[$stock_depot_row] ? $row[$stock_depot_row] : 0;
-                        $stock_local = $row[$stock_local_row] ? $row[$stock_local_row] : 0;
-                        $stock_truck = $row[$stock_truck_row] ? $row[$stock_truck_row] : 0;
-
-                        if ( (is_numeric($stock_depot) && is_numeric($stock_local)  && is_numeric($stock_truck) && is_numeric($price)) ){
-                            $product->price = $price;
-                            $product->stock_depot = $stock_depot;
-                            $product->stock_local = $stock_local;
-                            $product->stock_truck = $stock_truck;
-                            $product->save();
-                        }
-                    }                  
-                }else{
-                    break;
-                }
-            }
-
-            return response()->json([
-                'status' => 200,
-                'success' => true,
-                'message' => 'Se han actualizado los inventarios'
-            ]);
-
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 420,
-                'success' => false,
-                'message' => 'No se pudo leer el archivo'
-            ]);
-        }
-      
-
-
-       
-
-       
-        
-
-        
-
-
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => 420,
+            'success' => false,
+            'message' => 'No se pudo leer el archivo'
+        ]);
     }
+}
+
+private function validateTemplateAndData($data_regular_products, $data_no_regular_products, $id_row){
+    if (empty($data_regular_products) || empty($data_no_regular_products) || $data_regular_products[0][0] !== 'Id' || $data_no_regular_products[0][0] !== 'Id' || empty($data_regular_products[$id_row + 1][0]) || empty($data_no_regular_products[$id_row + 1][0])) {
+        return response()->json([
+            'status' => 420,
+            'success' => false,
+            'message' => 'El archivo no tiene el formato correcto o no se encontraron datos en el archivo'
+        ]);
+    }
+}
+
+private function processProducts($data_products, $id_row, $price_row, $storeIds, $stock_row_start = 9)
+{
+    $ids = array_unique(array_filter(array_column($data_products, $id_row)));
+    $products = Product::whereIn('id', $ids)->get();
+
+    foreach ($data_products as $row) {
+        if (empty($row[$id_row])) break;
+
+        $id = $row[$id_row];
+        $product = $products->firstWhere('id', $id);
+        if ($product) {
+            $price = $row[$price_row] ?? 0;
+            $price_card_credit = $row[$price_row + 1] ?? 0;
+            $price_credit = $row[$price_row + 2] ?? 0;
+            $product->price = $price;
+            $product->price_card_credit = $price_card_credit;
+            $product->price_credit = $price_credit;
+            $product->save();
+
+            foreach ($storeIds as $index => $store_id) {
+                $new_stock = $row[$stock_row_start + $index] ?? 0;
+                $current_stock = $product->stores()->find($store_id)->pivot->stock ?? 0;
+                $stock_difference = $new_stock - $current_stock;
+
+                if ($stock_difference !== 0) {
+                    $product->stores()->updateExistingPivot($store_id, ['stock' => $new_stock]);
+                    event(new ProductStockChanged($product->id, $store_id, $current_stock, $new_stock, $stock_difference, 'Asignacion Masiva de stock', auth()->id()));
+                }
+            }
+        }
+    }
+}
+
+   
 }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ProductStockChanged;
 use App\Services\Catalog\StockService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -58,27 +59,53 @@ class ProductStockTransfer extends Model
                 $product->stores()->updateExistingPivot( $originStore->id, ['stock' => $newOriginStock]);
                 $product->stores()->updateExistingPivot($destinationStore->id, ['stock' => $newDestinationStock]);
 
-                $product->addStockHistoryRecord(
-                    $user->id,
-                    'Transferencia hacia ' . $destinationStore->name,
-                    $newOriginStock,
-                    $oldOriginStock,
-                    $transferQuantity,
-                    $originStore->name,
-                    null,
-                    $product_stock_transfer->id
-                );
+                // Evento de Transferencia Origen
+               event(new ProductStockChanged(
+                       $product->id,
+                       $originStore->id,
+                       $oldOriginStock,
+                       $newOriginStock,
+                       $transferQuantity,
+                       'Transferencia hacia ' . $destinationStore->name,
+                       auth()->id(), 
+                       $product_stock_transfer->id)
+                   );
 
-                $product->addStockHistoryRecord(
-                    $user->id,
-                    'Transferencia desde ' . $originStore->name,
-                    $newDestinationStock,
-                    $oldDestinationStock,
-                    $transferQuantity,
-                    $destinationStore->name,
-                    null,
-                    $product_stock_transfer->id
-                );
+                // Evento de Transferencia destino
+                event(new ProductStockChanged(
+                        $product->id,
+                        $destinationStore->id,
+                        $oldDestinationStock,
+                        $newDestinationStock,
+                        $transferQuantity,
+                        'Transferencia desde ' . $originStore->name,
+                        auth()->id(), 
+                        $product_stock_transfer->id)
+                    );
+
+
+
+                // $product->addStockHistoryRecord(
+                //     $user->id,
+                //     'Transferencia hacia ' . $destinationStore->name,
+                //     $newOriginStock,
+                //     $oldOriginStock,
+                //     $transferQuantity,
+                //     $originStore->name,
+                //     null,
+                //     $product_stock_transfer->id
+                // );
+
+                // $product->addStockHistoryRecord(
+                //     $user->id,
+                //     'Transferencia desde ' . $originStore->name,
+                //     $newDestinationStock,
+                //     $oldDestinationStock,
+                //     $transferQuantity,
+                //     $destinationStore->name,
+                //     null,
+                //     $product_stock_transfer->id
+                // );
             }
         });
     }

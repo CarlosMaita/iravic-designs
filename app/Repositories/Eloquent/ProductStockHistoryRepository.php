@@ -31,8 +31,8 @@ class ProductStockHistoryRepository extends BaseRepository implements ProductSto
             $query->whereProduct($criteria['product']);
         }
 
-        if (isset($criteria['stock_column'])) {
-            $query->whereStock($criteria['stock_column']);
+        if (isset($criteria['store_id'])) {
+            $query->whereStoreId($criteria['store_id']);
         }
 
         return $query->orderBy('created_at', 'DESC')->get();

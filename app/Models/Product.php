@@ -60,34 +60,7 @@ class Product extends Model
     public static function boot()
     {
         parent::boot();
-
-        static::saved(function ($product) {
-            $user = Auth::user();
-
-            if ($product->isDirty('stock_depot')) {
-                $old_stock = (int) $product->getRawOriginal('stock_depot');
-                $new_stock = $product->stock_depot;
-                $qty = $new_stock - $old_stock;
-                $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_depot');
-            }
-
-            if ($product->isDirty('stock_local')) {
-                $old_stock = (int) $product->getRawOriginal('stock_local');
-                $new_stock = $product->stock_local;
-                $qty = $new_stock - $old_stock;
-                $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_local');
-            }
-
-            if ($product->isDirty('stock_truck')) {
-                $old_stock = (int) $product->getRawOriginal('stock_truck');
-                $new_stock = $product->stock_truck;
-                $qty = $new_stock - $old_stock;
-                $product->addStockHistoryRecord($user->id, 'Actualización de stock', $new_stock, $old_stock, $qty, 'stock_truck');
-            }
-        });
-
-
-        
+       
     }
 
     # Relationships
@@ -298,7 +271,18 @@ class Product extends Model
      *  - Devuelto
      *  - Transferido su stock de un tipo a otro
      */
-    public function addStockHistoryRecord($user_id, $action, $new_stock, $old_stock, $qty, $stock, $order_product_id = null, $product_stock_transfer_id = null, $refund_product_id = null)
+    public function addStockHistoryRecord(
+        $user_id,
+        $store_id,
+        $action,
+        $new_stock,
+        $old_stock,
+        $qty,
+        $stock_name,
+        $order_product_id = null,
+        $product_stock_transfer_id = null,
+        $refund_product_id = null,
+    )
     {
         $attributes = array(
             'user_id' => $user_id,
@@ -309,7 +293,8 @@ class Product extends Model
             'new_stock' => $new_stock,
             'old_stock' => $old_stock,
             'qty' => $qty,
-            'stock' => $stock
+            'stock_name' => $stock_name,
+            'store_id' => $store_id
         );
 
         $this->stocks_history()->create($attributes);
