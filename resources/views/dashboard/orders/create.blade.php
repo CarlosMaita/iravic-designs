@@ -1,0 +1,82 @@
+@extends('dashboard.base')
+
+@push('css')
+  <style>
+    .input-group .select2-container{
+      width: calc(100% - 43px)!important;
+    }
+    .input-group .select2-container .select2-selection--single {
+      border-radius: 4px 0px 0px 4px;
+    }
+  </style>
+
+  <style>
+    .datepicker-dropdown {
+        max-width: 300px;
+    }
+  </style>
+@endpush
+
+@section('content')
+  <div class="container-fluid">
+      <div class="animated fadeIn">
+          <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 px-0">
+                  <div class="card">
+                      <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.orders.create') }}</div>
+                      <div class="card-body px-2">
+                        <form id="form-orders" method="POST" action="{{ route('ventas.store') }}">
+                          @csrf
+                          @if (!empty($customerParam))
+                            <input type="hidden" name="customer_param" value="{{ $customerParam->id }}">
+                          @endif
+                          @if (!empty($boxParam))
+                            <input type="hidden" name="box_param" value="{{ $boxParam->id }}">
+                          @endif
+                          @include('dashboard.orders._form')
+                          @include('dashboard.orders._modal_discount')
+                          <hr>
+                          <div class="container-fluid">
+                            <div class="row">
+                              <div class="col-md-12 justify-content-end">
+                                {{-- <button class="btn btn-success" type="submit">{{ __('dashboard.form.create') }}</button> --}}
+                                <a href="{{ route('ventas.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  @include('dashboard.orders._modal_new_costumer', ['customer' => new App\Models\Customer])
+  @include('dashboard.orders._modal_product')
+@endsection
+
+@push('js')
+  <script>
+    const $customer = null;
+    const is_creating_order = true;
+    const $products = @json($products);
+  </script>
+ 
+  <script src="{{ asset('plugins/underscore/underscore.js') }}"></script>
+
+  @include('plugins.datepicker')
+  @include('plugins.google-maps')
+  @include('plugins.select2')
+  @include('plugins.sweetalert')
+  @include('dashboard.customers.js.customer-map')
+  @include('dashboard.customers.js.form')
+  @include('dashboard.orders.js.form')
+  @if (!empty($customerParam))
+  <script>
+     $(function(){
+      $("select#customer").val({{ $customerParam->id}}).trigger("change");
+     })
+  </script>
+@endif
+@endpush

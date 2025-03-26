@@ -1,93 +1,295 @@
-# moderna-muebles
+# CoreUI Free Laravel Bootstrap Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=CoreUI%20-%20Free%20Bootstrap%204%20Admin%20Template%20&url=https://coreui.io&hashtags=bootstrap,admin,template,dashboard,panel,free,angular,react,vue)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+[![Bootstrap Admin Template](https://coreui.io/images/github/vue-free-template-3.gif)](https://coreui.io/laravel/)
 
-## Getting started
+Curious why I decided to create CoreUI? Please read this article: [Jack of all trades, master of none. Why Bootstrap Admin Templates suck.](https://medium.com/@lukaszholeczek/jack-of-all-trades-master-of-none-5ea53ef8a1f#.7eqx1bcd8)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+CoreUI offers 6 versions: [Bootstrap](https://github.com/coreui/coreui-free-bootstrap-admin-template), [Angular](https://github.com/coreui/coreui-free-angular-admin-template), [Laravel](https://github.com/coreui/coreui-free-laravel-admin-template), [React.js](https://github.com/coreui/coreui-free-react-admin-template), [Vue.js](https://github.com/coreui/coreui-free-vue-admin-template), and [Vue.js + Laravel](https://github.com/coreui/coreui-free-vue-laravel-admin-template).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
 
-## Add your files
+## Table of Contents
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+* [Versions](#versions)
+* [CoreUI Pro](#coreui-pro)
+* [Admin Templates built on top of CoreUI Pro](#admin-templates-built-on-top-of-coreui-pro)
+* [Installation](#installation)
+* [Usage](#Usage)
+* [Features](#Features)
+* [Creators](#creators)
+* [Community](#community)
+* [Community Projects](#community-projects)
+* [License](#license)
+* [Support CoreUI Development](#support-coreui-development)
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/soporte.brocsoft/moderna-muebles.git
-git branch -M main
-git push -uf origin main
-```
+## Versions
 
-## Integrate with your tools
+CoreUI is built on top of Bootstrap 4 and supports popular frameworks.
 
-- [ ] [Set up project integrations](https://gitlab.com/soporte.brocsoft/moderna-muebles/-/settings/integrations)
+* [CoreUI Free Bootstrap Admin Template](https://github.com/coreui/coreui-free-bootstrap-admin-template)
+* [CoreUI Free Angular Admin Template](https://github.com/coreui/coreui-free-angular-admin-template)
+* [CoreUI Free Laravel Admin Template](https://github.com/coreui/coreui-free-laravel-admin-template)
+* [CoreUI Free React.js Admin Template](https://github.com/coreui/coreui-free-react-admin-template)
+* [CoreUI Free Vue.js Admin Template](https://github.com/coreui/coreui-free-vue-admin-template)
+* [CoreUI Free Vue.js + Laravel Admin Template](https://github.com/coreui/coreui-free-vue-laravel-admin-template)
 
-## Collaborate with your team
+## CoreUI Pro
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+* 💪  [CoreUI Pro Bootstrap Admin Template](https://coreui.io/pro/)
+* 💪  [CoreUI Pro Angular Admin Template](https://coreui.io/pro/angular)
+* 💪  [CoreUI Pro Laravel Admin Template](https://coreui.io/pro/laravel)
+* 💪  [CoreUI Pro React Admin Template](https://coreui.io/pro/react)
+* 💪  [CoreUI Pro Vue Admin Template](https://coreui.io/pro/vue)
+* 💪  [CoreUI Pro Vue + Laravel Admin Template](https://coreui.io/pro/vue-laravel)
 
-## Test and Deploy
+## Admin Templates built on top of CoreUI Pro
 
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+| Default Theme | Legacy Theme | Dark Layout |
+| --- | --- | --- |
+| [![CoreUI Pro Bootstrap Admin Template](https://coreui.io/images/mockups/mockup_3_1_default.png)](https://coreui.io/pro/laravel/) | [![CoreUI Pro Bootstrap Admin Template](https://coreui.io/images/mockups/mockup_3_1_legacy.png)](https://coreui.io/pro/laravel/)| [![CoreUI Pro Bootstrap Admin Template](https://coreui.io/images/mockups/mockup_3_1_dark.png)](https://coreui.io/pro/laravel/)
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+``` bash
+# clone the repo
+$ git clone https://github.com/coreui/coreui-free-laravel-admin-template.git my-project
+
+# go into app's directory
+$ cd my-project
+
+# install app's dependencies
+$ composer install
+
+# install app's dependencies
+$ npm install
+
+```
+
+### If you choice to use SQLite
+
+``` bash
+
+# create database
+$ touch database/database.sqlite
+```
+Copy file ".env.example", and change its name to ".env".
+Then in file ".env" replace this database configuration:
+* DB_CONNECTION=mysql
+* DB_HOST=127.0.0.1
+* DB_PORT=3306
+* DB_DATABASE=laravel
+* DB_USERNAME=root
+* DB_PASSWORD=
+
+To this:
+
+* DB_CONNECTION=sqlite
+* DB_DATABASE=/path_to_your_project/database/database.sqlite
+
+### If you choice to use PostgreSQL
+
+1. Install PostgreSQL
+
+2. Create user
+``` bash
+$ sudo -u postgres createuser --interactive
+enter name of role to add: laravel
+shall the new role be a superuser (y/n) n
+shall the new role be allowed to create database (y/n) n
+shall the new role be allowed to create more new roles (y/n) n
+```
+3. Set user password
+``` bash
+$ sudo -u postgres psql
+postgres= ALTER USER laravel WITH ENCRYPTED PASSWORD 'password';
+postgres= \q
+```
+4. Create database
+``` bash
+$ sudo -u postgres createdb laravel
+```
+5. Copy file ".env.example", and change its name to ".env".
+Then in file ".env" replace this database configuration:
+
+* DB_CONNECTION=mysql
+* DB_HOST=127.0.0.1
+* DB_PORT=3306
+* DB_DATABASE=laravel
+* DB_USERNAME=root
+* DB_PASSWORD=
+
+To this:
+
+* DB_CONNECTION=pgsql
+* DB_HOST=127.0.0.1
+* DB_PORT=5432
+* DB_DATABASE=laravel
+* DB_USERNAME=laravel
+* DB_PASSWORD=password
+
+### If you choice to use MySQL
+
+Copy file ".env.example", and change its name to ".env".
+Then in file ".env" complete this database configuration:
+* DB_CONNECTION=mysql
+* DB_HOST=127.0.0.1
+* DB_PORT=3306
+* DB_DATABASE=laravel
+* DB_USERNAME=root
+* DB_PASSWORD=
+
+### Set APP_URL
+
+> If your project url looks like: example.com/sub-folder 
+Then go to `my-project/.env`
+And modify this line:
+
+* APP_URL = 
+
+To make it look like this:
+
+* APP_URL = http://example.com/sub-folder
+
+
+### Next step
+
+``` bash
+# in your app directory
+# generate laravel APP_KEY
+$ php artisan key:generate
+
+# run database migration and seed
+$ php artisan migrate:refresh --seed
+
+# generate mixing
+$ npm run dev
+
+# and repeat generate mixing
+$ npm run dev
+```
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+``` bash
+# start local server
+$ php artisan serve
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+# test
+$ php vendor/bin/phpunit
+```
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Open your browser with address: [localhost:8000](localhost:8000)  
+Click "Login" on sidebar menu and log in with credentials:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+* E-mail: _admin@admin.com_
+* Password: _password_
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+This user has roles: _user_ and _admin_
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+--- 
 
-## License
-For open source projects, say how it is licensed.
+### How to add a link to the sidebar:
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+> Instructions for CoreUI Free Laravel admin template only. _Pro and Vue.js versions have separate instructions._
+
+#### To add a __link__ to the sidebar - modify seeds file:  
+`my-project/database/seeds/MenusTableSeeder.php`
+
+In `run()` function - add `insertLink()`:
+```php
+$id = $this->insertLink( $rolesString, $visibleName, $href, $iconString);
+```
+* `$rolesString` - a string with list of user roles this menu element will be available, ex. `"guest,user,admin"`
+* `$visibleName` - a string caption visible in sidebar
+* `$href` - a href, ex. `/homepage` or `http://example.com`
+* `$iconString` - a string containing valid CoreUI Icon name (kebab-case), ex. `cil-speedometer` or `cil-pencil`
+
+To add a __title__ to the sidebar - use function `insertTitle()`:
+```php
+$id = $this->insertTitle( $rolesString, $title );
+```
+* `$rolesString` - a string with list of user roles this menu element will be available, ex. `"guest,user,admin"`
+* `$title` - a string caption visible in sidebar
+
+To add a __dropdown__ menu to the sidebar - use function `beginDropdown()`:
+```php
+$id = $this->beginDropdown( $rolesString, $visibleName, $iconString);
+```
+* `$rolesString` - a string with list of user roles this menu element will be available, ex. `"guest,user,admin"`
+* `$visibleName` - a string caption visible in sidebar
+* `$iconString` - a string containing valid CoreUI icon name (kebab-case). For example: `cil-speedometer` or `cil-pencil`
+
+To end dropdown section - use function `endDropdown()`. 
+
+To add __link__ to __dropdown__ call function `insertLink()` between function calls `beginDropdown()` and `endDropdown()`. 
+Example:
+```php
+$id = $this->beginDropdown('guest,user,admin', 'Some dropdown', 'cil-puzzle');
+$id = $this->insertLink('guest,user,admin', 'Dropdown name', 'http://example.com');
+$this->endDropdown();
+```
+
+__IMPORTANT__ - At the end of `run()` function, call `joinAllByTransaction()` function:
+```php
+$this->joinAllByTransaction();
+```
+
+Once done with seeds file edit, __run__:
+``` bash 
+$ php artisan migrate:refresh --seed
+# This command also rollbacks database and migrates it again.
+```
+
+## Features
+
+### Table of contents:
+* [Users](#users)
+
+
+## Creators
+
+**Łukasz Holeczek**
+
+* <https://twitter.com/lukaszholeczek>
+* <https://github.com/mrholek>
+
+**Andrzej Kopański**
+
+* <https://github.com/xidedix>
+
+**Marcin Michałek**
+
+* <https://github.com/rakieta2015>
+
+
+## Community
+
+Get updates on CoreUI's development and chat with the project maintainers and community members.
+
+- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
+- Read and subscribe to [CoreUI Blog](https://coreui.io/blog/).
+
+
+## CoreUI Icons (500+ Free icons) - Premium designed free icon set with marks in SVG, Webfont and raster formats.
+
+CoreUI Icons are beautifully crafted symbols for common actions and items. You can use them in your digital products for web or mobile app. Ready-to-use fonts and stylesheets that work with your favorite frameworks.
+
+![CoreUI Free Icons](https://coreui.io/images/icons_free_bg_set.png)
+
+
+### CoreUI Icons Preview & Docs
+
+[https://coreui.io/icons/](https://coreui.io/icons/)
+
+## Copyright and license
+
+copyright 2020 creativeLabs Łukasz Holeczek. Code released under [the MIT license](https://github.com/coreui/coreui-free-laravel-admin-template/blob/master/LICENSE).
+There is only one limitation you can't can’t re-distribute the CoreUI as stock. You can’t do this if you modify the CoreUI. In past we faced some problems with persons who tried to sell CoreUI based templates.
+
+## Support CoreUI Development
+
+CoreUI is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support development by donating on [PayPal](https://www.paypal.me/holeczek), buying [CoreUI Pro Version](https://coreui.io/pro) or buying one of our [premium admin templates](https://genesisui.com/?support=1).
+
+As of now I am exploring the possibility of working on CoreUI fulltime - if you are a business that is building core products using CoreUI, I am also open to conversations regarding custom sponsorship / consulting arrangements. Get in touch on [Twitter](https://twitter.com/lukaszholeczek).
