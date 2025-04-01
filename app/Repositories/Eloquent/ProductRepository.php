@@ -290,14 +290,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $product->update($attributes);
         $product->product_combinations()->delete();
 
-        // old_stock
-        $old_store = $product->store();
-        //attach stores 
-        $product->stores()->detach();
         $stores = $request->input('stores');
-        foreach ($stores as $store_id => $stock) {
-            $product->stores()->attach($store_id, ['stock' => $stock]);
-            $old_stock = $old_store->find($store_id)->pivot->stock;
+        foreach ($stores as $store_id => $stock){
+            // Verificar si el vínculo ya existe
+            if ($product->stores()->where('store_id', $store_id)->exists()) {
+                $old_stock = $product->stores()->find($store_id)->pivot->stock;
+                $product->stores()->updateExistingPivot($store_id, ['stock' => $stock]);
+            }else{
+                $old_stock = 0;
+                $product->stores()->attach($store_id, ['stock' => $stock]);
+            }
             // Evento de Actualizacion de stock
             event(new ProductStockChanged($product->id, $store_id, $old_stock, $stock, ($stock - $old_stock), 'Actualizacion de stock' , auth()->id()));
         }
