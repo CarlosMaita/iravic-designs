@@ -132,10 +132,12 @@ class ProductRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0'
         ];
-
-        $baseCategory = Category::find($this->category_id)->baseCategory;
-        if ($baseCategory->has_gender) {
-            $rules['gender'] = 'required';
+        // if existe el campo de categoria y la categoria tiene el campo de genero
+        if (isset($this->category_id)) {
+            $baseCategory = Category::find($this->category_id)->baseCategory;
+            if ($baseCategory->has_gender) {
+                $rules['gender'] = 'required';
+            }
         }
 
         if ($this->isMethod('POST')) {
