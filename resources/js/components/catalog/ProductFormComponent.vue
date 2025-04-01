@@ -159,7 +159,7 @@
                     <div v-for="(product_store) in product_stores" :key="`store-${product_store.store_id}`" class="col-md-4">
                         <div class="form-group">
                             <label :for="`store-${product_store.store_id}`">{{ product_store.store_name }}</label>
-                            <input type="number" class="form-control" 
+                            <input type="number" class="form-control input-store" 
                                 :id="`store-${product_store.store_id}`" 
                                 :name="`stores[${product_store.store_id}]`"
                                 v-model="product_stores.find(store => store.store_id == product_store.store_id).stock">

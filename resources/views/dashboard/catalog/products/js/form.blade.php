@@ -26,7 +26,15 @@
                 //send all the form data along with the files:
                 this.on("sendingmultiple", function(data, xhr, formData) {
                     $(":input[name]", $("#form-products")).each(function () {
-                        formData.append(this.name, $(':input[name=' + this.name + ']', $("form")).val());   
+                        var name = $(this).attr('name');
+                        var value = $(this).val();
+
+                        if (name.endsWith('[]')) { // Verifica si el nombre termina con '[]' (indica un array)
+                            var arrayName = name.slice(0, -2); // Remueve '[]' del nombre
+                            formData.append(arrayName + '[]', value); // Agrega el valor al array en FormData
+                        } else {
+                            formData.append(name, value); // Agrega el valor normal para campos no array
+                        }
                     });
                     
                     xhr.onreadystatechange = function() {
