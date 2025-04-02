@@ -221,7 +221,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <ProductItemToBuy 
-                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-buy`"
+                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-store-${item.store.id}-buy`"
                                                         :item="item"
                                                         :index="index"
                                                         :can-remove="true"
@@ -456,7 +456,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <ProductItemToBuy 
-                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-buy-resumen`"
+                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-store-${item.store.id}-buy-resumen`"
                                                         :item="item"
                                                         :index="index"
                                                         :can-remove="false"
@@ -929,9 +929,9 @@
              * 
              */
             handleAddProductToBuy(products_to_order) {
-                console.log(products_to_order);
                 products_to_order.forEach((orderProduct) => {
-                    const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id);
+
+                    const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id && _item.store.id === orderProduct.store.id);
                     if (index > -1) {
                         Vue.set(this.productsSelectedToBuy, index, orderProduct);
                         this.$emit("updateQuantityToBuy", index, orderProduct.qty)

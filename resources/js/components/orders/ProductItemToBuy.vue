@@ -10,18 +10,19 @@
             <p v-if="item.product.size" class="mb-0">Talla: {{ item.product.size.name }}</p>
         </td>
         <td data-label="Precio">{{ item.product.regular_price_str }}</td>
-        <td data-label="Disponible">{{ item.product.stock_user }}</td>
+        <td data-label="Déposito">{{ item.store ? item.store.name : '' }}</td>
+        <td data-label="Disponible">{{ item.store ? item.store.pivot.stock  : 0 }}</td>
         <td v-if="canRemove" data-label="Cantidad">
-            <input :name="`qtys[${item.product.id}][${item.store_id}]`" 
+            <input :name="`qtys[${item.product.id}][${item.store.id}]`" 
                     class="form-control" 
                     type="number" 
                     step="1" 
                     min="0" 
-                    :max="item.product.stock_user" 
+                    :max="item.store.pivot.stock" 
                     v-model="quantity">
 
             <input type="hidden" 
-                    name="products[${item.product.id}]"
+                    :name="`products[${item.product.id}][${item.store.id}]`"
                     :value="item.product.name">
         </td>
         <td v-if="!canRemove" data-label="Cantidad">
