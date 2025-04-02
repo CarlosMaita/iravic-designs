@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderProduct extends Model
@@ -39,7 +40,7 @@ class OrderProduct extends Model
                 ->subtractStock(
                     $order_product->store_id,
                     $qty,
-                    'venta',
+                    'venta #' . $order_product->id,
                     $order_product->id
                 );
         });
@@ -80,7 +81,7 @@ class OrderProduct extends Model
     # Modifica el total del producto en formato moneda
     public function getTotalAttribute($value)
     {
-        return '$ ' . number_format($value, 2, '.', ',');
+        return FormatHelper::formatCurrency($value);
     }
 
     # Appends
@@ -100,6 +101,6 @@ class OrderProduct extends Model
     # Retorna en formato moneda el precio del producto comprado
     public function getProductPriceStrAttribute()
     {
-        return '$ ' . number_format($this->product_price, 2, '.', ',');
+        return FormatHelper::formatCurrency($this->product_price);
     }
 }
