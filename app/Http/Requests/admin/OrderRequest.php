@@ -31,14 +31,16 @@ class OrderRequest extends FormRequest
             'qtys.required' => 'required',
             'qtys.array' => 'array'
         ];
+        
 
         if (isset($this->products) && is_array($this->products)) {
-            foreach ($this->products as $key => $product) {
-                $messages['products.'. $product . '.exists'] = 'El producto ' . ($key + 1) . ' no se encuentra en la BD.';
+            foreach ($this->products as $keyProduct => $product) {
+                $messages['products.'. $keyProduct . '.exists'] = 'El producto ' . ($keyProduct + 1) . ' no se encuentra en la BD.';
 
-
-                if (isset($this->qtys[$product])) {
-                    $messages['qtys.' . $product . '.numeric'] = 'La cantidad para el producto ' . ($key + 1) . ' no es válida.';
+                if (isset($this->qtys[$keyProduct]) && is_array($this->qtys[$keyProduct])) {
+                    foreach ($this->qtys[$keyProduct] as $keyStore => $qty) {
+                        $messages['qtys.' . $keyProduct . '.' . $keyStore . '.numeric'] = 'La cantidad para el producto ' . ($keyProduct + 1) . ', deposito ' . ($keyStore + 1) . ' no es válida.';
+                    }
                 }
             }
         }
@@ -63,14 +65,25 @@ class OrderRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'customer_id' => 'required|exists:customers,id',
             'payment_method' => ['required', Rule::in(['bankwire', 'card', 'cash', 'credit'])],
             'products' => 'required|array|min:1',
-            'products.*' => 'exists:products,id',
+            // 'products.*' => 'exists:products,id',
             'qtys' => 'required|array',
-            'qtys.*' => 'numeric'
+            // 'qtys.*' => 'numeric'
         ];
+
+        // if (isset($this->products) && is_array($this->products)) {
+        //     foreach ($this->products as $keyProduct => $product) {
+        //         $rules['products.'. $keyProduct . '.exists'] = ['exists:products,id'];
+        //         // $rules['qtys.'. $keyProduct . '.numeric'] = ['numeric'];
+        //     }
+        // }
+
+        return $rules;
+
+
     }
 
     /**
@@ -165,21 +178,25 @@ class OrderRequest extends FormRequest
         $discount = isset($this->discount) && is_numeric($this->discount) ? $this->discount : 0;
         $subtotal = 0;
 
-        foreach ($this->products as $product_id) {
-            if ($product = $this->productRepository->find($product_id)) {
-                if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
-
-                    $regular_price =  $product->regular_price; // Precio regular por defecto
-                    if(auth()->user()->can('prices-per-method-payment') ) {
-                        if ($this->payment_method == "card" || $this->payment_method == "credit") {
-                            $regular_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+        foreach ($this->products as $keyProduct => $stores) {
+            if ($product = $this->productRepository->find($keyProduct)) {
+                if (isset($this->qtys[$keyProduct])) {
+                    foreach ($this->qtys[$keyProduct] as $keyStore => $qty) {
+                        if ($qty <= 0) {
+                            continue;
                         }
+
+                        $real_price =  $product->regular_price; // Precio regular por defecto
+                        if(auth()->user()->can('prices-per-method-payment') ) {
+                            if ($this->payment_method == "card" || $this->payment_method == "credit") {
+                                $real_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                            }
+                        }
+                        $subtotal += ($real_price * $qty);
                     }
-                    $subtotal += ($regular_price * $this->qtys[$product_id]);
                 }
             }
         }
-
         $total_to_pay = $subtotal - $discount; // El total con descuento
         $total_to_collection = $this->getTotalToCollection($total_to_pay); // El total que se le cobrara al cliente es por default el total
         

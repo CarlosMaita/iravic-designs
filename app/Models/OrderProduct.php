@@ -12,6 +12,7 @@ class OrderProduct extends Model
         'color_id',
         'order_id',
         'product_id',
+        'store_id',
         'product_name',
         'product_price',
         'qty',
@@ -23,7 +24,7 @@ class OrderProduct extends Model
     public $appends = [
         'available_for_refund',
         'is_by_credit',
-        'product_price_str'
+        'product_price_str',
     ];
 
     # Boot
@@ -31,10 +32,16 @@ class OrderProduct extends Model
     {
         parent::boot();
 
-        # Cada ve que se compra un producto, se descuenta la cantidad del stock asociado al vendedor que realizo la venta
+        # Cada ve que se compra un producto, se descuenta la cantidad del stock asociado al deposito seleccionado en la venta
         OrderProduct::saved(function($order_product) {
             $qty = $order_product->qty;
-            $order_product->product->subtractStockUser($order_product->id, $qty, 'venta');
+            $order_product->product
+                ->subtractStock(
+                    $order_product->store_id,
+                    $qty,
+                    'venta',
+                    $order_product->id
+                );
         });
     }
 
@@ -62,6 +69,11 @@ class OrderProduct extends Model
     public function size()
     {
         return $this->belongsTo('App\Models\Size');
+    }
+
+    public function store()
+    {
+        return $this->belongsTo('App\Models\Store', 'store_id', 'id');
     }
 
     # Accessors

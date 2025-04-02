@@ -133,7 +133,7 @@ class VisitRepository extends BaseRepository implements VisitRepositoryInterface
 
     private function calculateQuota( float $amountRefund, float $countFutureVisits) : float
     {
-        return $amountRefund / $countFutureVisits;
+        return $countFutureVisits == 0 ? 0 :  $amountRefund / $countFutureVisits;
     }  
     
     private function countFutureVisitsCollection(int $customerId): int

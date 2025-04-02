@@ -147,8 +147,19 @@ class RefundController extends Controller
             $is_credit_shared = isset($request->is_credit_shared) ? 1 : 0;
             $productsRefund = array();
             $productsOrder = array();
-            $totals = OrderService::getOrderTotalsByRefund($request->only('discount', 'products', 'qtys', 'products_refund', 'qtys_refund', 'payment_method', 'is_credit_shared'), $this->productRepository, $this->orderProductRepository);
-          
+            $totals = OrderService::getOrderTotalsByRefund(
+                $request->only(
+                    'discount',
+                    'products', 
+                    'qtys', 
+                    'products_refund', 
+                    'qtys_refund', 
+                    'payment_method', 
+                    'is_credit_shared'
+                ),
+                $this->productRepository,
+                $this->orderProductRepository
+            );
             #create refund 
             $attributes = array_merge(
                 array(
@@ -161,34 +172,40 @@ class RefundController extends Controller
             $refund = $this->refundRepository->create($attributes);
             
             #Se guardan los productos devueltos 
-            foreach ($request->products_refund as $product_id) {
+            foreach ($request->products_refund as $product_id => $store) {
                 if ($product = $this->orderProductRepository->find($product_id)) {
-                    if (isset($request->qtys_refund[$product_id]) && $request->qtys_refund[$product_id] > 0) {
-                        $attributes = array(
-                            'color_id'          => $product->color_id,
-                            'order_product_id'  => $refund->id,
-                            'order_product_id'  => $product->id,
-                            'product_id'        => $product->product_id,
-                            'product_name'      => $product->product_name,
-                            'product_price'     => $product->product_price,
-                            'qty'               => $request->qtys_refund[$product_id],
-                            'refund_id'         => $refund->id,
-                            'size_id'           => $product->size_id,
-                            'stock_type'        => $request->stock_type,
-                            'total'             => ($product->product_price * $request->qtys_refund[$product_id])
-                        );
-                        $refundProduct = $this->refundProductRepository->create($attributes);
-                        array_push($productsRefund, $refundProduct);
+                    if (isset($request->qtys_refund[$product_id])) {
+                        foreach ($request->qtys_refund[$product_id] as $keyStore => $qty) {
+                            if ($qty <= 0) {
+                                continue;
+                            }
+
+                            $attributes = array(
+                                'color_id'          => $product->color_id,
+                                'order_product_id'  => $refund->id,
+                                'order_product_id'  => $product->id,
+                                'product_id'        => $product->product_id,
+                                'store_id'          => $keyStore,
+                                'product_name'      => $product->product_name,
+                                'product_price'     => $product->product_price,
+                                'qty'               => $qty,
+                                'refund_id'         => $refund->id,
+                                'size_id'           => $product->size_id,
+                                'stock_type'        => $request->stock_type,
+                                'total'             => ($product->product_price * $qty)
+                            );
+                            $refundProduct = $this->refundProductRepository->create($attributes);
+                            array_push($productsRefund, $refundProduct);
+                        }
                     }
                 }
             }
-
+            
             /** Se ajustan los montos sugeridos de las visitas, a partir de la devolucion */
             $customer_id = $request->customer_id;
             $customer = $this->customerRepository->find($customer_id); 
             $balance = $customer->getBalance();
             $total_refund = $totals['total_refund'];
-            // dd($balance, $total_refund);
             if( $balance >= 0)
             {
                 // remover las visitas de cobro pendientes
@@ -200,8 +217,8 @@ class RefundController extends Controller
 
             /** Se crea una Nueva Order && Previous Debt**/
             if (!empty($request->products)) {
-
                 $customer_id = $is_credit_shared ? $request->customer_id_new_credit : $request->customer_id;  
+
                 $attributesOrder = array_merge(
                     array(
                         'customer_id' => $customer_id,
@@ -214,27 +231,47 @@ class RefundController extends Controller
                         'total_refund_debit' => $totals['total_refund_debit'],
                         'is_credit_shared' => $is_credit_shared 
                     ),
-                    $request->only('box_id', 'user_id', 'date', 'payed_bankwire', 'payed_card', 'payed_cash', 'payed_credit')
+                    $request->only(
+                        'box_id',
+                        'user_id',
+                        'date', 
+                        'payed_bankwire', 
+                        'payed_card', 
+                        'payed_cash', 
+                        'payed_credit'
+                        )
                 );
                 $order = $this->orderRepository->create($attributesOrder); //Create order
                 
                 #Se guardan los productos de la nueva venta (Productos que se llevan)
-                foreach ($request->products as $product_id) {
+                foreach ($request->products as $product_id => $store) {
                     if ($product = $this->productRepository->find($product_id)) {
-                        if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
-                            $attributes = array(
-                                'color_id'          => $product->color_id,
-                                'order_id'          => $order->id,
-                                'product_id'        => $product->id,
-                                'product_name'      => $product->name,
-                                'product_price'     => $product->regular_price,
-                                'qty'               => $request->qtys[$product_id],
-                                'size_id'           => $product->size_id,
-                                'stock_type'        => $request->stock_type,
-                                'total'             => ($product->regular_price * $request->qtys[$product_id])
-                            );
-                            $orderProduct = $this->orderProductRepository->create($attributes);
-                            array_push($productsOrder, $orderProduct);
+                        if (isset($request->qtys[$product_id]) ) {
+                            foreach ($request->qtys[$product_id] as $keyStore => $qty) {
+                                if ($qty <= 0) {
+                                    continue;
+                                }
+                                $real_price =  $product->regular_price; // Precio regular por defecto
+                                if(auth()->user()->can('prices-per-method-payment') ) {
+                                    if ($request->payment_method == "card" || $request->payment_method == "credit") {
+                                        $real_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                                    }
+                                }
+                                $attributes = array(
+                                    'color_id'          => $product->color_id,
+                                    'order_id'          => $order->id,
+                                    'product_id'        => $product->id,
+                                    'store_id'          => $keyStore,
+                                    'product_name'      => $product->name,
+                                    'product_price'     => $real_price,
+                                    'qty'               => $qty,
+                                    'size_id'           => $product->size_id,
+                                    'stock_type'        => $request->stock_type,
+                                    'total'             => ($real_price * $qty)
+                                );
+                                $orderProduct = $this->orderProductRepository->create($attributes);
+                                array_push($productsOrder, $orderProduct);
+                            }
                         }
                     }
                 }
