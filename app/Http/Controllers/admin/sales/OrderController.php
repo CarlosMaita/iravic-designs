@@ -88,7 +88,7 @@ class OrderController extends Controller
             // Formatear la respuesta para DataTables
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('actions', function (Order $order) {
+                ->addColumn('action', function (Order $order) {
                     $buttons = '';
 
                     if (Auth::user()->can('view', $order)) {
@@ -97,35 +97,12 @@ class OrderController extends Controller
 
                     return $buttons;
                 })
-                ->rawColumns(['actions'])
+                ->rawColumns(['action'])
                 ->toJson();
         }
         return view('dashboard.orders.index');
     }
 
-    public function index_old(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Order');
-        
-        if ($request->ajax()) {
-            $orders = $this->orderRepository->query();
-            return Datatables::of($orders)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $btn = '';
-
-                        if (Auth::user()->can('view', $row)) {
-                            $btn .= '<a href="'. route('ventas.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        }
-
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->toJson();
-        }
-
-        return view('dashboard.orders.index');
-    }
 
     /**
      * Show the form for creating a new resource.
