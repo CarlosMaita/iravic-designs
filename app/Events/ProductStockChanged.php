@@ -22,13 +22,15 @@ class ProductStockChanged
     public $action;
     public $userId;
     public $productStockTransferId;
+    public $orderProductId;
+    public $refundProductId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-   public function __construct($productId, $storeId, $oldStock, $newStock, $qty, $action, $userId = null, $productStockTransferId = null)
+   public function __construct($productId, $storeId, $oldStock, $newStock, $qty, $action, $userId = null, $productStockTransferId = null, $orderProductId = null, $refundProductId = null)
     {
         $this->productId = $productId;
         $this->storeId = $storeId;
@@ -38,6 +40,8 @@ class ProductStockChanged
         $this->action = $action;
         $this->userId = $userId;
         $this->productStockTransferId = $productStockTransferId;
+        $this->orderProductId = $orderProductId;
+        $this->refundProductId = $refundProductId;
     }
 
     /**

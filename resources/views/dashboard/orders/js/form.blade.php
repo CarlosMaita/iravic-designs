@@ -9,7 +9,6 @@
         const URL_ORDER_DISCOUNT = "{{ route('ventas.discount') }}";
         const URL_CUSTOMER = "{{ route('clientes.index') }}";
         const CAN_PRICES_PER_METHOD_PAYMENT = "{{ empty(auth()->user()->can('prices-per-method-payment')) ? 0:1}}"; 
-        console.log(CAN_PRICES_PER_METHOD_PAYMENT);
         const btn_add_customer = $('#add-customer');
         const btn_add_product = $('#add-product');
         const btn_add_product_modal = $('#add-product-modal');
@@ -29,6 +28,7 @@
         let discount_to_apply = 0;
         let positive_balance_numeric = 0;
         let payment_method_selected = 'cash';
+        let productsList = [];
 
         setDatePicker();
         select_customer.select2({
@@ -137,15 +137,13 @@
                     contentType: false,
                     success: function(res) {
                         var product = res;
-                        if (product && product.stock_user > 0) {
+                        if (product && product.stock_total > 0) {
                             handleShowProductForm(product);
                         } else if (product) {
                             swal({
                                 title: 'Sin stock asociado',
                                 html: `<div class="d-inline-flex flex-column text-left">
-                                            <p class="mb-0">Depósito: ${product.stock_depot}</p>
-                                            <p class="mb-0">Local: ${product.stock_local}</p>
-                                            <p class="mb-0">Camión: ${product.stock_truck}</p>
+                                            <p class="mb-0">Stock Total: ${product.stock_total}</p>
                                         </div>`,
                                 type: 'info',
                             }).then(function () {
@@ -183,15 +181,33 @@
          * Captura evento de abrir modal para seleccionar un producto y ser agregado a la venta
          */
         btn_add_product_modal.on('click', function(e) {
-            var input = $('#product-modal-input'),
-                product_id = input.data('id'),
-                stock = Number(input.data('stock')),
-                value = Number(input.val());
 
-            if (isProductValid(stock, value)) {
-                addProductToDatatable(product_id, value);
-                updateOrderTotal();
-            }
+            var $productInputs = $('#product-add-stocks').find('.product-input');
+
+            $productInputs.each((i, productInput) => {
+                const   id = $(productInput).data('id'),
+                        storeId = $(productInput).data('store-id'),
+                        storeName = $(productInput).data('store-name'),
+                        storeStock = $(productInput).data('stock'),
+                        value = Number($(productInput).val());
+
+                if (isProductValid(storeStock, value) && value > 0) {
+                    // verificar si el producto ya se encuentra en la lista
+                    if( productsList.find(product => product.product_id === id && product.store_id === storeId) ) {
+                        removeQuantityToProductDatatable( product_id = id, store_id = storeId);
+                        const index = productsList.findIndex(product => product.product_id === id && product.store_id === storeId);
+                        if (index > -1) {
+                            productsList.splice(index, 1);
+                        }
+                    }
+
+                    // agregar agregar producto
+                    addProductToDatatable(id, { storeId, storeName, storeStock}, value);
+                    productsList.push({product_id: id, store_id: storeId, quantity: value}) 
+                    updateOrderTotal();
+                    
+                }
+            });
         });
 
         /**
@@ -360,7 +376,6 @@
         function handleShowProductForm(product) {
             setProductModalHeaderInfo(product);
             addProductModalTable(product);
-            addAllStocksToShow(product);
             modal_product.modal('show');
 
             $('#datatable_stocks').DataTable({
@@ -368,56 +383,7 @@
             });
         }
         
-        /**
-         * Agrega los stocks del producto al modal
-         */
-        function addAllStocksToShow(product) {
-            @if (Auth::user()->isAdmin())
-                var html = `<p class="text-right">
-                                <button id="btn-stocks-collapse" class="btn btn-link" type="button" data-toggle="collapse" data-target="#stocks-collapse" aria-expanded="false" aria-controls="stocks-collapse">
-                                    <i class="fa fa-eye" aria-hidden="true"></i> Ver todos los stocks
-                                </button>
-                            </p>
-                            <div class="collapse" id="stocks-collapse">
-                                <div class="card card-body">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="table-responsive">
-                                                    <table id="datatable_stocks" class="table" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col" class="text-center">Depósito</th>
-                                                                <th scope="col" class="text-center">Local</th>
-                                                                <th scope="col" class="text-center">Camión</th>
-                                                                <th scope="col" class="text-center">Total</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="text-center">${product.stock_depot}</td>
-                                                                <td class="text-center">${product.stock_local}</td>
-                                                                <td class="text-center">${product.stock_truck}</td>
-                                                                <td class="text-center">${product.stock_total}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 text-right">
-                                                <button id="btn-stocks-close" class="btn btn-link">Cerrar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-
-                modal_product_product_stocks.append(html);
-            @endif
-        }
-
+       
         /**
          * Agregar los datos base del producto al header del modal
          */
@@ -434,7 +400,13 @@
         function addProductModalTable(product) {
             var html,
                 table_header = getHtmlTableHeaderProductStocks(product.is_regular),
-                table_body = getHtmlTableBodyProductStocks(product);
+                table_body = '';
+
+            product.stores.forEach(store => {
+                   const {id, name} = store;
+                   const stock = store.pivot.stock;
+                   table_body += getHtmlTableBodyProductStocks(product, id, name, stock);
+            })
 
             html = `<div class="row">
                         <div class="table-responsive">
@@ -458,19 +430,21 @@
             if (is_regular) {
                 html = `<thead>
                             <tr>
-                                <th scope="col" style="width: 33%;">Precio</th>
-                                <th scope="col" style="width: 33%;">Stock</th>
-                                <th scope="col" style="width: 33%;">Cantidad</th>
+                                <th scope="col" style="width: 25%;">Precio</th>
+                                <th scope="col" style="width: 25%;">Deposito</th>
+                                <th scope="col" style="width: 25%;">Stock</th>
+                                <th scope="col" style="width: 25%;">Cantidad</th>
                             </tr>
                         </thead>`;
             } else {
                 html = `<thead>
                             <tr>
-                                <th scope="col" style="width: 20%;">Color</th>
-                                <th scope="col" style="width: 20%;">Talla</th>
-                                <th scope="col" style="width: 20%;">Precio</th>
-                                <th scope="col" style="width: 20%;">Stock</th>
-                                <th scope="col" style="width: 20%;">Cantidad</th>
+                                <th scope="col" style="width: 16.66%;">Color</th>
+                                <th scope="col" style="width: 16.66%;">Talla</th>
+                                <th scope="col" style="width: 16.66%;">Precio</th>
+                                <th scope="col" style="width: 16.66%;">Deposito</th>
+                                <th scope="col" style="width: 16.66%;">Stock</th>
+                                <th scope="col" style="width: 16.66%;">Cantidad</th>
                             </tr>
                         </thead>`;
             }
@@ -483,59 +457,53 @@
          * Se valida si el producto es regular o con combinaciones
          * Si tiene product.id es que es una combinacion
          */
-        function getHtmlTableBodyProductStocks(product) {
+        function getHtmlTableBodyProductStocks(product, store_id = null, store_name=null, store_stock=null) {
             var html = '<tbody>';
-
             if (!product.product_id) {
                 html = `<tr>
                             <th scope="row">${product.regular_price_str}</th>
-                            <td>${product.stock_user}</td>
+                            <td>${store_name}</td>
+                            <td>${store_stock}</td>
                             <td>
                                 <div class="form-group">
-                                    <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0"  max="${product.stock_user}"  step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
+                                    <input  id="product-modal-input"
+                                            class="form-control modal-product-input product-input" 
+                                            type="number" 
+                                            min="0"  
+                                            max="${store_stock}" 
+                                            step="any" 
+                                            data-id="${product.id}" 
+                                            data-store-id="${store_id}" 
+                                            data-store-name="${store_name}" 
+                                            data-stock="${store_stock}" 
+                                            value="0">
                                 </div>
                             </td>
                         </tr>`;
             } else {
                  html += `<tr>
-                        <th scope="row">${product.color?.name}</th>
-                        <td>${product.size?.name}</td>
-                        <td>${product.regular_price_str}</td>
-                        <td>${product.stock_user}</td>
-                        <td>
-                            <div class="form-group">
-                                <input id="product-modal-input" class="form-control modal-product-input" type="number" min="0"  max="${product.stock_user}"  step="any" data-id="${product.id}" data-stock="${product.stock_user}" value="1">
-                            </div>
-                        </td>
-                    </tr>`;
+                            <th scope="row">${product.color?.name}</th>
+                            <td>${product.size?.name}</td>
+                            <td>${product.regular_price_str}</td>
+                            <td>${store_name}</td>
+                            <td>${store_stock}</td>
+                            <td>
+                                <div class="form-group">
+                                    <input  id="product-modal-input" 
+                                            class="form-control modal-product-input product-input"
+                                            type="number" 
+                                            min="0"  
+                                            max="${store_stock}"  
+                                            step="any" 
+                                            data-id="${product.id}" 
+                                            data-store-id="${store_id}" 
+                                            data-store-name="${store_name}" 
+                                            data-stock="${store_stock}"
+                                            value="0">
+                                </div>
+                            </td>
+                        </tr>`;
             }
-
-            // if (product.is_regular) {
-            //     html = `<tr>
-            //                 <th scope="row">${product.regular_price_str}</th>
-            //                 <td>${product.stock_user}</td>
-            //                 <td>
-            //                     <div class="form-group">
-            //                         <input class="form-control modal-product-input" type="number" min="0" step="any" data-id="${item.id}" data-type="regular">
-            //                     </div>
-            //                 </td>
-            //             </tr>`;
-            // } else {
-            //     product.product_combinations.forEach(function(item) {
-            //         html += `<tr>
-            //                     <th scope="row" data-toggle="tooltip" data-placement="top" title="Código: ${product.real_code}">${item.color?.name}</th>
-            //                     <td>${item.size?.name}</td>
-            //                     <td>${item.regular_price_str}</td>
-            //                     <td>${item.stock_user}</td>
-            //                     <td>
-            //                         <div class="form-group">
-            //                             <input class="form-control modal-product-input" type="number" min="0" step="any" data-id="${item.id}" data-type="combination">
-            //                         </div>
-            //                     </td>
-            //                 </tr>`;
-            //     });
-            // }
-
             html += '</tbody>';
 
             return html;
@@ -544,12 +512,12 @@
         /**
          * Agregar producta a vender a la datatable
          */
-        function addProductToDatatable(product_id, value) {
+        function addProductToDatatable(product_id, store, value) {
             var product = getProductFromArray(product_id);
 
             if (product) {
-                appendProductToProductsDatatable(product, value);
-                select_product.find('option[value="' + product_id + '"]').prop('disabled', true);
+                appendProductToProductsDatatable(product, store, value);
+                // select_product.find('option[value="' + product_id + '"]').prop('disabled', true); //desabilitar producto seleccionado
                 select_product.select2();
                 select_product.val('Seleccionar').trigger('change');
                 modal_product.modal('hide');
@@ -559,8 +527,10 @@
         /**
          * Agrega al datatable de productos, el nuevo producto que se agrega a la venta
          */
-        function appendProductToProductsDatatable(product, value) {
-            datatable_products.row.add( [
+        function appendProductToProductsDatatable(product, store, value, update = false) {
+            const { storeId, storeName, storeStock} = store;
+
+            const row = datatable_products.row.add( [
                 product.name,
                 product.real_code,
                 product.gender,
@@ -569,14 +539,37 @@
                 product.color ? product.color.name : '-',
                 product.size ? product.size.name : '-',
                 product.regular_price_str,
-                product.stock_user,
-                `<input name="qtys[${product.id}]" class="form-control input-product-qty" type="number" min="0" max="${product.stock_user}" step="1" data-id="${product.id}" data-name="${product.name}" data-price="${product.regular_price}" data-price-card-credit="${product.regular_price_card_credit}" data-price-credit="${product.regular_price_credit}" data-stock="${product.stock_user}" value="${value}">`,
-                `<input type="hidden" name="products[]" value="${product.id}">
-                <button type="button" data-id="${product.id}" data-name="${product.name}" class="btn btn-sm btn-danger btn-action-icon remove-product" title="Eliminar" data-toggle="tooltip" style="width: auto;"><i class="fas fa-trash-alt"></i></button>`
-            ]).draw(false);
+                storeStock,
+                storeName,
+                `<input name="qtys[${product.id}][${storeId}]" 
+                        class="form-control input-product-qty" 
+                        type="number" min="0" max="${storeStock}" step="1"
+                        data-id="${product.id}" 
+                        data-store-id="${storeId}"
+                        data-name="${product.name}"
+                        data-price="${product.regular_price}"
+                        data-price-card-credit="${product.regular_price_card_credit}" 
+                        data-price-credit="${product.regular_price_credit}" 
+                        data-stock="${storeStock}" 
+                        value="${value}">`,
+                `<input type="hidden" name="products[${product.id}][${storeId}]" value="${product.name}">
+                <button type="button" 
+                    data-id="${product.id}" 
+                    data-name="${product.name}"
+                    data-store-id="${storeId}"
+                    data-toggle="tooltip" 
+                    class="btn btn-sm btn-danger btn-action-icon remove-product" 
+                    title="Eliminar" 
+                    style="width: auto;">
+                        <i class="fas fa-trash-alt"></i>
+                </button>`
+            ]).draw(false)
+            .node();
+
+            $(row).addClass(`tr-product-${product.id}-store-${storeId}`);
 
             // Resume.. Confirm Step
-            var row = datatable_products_resume.row.add( [
+            const row_resume = datatable_products_resume.row.add( [
                 product.name,
                 product.real_code,
                 product.gender,
@@ -585,14 +578,26 @@
                 product.color ? product.color.name : '-',
                 product.size ? product.size.name : '-',
                 product.regular_price_str,
+                storeName,
                 value
             ])
             .draw(false)
             .node();
 
-            $(row).addClass(`tr-product-${product.id}`);
+            $(row_resume).addClass(`tr-product-${product.id}-store-${storeId}`);
         }
         
+        /**
+         * Elimina la fila de un producto en la datatable de productos
+         */
+        function removeQuantityToProductDatatable(product_id, store_id) {
+            var tr = $(`.tr-product-${product_id}-store-${store_id}`);
+            var row = datatable_products.row(tr), 
+                row_resume = datatable_products_resume.row(tr);
+            row.remove().draw();
+            row_resume.remove().draw();
+        }
+
 
         /**
          * Retorna el producto seleccionado a agregar a la venta del array de productos del cliente seleccionado
@@ -608,6 +613,8 @@
          */
         function isProductValid(stock, value) {
             var valid = true;
+            if(value<=0)
+                return false;
 
             if (value && !isNaN(value)) {
                 if (value > stock) {
@@ -633,10 +640,10 @@
          * Cuando se actualiza un producto en el paso 'Productos'
          * Se actualiza la cantidad en el datatable del resumen
          */
-        function updateDatatableResumeProductQty(product_id, new_qty)  {
-            var tr = $(`.tr-product-${product_id}`);
+        function updateDatatableResumeProductQty(product_id, store_id, new_qty)  {
+            var tr = $(`.tr-product-${product_id}-store-${store_id}`);
             var data = datatable_products_resume.row(tr).data();
-            data[8] = new_qty;
+            data[9] = new_qty; // update qty
             datatable_products_resume.row(tr).data(data).draw();
         }
 
@@ -724,6 +731,7 @@
             var stock = Number($(this).data('stock')),
                 product_name = $(this).data('name'),
                 product_id = $(this).data('id'),
+                store_id = $(this).data('store-id'),
                 val = Number($(this).val()),
                 qty_final = val,
                 input_name = $(this).attr('name');
@@ -747,7 +755,7 @@
 
             // $('input[name="' + input_name + '"]').val(val);
             updateOrderTotal();
-            updateDatatableResumeProductQty(product_id, qty_final);
+            updateDatatableResumeProductQty(product_id,store_id, qty_final);
         });
 
         /**
@@ -756,13 +764,14 @@
          */
         $('body').on('click', 'tbody .remove-product', function (e) {
             var product_id = $(this).data('id'),
+                store_id = $(this).data('store-id'),
                 name = $(this).data('name'),
                 tr = $(this).parents('tr'),
-                tr_modal = $(`.tr-product-${product_id}`);
+                tr_resumen = $(`.tr-product-${product_id}-store-${store_id}`);
 
             datatable_products.row(tr).remove().draw();
-            datatable_products_resume.row(tr_modal).remove().draw();
-            select_product.find('option[value="' + product_id + '"]').prop('disabled', false);
+            datatable_products_resume.row(tr_resumen).remove().draw();
+            // select_product.find('option[value="' + product_id + '"]').prop('disabled', false); //desabilitar producto seleccionado
             select_product.select2();
             updateOrderTotal();
 

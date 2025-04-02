@@ -28,8 +28,14 @@ class RefundProduct extends Model
 
         # Cada vez que se devuelve un producto, se agrega la cantidad de vuelta al tipo de Stock
         RefundProduct::saved(function($refund_product) {
-            $qty = $refund_product->qty;
-            $refund_product->product->addStockUser($refund_product->id, $qty, 'Devolución (# ' . $refund_product->refund_id . ') - venta #' . $refund_product->order_product->order_id . ' ');
+            $quantity = $refund_product->qty;
+            $refund_product->product
+                ->rollbackStockUser(
+                    $refund_product->order_product->store_id,
+                    $quantity,
+                    'Devolución (# ' . $refund_product->refund_id . ') - venta #' . $refund_product->order_product->order_id . ' ', 
+                    $refund_product->id, 
+                );
         });
     }
 

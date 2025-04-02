@@ -107,6 +107,7 @@
                                                             <th scope="col">{{ __('dashboard.orders.products.name') }}</th>
                                                             <th>{{ __('dashboard.orders.products.color') }}</th>
                                                             <th>{{ __('dashboard.orders.products.size') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.store') }}</th>
                                                             <th>{{ __('dashboard.orders.products.qty') }}</th>
                                                             <th>{{ __('dashboard.orders.products.total') }}</th>
                                                         </tr>
@@ -117,6 +118,7 @@
                                                                 <th>{{ $product->product_name }}</th>
                                                                 <th>{{ optional($product->color)->name }}</th>
                                                                 <th>{{ optional($product->size)->name }}</th>
+                                                                <th>{{ $stores->find($product->store_id)->name }}</th>
                                                                 <th>{{ $product->qty }}</th>
                                                                 <th>{{ $product->total }}</th>
                                                             </tr>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ProductStockChanged;
 use App\Helpers\FormatHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -209,9 +210,9 @@ class Product extends Model
     /**
      * Retorna el total de stock, sumando todos los tipos de stocks
      */
-    public function getStockTotalAttribute()
+    public function getStockTotalAttribute() : int
     {   
-        return $this->stores()->sum('stock');
+        return  $this->stores()->sum('stock');
     }
 
     # Scopes
@@ -264,103 +265,62 @@ class Product extends Model
     # Methods
 
     /**
-     * Almacena en BD, un registro de historial de cambio de stock de un producto
-     * 
-     * Se utiliza cuando un producto es:
-     *  - Comprado
-     *  - Devuelto
-     *  - Transferido su stock de un tipo a otro
-     */
-    public function addStockHistoryRecord(
-        $user_id,
-        $store_id,
-        $action,
-        $new_stock,
-        $old_stock,
-        $qty,
-        $stock_name,
-        $order_product_id = null,
-        $product_stock_transfer_id = null,
-        $refund_product_id = null,
-    )
-    {
-        $attributes = array(
-            'user_id' => $user_id,
-            'order_product_id' => $order_product_id,
-            'product_stock_transfer_id' => $product_stock_transfer_id,
-            'refund_product_id' => $refund_product_id,
-            'action' => $action,
-            'new_stock' => $new_stock,
-            'old_stock' => $old_stock,
-            'qty' => $qty,
-            'stock_name' => $stock_name,
-            'store_id' => $store_id
-        );
-
-        $this->stocks_history()->create($attributes);
-    }
-
-  
-
-    /**
      * Agrega/Devuelve cantidad devuelta, al stock asociado al usuario logueado.
      * Se usa cuando un producto es devuelto
      */
-    public function addStockUser($refund_product_id, $qty, $action)
+    public function rollbackStockUser(int $storeId, int $quantity, string $action, int $refund_product_id)
     {
-        $user = Auth::user();
-        $column_stock = $user->getColumnStock();
-        $old_stock = $this->stock_user;
-        $new_stock = ($old_stock + $qty);
 
-        if ($column_stock) {
-            $product = $this;
-            Product::withoutEvents(function () use ($product, $column_stock, $new_stock) {
-                $product = Product::find($product->id);
-                $product->$column_stock = $new_stock;
-                $product->save();
+        $oldStock = $this->stores()->find($storeId)->pivot->stock;
+        $newStock = $oldStock + $quantity;
 
-                return $product;
-            });
+        $this->stores()->updateExistingPivot($storeId, ['stock' => $newStock]);
 
-            $this->addStockHistoryRecord($user->id, $action, $new_stock, $old_stock, $qty, $column_stock, null, null, $refund_product_id);
-        }
+        event(new ProductStockChanged(
+            $this->id,
+            $storeId,
+            $oldStock,
+            $newStock,
+            $quantity,
+            $action,
+            auth()->id(),
+            null,
+            null,
+            $refund_product_id
+        ));
     }
 
     /**
-     * Disminuye cantidad comprada, al stock asociado al usuario logueado.
-     * Se usa cuando un producto es comprado
+     * Decrements the stock of the product in the specified store.
+     *
+     * @param int $storeId
+     * @param int $quantity
+     * @param string $action
+     * @param int $orderProductId
+     *
+     * @throws \Exception
      */
-    public function subtractStockUser($order_product_id, $qty, $action)
+    public function subtractStock(int $storeId, int $quantity, string $action, int $orderProductId)
     {
-        $user = Auth::user();
-        $column_stock = $user->getColumnStock();
-        $old_stock = $this->stock_user;
-        $new_stock = ($old_stock - $qty);
+        $oldStock = $this->stores()->find($storeId)->pivot->stock;
+        $newStock = $oldStock - $quantity;
 
-        if ($column_stock) {
-            // $this->$column_stock = $new_stock;
-            // $this->save();
-            
-            $product = $this;
-            Product::withoutEvents(function () use ($product, $column_stock, $new_stock) {
-                $product = Product::find($product->id);
-                $product->$column_stock = $new_stock;
-                $product->save();
-
-                return $product;
-            });
-
-            // $this->stocks_history()->create([
-            //     'order_product_id' => $order_product_id,
-            //     'user_id' => $user->id,
-            //     'new_stock' => $new_stock,
-            //     'old_stock' => $old_stock,
-            //     'order_product_qty' => $qty,
-            //     'stock' => $column_stock
-            // ]);
-
-            $this->addStockHistoryRecord($user->id, $action, $new_stock, $old_stock, $qty, $column_stock, $order_product_id);
+        if ($newStock < 0) {
+            throw new \Exception('Cannot subtract more stock than available');
         }
+
+        $this->stores()->updateExistingPivot($storeId, ['stock' => $newStock]);
+
+        event(new ProductStockChanged(
+            $this->id,
+            $storeId,
+            $oldStock,
+            $newStock,
+            $quantity,
+            $action,
+            auth()->id(),
+            null,
+            $orderProductId
+        ));
     }
 }

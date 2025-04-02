@@ -11,7 +11,7 @@ class OrderService
      */
     public static function getOrderTotalsByRefund($params, $productRepository, $orderProductRepository)
     {
-        $discount = isset($params['discount']) && is_numeric($params['discount']) ? $params['discount'] : 0;
+        $discount = isset($params['discount']) && is_numeric($params['discount']) ? (int) $params['discount'] : 0;
         $subtotal = self::getSubtotalOrder($productRepository, $params);
         // $subtotal = self::getSubtotalOrder($productRepository, $params['products'], $params['qtys']);
         $payment_method = isset($params['payment_method']) ? $params['payment_method'] : null;
@@ -48,14 +48,22 @@ class OrderService
         $qtys = !empty($params['qtys']) ? $params['qtys'] : [];
         $subtotal = 0;
 
-        foreach ($products as $product_id) {
-            if ($product = $productRepository->find($product_id)) {
-                if (isset($qtys[$product_id]) && $qtys[$product_id] > 0) {
-                    $subtotal += ($product->regular_price * $qtys[$product_id]);
+        foreach ($products as $keyProduct => $stores) {
+            if ($product = $productRepository->find($keyProduct)) {
+                if (isset($qtys[$keyProduct])) {
+                    foreach ($qtys[$keyProduct] as $keyStore => $qty) {
+                        if ($qty <= 0) { continue; }
+                        $real_price =  $product->regular_price; // Precio regular por defecto
+                        if(auth()->user()->can('prices-per-method-payment') ) {
+                            if ($params['payment_method'] == "card" || $params['payment_method'] == "credit") {
+                                $real_price = $params['payment_method'] == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                            }
+                        }
+                        $subtotal += ($real_price * $qty);
+                    }
                 }
-            }
+            }   
         }
-
         return $subtotal;
     }
 
@@ -67,14 +75,17 @@ class OrderService
         $total_by_credit = 0;
         $total_by_debit = 0;
 
-        foreach ($products as $product_id) {
-            if ($product = $orderProductRepository->find($product_id)) {
-                if (isset($qtys[$product_id]) && $qtys[$product_id] > 0) {
-                    $total_product = ($product->product_price * $qtys[$product_id]);
-                    if ($product->order->payed_credit == 1) {
-                        $total_by_credit += $total_product;
-                    } else {
-                        $total_by_debit += $total_product;
+        foreach ($products as $keyProduct => $stores) {
+            if ($product = $orderProductRepository->find($keyProduct)) {
+                if (isset($qtys[$keyProduct])) {
+                    foreach ($qtys[$keyProduct] as $keyStore => $qty) {
+                        if ($qty <= 0) { continue; }
+                        $total_product = ($product->product_price * $qty);
+                        if ($product->order->payed_credit == 1) {
+                            $total_by_credit += $total_product;
+                        } else {
+                            $total_by_debit += $total_product;
+                        }
                     }
                 }
             }

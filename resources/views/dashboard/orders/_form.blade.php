@@ -15,6 +15,8 @@
                                 <li id="payment-step"><strong>{{ __('dashboard.form.fields.orders.payment') }}</strong></li>
                                 <li id="confirm-step"><strong>{{ __('dashboard.form.fields.orders.finish') }}</strong></li>
                             </ul> <!-- fieldsets -->
+
+                            {{-- customer selection --}}
                             <fieldset>
                                 <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.customer_information') }}</h2>
@@ -107,6 +109,9 @@
                                 </div>
                                 <button class="btn btn-info next action-button" type="button" data-step="1">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
+                            {{-- end customer selection --}}
+
+                            {{-- products selection --}}
                             <fieldset>
                                 <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.products_information') }}</h2> 
@@ -168,6 +173,7 @@
                                                             <th scope="col">{{ __('dashboard.form.fields.products.size') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.available') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.store') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.qty') }}</th>
                                                             <th></th>
                                                         </tr>
@@ -188,6 +194,9 @@
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
                                 <button class="btn btn-info next action-button" type="button" data-step="2">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
+                            {{-- end products selection --}}
+
+                            {{-- payment information --}}
                             <fieldset>
                                 <div class="form-card px-md-4 px-2">
                                     <h2 class="fs-title">{{ __('dashboard.form.fields.orders.payment_information') }}</h2>
@@ -236,6 +245,9 @@
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
                                 <button class="btn btn-info next action-button" type="button" data-step="3">{{ __('dashboard.general.next') }}</button>
                             </fieldset>
+                            {{-- end payment information --}}
+                                
+                            {{-- confirm order --}}
                             <fieldset>
                                 <div class="form-card py-1 px-md-4 px-2">
                                     <div class="row mb-4">
@@ -258,6 +270,7 @@
                                                             <th scope="col">{{ __('dashboard.form.fields.products.color') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.size') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.price') }}</th>
+                                                            <th scope="col">{{ __('dashboard.form.fields.products.store') }}</th>
                                                             <th scope="col">{{ __('dashboard.form.fields.products.qty') }}</th>
                                                         </tr>
                                                     </thead>
@@ -294,6 +307,7 @@
                                 <button class="btn btn-secondary previous action-button-previous" type="button">{{ __('dashboard.general.previous') }}</button>
                                 <button class="btn btn-success" type="submit">Confirmar</button>
                             </fieldset>
+                            {{-- end confirm order --}}
                         </div>
                     </div>
                 </div>

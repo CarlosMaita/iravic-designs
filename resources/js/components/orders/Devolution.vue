@@ -142,6 +142,7 @@
                                                         <th scope="col">Precio</th>
                                                         <th scope="col">Crédito</th>
                                                         <th scope="col">Disponible</th>
+                                                        <th scope="col">Déposito Origen</th>
                                                         <th scope="col">Cantidad</th>
                                                         <th></th>
                                                     </tr>
@@ -213,6 +214,7 @@
                                                         <th scope="col">Descripción</th>
                                                         <th scope="col">Precio</th>
                                                         <th scope="col">Disponible</th>
+                                                        <th scope="col">Déposito</th>
                                                         <th scope="col">Cantidad</th>
                                                         <th></th>
                                                     </tr>
@@ -413,6 +415,7 @@
                                                         <th scope="col">Precio</th>
                                                         <th scope="col">Crédito</th>
                                                         <th scope="col">Disponible</th>
+                                                        <th scope="col">Déposito Origen</th>
                                                         <th scope="col">Cantidad</th>
                                                     </tr>
                                                 </thead>
@@ -447,6 +450,7 @@
                                                         <th scope="col">Descripción</th>
                                                         <th scope="col">Precio</th>
                                                         <th scope="col">Disponible</th>
+                                                        <th scope="col">Déposito</th>
                                                         <th scope="col">Cantidad</th>
                                                     </tr>
                                                 </thead>
@@ -924,15 +928,17 @@
              * Si no estaba seleccionado, lo agrega
              * 
              */
-            handleAddProductToBuy(orderProduct) {
-                const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id);
-
-                if (index > -1) {
-                    Vue.set(this.productsSelectedToBuy, index, orderProduct);
-                    this.$emit("updateQuantityToBuy", index, orderProduct.qty)
-                } else {
-                    this.productsSelectedToBuy.push(orderProduct);
-                }
+            handleAddProductToBuy(products_to_order) {
+                console.log(products_to_order);
+                products_to_order.forEach((orderProduct) => {
+                    const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id);
+                    if (index > -1) {
+                        Vue.set(this.productsSelectedToBuy, index, orderProduct);
+                        this.$emit("updateQuantityToBuy", index, orderProduct.qty)
+                    } else {
+                        this.productsSelectedToBuy.push(orderProduct);
+                    }
+                }); 
             },
 
             /**
@@ -984,15 +990,13 @@
                         contentType: false,
                         success: function(res) {
                             var product = res;
-                            if (product && product.stock_user > 0) {
+                            if (product && product.stock_total > 0) {
                                 self.$refs.modalProductStock.showModal(product);
                             } else if (product) {
                                 swal({
                                     title: 'Sin stock asociado',
                                     html: `<div class="d-inline-flex flex-column text-left">
-                                                <p class="mb-0">Depósito: ${product.stock_depot}</p>
-                                                <p class="mb-0">Local: ${product.stock_local}</p>
-                                                <p class="mb-0">Camión: ${product.stock_truck}</p>
+                                                <p>Stock Total: ${product.stock_total}</p>
                                             </div>`,
                                     type: 'info',
                                 }).then(function () {
