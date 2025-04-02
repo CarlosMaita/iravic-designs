@@ -44,49 +44,31 @@
                                 <div class="table-responsive">
                                     <table class="table table-refund">
                                         <thead>
-                                            <tr v-if="product.is_regular">
-                                                <th scope="col" style="width: 33%;">Precio</th>
-                                                <th scope="col" style="width: 33%;">Stock</th>
-                                                <th scope="col" style="width: 33%;">Cantidad</th>
-                                            </tr>
-                                            <tr v-else>
-                                                <th v-if="product.color" scope="col" style="width: 20%;">Color</th>
-                                                <th v-if="product.size" scope="col" style="width: 20%;">Talla</th>
-                                                <th scope="col" style="width: 20%;">Precio</th>
-                                                <th scope="col" style="width: 20%;">Stock</th>
-                                                <th scope="col" style="width: 20%;">Cantidad</th>
+                                            <tr>
+                                                <th scope="col" v-if="product.color" style="width: 16%;">Color</th>
+                                                <th scope="col" v-if="product.size" style="width: 16%;">Talla</th>
+                                                <th scope="col" style="width: 16%;">Precio</th>
+                                                <th scope="col" style="width: 16%;">Déposito</th>
+                                                <th scope="col" style="width: 16%;">Stock</th>
+                                                <th scope="col" style="width: 16%;">Cantidad</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-if="product.is_regular">
-                                                <td data-label="Precio">{{ product.regular_price_str }}</th>
-                                                <td data-label="Stock">{{ product.stock_user }}</td>
-                                                <td data-label="Cantidad">
-                                                    <div class="form-group">
-                                                        <input v-model="qty" 
-                                                            class="form-control" 
-                                                            type="number" 
-                                                            min="0" 
-                                                            step="1" 
-                                                            :max="product.stock_user" 
-                                                            value="1"
-                                                        >
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr v-else>
-                                                <td data-label="Color" v-if="product.color">{{ product.color.name }}</td>
-                                                <td data-label="Talla" v-if="product.size">{{ product.size.name }}</td>
+                                            <tr v-for="(store, index) in product.stores.filter( store => store.pivot.stock > 0)" :key="index">
+                                                <td v-if="!product.is_regular && product.color" data-label="Color">{{ product.color.name }}</td>
+                                                <td v-if="!product.is_regular && product.size" data-label="Talla">{{ product.size.name }}</td>
                                                 <td data-label="Precio">{{ product.regular_price_str }}</td>
-                                                <td data-label="Stock">{{ product.stock_user }}</td>
+                                                <td data-label="Déposito">{{ store ? store.name : '' }}</td>
+                                                <td data-label="Stock">{{ store.pivot.stock }}</td>
                                                 <td data-label="Cantidad">
                                                     <div class="form-group">
-                                                        <input  v-model="qty" 
+                                                        <input v-model="qty[store.id]"
                                                             class="form-control" 
-                                                            type="number" 
+                                                            type="number"
                                                             min="0" 
                                                             step="1" 
-                                                            :max="product.stock_user" value="1"
+                                                            :max="store.pivot.stock" 
+                                                            value="1"
                                                         >
                                                     </div>
                                                 </td>
@@ -97,46 +79,6 @@
                             </div>
                         </div>
                         <!--  -->
-                        <div class="row">
-                            <div class="col-12">
-                                <p class="text-right">
-                                    <button v-if="!collapseShow" @click="openCollapseStocks" class="btn btn-link" type="button" aria-expanded="false">
-                                        <i class="fa fa-eye" aria-hidden="true"></i> Ver todos los stocks
-                                    </button>
-                                    <button v-else @click="closeCollapseStocks" class="btn btn-link" type="button" aria-expanded="false">
-                                        <i class="fa fa-eye-slash" aria-hidden="true"></i> Cerrar stocks
-                                    </button>
-                                </p>
-                                <div class="collapse" :class="{ 'show' : collapseShow }">
-                                    <div class="card card-body px-0">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-12 px-0">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-refund mb-0" width="100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col" class="text-center">Depósito</th>
-                                                                    <th scope="col" class="text-center">Local</th>
-                                                                    <th scope="col" class="text-center">Camión</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td data-label="Depósito">{{ product.stock_depot }}</td>
-                                                                    <td data-label="Local">{{ product.stock_local }}</td>
-                                                                    <td data-label="Camión">{{ product.stock_truck }}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -155,9 +97,8 @@
         props: {
         },
         data: () => ({
-            collapseShow: false,
             product: null,
-            qty: 0
+            qty: [],
         }),
 	    computed: {
 	    },
@@ -169,37 +110,41 @@
              * Se valida que las cantidades ingresadas no sean superiores a las disponibles para comprar
              */
             addProductToOrder() {
-                var data = {};
+                var error = false,
+                    products_to_order = [];
+                    self = this;
 
-                if (Number(this.qty) && !isNaN(this.qty) && Number(this.qty) > 0) {
-                    if (Number(this.qty) > Number(this.product.stock_user)) {
+                // var data = {};
+                this.product.stores.forEach((storeProduct, index) => {
+                    var qty = self.qty[storeProduct.id],
+                        max = storeProduct.pivot.stock;
+
+                    if (qty > 0 && qty <= max) {
+                        var dataToAdd = {
+                            id: this.product.id,
+                            store_id: storeProduct.id,
+                            product: storeProduct,
+                            qty: Number(qty)
+                        }
+                        products_to_order.push(dataToAdd);
+                    } else if (qty > max) {
+                        error = true;
                         new Noty({
                             text: "La cantidad ingresada supera el stock disponible del producto.",
                             type: 'error'
                         }).show();
-                    } else {
-                        data = {
-                            id: this.product.id,
-                            product: this.product,
-                            qty: Number(this.qty),
-                        }
-                        this.$emit('addProduct', data);
-                        this.closeModal();
                     }
-                    this.qty = 0;
-                } else {
-                    new Noty({
-                            text: "Ingresa una cantidad válida",
-                            type: 'error'
-                        }).show();
-                }
-            },
+                });
 
-            /**
-             * Cierra el collapse de los stocks
-             */
-            closeCollapseStocks() {
-                this.collapseShow = false;
+                if(products_to_order.length) {
+                    this.$emit('addProduct', products_to_order);
+                    this.closeModal();
+                } else if (!error) {
+                    new Noty({
+                        text: "Debe ingresar una cantidad.",
+                        type: 'error'
+                    }).show();
+                }
             },
 
             /**
@@ -208,13 +153,6 @@
             closeModal() {
                 this.product = null;
                 $(this.$refs.modalProductStock).modal('hide');
-            },
-
-            /**
-             * Abre el collapse de los stocks
-             */
-            openCollapseStocks() {
-                this.collapseShow = true;
             },
 
             /**
@@ -230,14 +168,23 @@
              * Evento de cambio de valor de la cantidad.
              * Si la cantidad ingresa es superior a la cantidad maxima disponible de stock asociado al usuario, le setea el valor a dicha cantidad maxima
              */
-            qty: function(value) {
-                var newQty = Number(value),
-                    max_available = Number(this.product.stock_user);
+            qty : function(value) {
+                var newQty = 0,
+                    id = null,
+                    index = null,
+                    max_available = 0;
+
+                for (var key in value){
+                    newQty = Number(value[key]);
+                    id = key;
+                    index = this.product.stores.findIndex(store => store.id == id);
+                    max_available = this.product.stores[index].pivot.stock;
+                }
 
                 if (newQty < 0 || isNaN(newQty))  {
-                    this.qty = 0;
+                    this.qty[id] = 0;
                 } else if (newQty > max_available) {
-                    this.qty = max_available;
+                    this.qty[id] = max_available;
                 }
             }
         }

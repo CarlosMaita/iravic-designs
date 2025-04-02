@@ -44,21 +44,25 @@ class RefundRequest extends FormRequest
         ];
 
         if (isset($this->products) && is_array($this->products)) {
-            foreach ($this->products as $key => $product) {
-                $messages['products.'. $product . '.exists'] = 'El producto ' . ($key + 1) . ' a llevarse no se encuentra en la BD.';
+            foreach ($this->products as $keyProduct => $product) {
+                $messages['products.'. $keyProduct . '.exists'] = 'El producto ' . ($keyProduct + 1) . ' a llevarse no se encuentra en la BD.';
 
-                if (isset($this->qtys[$product])) {
-                    $messages['qtys.' . $product . '.numeric'] = 'La cantidad para el producto ' . ($key + 1) . ' a llevarse no es válida.';
+                if (isset($this->qtys[$keyProduct]) && is_array($this->qtys[$keyProduct])) {
+                    foreach ($this->qtys[$keyProduct] as $keyStore => $qty) {
+                        $messages['qtys.' . $keyProduct . '.' . $keyStore . '.numeric'] = 'La cantidad para el producto ' . ($keyProduct + 1) . ', deposito ' . ($keyStore + 1) . ' a llevarse no es válida.';
+                    }
                 }
             }
         }
 
         if (isset($this->products_refund) && is_array($this->products_refund)) {
-            foreach ($this->products_refund as $key => $product) {
-                $messages['products_refund.'. $product . '.exists'] = 'El producto ' . ($key + 1) . ' a devolver no se encuentra en la BD.';
+            foreach ($this->products_refund as $keyProductRefund => $productRefund) {
+                $messages['products_refund.'. $keyProductRefund . '.exists'] = 'El producto ' . ($keyProductRefund + 1) . ' a devolver no se encuentra en la BD.';
 
-                if (isset($this->qtys[$product])) {
-                    $messages['qtys_refund.' . $product . '.numeric'] = 'La cantidad para el producto ' . ($key + 1) . ' a devolver no es válida.';
+                if (isset($this->qtys[$keyProductRefund]) && is_array($this->qtys[$keyProductRefund])) {
+                    foreach ($this->qtys[$keyProductRefund] as $keyStore => $qty) {
+                        $messages['qtys_refund.' . $keyProductRefund . '.' . $keyStore . '.numeric'] = 'La cantidad para el producto ' . ($keyProductRefund + 1) . ', deposito ' . ($keyStore + 1) . ' a devolver no es válida.';
+                    }
                 }
             }
         }
@@ -93,17 +97,17 @@ class RefundRequest extends FormRequest
         $rules = [
             'customer_id' => 'required|exists:customers,id',
             'products_refund' => 'required|array|min:1',
-            'products_refund.*' => 'exists:orders_products,id',
+            // 'products_refund.*' => 'exists:orders_products,id',
             'qtys_refund' => 'required|array',
-            'qtys_refund.*' => 'numeric'
+            // 'qtys_refund.*' => 'numeric'
         ];
 
         if (!empty($this->products)) {
             $rules['payment_method'] = ['required', Rule::in(['bankwire', 'card', 'cash', 'credit'])];
             $rules['products'] = 'required|array|min:1';
-            $rules['products.*'] = 'exists:products,id';
+            // $rules['products.*'] = 'exists:products,id';
             $rules['qtys'] = 'required|array';
-            $rules['qtys.*'] = 'numeric';
+            // $rules['qtys.*'] = 'numeric';
         }
 
         if (isset($this->needs_customer_debt)) {
@@ -227,18 +231,29 @@ class RefundRequest extends FormRequest
         $discount = isset($this->discount) && is_numeric($this->discount) ? $this->discount : 0;
         $subtotal = 0;
 
-        foreach ($this->products as $product_id) {
-            if ($product = $this->productRepository->find($product_id)) {
-                if (isset($this->qtys[$product_id]) && $this->qtys[$product_id] > 0) {
-                    $subtotal += ($product->regular_price * $this->qtys[$product_id]);
+        foreach ($this->products as $keyProduct => $stores) {
+            if ($product = $this->productRepository->find($keyProduct)) {
+                if (isset($this->qtys[$keyProduct])) {
+                    foreach ($this->qtys[$keyProduct] as $keyStore => $qty) {
+                        if ($qty <= 0) { continue; }
+
+                        $real_price =  $product->regular_price; // Precio regular por defecto
+                        if(auth()->user()->can('prices-per-method-payment') ) {
+                            if ($this->payment_method == "card" || $this->payment_method == "credit") {
+                                $real_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                            }
+                        }
+                        $subtotal += ($real_price * $qty);
+                    }
                 }
             }
         }
+        $total_to_pay = $subtotal - $discount; // El total con descuento
 
         return [
             'discount' => $discount,
             'subtotal' => $subtotal,
-            'total' => $subtotal - $discount
+            'total' =>  $total_to_pay,
         ];
     }
 

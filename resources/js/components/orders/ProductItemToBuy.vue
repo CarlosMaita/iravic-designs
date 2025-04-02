@@ -12,7 +12,7 @@
         <td data-label="Precio">{{ item.product.regular_price_str }}</td>
         <td data-label="Disponible">{{ item.product.stock_user }}</td>
         <td v-if="canRemove" data-label="Cantidad">
-            <input :name="`qtys[${item.product.id}]`" 
+            <input :name="`qtys[${item.product.id}][${item.store_id}]`" 
                     class="form-control" 
                     type="number" 
                     step="1" 
@@ -21,8 +21,8 @@
                     v-model="quantity">
 
             <input type="hidden" 
-                    name="products[]"
-                    :value="item.product.id">
+                    name="products[${item.product.id}]"
+                    :value="item.product.name">
         </td>
         <td v-if="!canRemove" data-label="Cantidad">
             {{ quantity }}

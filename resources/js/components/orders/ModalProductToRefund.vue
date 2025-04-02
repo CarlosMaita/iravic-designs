@@ -49,6 +49,7 @@
                                             <th scope="col">Talla</th>
                                             <th scope="col">Comprado</th>
                                             <th scope="col">Devolver</th>
+                                            <th scope="col">Déposito Origen</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,6 +69,7 @@
                                                         :max="orderProduct.available_for_refund">
                                                 </div>
                                             </td>
+                                            <td data-label="Déposito de origen">{{ orderProduct.store ? orderProduct.store.name : '' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

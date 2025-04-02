@@ -13,8 +13,9 @@
         <td data-label="Precio">{{ item.orderProduct.product_price_str }}</td>
         <td data-label="Crédito">{{ item.orderProduct.is_by_credit ? 'Si' : 'No' }}</td>
         <td data-label="Disponible para devolución">{{ item.orderProduct.available_for_refund }}</td>
+        <td data-label="Déposito de Origen">{{ item.orderProduct.store ? item.orderProduct.store.name : '' }}</td>
         <td v-if="canRemove" data-label="Cantidad">
-            <input :name="`qtys_refund[${item.orderProduct.id}]`" 
+            <input :name="`qtys_refund[${item.orderProduct.id}][${item.orderProduct.store_id}]`" 
                     class="form-control input-product-refund-qty" 
                     type="number" 
                     step="1" 
@@ -23,8 +24,8 @@
                     v-model="quantity">
 
             <input type="hidden" 
-                    name="products_refund[]"
-                    :value="item.orderProduct.id">
+                    :name="`products_refund[${item.orderProduct.id}]`"
+                    :value="item.orderProduct.product_name">
         </td>
         <td v-if="!canRemove" data-label="Cantidad">
             {{ quantity }}
