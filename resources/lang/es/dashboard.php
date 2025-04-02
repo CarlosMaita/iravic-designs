@@ -202,7 +202,8 @@ return [
                 'price-to'          => 'Precio hasta',
                 'size'              => 'Talla',
                 'available'         => 'Disponible',
-                'qty'               => 'Cantidad'
+                'qty'               => 'Cantidad',
+                'store'             => 'Depósito',
             ],
             'spendings' => [
                 'id'      => 'ID',
@@ -273,6 +274,7 @@ return [
             'index'         => 'Productos',
             'name'          => 'Nombre',
             'color'         => 'Color',
+            'store'         => 'Depósito',
             'qty'           => 'Cant.',
             'size'          => 'Talla',
             'total'         => 'Total'
@@ -280,7 +282,7 @@ return [
         'discount'          => 'Descuento',
         'subtotal'          => 'Subtotal',
         'total'             => 'Total',
-        'user'              => 'Usuario'
+        'user'              => 'Usuario',
     ],
     'collections' => [
         'index'             => 'Listado de colecciones',

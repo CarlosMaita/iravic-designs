@@ -20,7 +20,6 @@ class ProductStockHistory extends Model
         'new_stock',
         'old_stock',
         'qty',
-        'stock_name',
         'store_id'
     ];
 

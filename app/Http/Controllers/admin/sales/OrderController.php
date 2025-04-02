@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
+use App\Models\Store;
 use App\Repositories\Eloquent\BoxRepository;
 use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
@@ -14,6 +15,7 @@ use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Eloquent\StoreRepository;
 use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use Carbon\Carbon;
@@ -43,6 +45,8 @@ class OrderController extends Controller
 
     public $creditRepository;
 
+    public $storesRepository;
+
     /**
      * Construct
      */
@@ -51,7 +55,8 @@ class OrderController extends Controller
         OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
         ProductRepository $productRepository, ScheduleRepository $scheduleRepository, 
         VisitRepository $visitRepository, ZoneRepository $zoneRepository, 
-        CreditRepository $creditRepository
+        CreditRepository $creditRepository,
+        StoreRepository $storesRepository
     )
     {
         $this->boxRepository = $boxRepository;
@@ -63,6 +68,7 @@ class OrderController extends Controller
         $this->visitRepository = $visitRepository;
         $this->zoneRepository = $zoneRepository;
         $this->creditRepository = $creditRepository;
+        $this->storesRepository = $storesRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -94,7 +100,6 @@ class OrderController extends Controller
                 ->rawColumns(['actions'])
                 ->toJson();
         }
-
         return view('dashboard.orders.index');
     }
 
@@ -155,6 +160,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         try {
+
             $this->authorize('create', 'App\Models\Order');
             DB::beginTransaction();
             $attributes = array_merge(
@@ -178,21 +184,33 @@ class OrderController extends Controller
             /**
              * Se guardan los productos de la venta
              */
-            foreach ($request->products as $product_id) {
+            foreach ($request->products as $product_id => $stores) {
                 if ($product = $this->productRepository->find($product_id)) {
-                    if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
-                        $attributes = array(
-                            'color_id' => $product->color_id,
-                            'order_id'  => $order->id,
-                            'product_id' => $product->id,
-                            'product_name' => $product->name,
-                            'product_price' => $product->regular_price,
-                            'qty' => $request->qtys[$product_id],
-                            'size_id' => $product->size_id,
-                            'stock_type' => $request->stock_type,
-                            'total' => ($product->regular_price * $request->qtys[$product_id])
-                        );
-                        $this->orderProductRepository->create($attributes);
+                    if (isset($request->qtys[$product_id])) {
+                        foreach ($request->qtys[$product_id] as $keyStore => $qty) {
+                            if ($qty <= 0) {
+                                continue;
+                            }
+                            $real_price =  $product->regular_price; // Precio regular por defecto
+                            if(auth()->user()->can('prices-per-method-payment') ) {
+                                if ($request->payment_method == "card" || $request->payment_method == "credit") {
+                                    $real_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                                }
+                            }
+                            $attributes = array(
+                                'color_id' => $product->color_id,
+                                'order_id'  => $order->id,
+                                'product_id' => $product->id,
+                                'store_id' => $keyStore,
+                                'product_name' => $product->name,
+                                'product_price' => $real_price,
+                                'qty' => $qty,
+                                'size_id' => $product->size_id,
+                                'stock_type' => $request->stock_type,
+                                'total' => ($real_price * $qty)
+                            );
+                            $this->orderProductRepository->create($attributes);
+                        }
                     }
                 }
             }
@@ -338,6 +356,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $venta);
         return view('dashboard.orders.show')
-                ->withOrder($venta);
+                ->withOrder($venta)
+                ->withStores($this->storesRepository->all());
     }
 }
