@@ -88,15 +88,11 @@
              * Evento de cambio de valor de la cantidad.
              * Si la cantidad ingresa es superior a la cantidad maxima disponible para comprar, le setea el valor a dicha cantidad maxima
              */
-            quantity: function(newVal, oldVal) {
-                var newQty = Number(newVal),
-                    max_available = Number(this.item.product.stock_user);
+            quantity(newVal) {
+                const newQty = Number(newVal);
+                const maxAvailable = Number(this.item.store.pivot.stock);
 
-                if (newQty < 0 || isNaN(newQty))  {
-                    this.quantity = 0;
-                } else if (newQty > max_available) {
-                    this.quantity = max_available;
-                }
+                this.quantity = Math.min(Math.max(newQty, 0), maxAvailable);
 
                 this.$emit('updateQty', this.index, this.quantity);
             }

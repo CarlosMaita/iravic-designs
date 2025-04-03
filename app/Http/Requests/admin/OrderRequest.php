@@ -163,7 +163,6 @@ class OrderRequest extends FormRequest
 
         $this->merge([
             'box_id'            => $box ? $box->id : null,
-            'stock_type'        => $user->getColumnStock(), // La cantidades de productos se descontaran de este stock
             'user_id'           => $user->id,
             'visit_date'        => $visit_date ? $visit_date->format('Y-m-d') : null
         ]);

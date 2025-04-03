@@ -186,10 +186,6 @@
                                                             :value.sync="productToBuySelected"
                                                             :getOptionLabel="getProductsToBuyOptionLabel"
                                                     >
-                                                    <!-- :selectable="option => option.stock_user > 0" -->
-                                                    <!-- :getOptionLabel="getProductsToBuyOptionLabel" -->
-                                                    <!-- :getOptionLabel="option => option.is_regular ? option.name : ''" -->
-                                                    <!-- :get-option-label="(item) => item.name" -->
                                                     </v-select>
                                                     <div class="input-group-prepend">
                                                         <span @click="openModalProductToBuy" class="input-group-text" type="button"><i class="fa fa-plus"></i></span>

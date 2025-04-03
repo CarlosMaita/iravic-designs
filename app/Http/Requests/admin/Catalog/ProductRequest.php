@@ -35,12 +35,6 @@ class ProductRequest extends FormRequest
             // 'size_id.exists' => 'La talla seleccionada no existe en nuestra BD.',
             'sizes.required' => 'Debe seleccionar una talla para cada combinación.',
             'sizes_existing.required' => 'Debe seleccionar una talla para cada combinación ya existente.',
-            'stock_depot.required' => 'El campo Stock Depósito es obligatorio.',
-            'stock_depot.min' => 'El Stock Depósito no puede ser menor a :min.',
-            'stock_local.required' => 'El campo Stock Local es obligatorio.',
-            'stock_local.min' => 'El Stock Local no puede ser menor a :min.',
-            'stock_truck.required' => 'El campo Stock Camioneta es obligatorio.',
-            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.',
         ];
 
         if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {

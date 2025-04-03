@@ -53,7 +53,6 @@ class Product extends Model
         'regular_price_card_credit_str',
         'regular_price_credit',
         'regular_price_credit_str',
-        'stock_user',
         'stock_total'
     ];
 
@@ -193,18 +192,6 @@ class Product extends Model
     public function getRegularPriceCreditStrAttribute()
     {
         return  FormatHelper::formatCurrency($this->regular_price_credit);
-    }
-
-    /**
-     * Retorna el tipo de stock a sociado al usuario
-     */
-    public function getStockUserAttribute()
-    {
-        if ($stock_column = Auth::user()->getColumnStock()) {
-            return $this->$stock_column;
-        }
-
-        return 0;
     }
 
     /**
