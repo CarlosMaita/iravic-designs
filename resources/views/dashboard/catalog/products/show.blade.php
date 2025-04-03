@@ -503,13 +503,11 @@
                                                                     @endcan
                                                                     {{-- Transferir --}}
                                                                     @can('create', App\Models\ProductStockTransfer::class)
-                                                                        @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
+                                                                        @if (Auth::user()->isAdmin())
                                                                             <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                 type="button" 
                                                                                 id="btn_{{ $product->id }}_stock_{{ $store->id }}"
                                                                                 data-id="{{ $product->id }}"
-                                                                                data-stock-origin="stock_truck"
-                                                                                data-stock-destination="stock_local"
                                                                                 data-stock-origin-id="{{ $store->id }}"
                                                                                 data-stock-origin-name="{{ $store->name }}"
                                                                                 data-stock="{{ $store->pivot->stock }}">
@@ -631,13 +629,11 @@
                                                                             @endcan
                                                                             {{-- Transferir --}}
                                                                             @can('create', App\Models\ProductStockTransfer::class)
-                                                                                @if (Auth::user()->isAdmin() || Auth::user()->getColumnStock() == 'stock_truck')
+                                                                                @if (Auth::user()->isAdmin())
                                                                                     <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                         type="button" 
                                                                                         id="btn_{{ $product_combination->id }}_stock_{{ $store->id }}"
                                                                                         data-id="{{ $product_combination->id }}"
-                                                                                        data-stock-origin="stock_truck"
-                                                                                        data-stock-destination="stock_local"
                                                                                         data-stock-origin-id="{{ $store->id }}"
                                                                                         data-stock-origin-name="{{ $store->name }}"
                                                                                         data-stock="{{ $store->pivot->stock }}">
