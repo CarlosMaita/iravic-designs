@@ -4,11 +4,13 @@ namespace App\Http\Requests\admin\Catalog;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Store;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
+
     public function messages()
     {
         $messages = [
@@ -20,30 +22,39 @@ class ProductRequest extends FormRequest
             'code.min' => 'El campo código debe tener un mínimo  de :min caracteres.',
             'code.max' => 'El campo código debe tener un máximo de :max caracteres.',
             'code.unique' => 'Ya existe un producto con el código ingresado.',
-            // 'color_id.required' => 'El campo color es obligatorio.',
-            // 'color_id.exists' => 'El color seleccionado no existe en nuestra BD.',
             'colors.required' => 'Debe seleccionar un color para cada combinación.',
             'colors.required' => 'Debe seleccionar un color para cada combinación ya existente.',
             'combinations.required' => 'Debe agregar al menos 1 combinación.',
-            'gender.required' => 'El campo género es obligatorio.',
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El campo nombre debe tener un mínimo de :min caracteres.',
             'name.max' => 'El campo nombre debe tener un máximo de :max caracteres.',
             'price.required' => 'El campo Precio es obligatorio.',
             'price.min' => 'El campo Precio no debe ser menor a :min.',
-            // 'size_id.required' => 'El campo talla es obligatorio.',
-            // 'size_id.exists' => 'La talla seleccionada no existe en nuestra BD.',
             'sizes.required' => 'Debe seleccionar una talla para cada combinación.',
             'sizes_existing.required' => 'Debe seleccionar una talla para cada combinación ya existente.',
-            'stock_depot.required' => 'El campo Stock Depósito es obligatorio.',
-            'stock_depot.min' => 'El Stock Depósito no puede ser menor a :min.',
-            'stock_local.required' => 'El campo Stock Local es obligatorio.',
-            'stock_local.min' => 'El Stock Local no puede ser menor a :min.',
-            'stock_truck.required' => 'El campo Stock Camioneta es obligatorio.',
-            'stock_truck.min' => 'El Stock Camioneta no puede ser menor a :min.',
         ];
 
-        if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
+        #if has category
+        if (isset($this->category_id)) {
+            $baseCategory = Category::find($this->category_id)->baseCategory;
+            
+            #validate gender
+            if ($baseCategory->has_gender) {
+                $rules['gender'] = 'required';
+            }
+        }
+
+         #mensajes stores - si es producto regular
+         if (!empty($this->is_regular)) {
+            // mensajes que cada store tenga un stock positivo
+            foreach ($this->stores as $store_id => $store) {
+                $store_name = Store::find($store_id)->name;
+                $messages['stores.' . $store_id . '.required'] = 'El stock en el depósito ' . $store_name . ' es obligatorio.';
+                $messages['stores.' . $store_id . '.integer'] = 'El stock en el depósito ' . $store_name . ' debe ser un número entero.';
+                $messages['stores.' . $store_id . '.min'] = 'El stock en el depósito ' . $store_name . ' no puede ser menor a :min.';
+            }
+        }else{
+            #mensajes stores - NO es producto regular
             if (isset($this->combinations_group)) {
                 foreach (array_keys($this->combinations_group) as $i) {
                     $combination_num = ($i + 1);
@@ -52,20 +63,32 @@ class ProductRequest extends FormRequest
                         foreach ($this->product_combinations[$i] as $key_product_combination => $j) {
                             $size_num = ($key_product_combination + 1);
 
-                            $messages['stocks_depot_existing.' . $i . '.' . $j . '.min'] = 'El Stock Depósito de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                            $messages['stocks_depot_existing.' . $i . '.' . $j . '.integer'] = 'El Stock Depósito de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
-                            $messages['stocks_local_existing.' . $i . '.' . $j . '.min'] = 'El Stock Local de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                            $messages['stocks_local_existing.' . $i . '.' . $j . '.integer'] = 'El Stock Local de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
-                            $messages['stocks_truck_existing.' . $i . '.' . $j . '.min'] = 'El Stock Camión de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                            $messages['stocks_truck_existing.' . $i . '.' . $j . '.integer'] = 'El Stock Camión de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
-
+                            foreach ($this->stores as $store_id => $store) {
+                                $input_store = "store_".$store_id;
+                                $store_name = Store::find($store_id)->name;
+                                $messages[$input_store.  '_existing.'. $i . '.' . $j . '.min'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
+                                $messages[$input_store.  '_existing.'. $i . '.' . $j . '.integer'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                            }
+                            #mensaje price
                             if (isset($this->prices_existing[$i][$j]) && $this->prices_existing[$i][$j]) {
                                 $messages['prices_existing.' . $i . '.' . $j . '.min'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
                                 $messages['prices_existing.' . $i . '.' . $j . '.numeric'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un valor numérico.';
                             }
-        
-                            if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
-                                $messages['sizes_existing.' . $i . '.' . $j . '.exists'] = 'La talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no se encuentra disponible en la BD.';
+                            #mensaje price card credit
+                            if (isset($this->prices_card_credit_existing[$i][$j]) && $this->prices_card_credit_existing[$i][$j]) {
+                                $messages['prices_card_credit_existing.' . $i . '.' . $j . '.min'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
+                                $messages['prices_card_credit_existing.' . $i . '.' . $j . '.numeric'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un valor numérico.';
+                            }
+                            #mensaje price cash
+                            if (isset($this->prices_cash_existing[$i][$j]) && $this->prices_cash_existing[$i][$j]) {
+                                $messages['prices_cash_existing.' . $i . '.' . $j . '.min'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
+                                $messages['prices_cash_existing.' . $i . '.' . $j . '.numeric'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un valor numérico.';
+                            }
+
+                            if ($baseCategory->has_size) {
+                                if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
+                                    $messages['sizes_existing.' . $i . '.' . $j . '.exists'] = 'La talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no se encuentra disponible en la BD.';
+                                }
                             }
 
                             if (isset($this->codes_existing[$i][$j]) && $this->codes_existing[$i][$j]) {
@@ -83,13 +106,12 @@ class ProductRequest extends FormRequest
                         foreach (array_keys($this->combinations[$i]) as $j) {
                             $size_num = ($total_existing + $j + 1);
 
-                            $messages['stocks_depot.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El Stock Depósito ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                            $messages['stocks_depot.' . $i . '.' . ($j + $total_existing) . '.integer'] = 'El Stock Depósito ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
-                            $messages['stocks_local.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El Stock Local de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                            $messages['stocks_local.' . $i . '.' . ($j + $total_existing) . '.integer'] = 'El Stock Local de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
-                            
-                            $messages['stocks_truck.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El Stock Camión de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                            $messages['stocks_truck.' . $i . '.' . ($j + $total_existing) . '.integer'] = 'El Stock Camión de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                            foreach ($this->stores as $store_id => $store) {
+                                $input_store = "store_".$store_id;
+                                $store_name = Store::find($store_id)->name;
+                                $messages[$input_store.'.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
+                                $messages[$input_store.'.' . $i . '.' . ($j + $total_existing) . '.integer'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                            }
 
                             if (isset($this->prices[$i][$j]) && $this->prices[$i][$j]) {
                                 $messages['prices.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El precio de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
@@ -103,6 +125,7 @@ class ProductRequest extends FormRequest
                     }
                 }
             }
+
         }
 
         return $messages;
@@ -125,28 +148,29 @@ class ProductRequest extends FormRequest
      */
     public function rules()
     {
+        #validaciones generales
         $rules = [
             'name' => 'required|min:3|max:155',
-            // 'gender' => 'required',
             'brand_id' => 'required|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0'
         ];
-        // if existe el campo de categoria y la categoria tiene el campo de genero
+
         if (isset($this->category_id)) {
             $baseCategory = Category::find($this->category_id)->baseCategory;
+            
+            #validate gender
             if ($baseCategory->has_gender) {
                 $rules['gender'] = 'required';
             }
         }
 
+        #validate code
         if ($this->isMethod('POST')) {
-            #create product
             $rules['code'] = 'required|min:1|max:100|unique:products,code,NULL,id,deleted_at,NULL';
         } else {
-            #update regular product 
+            #regular product
             if ($this->producto->is_regular){
-                #update product
                 $rules['code'] = [
                     'required',
                     'min:1',
@@ -156,7 +180,7 @@ class ProductRequest extends FormRequest
                     })->ignore($this->route('producto')->id),
                 ];
             }
-            #update combination product
+            #combination product
             else{
                  $rules['code'] = [
                     'required',
@@ -170,30 +194,53 @@ class ProductRequest extends FormRequest
                 ];
             }
         }
-        // exit($this);
-        if (!isset($this->is_regular) || (isset($this->is_regular) && $this->is_regular == 0)) {
+
+        #validate stores - si es producto regular
+        if (!empty($this->is_regular)) {
+            $rules['stores'] = 'required|array';
+            // valida que cada store tenga un stock positivo
+            foreach ($this->stores as $store_id => $store) {
+                $rules['stores.' . $store_id ] = 'required|integer|min:0';
+            }
+        }
+        #validar stores - si es producto con combinaciones
+        else{
+            #validate combinations
             if ($this->isMethod('POST')) {
                 $rules['combinations'] = 'required';
             } else if (!isset($this->combinations)) {
                 $rules['product_combinations'] = 'required';
             }
 
+            #validate stocks, prices and sizes
             if (isset($this->combinations_group)) {
                 foreach (array_keys($this->combinations_group) as $i) {
                     if (isset($this->product_combinations[$i])) {
                         foreach ($this->product_combinations[$i] as $j) {
-                            $rules['stocks_depot_existing.' . $i . '.' . $j] = 'integer|min:0';
-                            $rules['stocks_local_existing.' . $i . '.' . $j] = 'integer|min:0';
-                            $rules['stocks_truck_existing.' . $i . '.' . $j] = 'integer|min:0';
-
+                            #validate stores
+                            foreach ($this->stores as $store_id => $store) {
+                                $input_store = "store_".$store_id;
+                                $rules[$input_store . '_existing.' . $i . '.' . $j ] = 'required|integer|min:0';
+                            }
+                            #validate prices
                             if (isset($this->prices_existing[$i][$j]) && $this->prices_existing[$i][$j]) {
                                 $rules['prices_existing.' . $i . '.' . $j] = 'min:0|numeric';
                             }
-        
-                            if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
-                                $rules['sizes_existing.' . $i . '.' . $j] = 'exists:sizes,id';
+                            #validate prices card credit
+                            if (isset($this->prices_card_credit_existing[$i][$j]) && $this->prices_card_credit_existing[$i][$j]) {
+                                $rules['prices_card_credit_existing.' . $i . '.' . $j] = 'min:0|numeric';
                             }
-                            
+                            #validate prices credit
+                            if (isset($this->prices_credit_existing[$i][$j]) && $this->prices_credit_existing[$i][$j]) {
+                                $rules['prices_credit_existing.' . $i . '.' . $j] = 'min:0|numeric';
+                            }
+                             #validate size
+                            if ($baseCategory->has_size) {
+                                if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
+                                    $rules['sizes_existing.' . $i . '.' . $j] = 'exists:sizes,id';
+                                }
+                            }
+                            #validate codes
                             if(isset($this->codes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
                                 $rules['codes_existing.' . $i . '.' . $j]  = [ Rule::unique('products', 'code')->where(function ($query) {
                                                                                 $query->whereNull('deleted_at');
@@ -210,25 +257,33 @@ class ProductRequest extends FormRequest
                                                         ? count($this->product_combinations[$i]) 
                                                         : 0;
                         foreach (array_keys($this->combinations[$i]) as $j) {
-                            $rules['stocks_depot.' . $i . '.' . ($j + $total_existing)] = 'integer|min:0';
-                            $rules['stocks_local.' . $i . '.' . ($j + $total_existing)] = 'integer|min:0';
-                            $rules['stocks_truck.' . $i . '.' . ($j + $total_existing)] = 'integer|min:0';
-
+                            #validate stores
+                            foreach ($this->stores as $store_id => $store) {
+                                $input_store = "store_".$store_id;
+                                $rules[$input_store . '.' . $i . '.' . ($j + $total_existing) ] = 'required|integer|min:0';
+                            }
+                            #validate prices
                             if (isset($this->prices[$i][($j + $total_existing)]) && $this->prices[$i][($j + $total_existing)]) {
                                 $rules['prices.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
                             }
-        
-                            if (isset($this->sizes[$i][($j + $total_existing)]) && $this->sizes[$i][($j + $total_existing)]) {
-                                $rules['sizes.' . $i . '.' . ($j + $total_existing)] = 'exists:sizes,id';
+                            #validate prices card credit
+                            if (isset($this->prices_card_credit[$i][($j + $total_existing)]) && $this->prices_card_credit[$i][($j + $total_existing)]) {
+                                $rules['prices_card_credit.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
+                            }
+                            #validate prices credit
+                            if (isset($this->prices_credit[$i][($j + $total_existing)]) && $this->prices_credit[$i][($j + $total_existing)]) {
+                                $rules['prices_credit.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
+                            }
+                            #validate sizes
+                            if ($baseCategory->has_size) {
+                                if (isset($this->sizes[$i][($j + $total_existing)]) && $this->sizes[$i][($j + $total_existing)]) {
+                                    $rules['sizes.' . $i . '.' . ($j + $total_existing)] = 'exists:sizes,id';
+                                }
                             }
                         }
                     }
                 }
-            }
-        } else {
-            $rules['stock_depot'] = 'integer|min:0|nullable';
-            $rules['stock_local'] = 'integer|min:0|nullable';
-            $rules['stock_truck'] = 'integer|min:0|nullable';
+            }              
         }
 
         return $rules;
@@ -314,57 +369,6 @@ class ProductRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if (isset($this->is_regular)) {
-            $stock_depot = !empty($this->stock_depot) ? $this->stock_depot : 0;
-            $stock_local = !empty($this->stock_local) ? $this->stock_local : 0;
-            $stock_truck = !empty($this->stock_truck) ? $this->stock_truck : 0;
-
-            $this->merge([
-                'stock_depot' => $stock_depot,
-                'stock_local' => $stock_local,
-                'stock_truck' => $stock_truck
-            ]);
-        } else {
-            if (isset($this->combinations_group)) {
-                $stocks_depot = array();
-                $stocks_local = array();
-                $stocks_truck = array();
-                $stocks_depot_existing = array();
-                $stocks_local_existing = array();
-                $stocks_truck_existing = array();
-
-                foreach (array_keys($this->combinations_group) as $i) {
-                    if (isset($this->product_combinations[$i])) {
-                        foreach ($this->product_combinations[$i] as $j) {
-                            $stocks_depot_existing[$i][$j] = isset($this->stocks_depot_existing[$i][$j]) ? $this->stocks_depot_existing[$i][$j] : 0;
-                            $stocks_local_existing[$i][$j] = isset($this->stocks_local_existing[$i][$j]) ? $this->stocks_local_existing[$i][$j] : 0;
-                            $stocks_truck_existing[$i][$j] = isset($this->stocks_truck_existing[$i][$j]) ? $this->stocks_truck_existing[$i][$j] : 0;
-                        }
-                    }
-                    
-                    if (isset($this->combinations[$i])) {
-                        $total_existing = isset($this->product_combinations[$i]) && is_array($this->product_combinations[$i]) 
-                                                        ? count($this->product_combinations[$i]) 
-                                                        : 0;
-                        foreach (array_keys($this->combinations[$i]) as $j) {
-                            $stocks_depot[$i][($j + $total_existing)] = isset($this->stocks_depot[$i][($j + $total_existing)]) ? $this->stocks_depot[$i][($j + $total_existing)] : 0;
-                            $stocks_local[$i][($j + $total_existing)] = isset($this->stocks_local[$i][($j + $total_existing)]) ? $this->stocks_local[$i][($j + $total_existing)] : 0;
-                            $stocks_truck[$i][($j + $total_existing)] = isset($this->stocks_truck[$i][($j + $total_existing)]) ? $this->stocks_truck[$i][($j + $total_existing)] : 0;
-                        }
-                    }
-                }
-
-                $this->merge([
-                    'stocks_depot' => $stocks_depot,
-                    'stocks_local' => $stocks_local,
-                    'stocks_truck' => $stocks_truck,
-                    'stocks_depot_existing' => $stocks_depot_existing,
-                    'stocks_local_existing' => $stocks_local_existing,
-                    'stocks_truck_existing' => $stocks_truck_existing
-                ]);
-            }
-        }
-
         $this->merge([
             'is_regular'        => isset($this->is_regular) ? 1 : 0
         ]);

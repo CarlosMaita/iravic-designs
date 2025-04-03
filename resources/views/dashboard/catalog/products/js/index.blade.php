@@ -316,22 +316,14 @@
                                         <table id="datatable_stocks" class="table" width="100%">
                                             <thead>
                                                 <tr>
-                                                    @if (Auth::user()->isAdmin())
-                                                        ${storesTitles}
-                                                        <th scope="col">Total</th>
-                                                    @else
-                                                        <th scope="col">Stock</th>
-                                                    @endif
+                                                    ${storesTitles}
+                                                    <th scope="col">Total</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    @if (Auth::user()->isAdmin())
-                                                        ${storesData}
-                                                        <td>${product.stock_total}</td>
-                                                    @else
-                                                        <td>${product.stock_user}</td>
-                                                    @endif
+                                                    ${storesData}
+                                                    <td>${product.stock_total}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -367,12 +359,8 @@
                                                 <tr>
                                                     <th scope="col">Color</th>
                                                     <th scope="col">Talla</th>
-                                                @if (Auth::user()->isAdmin())
                                                     ${storesTitles}
                                                     <th scope="col">Total</th>
-                                                @else
-                                                    <th scope="col">Stock</th>
-                                                @endif
                                                 </tr>
                                             </thead>`;
 
@@ -390,14 +378,8 @@
                 html += `<tr>
                             <td>${combination.color ? combination.color.name : ''}</td>
                             <td>${combination.size ? combination.size.name : ''}</td>`;
-
-                @if (Auth::user()->isAdmin())
-                    html += storesData;
-                    html += `<td>${combination.stock_total}</td>`;
-                @else
-                    html += `<td>${combination.stock_user}</td>`;
-                @endif
-
+                html += storesData;
+                html += `<td>${combination.stock_total}</td>`;
                 html += `</tr>`;
             });            
 

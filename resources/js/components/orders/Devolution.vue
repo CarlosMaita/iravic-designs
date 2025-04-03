@@ -186,10 +186,6 @@
                                                             :value.sync="productToBuySelected"
                                                             :getOptionLabel="getProductsToBuyOptionLabel"
                                                     >
-                                                    <!-- :selectable="option => option.stock_user > 0" -->
-                                                    <!-- :getOptionLabel="getProductsToBuyOptionLabel" -->
-                                                    <!-- :getOptionLabel="option => option.is_regular ? option.name : ''" -->
-                                                    <!-- :get-option-label="(item) => item.name" -->
                                                     </v-select>
                                                     <div class="input-group-prepend">
                                                         <span @click="openModalProductToBuy" class="input-group-text" type="button"><i class="fa fa-plus"></i></span>
@@ -221,7 +217,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <ProductItemToBuy 
-                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-buy`"
+                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-store-${item.store.id}-buy`"
                                                         :item="item"
                                                         :index="index"
                                                         :can-remove="true"
@@ -456,7 +452,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <ProductItemToBuy 
-                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-buy-resumen`"
+                                                        v-for="(item, index) in productsSelectedToBuy" :key="`product-${item.id}-store-${item.store.id}-buy-resumen`"
                                                         :item="item"
                                                         :index="index"
                                                         :can-remove="false"
@@ -661,9 +657,17 @@
             /**
              * Calcula el subtotal de compra nueva, sin contar el descuento
              */
-            subtotalCompra: function () {
-                return this.productsSelectedToBuy.reduce(function(prev, cur) {
-                    return prev + (cur.qty * cur.product.regular_price);
+            subtotalCompra() {
+                let paymentMethodSelected = this.paymentMethodSelected;
+                return this.productsSelectedToBuy.reduce((prev, cur) => {
+                    let priceReal = cur.product.regular_price;
+                    if (paymentMethodSelected === 'card') {
+                        priceReal = cur.product.regular_price_card_credit;
+                    } else if (paymentMethodSelected === 'credit') {
+                        priceReal = cur.product.regular_price_credit;
+                    }
+                    
+                    return prev + (cur.qty * priceReal);
                 }, 0.00);
             },
 
@@ -929,9 +933,9 @@
              * 
              */
             handleAddProductToBuy(products_to_order) {
-                console.log(products_to_order);
                 products_to_order.forEach((orderProduct) => {
-                    const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id);
+
+                    const index = this.productsSelectedToBuy.findIndex(_item => _item.id === orderProduct.id && _item.store.id === orderProduct.store.id);
                     if (index > -1) {
                         Vue.set(this.productsSelectedToBuy, index, orderProduct);
                         this.$emit("updateQuantityToBuy", index, orderProduct.qty)

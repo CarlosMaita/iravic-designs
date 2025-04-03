@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -83,6 +84,6 @@ class Refund extends Model
     }
 
     public function getTotalStrAttribute(){
-        return '$ ' . number_format($this->total, 2, '.', ',');
+        return  FormatHelper::formatCurrency($this->total, 'USD');
     }
 }

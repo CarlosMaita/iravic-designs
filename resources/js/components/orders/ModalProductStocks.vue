@@ -122,8 +122,8 @@
                     if (qty > 0 && qty <= max) {
                         var dataToAdd = {
                             id: this.product.id,
-                            store_id: storeProduct.id,
-                            product: storeProduct,
+                            product: this.product,
+                            store: storeProduct,
                             qty: Number(qty)
                         }
                         products_to_order.push(dataToAdd);

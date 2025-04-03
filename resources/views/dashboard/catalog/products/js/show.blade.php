@@ -195,7 +195,6 @@
          */
         $('.view-stock-history').on('click', function(e) {
             var product_id      = $(this).data('id'),
-                stock_column    = $(this).data('stock'),
                 stock_name      = $(this).data('stock-name'),
                 store_id      = $(this).data('store-id');
 

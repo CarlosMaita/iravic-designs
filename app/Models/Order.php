@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -103,19 +104,19 @@ class Order extends Model
     # Retorna en formato moneda el descuento aplicado en la venta
     public function getDiscountAttribute($value)
     {
-        return $this->getAmountFormated($value);
+        return FormatHelper::formatCurrency($value);
     }
 
     # Retorna en formato moneda el subtotal de la venta
     public function getSubtotalAttribute($value)
     {
-        return $this->getAmountFormated($value);
+        return FormatHelper::formatCurrency($value);
     }
 
     # Retorna en formato moneda el total de la venta
     public function getTotalAttribute($value)
     {
-        return $this->getAmountFormated($value);
+        return FormatHelper::formatCurrency($value);
     }
 
     # Appends
@@ -141,15 +142,5 @@ class Order extends Model
         return '';
     }
 
-    # Methods
-
-    # Retorna monto de la venta en formato moneda
-    public function getAmountFormated($value)
-    {
-        if ($value) {
-            return '$ ' . number_format($value, 2, '.', ',');
-        }
-
-        return '$ 0,00';
-    }
+   
 }

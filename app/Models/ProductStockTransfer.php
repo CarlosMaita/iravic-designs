@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Events\ProductStockChanged;
-use App\Services\Catalog\StockService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -157,17 +156,4 @@ class ProductStockTransfer extends Model
         return $store->name;
     }
 
-    # Scopes
-    public function scopeWhereUserStock($query, $user_id, $stock)
-    {
-        return $query->where(function($q) use ($user_id, $stock){
-            $q->where(function($q) use ($user_id) {
-                $q->where('user_creator_id', $user_id)
-                    ->orWhere('user_responsable_id', $user_id);
-            })->orWhere(function($q) use ($stock) {
-                $q->where('is_accepted', 0)
-                    ->where('stock_destination', $stock);
-            });
-        });
-    }
 }

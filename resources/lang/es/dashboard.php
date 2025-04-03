@@ -277,7 +277,9 @@ return [
             'store'         => 'Depósito',
             'qty'           => 'Cant.',
             'size'          => 'Talla',
-            'total'         => 'Total'
+            'total'         => 'Total',
+            'store_rollback'=> 'Devuelto a',
+            'store_taken'   => 'Tomado de',
         ],
         'discount'          => 'Descuento',
         'subtotal'          => 'Subtotal',

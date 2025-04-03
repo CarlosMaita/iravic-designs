@@ -142,11 +142,17 @@ class RefundController extends Controller
     public function store(RefundRequest $request)
     {
         try {
+            # authorize
             $this->authorize('create', 'App\Models\Refund');
-            DB::beginTransaction();
+            # vars 
             $is_credit_shared = isset($request->is_credit_shared) ? 1 : 0;
             $productsRefund = array();
             $productsOrder = array();
+            
+            #start transaction
+            DB::beginTransaction();
+            
+            #Se calculan los totales
             $totals = OrderService::getOrderTotalsByRefund(
                 $request->only(
                     'discount',
@@ -160,6 +166,7 @@ class RefundController extends Controller
                 $this->productRepository,
                 $this->orderProductRepository
             );
+
             #create refund 
             $attributes = array_merge(
                 array(
@@ -201,21 +208,24 @@ class RefundController extends Controller
                 }
             }
             
-            /** Se ajustan los montos sugeridos de las visitas, a partir de la devolucion */
+            # Se ajustan los montos sugeridos de las visitas, a partir de la devolucion
             $customer_id = $request->customer_id;
             $customer = $this->customerRepository->find($customer_id); 
             $balance = $customer->getBalance();
             $total_refund = $totals['total_refund'];
             if( $balance >= 0)
             {
-                // remover las visitas de cobro pendientes
+                # Se remoeve las visitas de cobro pendientes
                 $this->visitRepository->removeVisitsOfCollection($customer_id);
             }else{
-                // Re-ajusto los montos sugeridos de las visitas futuras
+                # Se Re-ajustan los montos sugeridos de las visitas futuras
                 $this->visitRepository->updateCollectionsInFutureVisits($customer_id, $total_refund);
             }
 
-            /** Se crea una Nueva Order && Previous Debt**/
+            
+            /**
+             *  Se crea una Nueva Order && Previous Debt
+             * */
             if (!empty($request->products)) {
                 $customer_id = $is_credit_shared ? $request->customer_id_new_credit : $request->customer_id;  
 
@@ -241,7 +251,8 @@ class RefundController extends Controller
                         'payed_credit'
                         )
                 );
-                $order = $this->orderRepository->create($attributesOrder); //Create order
+                #Create order
+                $order = $this->orderRepository->create($attributesOrder); 
                 
                 #Se guardan los productos de la nueva venta (Productos que se llevan)
                 foreach ($request->products as $product_id => $store) {

@@ -144,9 +144,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'price',
             'price_card_credit',
             'price_credit',
-            'stock_depot',
-            'stock_local',
-            'stock_truck',
         );
 
         $product = $this->create($attributes);
@@ -205,9 +202,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 'price' => $request->prices[$key][$key_new_combination],
                                 'price_card_credit' => $request->prices_card_credit[$key][$key_new_combination],
                                 'price_credit' => $request->prices_credit[$key][$key_new_combination],
-                                'stock_depot' => $request->stocks_depot[$key][$key_new_combination],
-                                'stock_local' => $request->stocks_local[$key][$key_new_combination],
-                                'stock_truck' => $request->stocks_truck[$key][$key_new_combination]
                             ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
@@ -281,9 +275,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'price',
             'price_card_credit',
             'price_credit',
-            'stock_depot',
-            'stock_local',
-            'stock_truck'
         );
 
         $product = $this->model->find($id);
@@ -326,10 +317,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'price_card_credit',
             'price_credit',
         );
-        // Reset stock
-        $attributes['stock_depot'] = 0;
-        $attributes['stock_local'] = 0;
-        $attributes['stock_truck'] = 0;
 
         $product = $this->model->find($id);
         $category_id_old = $product->category_id;
@@ -361,9 +348,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                     'price' => $request->prices_existing[$key][$product_combination_id],
                                     'price_card_credit' => $request->prices_card_credit_existing[$key][$product_combination_id],
                                     'price_credit' => $request->prices_credit_existing[$key][$product_combination_id],
-                                    'stock_depot' => $request->stocks_depot_existing[$key][$product_combination_id],
-                                    'stock_local' => $request->stocks_local_existing[$key][$product_combination_id],
-                                    'stock_truck' => $request->stocks_truck_existing[$key][$product_combination_id]
                                 ),
                                 $request->only('brand_id', 'category_id', 'gender', 'name')
                             );
@@ -433,9 +417,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 'price' => $request->prices[$key][($key_new_combination + $total_existing)],
                                 'price_card_credit' => $request->prices_card_credit[$key][($key_new_combination + $total_existing)],
                                 'price_credit' => $request->prices_credit[$key][($key_new_combination + $total_existing)],
-                                'stock_depot' => $request->stocks_depot[$key][($key_new_combination + $total_existing)],
-                                'stock_local' => $request->stocks_local[$key][($key_new_combination + $total_existing)],
-                                'stock_truck' => $request->stocks_truck[$key][($key_new_combination + $total_existing)]
                             ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
