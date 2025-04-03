@@ -259,7 +259,6 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $product_id [Inside Request]
-     * @param  int  $stock_column [Inside Request] = Tipo de stock
      * @return \Illuminate\Http\Response
      */
     public function updateStock(ProductStockRequest $request)
