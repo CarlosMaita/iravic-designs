@@ -369,57 +369,6 @@ class ProductRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if (isset($this->is_regular)) {
-            $stock_depot = !empty($this->stock_depot) ? $this->stock_depot : 0;
-            $stock_local = !empty($this->stock_local) ? $this->stock_local : 0;
-            $stock_truck = !empty($this->stock_truck) ? $this->stock_truck : 0;
-
-            $this->merge([
-                'stock_depot' => $stock_depot,
-                'stock_local' => $stock_local,
-                'stock_truck' => $stock_truck
-            ]);
-        } else {
-            if (isset($this->combinations_group)) {
-                $stocks_depot = array();
-                $stocks_local = array();
-                $stocks_truck = array();
-                $stocks_depot_existing = array();
-                $stocks_local_existing = array();
-                $stocks_truck_existing = array();
-
-                foreach (array_keys($this->combinations_group) as $i) {
-                    if (isset($this->product_combinations[$i])) {
-                        foreach ($this->product_combinations[$i] as $j) {
-                            $stocks_depot_existing[$i][$j] = isset($this->stocks_depot_existing[$i][$j]) ? $this->stocks_depot_existing[$i][$j] : 0;
-                            $stocks_local_existing[$i][$j] = isset($this->stocks_local_existing[$i][$j]) ? $this->stocks_local_existing[$i][$j] : 0;
-                            $stocks_truck_existing[$i][$j] = isset($this->stocks_truck_existing[$i][$j]) ? $this->stocks_truck_existing[$i][$j] : 0;
-                        }
-                    }
-                    
-                    if (isset($this->combinations[$i])) {
-                        $total_existing = isset($this->product_combinations[$i]) && is_array($this->product_combinations[$i]) 
-                                                        ? count($this->product_combinations[$i]) 
-                                                        : 0;
-                        foreach (array_keys($this->combinations[$i]) as $j) {
-                            $stocks_depot[$i][($j + $total_existing)] = isset($this->stocks_depot[$i][($j + $total_existing)]) ? $this->stocks_depot[$i][($j + $total_existing)] : 0;
-                            $stocks_local[$i][($j + $total_existing)] = isset($this->stocks_local[$i][($j + $total_existing)]) ? $this->stocks_local[$i][($j + $total_existing)] : 0;
-                            $stocks_truck[$i][($j + $total_existing)] = isset($this->stocks_truck[$i][($j + $total_existing)]) ? $this->stocks_truck[$i][($j + $total_existing)] : 0;
-                        }
-                    }
-                }
-
-                $this->merge([
-                    'stocks_depot' => $stocks_depot,
-                    'stocks_local' => $stocks_local,
-                    'stocks_truck' => $stocks_truck,
-                    'stocks_depot_existing' => $stocks_depot_existing,
-                    'stocks_local_existing' => $stocks_local_existing,
-                    'stocks_truck_existing' => $stocks_truck_existing
-                ]);
-            }
-        }
-
         $this->merge([
             'is_regular'        => isset($this->is_regular) ? 1 : 0
         ]);

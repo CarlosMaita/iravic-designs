@@ -34,9 +34,6 @@ class Product extends Model
         'price_card_credit',
         'price_credit',
         'is_child_size',
-        'stock_depot',
-        'stock_local',
-        'stock_truck',
         'combination_index'
     ];
 
