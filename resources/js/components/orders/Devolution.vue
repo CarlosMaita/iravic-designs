@@ -661,9 +661,17 @@
             /**
              * Calcula el subtotal de compra nueva, sin contar el descuento
              */
-            subtotalCompra: function () {
-                return this.productsSelectedToBuy.reduce(function(prev, cur) {
-                    return prev + (cur.qty * cur.product.regular_price);
+            subtotalCompra() {
+                let paymentMethodSelected = this.paymentMethodSelected;
+                return this.productsSelectedToBuy.reduce((prev, cur) => {
+                    let priceReal = cur.product.regular_price;
+                    if (paymentMethodSelected === 'card') {
+                        priceReal = cur.product.regular_price_card_credit;
+                    } else if (paymentMethodSelected === 'credit') {
+                        priceReal = cur.product.regular_price_credit;
+                    }
+                    
+                    return prev + (cur.qty * priceReal);
                 }, 0.00);
             },
 
