@@ -72,28 +72,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Retorna tipo de stock asociado al rol del usuario
-     */
-    public function getColumnStock()
-    {
-        $roles_name = $this->roles->flatten()->pluck('name');
-
-        if ($roles_name->contains('superadmin') || $roles_name->contains('admin')) {
-            return 'stock_local';
-        }
-
-        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
-            return 'stock_truck';
-        }
-
-        if ($roles_name->contains('Local')) {
-            return 'stock_local';
-        }
-
-        return null;
-    }
-
-    /**
      * Retorna boolean para verificar si el usuario tiene rol de administrador (Incluido superadmin)
      */
     public function isAdmin()

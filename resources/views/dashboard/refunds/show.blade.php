@@ -66,6 +66,7 @@
                                                             <th>{{ __('dashboard.orders.products.size') }}</th>
                                                             <th>{{ __('dashboard.orders.products.qty') }}</th>
                                                             <th>{{ __('dashboard.orders.products.total') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.store_rollback') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -77,6 +78,7 @@
                                                                 <td>{{ optional($product->size)->name }}</td>
                                                                 <td>{{ $product->qty }}</td>
                                                                 <td>{{ $product->total }}</td>
+                                                                <td>{{ $product->order_product->store->name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -108,6 +110,7 @@
                                                             <th>{{ __('dashboard.orders.products.size') }}</th>
                                                             <th>{{ __('dashboard.orders.products.qty') }}</th>
                                                             <th>{{ __('dashboard.orders.products.total') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.store_taken') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -118,6 +121,7 @@
                                                                 <td>{{ optional($product->size)->name }}</td>
                                                                 <td>{{ $product->qty }}</td>
                                                                 <td>{{ $product->total }}</td>
+                                                                <td>{{ $product->store->name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

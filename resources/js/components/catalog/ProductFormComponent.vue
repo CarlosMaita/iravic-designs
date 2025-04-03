@@ -132,28 +132,6 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
-                <!-- stock old  -->
-                <div class="row mt-3 d-none">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="stock-depot">Stock Depósito</label>
-                            <input type="number" class="form-control" :id="`stock-depot`" name="stock_depot" v-model="product.stock_depot">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="stock-local">Stock Local</label>
-                            <input type="number" class="form-control" :id="`stock-local`" name="stock_local" v-model="product.stock_local">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="stock-truck">Stock Camioneta</label>
-                            <input type="number" class="form-control" :id="`stock-truck`" name="stock_truck" v-model="product.stock_truck">
-                        </div>
-                    </div>
-                </div>
-                <!-- stock old   -->
                 <!-- stock with store -->
                 <div class="row mt-3"> 
                     <div v-for="(product_store) in product_stores" :key="`store-${product_store.store_id}`" class="col-md-4">
@@ -281,44 +259,6 @@
                                         <div class="form-group">
                                             <label :for="`price_credit-${index}-${index_size}`">Precio con credito</label>
                                             <input class="form-control" :id="`price_credit-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices_credit', size, index, index_size)" v-model="combination.sizes[index_size].price_credit">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row d-none">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label :for="`stock-depot-${index}-${index_size}`">Stock Depósito</label>
-                                            <input class="form-control" 
-                                                    :id="`stock-depot-${index}-${index_size}`" 
-                                                    type="number" 
-                                                    min="0" 
-                                                    step="any" 
-                                                    :name="getCombinationInputName('stocks_depot', size, index, index_size)" 
-                                                    v-model="combination.sizes[index_size].stock_depot">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label :for="`stock-local-${index}-${index_size}`">Stock Local</label>
-                                            <input class="form-control" 
-                                                    :id="`stock-local-${index}-${index_size}`" 
-                                                    type="number" 
-                                                    min="0" 
-                                                    step="any" 
-                                                    :name="getCombinationInputName('stocks_local', size, index, index_size)" 
-                                                    v-model="combination.sizes[index_size].stock_local">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label :for="`stock-truck-${index}-${index_size}`">Stock Camioneta</label>
-                                            <input class="form-control" 
-                                                    :id="`stock-truck-${index}-${index_size}`" 
-                                                    type="number" 
-                                                    min="0" 
-                                                    step="any" 
-                                                    :name="getCombinationInputName('stocks_truck', size, index, index_size)" 
-                                                    v-model="combination.sizes[index_size].stock_truck">
                                         </div>
                                     </div>
                                 </div>
@@ -566,9 +506,6 @@
                                         price: combination.price,
                                         price_card_credit: combination.price_card_credit,
                                         price_credit: combination.price_credit,
-                                        stock_depot: combination.stock_depot,
-                                        stock_local: combination.stock_local,
-                                        stock_truck: combination.stock_truck,
                                         product_stores:  this.stores.map((store) => {
                                             const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
                                             return {
@@ -591,9 +528,6 @@
                                 price: combination.price,
                                 price_card_credit: combination.price_card_credit,
                                 price_credit: combination.price_credit,
-                                stock_depot: combination.stock_depot,
-                                stock_local: combination.stock_local,
-                                stock_truck: combination.stock_truck, 
                                 product_stores: this.stores.map((store) => {
                                     const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
                                     return {
@@ -691,9 +625,6 @@
                             price: null,
                             price_card_credit: null,
                             price_credit: null,
-                            stock_depot: null,
-                            stock_local: null,
-                            stock_truck: null,
                             product_stores:  this.stores.map((store) => {
                                 return {
                                     store_id: store.id,
@@ -730,9 +661,6 @@
                             price: null,
                             price_card_credit: null,
                             price_credit: null,
-                            stock_depot: null,
-                            stock_local: null,
-                            stock_truck: null,
                             product_stores:  this.stores.map((store) => {
                                 return {
                                     store_id: store.id,

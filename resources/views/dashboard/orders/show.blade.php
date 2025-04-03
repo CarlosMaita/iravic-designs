@@ -107,20 +107,20 @@
                                                             <th scope="col">{{ __('dashboard.orders.products.name') }}</th>
                                                             <th>{{ __('dashboard.orders.products.color') }}</th>
                                                             <th>{{ __('dashboard.orders.products.size') }}</th>
-                                                            <th>{{ __('dashboard.orders.products.store') }}</th>
                                                             <th>{{ __('dashboard.orders.products.qty') }}</th>
                                                             <th>{{ __('dashboard.orders.products.total') }}</th>
+                                                            <th>{{ __('dashboard.orders.products.store_taken') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($order->products as $product)
                                                             <tr>
-                                                                <th>{{ $product->product_name }}</th>
-                                                                <th>{{ optional($product->color)->name }}</th>
-                                                                <th>{{ optional($product->size)->name }}</th>
-                                                                <th>{{ $stores->find($product->store_id)->name }}</th>
-                                                                <th>{{ $product->qty }}</th>
-                                                                <th>{{ $product->total }}</th>
+                                                                <td>{{ $product->product_name }}</td>
+                                                                <td>{{ optional($product->color)->name }}</td>
+                                                                <td>{{ optional($product->size)->name }}</td>
+                                                                <td>{{ $product->qty }}</td>
+                                                                <td>{{ $product->total }}</td>
+                                                                <td>{{ $product->store->name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

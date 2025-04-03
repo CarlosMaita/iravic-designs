@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\Catalog\StockService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +24,6 @@ class ProductStockHistory extends Model
 
     public $appends = [
         'date',
-        'stock_column',
     ];
 
     # Relationships
@@ -54,19 +52,9 @@ class ProductStockHistory extends Model
         return '';
     }
 
-    public function getStockColumnAttribute()
-    {
-        return StockService::getStockName($this->stock);
-    }
-
     # Scopes
     public function scopeWhereProduct($query, $product_id)
     {
         return $query->where('product_id', $product_id);
-    }
-
-    public function scopeWhereStock($query, $stock_column)
-    {
-        return $query->where('stock', $stock_column);
     }
 }

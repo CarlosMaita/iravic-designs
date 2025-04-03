@@ -28,15 +28,6 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
     {
         $roles_name = Auth::user()->roles->flatten()->pluck('name');
         $query = $this->model->with(['product', 'creator', 'responsable']);
-
-        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
-            $query->whereUserStock(Auth::user()->id, 'stock_truck');
-        }
-
-        if ($roles_name->contains('Local')) {
-            $query->whereUserStock(Auth::user()->id, 'stock_local');
-        }
-
         return $query->orderBy('created_at', 'DESC')->get();
     }
 
@@ -49,15 +40,6 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
     {
         $roles_name = Auth::user()->roles->flatten()->pluck('name');
         $query = $this->model->with('creator', 'responsable')->with(['product' => fn($q) => $q->withTrashed()]);
-
-        if ($roles_name->contains('Camión') || $roles_name->contains('Moto')) {
-            $query->whereUserStock(Auth::user()->id, 'stock_truck');
-        }
-
-        if ($roles_name->contains('Local')) {
-            $query->whereUserStock(Auth::user()->id, 'stock_local');
-        }
-
         return $query->orderBy('products_stock_transfer.created_at', 'DESC');
     }
 }

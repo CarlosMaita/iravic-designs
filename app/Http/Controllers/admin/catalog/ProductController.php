@@ -259,7 +259,6 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $product_id [Inside Request]
-     * @param  int  $stock_column [Inside Request] = Tipo de stock
      * @return \Illuminate\Http\Response
      */
     public function updateStock(ProductStockRequest $request)
@@ -385,9 +384,7 @@ class ProductController extends Controller
                      */
                     foreach ($product->product_combinations as $product_combination) {
                         if (
-                            $product_combination->stock_depot == 0 
-                            && $product_combination->stock_local == 0 
-                            && $product_combination->stock_truck == 0
+                            $product_combination->stock_total == 0 
                         ) {
                             break;
                         }
@@ -415,7 +412,7 @@ class ProductController extends Controller
                         $product['combinations'] = $combinations;
                         array_push($categories[$product->category_id]['products'], $product);
                     }
-                } else if ($product->stock_depot >0 || $product->stock_local >0 || $product->stock_truck >0) {
+                } else if ($product->stock_total > 0) {
                     array_push($categories[$product->category_id]['products'], $product);
                 }
             }
