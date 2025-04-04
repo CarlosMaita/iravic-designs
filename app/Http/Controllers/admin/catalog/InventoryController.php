@@ -24,11 +24,14 @@ class InventoryController extends Controller
         $inventoryExcel->generate();
         $path = $inventoryExcel->getPath();
 
+        $now = now();
+        $filename = "inventario-{$now->format('Ymd-His')}.xlsx";
+
         return response()
-            ->download( $path, 'inventario.xlsx' ,
+            ->download( $path, $filename ,
              [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment;filename="' . 'inventario.xlsx' . '"',
+                'Content-Disposition' => "attachment;filename=\"{$filename}\"",
              ])
             ->deleteFileAfterSend(true);
     }
