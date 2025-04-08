@@ -123,7 +123,7 @@ class Product extends Model
 
     # Appends
     /**
-     * Retorna label para el producto con el color y talla
+     * Retorna label para el producto con el color y talla si la categoría base tiene talla
      */
     public function getNameFullAttribute()
     {
@@ -132,8 +132,8 @@ class Product extends Model
         if ($this->color) {
             $name .= ' - Color: ' . $this->color->name;
         }
-
-        if ($this->size) {
+        $baseCategory = $this->category->baseCategory;
+        if ($baseCategory->has_size && $this->size) {
             $name .= ' - Talla: ' . $this->size->name;
         }
 
