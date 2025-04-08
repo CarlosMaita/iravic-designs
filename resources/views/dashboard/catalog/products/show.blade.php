@@ -531,9 +531,16 @@
                                             </div>
                                             <!--  End stores for product regular  -->
 
+                                            
                                             <div class="row">
                                                 <div class="col-12">
                                                     <p><b>Total stock:</b> {{ $product->stock_total }}</p>
+                                                    @if($product->hasPendingTransfer())
+                                                        <div class="alert alert-warning">
+                                                            Existe una transferencia pendiente para este producto.
+                                                            <a href="{{ route('stock-transferencias.index') }}">Ver transferencias</a>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                            
@@ -660,6 +667,12 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <p><b>Total stock:</b> {{ $product_combination->stock_total }}</p>
+                                                            @if($product_combination->hasPendingTransfer())
+                                                                <div class="alert alert-warning">
+                                                                    Existe una transferencia pendiente para esta combinación de producto.
+                                                                    <a href="{{ route('stock-transferencias.index') }}">Ver transferencias</a>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <hr>

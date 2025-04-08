@@ -27,6 +27,9 @@ class ProductStockTransfer extends Model
         'stock_name_destination'
     ];
 
+    const PENDING = 0;
+    const APPROVED = 1;
+
     # Boot
     public static function boot()
     {

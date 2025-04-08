@@ -100,6 +100,14 @@ class ProductStockTransferController extends Controller
                 'is_accepted' => 1,
                 'user_responsable_id' => Auth::user()->id
             );
+            #validar la existencia del producto
+            if (empty($stock_transferencia->product)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "El producto no existe, por favor verifique."
+                ]);
+            }
+            #actualizar la transferencia
             $this->productStockTransferRepository->update($stock_transferencia->id, $attributes);
             DB::commit();
 
