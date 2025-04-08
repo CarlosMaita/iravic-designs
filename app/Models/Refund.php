@@ -62,11 +62,10 @@ class Refund extends Model
 
         # Cada vez que se crea una devolucion, se crea un registro de Operacion con el saldo resultante del cliente
         self::created(function ($model) {
-            $total_refund = $model->total; #Hack: Se le suma el total de la nueva devolucion debido a que para este momento no se ha sumado la ultima devolucion al calcular el balance. 
             Operation::create([
                 'customer_id' => $model->customer_id,
                 'refund_id' => $model->id,
-                'balance' => $model->customer->getBalance() + $total_refund,
+                'balance' => $model->customer->getBalance() ,
             ]);
         });
     }
