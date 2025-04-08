@@ -285,18 +285,22 @@ class OrderController extends Controller
             $discount = $request->discount;
             $subtotal = 0;
 
-            foreach ($request->products as $product_id) {
+            foreach ($request->products as $product_id => $stores) {
                 if ($product = $this->productRepository->find($product_id)) {
-                    if (isset($request->qtys[$product_id]) && $request->qtys[$product_id] > 0) {
-
-                        $regular_price =  $product->regular_price; // Precio regular por defecto
-                        if(auth()->user()->can('prices-per-method-payment') ) {
-                            if ($request->payment_method == "card" || $request->payment_method == "credit") {
-                                $regular_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                    if (isset($request->qtys[$product_id])) {
+                        foreach ($request->qtys[$product_id] as $keyStore => $qty) {
+                            if($qty <= 0) {
+                                continue;
                             }
+                            $real_price = $product->regular_price; // Precio regular por defecto
+                            if(auth()->user()->can('prices-per-method-payment') ) {
+                                if ($request->payment_method == "card" || $request->payment_method == "credit") {
+                                    $real_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
+                                }
+                            }
+                            $subtotal += ($real_price * $qty);
+
                         }
-                        
-                        $subtotal += ($regular_price * $request->qtys[$product_id]);
                     }
                 }
             }

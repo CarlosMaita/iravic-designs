@@ -29,16 +29,29 @@ class OrderDiscountRequest extends FormRequest
             'qtys.array' => 'array'
         ];
 
+        // if (isset($this->products) && is_array($this->products)) {
+        //     foreach ($this->products as $key => $product) {
+        //         $messages['products.'. $product . '.exists'] = 'El producto ' . ($key + 1) . ' no se encuentra en la BD.';
+
+
+        //         if (isset($this->qtys[$product])) {
+        //             $messages['qtys.' . $product . '.numeric'] = 'La cantidad para el producto ' . ($key + 1) . ' no es válida.';
+        //         }
+        //     }
+        // }
+
         if (isset($this->products) && is_array($this->products)) {
-            foreach ($this->products as $key => $product) {
-                $messages['products.'. $product . '.exists'] = 'El producto ' . ($key + 1) . ' no se encuentra en la BD.';
+            foreach ($this->products as $keyProduct => $product) {
+                $messages['products.'. $keyProduct . '.exists'] = 'El producto ' . ($keyProduct + 1) . ' no se encuentra en la BD.';
 
-
-                if (isset($this->qtys[$product])) {
-                    $messages['qtys.' . $product . '.numeric'] = 'La cantidad para el producto ' . ($key + 1) . ' no es válida.';
+                if (isset($this->qtys[$keyProduct]) && is_array($this->qtys[$keyProduct])) {
+                    foreach ($this->qtys[$keyProduct] as $keyStore => $qty) {
+                        $messages['qtys.' . $keyProduct . '.' . $keyStore . '.numeric'] = 'La cantidad para el producto ' . ($keyProduct + 1) . ', deposito ' . ($keyStore + 1) . ' no es válida.';
+                    }
                 }
             }
         }
+
 
         return $messages;
     }
@@ -64,9 +77,9 @@ class OrderDiscountRequest extends FormRequest
             'discount' => 'required|numeric|min:0',
             'discount_password' => 'required',
             'products' => 'required|array|min:1',
-            'products.*' => 'exists:products,id',
+            // 'products.*' => 'exists:products,id',
             'qtys' => 'required|array',
-            'qtys.*' => 'numeric'
+            // 'qtys.*' => 'numeric'
         ];
     }
 
