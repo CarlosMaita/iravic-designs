@@ -119,6 +119,7 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductStockTransfer');
     }
+    
 
     # Appends
     /**
@@ -306,5 +307,12 @@ class Product extends Model
             null,
             $orderProductId
         ));
+    }
+
+    function hasPendingTransfer()
+    {
+        return $this->stocks_transfers()
+            ->whereIn('is_accepted', [ProductStockTransfer::PENDING])
+            ->exists();
     }
 }
