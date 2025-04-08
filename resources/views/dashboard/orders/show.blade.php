@@ -115,12 +115,12 @@
                                                     <tbody>
                                                         @foreach ($order->products as $product)
                                                             <tr>
-                                                                <td>{{ $product->product_name }}</td>
-                                                                <td>{{ optional($product->color)->name }}</td>
-                                                                <td>{{ optional($product->size)->name }}</td>
-                                                                <td>{{ $product->qty }}</td>
-                                                                <td>{{ $product->total }}</td>
-                                                                <td>{{ $product->store->name }}</td>
+                                                                <td>{{ $product->product_name  }}</td>
+                                                                <td>{{ optional($product->color)->name  }}</td>
+                                                                <td>{{ optional($product->size)->name  }}</td>
+                                                                <td>{{ $product->qty  }}</td>
+                                                                <td>{{ $product->total  }}</td>
+                                                                <td>{{ optional($product->store)->name  }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
