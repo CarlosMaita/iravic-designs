@@ -25,8 +25,7 @@ class SizesSeeder extends Seeder
         $sizes_talla_calzado_adultos_unisex = range(34, 46, 0.5);;
         $sizes_talla_calzado_ninos = range(12, 38, 0.5);
         $sizes_talla_ropa_adultos = [ "xxs", "xs", "s", "m", "l", "xl", "xxl" ];
-        $sizes_talla_ropa_ninos = range(4, 16, 2);
-        $sizes_talla_ropa_bebes = range(0, 6, 2); ;
+        $sizes_talla_ropa_ninos = range(0, 16, 2);
         $sizes_talla_accesorios = [ 
             "xs", "s", "m", "l", "xl", "xxl", 
             "1" , "2" , "3" , "4" , "5" , "6" , 
@@ -82,14 +81,6 @@ class SizesSeeder extends Seeder
             $sizes[] = [
                 'name' => $size,
                 'type_size_id' => TypeSizeConstants::TYPE_SIZE_ROPA_NINOS,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-        }
-        foreach ($sizes_talla_ropa_bebes as $size) {
-            $sizes[] = [
-                'name' => $size,
-                'type_size_id' => TypeSizeConstants::TYPE_SIZE_ROPA_BEBES,
                 'created_at' => now(),
                 'updated_at' => now()
             ];
