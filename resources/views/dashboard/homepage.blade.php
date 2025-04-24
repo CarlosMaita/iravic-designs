@@ -14,6 +14,9 @@
                     <br>
                     {{--  content --}}
                     @include('dashboard.homepage._cards')
+                    <hr>
+                    {{-- graphs --}}
+                    @include('dashboard.homepage._graphs')
                   </div>
               </div>
           </div>
