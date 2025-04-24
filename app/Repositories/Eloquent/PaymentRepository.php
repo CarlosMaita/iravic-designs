@@ -77,4 +77,113 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
         $end = Carbon::createFromFormat('d/m/Y', $date_final)->endOfMonth();
         return $this->model->whereBetween('date', [$start, $end])->sum('amount');
     }
+
+    public function getTotalCollectedGraph_perDay($months = 0)
+    {
+        $start = Carbon::now()->subMonths($months)->startOfMonth();
+        $end = Carbon::now()->endOfDay();
+
+        $dailyCollections = $this->model->selectRaw("DATE(date) as collection_date, SUM(amount) as daily_total")
+            ->whereBetween('date', [$start, $end])
+            ->groupBy('collection_date')
+            ->orderBy('collection_date', 'asc')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->collection_date)->format('d-m') => (float)$item->daily_total];
+            })
+            ->toArray();
+
+        $allDatesWithZero = [];
+        $currentDate = $start->copy();
+        while ($currentDate->lte($end)) {
+            $allDatesWithZero[$currentDate->format('d-m')] = 0;
+            $currentDate->addDay();
+        }
+
+        $dailyTotalsComplete = array_merge($allDatesWithZero, $dailyCollections);
+
+        return $dailyTotalsComplete;
+    }
+
+    public function getTotalCollectedGraph_perMonths($months){
+        $start = Carbon::now()->subMonths($months)->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        $monthlyCollections = $this->model->selectRaw("YEAR(date) as collection_year, MONTH(date) as collection_month, SUM(amount) as monthly_total")
+            ->whereBetween('date', [$start, $end])
+            ->groupBy(['collection_year', 'collection_month'])
+            ->orderBy('collection_year', 'asc')
+            ->orderBy('collection_month', 'asc')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->collection_year . '-' . $item->collection_month)->format('M-y') => (float)$item->monthly_total];
+            })
+            ->toArray();
+
+        $allMonthsWithZero = [];
+        $currentMonth = $start->copy();
+        for($i = 0; $i < $months; $i++){
+            $allMonthsWithZero[$currentMonth->format('M-y')] = 0;
+            $currentMonth->addMonth();
+        }
+
+        $monthlyTotalsComplete = array_merge($allMonthsWithZero, $monthlyCollections);
+
+        return $monthlyTotalsComplete;
+    }
+
+    public function getTotalCollectedGraph_OnDates($start, $end)
+    {
+        $start = Carbon::createFromFormat('d/m/Y', $start)->startOfDay();
+        $end = Carbon::createFromFormat('d/m/Y', $end)->endOfDay();
+
+        $dailyCollections = $this->model->selectRaw("DATE(date) as collection_date, SUM(amount) as daily_total")
+            ->whereBetween('date', [$start, $end])
+            ->groupBy('collection_date')
+            ->orderBy('collection_date', 'asc')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->collection_date)->format('d-m') => (float)$item->daily_total];
+            })
+            ->toArray();
+
+        $allDatesWithZero = [];
+        $currentDate = $start->copy();
+        while ($currentDate->lte($end)) {
+            $allDatesWithZero[$currentDate->format('d-m')] = 0;
+            $currentDate->addDay();
+        }
+
+        $dailyTotalsComplete = array_merge($allDatesWithZero, $dailyCollections);
+
+        return $dailyTotalsComplete;
+    }
+
+    public function getTotalCollectedGraph_OnMonths($start, $end)
+    {
+        $start = Carbon::createFromFormat('d/m/Y', $start)->startOfMonth();
+        $end = Carbon::createFromFormat('d/m/Y', $end)->endOfMonth();
+
+        $monthlyCollections = $this->model->selectRaw("YEAR(date) as collection_year, MONTH(date) as collection_month, SUM(amount) as monthly_total")
+            ->whereBetween('date', [$start, $end])
+            ->groupBy(['collection_year', 'collection_month'])
+            ->orderBy('collection_year', 'asc')
+            ->orderBy('collection_month', 'asc')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->collection_year . '-' . $item->collection_month)->format('M-y') => (float)$item->monthly_total];
+            })
+            ->toArray();
+
+        $allMonthsWithZero = [];
+        $currentMonth = $start->copy();
+        while ($currentMonth->lte($end)) {
+            $allMonthsWithZero[$currentMonth->format('M-y')] = 0;
+            $currentMonth->addMonth();
+        }
+
+        $monthlyTotalsComplete = array_merge($allMonthsWithZero, $monthlyCollections);
+
+        return $monthlyTotalsComplete;
+    }
 }

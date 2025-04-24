@@ -57,12 +57,7 @@ class TypeSizeSeeder extends Seeder
                 "base_category_id" => BaseCategoryConstants::ROPA,
                 "genders" => implode(',', [GenderConstants::NINO, GenderConstants::NINIA , GenderConstants::NINOS_UNISEX]),
             ],
-            [
-                "id" => 7,
-                "name" => "Tallas de ropa bebes",
-                "base_category_id" => BaseCategoryConstants::ROPA,
-                "genders" => implode(',', [GenderConstants::BEBE_NINO, GenderConstants::BEBE_NINIA, GenderConstants::BEBES_UNISEX]),
-            ],
+            // Las tallas para bebes fue removida, se deja el id=7 Obsoleto!
             [
                 "id" => 8,
                 "name" => "Tallas para accesorios",

@@ -72,13 +72,13 @@
                                                     <tbody>
                                                         @foreach ($refund->products as $product)
                                                             <tr>
-                                                                <td>{{ $product->order_product->order_id }}</td>
+                                                                <td>{{ optional($product->order_product)->order_id }}</td>
                                                                 <td>{{ $product->product_name }}</td>
-                                                                <td>{{ optional($product->color)->name }}</td>
+                                                                <td>{{ optional($product->color)->name  }}</td>
                                                                 <td>{{ optional($product->size)->name }}</td>
                                                                 <td>{{ $product->qty }}</td>
                                                                 <td>{{ $product->total }}</td>
-                                                                <td>{{ $product->order_product->store->name }}</td>
+                                                                <td>{{ optional($product->order_product)->store->name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -121,7 +121,7 @@
                                                                 <td>{{ optional($product->size)->name }}</td>
                                                                 <td>{{ $product->qty }}</td>
                                                                 <td>{{ $product->total }}</td>
-                                                                <td>{{ $product->store->name }}</td>
+                                                                <td>{{ optional($product->store)->name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

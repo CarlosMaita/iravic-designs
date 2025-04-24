@@ -119,10 +119,12 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductStockTransfer');
     }
+    
 
     # Appends
     /**
-     * Retorna label para el producto con el color y talla
+     * Retorna label para el producto con el color y talla si la categoría base tiene talla.
+     * Considera las categorías eliminadas, ten en cuenta que las categorías tienen borrado suave.
      */
     public function getNameFullAttribute()
     {
@@ -131,8 +133,8 @@ class Product extends Model
         if ($this->color) {
             $name .= ' - Color: ' . $this->color->name;
         }
-
-        if ($this->size) {
+        $baseCategory = $this->category()->withTrashed()->first()->baseCategory;
+        if ($baseCategory->has_size && $this->size) {
             $name .= ' - Talla: ' . $this->size->name;
         }
 
@@ -306,5 +308,12 @@ class Product extends Model
             null,
             $orderProductId
         ));
+    }
+
+    function hasPendingTransfer()
+    {
+        return $this->stocks_transfers()
+            ->whereIn('is_accepted', [ProductStockTransfer::PENDING])
+            ->exists();
     }
 }

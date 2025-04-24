@@ -324,13 +324,22 @@ class Customer extends Model
      */
     public function getBalance()
     {
-        $total_credit = $this->orders()->where('payed_credit', 1)->sum('total');
-        $total_debts = $this->getTotalDebt();
-        $total_payments = $this->payments()->sum('amount');
-        $total_credit_refund = $this->getTotalRefundCredit();
-        $total_debit_refunded_balance = $this->getTotalDebitRefundedBalance();
-    
-        return ($total_payments + $total_credit_refund - $total_credit - $total_debts + $total_debit_refunded_balance);
+        #pagos totales
+        $payments = $this->payments()->sum('amount');
+        $total_orders_to_cash = $this->orders()->where('payed_credit', 0)->sum('total');
+        $total_payments = $payments + $total_orders_to_cash; //pagos + ordenes pagas en Efectivo, targeta y transferencia
+        
+        #ordenes totales
+        $total_orders = $this->orders()->sum('total');
+
+        #total de devoluciones
+        $total_refunds = $this->refunds()->sum('total');
+
+        #total de deudas 
+        $total_debts = $this->debts()->sum('amount');
+        
+        $balance = ($total_payments - $total_debts - $total_orders + $total_refunds);
+        return $balance;
     }
 
     /**

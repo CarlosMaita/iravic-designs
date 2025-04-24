@@ -30,7 +30,18 @@ return [
     ],
     'breadcrumb' => [
         'home' => 'Inicio',
-        'dashboard' => 'Panel de Control'
+        'dashboard' => 'Panel de Control',
+        'graphs' => [
+            'orders' => 'Ventas',
+            'refunds' => 'Devoluciones',
+            'credits' => 'Ventas a Crédito',
+            'collections' => 'Cobros de Crédito',
+            'payments' => 'Pagos por Ventas',
+            'cash_payments' => 'Pagos en Efectivo',
+            'card_payments' => 'Pagos en Tarjeta',
+            'bankwire_payments' => 'Pagos en Transferencia',
+            'cash_card_and_bankwire_orders' => 'Ventas en Efectivo y Transferencia, Tarjeta y Crédito',
+        ],
     ],
     'catalog' => [
         'categories' => [

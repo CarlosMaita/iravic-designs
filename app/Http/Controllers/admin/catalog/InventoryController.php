@@ -24,11 +24,14 @@ class InventoryController extends Controller
         $inventoryExcel->generate();
         $path = $inventoryExcel->getPath();
 
+        $now = now();
+        $filename = "inventario-{$now->format('Ymd-His')}.xlsx";
+
         return response()
-            ->download( $path, 'inventario.xlsx' ,
+            ->download( $path, $filename ,
              [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment;filename="' . 'inventario.xlsx' . '"',
+                'Content-Disposition' => "attachment;filename=\"{$filename}\"",
              ])
             ->deleteFileAfterSend(true);
     }
@@ -102,7 +105,12 @@ private function processProducts($data_products, $id_row, $price_row, $storeIds,
                 $stock_difference = $new_stock - $current_stock;
 
                 if ($stock_difference !== 0) {
-                    $product->stores()->updateExistingPivot($store_id, ['stock' => $new_stock]);
+                     // Verificar si el vínculo ya existe
+                    if ($product->stores()->where('store_id', $store_id)->exists()) {
+                        $product->stores()->updateExistingPivot($store_id, ['stock' => $new_stock]);
+                    }else{
+                        $product->stores()->attach($store_id, ['stock' => $new_stock]);
+                    }
                     event(new ProductStockChanged($product->id, $store_id, $current_stock, $new_stock, $stock_difference, 'Asignacion Masiva de stock', auth()->id()));
                 }
             }
