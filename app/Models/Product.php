@@ -167,12 +167,12 @@ class Product extends Model
 
     public function getRegularPriceCardCreditAttribute()
     {
-        return  $this->price_card_credit ? $this->price_card_credit : $this->product_parent->price_card_credit ?? $this->price;
+        return  $this->price_card_credit ? $this->price_card_credit : $this->product_parent->price_card_credit ?? $this->regular_price;
     }
 
     public function getRegularPriceCreditAttribute()
     {
-        return  $this->price_credit ? $this->price_credit : $this->product_parent->price_credit ?? $this->price;
+        return  $this->price_credit ? $this->price_credit : $this->product_parent->price_credit ?? $this->regular_price;
     }
     
     /**
