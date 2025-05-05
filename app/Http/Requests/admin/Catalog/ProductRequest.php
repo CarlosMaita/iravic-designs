@@ -47,11 +47,13 @@ class ProductRequest extends FormRequest
          #mensajes stores - si es producto regular
          if (!empty($this->is_regular)) {
             // mensajes que cada store tenga un stock positivo
-            foreach ($this->stores as $store_id => $store) {
-                $store_name = Store::find($store_id)->name;
-                $messages['stores.' . $store_id . '.required'] = 'El stock en el depósito ' . $store_name . ' es obligatorio.';
-                $messages['stores.' . $store_id . '.integer'] = 'El stock en el depósito ' . $store_name . ' debe ser un número entero.';
-                $messages['stores.' . $store_id . '.min'] = 'El stock en el depósito ' . $store_name . ' no puede ser menor a :min.';
+            if (!empty($this->stores)) {
+                foreach ($this->stores as $store_id => $store) {
+                    $store_name = Store::find($store_id)->name;
+                    $messages['stores.' . $store_id . '.required'] = 'El stock en el depósito ' . $store_name . ' es obligatorio.';
+                    $messages['stores.' . $store_id . '.integer'] = 'El stock en el depósito ' . $store_name . ' debe ser un número entero.';
+                    $messages['stores.' . $store_id . '.min'] = 'El stock en el depósito ' . $store_name . ' no puede ser menor a :min.';
+                }
             }
         }else{
             #mensajes stores - NO es producto regular
@@ -62,12 +64,13 @@ class ProductRequest extends FormRequest
                     if (isset($this->product_combinations[$i])) {
                         foreach ($this->product_combinations[$i] as $key_product_combination => $j) {
                             $size_num = ($key_product_combination + 1);
-
-                            foreach ($this->stores as $store_id => $store) {
-                                $input_store = "store_".$store_id;
-                                $store_name = Store::find($store_id)->name;
-                                $messages[$input_store.  '_existing.'. $i . '.' . $j . '.min'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                                $messages[$input_store.  '_existing.'. $i . '.' . $j . '.integer'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                            if (!empty($this->stores)) {
+                                foreach ($this->stores as $store_id => $store) {
+                                    $input_store = "store_".$store_id;
+                                    $store_name = Store::find($store_id)->name;
+                                    $messages[$input_store.  '_existing.'. $i . '.' . $j . '.min'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
+                                    $messages[$input_store.  '_existing.'. $i . '.' . $j . '.integer'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                                }
                             }
                             #mensaje price
                             if (isset($this->prices_existing[$i][$j]) && $this->prices_existing[$i][$j]) {
@@ -105,12 +108,13 @@ class ProductRequest extends FormRequest
 
                         foreach (array_keys($this->combinations[$i]) as $j) {
                             $size_num = ($total_existing + $j + 1);
-
-                            foreach ($this->stores as $store_id => $store) {
-                                $input_store = "store_".$store_id;
-                                $store_name = Store::find($store_id)->name;
-                                $messages[$input_store.'.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
-                                $messages[$input_store.'.' . $i . '.' . ($j + $total_existing) . '.integer'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                            if ( !empty($this->store)){
+                                foreach ($this->stores as $store_id => $store) {
+                                    $input_store = "store_".$store_id;
+                                    $store_name = Store::find($store_id)->name;
+                                    $messages[$input_store.'.' . $i . '.' . ($j + $total_existing) . '.min'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' no puede ser menor a :min';
+                                    $messages[$input_store.'.' . $i . '.' . ($j + $total_existing) . '.integer'] = 'El stock en el depósito ' . $store_name . ' de la talla ' . $size_num . ' de la combinación ' . ($combination_num) . ' debe ser un numéro entero.';
+                                }
                             }
 
                             if (isset($this->prices[$i][$j]) && $this->prices[$i][$j]) {
@@ -197,10 +201,12 @@ class ProductRequest extends FormRequest
 
         #validate stores - si es producto regular
         if (!empty($this->is_regular)) {
-            $rules['stores'] = 'required|array';
             // valida que cada store tenga un stock positivo
-            foreach ($this->stores as $store_id => $store) {
-                $rules['stores.' . $store_id ] = 'required|integer|min:0';
+            if (!empty($this->stores)) {
+                $rules['stores'] = 'required|array';
+                foreach ($this->stores as $store_id => $store) {
+                    $rules['stores.' . $store_id ] = 'required|integer|min:0';
+                }
             }
         }
         #validar stores - si es producto con combinaciones
@@ -218,9 +224,11 @@ class ProductRequest extends FormRequest
                     if (isset($this->product_combinations[$i])) {
                         foreach ($this->product_combinations[$i] as $j) {
                             #validate stores
-                            foreach ($this->stores as $store_id => $store) {
-                                $input_store = "store_".$store_id;
-                                $rules[$input_store . '_existing.' . $i . '.' . $j ] = 'required|integer|min:0';
+                            if (!empty($this->stores)) {
+                                foreach ($this->stores as $store_id => $store) {
+                                    $input_store = "store_".$store_id;
+                                    $rules[$input_store . '_existing.' . $i . '.' . $j ] = 'required|integer|min:0';
+                                }
                             }
                             #validate prices
                             if (isset($this->prices_existing[$i][$j]) && $this->prices_existing[$i][$j]) {
@@ -258,9 +266,11 @@ class ProductRequest extends FormRequest
                                                         : 0;
                         foreach (array_keys($this->combinations[$i]) as $j) {
                             #validate stores
-                            foreach ($this->stores as $store_id => $store) {
-                                $input_store = "store_".$store_id;
-                                $rules[$input_store . '.' . $i . '.' . ($j + $total_existing) ] = 'required|integer|min:0';
+                            if (!empty($this->stores)) {
+                                foreach ($this->stores as $store_id => $store) {
+                                    $input_store = "store_".$store_id;
+                                    $rules[$input_store . '.' . $i . '.' . ($j + $total_existing) ] = 'required|integer|min:0';
+                                }
                             }
                             #validate prices
                             if (isset($this->prices[$i][($j + $total_existing)]) && $this->prices[$i][($j + $total_existing)]) {
