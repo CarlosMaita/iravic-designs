@@ -235,13 +235,13 @@ class ProductRequest extends FormRequest
                                 $rules['prices_existing.' . $i . '.' . $j] = 'min:0|numeric';
                             }
                             #validate prices card credit
-                            if (isset($this->prices_card_credit_existing[$i][$j]) && $this->prices_card_credit_existing[$i][$j]) {
-                                $rules['prices_card_credit_existing.' . $i . '.' . $j] = 'min:0|numeric';
-                            }
+                            // if (isset($this->prices_card_credit_existing[$i][$j]) && $this->prices_card_credit_existing[$i][$j]) {
+                            //     $rules['prices_card_credit_existing.' . $i . '.' . $j] = 'min:0|numeric';
+                            // }
                             #validate prices credit
-                            if (isset($this->prices_credit_existing[$i][$j]) && $this->prices_credit_existing[$i][$j]) {
-                                $rules['prices_credit_existing.' . $i . '.' . $j] = 'min:0|numeric';
-                            }
+                            // if (isset($this->prices_credit_existing[$i][$j]) && $this->prices_credit_existing[$i][$j]) {
+                            //     $rules['prices_credit_existing.' . $i . '.' . $j] = 'min:0|numeric';
+                            // }
                              #validate size
                             if ($baseCategory->has_size) {
                                 if (isset($this->sizes_existing[$i][$j]) && $this->sizes_existing[$i][$j]) {
@@ -277,13 +277,13 @@ class ProductRequest extends FormRequest
                                 $rules['prices.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
                             }
                             #validate prices card credit
-                            if (isset($this->prices_card_credit[$i][($j + $total_existing)]) && $this->prices_card_credit[$i][($j + $total_existing)]) {
-                                $rules['prices_card_credit.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
-                            }
+                            // if (isset($this->prices_card_credit[$i][($j + $total_existing)]) && $this->prices_card_credit[$i][($j + $total_existing)]) {
+                            //     $rules['prices_card_credit.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
+                            // }
                             #validate prices credit
-                            if (isset($this->prices_credit[$i][($j + $total_existing)]) && $this->prices_credit[$i][($j + $total_existing)]) {
-                                $rules['prices_credit.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
-                            }
+                            // if (isset($this->prices_credit[$i][($j + $total_existing)]) && $this->prices_credit[$i][($j + $total_existing)]) {
+                            //     $rules['prices_credit.' . $i . '.' . ($j + $total_existing)] = 'min:0|numeric';
+                            // }
                             #validate sizes
                             if ($baseCategory->has_size) {
                                 if (isset($this->sizes[$i][($j + $total_existing)]) && $this->sizes[$i][($j + $total_existing)]) {
