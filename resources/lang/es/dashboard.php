@@ -267,9 +267,10 @@ return [
         'settings'  => 'Configuración',
     ],
     'my-profile' => [
+        'index'                     => 'Mi perfil',
         'edit'                      => 'Editar mi perfil',
         'enter-current-password'    => 'Ingresa tu contraseña actual',
-        'info-password'             => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.'
+        'info-password'             => 'Por seguridad, debera ingresar su contraseña cada vez que realice un cambio.',
     ],
     'orders' => [
         'index'             => 'Listado de ventas',
@@ -369,6 +370,7 @@ return [
         'refunds'               => 'Devoluciones',
         'general'               => 'General',
         'orders'                => 'Ventas',
+        'my-profile'            => 'Mi Perfil',
         'products'              => 'Productos',
         'products_transfers'    => 'Productos Transferencias',
         'settings'              => 'Configuración',

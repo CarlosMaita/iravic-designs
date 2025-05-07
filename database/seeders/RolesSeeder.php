@@ -45,14 +45,23 @@ class RolesSeeder extends Seeder
             'is_employee' => 1
         ]);
 
+        $customer = Role::create([
+            'name' => 'Cliente',
+            'is_superadmin' => 0,
+            'is_employee' => 0
+        ]);
+
         $permissions = Permission::all();
         $othersPermissions = $this->getOthersPermissions($permissions);
+        $customerPermissions = $this->getCustomerPermissions();
+
 
         $superadmin->allowToMany($permissions);
         $admin->allowToMany($permissions);
         $local->allowToMany($othersPermissions);
         $truck->allowToMany($othersPermissions);
         $moto->allowToMany($othersPermissions);
+        $customer->allowToMany($customerPermissions);
     }
 
     private function getOthersPermissions($permissions)
@@ -87,4 +96,12 @@ class RolesSeeder extends Seeder
             );
         });
     }
+
+    private function getCustomerPermissions()
+    {
+        return Permission::wherein('name', [
+            'view-profile',
+        ])->get();
+    }
+
 }

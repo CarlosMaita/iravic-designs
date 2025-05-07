@@ -18,7 +18,10 @@ Auth::routes(['register' => false]);
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
+    
     Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
+    #
+    Route::get('mi-perfil', 'MyProfileController@index')->name('my-profile.index');
     #
     Route::get('mi-perfil/edit', 'MyProfileController@edit')->name('my-profile.edit');
     #
