@@ -83,6 +83,6 @@ class Refund extends Model
     }
 
     public function getTotalStrAttribute(){
-        return  FormatHelper::formatCurrency($this->total, 'USD');
+        return  FormatHelper::formatCurrency($this->total, '$');
     }
 }
