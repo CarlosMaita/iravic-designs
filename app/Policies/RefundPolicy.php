@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\Refund;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -28,8 +29,9 @@ class RefundPolicy
      * @param  \App\App\Models\Refund  $refund
      * @return mixed
      */
-    public function view(User $user, Refund $refund)
+    public function view($user, Refund $refund)
     {
+        if( $user instanceof Customer) return true;
         return $user->permissions()->contains('view-refund');
     }
 
@@ -51,8 +53,9 @@ class RefundPolicy
      * @param  \App\App\Models\Refund  $refund
      * @return mixed
      */
-    public function update(User $user, Refund $refund)
+    public function update($user, Refund $refund)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('update-refund');
     }
 
@@ -63,8 +66,9 @@ class RefundPolicy
      * @param  \App\App\Models\Refund  $refund
      * @return mixed
      */
-    public function delete(User $user, Refund $refund)
+    public function delete($user, Refund $refund)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('delete-refund');
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\Debt;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,8 +17,9 @@ class DebtPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
+        if( $user instanceof Customer) return true;
         return $user->permissions()->contains('view-debt');
     }
 
@@ -51,8 +53,9 @@ class DebtPolicy
      * @param  \App\App\Models\Debt  $debt
      * @return mixed
      */
-    public function update(User $user, Debt $debt)
+    public function update( $user, Debt $debt)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('update-debt');
     }
 
@@ -63,8 +66,9 @@ class DebtPolicy
      * @param  \App\App\Models\Debt  $debt
      * @return mixed
      */
-    public function delete(User $user, Debt $debt)
+    public function delete($user, Debt $debt)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('delete-debt');
     }
 

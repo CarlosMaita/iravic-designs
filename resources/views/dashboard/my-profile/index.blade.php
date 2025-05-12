@@ -13,7 +13,7 @@
                                 <!--  -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link @if(!$showOrdersTab && !$showRefundsTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                        <a class="nav-link @if(!$showOrdersTab && !$showRefundsTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Información</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
@@ -21,7 +21,7 @@
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Ventas</a>
+                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Compras</a>
                                     </li>
                                     <!--  -->
                                     @if (count($customer->orders))
@@ -31,7 +31,7 @@
                                     @endif
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
+                                        <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">

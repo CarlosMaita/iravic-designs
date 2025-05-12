@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\Order;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,7 +17,7 @@ class OrderPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
         return $user->permissions()->contains('view-order');
     }
@@ -28,8 +29,9 @@ class OrderPolicy
      * @param  \Models\Order  $order
      * @return mixed
      */
-    public function view(User $user, Order $order)
+    public function view($user, Order $order)
     {
+        if( $user instanceof Customer) return true;
         return $user->permissions()->contains('view-order');
     }
 

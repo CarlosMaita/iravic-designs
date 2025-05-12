@@ -1,11 +1,4 @@
 <div class="tab-pane fade" id="visits" role="tabpanel" aria-labelledby="visits-tab">
-    @can('create', App\Models\Visit::class)
-        <div class="row"> 
-            <a id="btn-create-visit" href="#" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
-        </div>
-    @endcan
-   
-    {{-- @if(!$planningCollection['check'])  --}}
     {{-- alert to show summary --}}
     <div id="planning-collection-alert" class="row {{ !$planningCollection['check'] ?  '' : 'd-none' }}">
         <div class="col-12">
@@ -24,7 +17,6 @@
             </div>
         </div>
     </div>
-    {{-- @endif --}}
 
     <div class="row mt-3">
         <div class="col-12">

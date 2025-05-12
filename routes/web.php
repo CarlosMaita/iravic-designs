@@ -11,11 +11,28 @@
 |
 */
 
+use App\Http\Controllers\Auth\CustomerLoginController;
+use App\Http\Controllers\ecommerce\DashboardEcommerceController;
+use App\Http\Controllers\ecommerce\MyprofileEcommerceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 Route::get('/', 'HomeController@index')->name('home');
+
+#
+Route::get('ingresar',           [CustomerLoginController::class, 'showLoginForm'])->name('customer.login.form');
+Route::post('customer/login',    [CustomerLoginController::class, 'login'])->name('customer.login');
+Route::post('customer/logout',   [CustomerLoginController::class, 'logout'])->name('customer.logout');
+
+#
+Route::middleware(['auth:customer'])->group(function () {
+    #
+    Route::get('e/dashboard', [DashboardEcommerceController::class, 'index'] )->name('ecommerce.dashboard');
+    #
+    Route::get('e/mi-perfil', [MyprofileEcommerceController::class, 'index'] )->name('ecommerce.myprofile.index');
+
+});
 
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
     
