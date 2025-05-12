@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\MyProfileRequest;
+use App\Models\Customer;
 use App\Repositories\Eloquent\UserRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,6 +17,34 @@ class MyProfileController extends Controller
     public function __construct(UserRepository $user_repository)
     {
         $this->repository = $user_repository;
+    }
+
+    /**
+     * Display the authenticated user's profile.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $customer = Customer::first();
+        $this->authorize('view', $customer);
+        if($request->ajax()){
+            return response()->json($customer);
+        }
+        
+        $orders = $customer->orders()->orderBy('date', 'desc')->get();
+        $refunds = $customer->refunds()->orderBy('date', 'desc')->get();
+        $showOrdersTab = isset($request->pedidos) ? true : false;
+        $showRefundsTab = isset($request->devoluciones) ? true : false;
+        $planningCollection = $customer->getPlanningCollection();
+        
+        return view('dashboard.my-profile.index')
+                ->withCustomer($customer)
+                ->withOrders($orders)
+                ->withRefunds($refunds)
+                ->withShowOrdersTab($showOrdersTab)
+                ->withShowRefundsTab($showRefundsTab)
+                ->withPlanningCollection($planningCollection);
     }
 
     /**

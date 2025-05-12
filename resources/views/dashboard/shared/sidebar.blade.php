@@ -160,6 +160,7 @@
             </ul>
         </li>
     @endif
+
     {{-- Configuration links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Config::class) || 
@@ -211,6 +212,16 @@
             </ul>
         </li>
     @endif
+
+    {{-- profile --}}
+    @if(Auth::user()->can('viewany' , App\Customer::class)) 
+        <li class="c-sidebar-nav-item {{$menuService->isActive($url,"/admin/mi-perfil", false, true)}}">
+            <a class="c-sidebar-nav-link" href="{{ route('my-profile.index') }}">
+                <i class="cil-user c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.my-profile') }}
+            </a>
+        </li>
+    @endif
+
 </ul>
 <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
 </div>

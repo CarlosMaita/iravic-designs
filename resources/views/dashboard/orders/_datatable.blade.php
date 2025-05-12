@@ -19,8 +19,10 @@
                 <td>{{ $order->payment_method }}</td>
                 <td>{{ $order->total }}</td>
                 <td>
-                    @if (Auth::user()->can('view', $order))
-                        <a href="{{ route('ventas.show', $order->id) }}" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>
+                    @if( Auth::user() instanceof  App\Models\User)
+                        @if (Auth::user()->can('view', $order) || Auth::user() instanceof  App\Models\Customer )
+                            <a href="{{ route('ventas.show', $order->id) }}" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>
+                        @endif
                     @endif
                 </td>
             </tr>
