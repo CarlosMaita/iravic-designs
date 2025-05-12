@@ -47,8 +47,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function ($user) {
-            if (!empty(array_intersect(array('superadmin'), $user->roles->pluck('name')->toArray()))) {
-                return true;
+            if($user instanceof User){
+                if (!empty(array_intersect(array('superadmin'), $user->roles->pluck('name')->toArray()))) {
+                    return true;
+                }
             }
         });
 
