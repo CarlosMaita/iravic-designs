@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\customers;
 
 use App\Constants\CustomerConstants;
 use App\Constants\FrequencyCollectionConstants;
+use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CustomerRequest;
 use App\Models\Customer;
@@ -158,12 +159,15 @@ class CustomerController extends Controller
         try {
             $this->authorize('create', 'App\Models\Customer');
             DB::beginTransaction();
+            
             $attributes = array_merge(
                 array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
                 array('dni_picture'     => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
                 array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
                 array('card_front'      => ImageService::save(Customer::CARD, $request->file('card_front'))),
                 array('card_back'       => ImageService::save(Customer::CARD, $request->file('card_back'))),
+                array('username'        => FormatHelper::formatDniNumber($request->dni)),
+                array('password'        => bcrypt('12345')),
                 $request->only( 
                     'address',
                     'cellphone',
