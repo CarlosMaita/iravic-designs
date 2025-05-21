@@ -43,6 +43,7 @@ class Customer extends Authenticatable
         'collection_frequency',
         'collection_day',
         'password',
+        'username',
     ];
 
     protected $appends = [
