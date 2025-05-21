@@ -20,7 +20,8 @@ class ProductImage extends Model
     ];
 
     public $appends = [
-        'url_img'
+        'url_img',
+        'full_url_img'
     ];
 
     private $filedisk = 'products';
@@ -49,5 +50,9 @@ class ProductImage extends Model
         }
 
         return url("/img/no_image.jpg");
+    }
+    public function getFullUrlImgAttribute()
+    {
+        return asset( $this->url_img );
     }
 }

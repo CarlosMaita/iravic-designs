@@ -1,5 +1,3 @@
-
-      
 <div class="c-wrapper">
   <header class="c-header c-header-light c-header-fixed c-header-with-subheader">
     {{--  --}}
@@ -63,3 +61,5 @@
       @include('ecommerce.shared.breadcrumb')
     </div>
   </header>
+
+          

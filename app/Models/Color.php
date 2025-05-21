@@ -11,6 +11,7 @@ class Color extends Model
     protected $guarded = [];
     
     public $fillable = [
-        'name'
+        'name',
+        'code',
     ];
 }

@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('ecommerce.home');
+Route::get('/catalogo/categoria/{category}', 'HomeController@category')->name('ecommerce.categoria');
+Route::get('/catalogo/producto/{product}', 'HomeController@show')->name('ecommerce.product.detail');
 
 #
 Route::get('ingresar',           [CustomerLoginController::class, 'showLoginForm'])->name('customer.login.form');
