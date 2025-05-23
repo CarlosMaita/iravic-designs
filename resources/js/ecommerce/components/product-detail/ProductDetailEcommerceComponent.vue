@@ -7,10 +7,14 @@
 
             <!-- Product details and options -->
             <product-detail-description-ecommerce-component ref="productDetailDescription" 
+                :id='product.id'
                 :name='product.name'
                 :description="product.description" 
-                :price="product.regular_price_str"
+                :price="product.price"
+                :price_str="product.price_str"
                 :is_regular="product.is_regular ? true : false"
+                :url_detail="product.url_detail"
+                :url_thumbnail="product.url_thumbnail"
                 :total_stock="product.stock_total ? product.stock_total : 0"
                 :combinations="product.combinations"
                 @combination-selected="selectCombination"
@@ -30,6 +34,8 @@
             }   
         },
         mounted() {
+            console.log(this.product)
+            // set images in the product detail images component
           if (this.product.is_regular){
              this.$refs.productDetailImages.setImages(this.product.images);
           }
