@@ -27,6 +27,9 @@ Vue.prototype.$axios = window.axios;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Common Ecommerce components
+Vue.component('cart-ecommerce-component', require('../ecommerce/components/common/cart/CartEcommerceComponent.vue').default);
+Vue.component('item-cart-ecommerce-component', require('../ecommerce/components/common/cart/ItemCartEcommerceComponent.vue').default);
+Vue.component('toast-ecommerce-component', require('../ecommerce/components/common/ToastEcommerceComponent.vue').default);
 
 // Catalog Ecommerce components
 Vue.component('catalog-ecommerce-component', require('../ecommerce/components/catalog/CatalogEcommerceComponent.vue').default);
@@ -55,8 +58,6 @@ const app = new Vue({
     },
     mounted() {
         // Esta función se ejecuta después de que la instancia de Vue ha sido montada
-        // y el elemento 'el' (#app) ha sido reemplazado por la instancia de Vue.
-
         const searchOffcanvas = document.getElementById('searchBox');
         // Accede al input de búsqueda directamente usando un selector CSS
         const searchInput = document.querySelector('#searchBox input[type="search"]');
@@ -72,12 +73,4 @@ const app = new Vue({
             });
         }
     },
-    methods: {
-        // Puedes definir métodos para tu buscador aquí
-        // Por ejemplo:
-        // handleSearch() {
-        //     console.log('Buscando:', this.searchTerm);
-        //     // Lógica de búsqueda...
-        // }
-    }
 });

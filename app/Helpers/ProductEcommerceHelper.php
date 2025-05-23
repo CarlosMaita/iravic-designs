@@ -21,8 +21,12 @@ class ProductEcommerceHelper
             'name' => $product->name ?? '',
             'description' => $product->description ?? '',
             'is_regular' => $product->is_regular,
-            'regular_price_str' => $product->regular_price_str,
+            'price' => (float) $product->price,
+            'price_str' => $product->regular_price_str,
             'images' => self::getImagesProduct($product->images),
+            'stock_total' => $product->stock_total,
+            'url_detail' => route('ecommerce.product.detail', $product->id),
+            'url_thumbnail' => self::getUrlThumbnailProduct($product->images),
         ];
       
         if ($product->product_combinations) {
@@ -36,13 +40,7 @@ class ProductEcommerceHelper
                     'price' => $combination->price,
                     'price_card_credit' => $combination->price_card_credit,
                     'price_credit' => $combination->price_credit,
-                    'product_stores' => $product->stores->map(function ($store) use ($combination) {
-                        return [
-                            'store_id' => $store->id,
-                            'store_name' => $store->name,
-                            'stock' => optional($combination->stores->firstWhere('id', $store->id))->pivot->stock ?? 0,
-                        ];
-                    })
+                    'stock_total' => $combination->stock_total,
                 ];
 
                 if ($index === false) {
@@ -89,5 +87,11 @@ class ProductEcommerceHelper
                     ->toArray();
 
         return [...$images];
+    }
+
+    private static function getUrlThumbnailProduct($images)
+    {
+        $image = $images->first();
+        return $image?->url_img;
     }
 }
