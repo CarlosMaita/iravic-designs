@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="Panel administrativo para venta de Zapatos y Ropa">
-    <meta name="author" content="Brocsoft">
+    <meta name="author" content="Iravic">
     <meta name="keyword" content="">
     <title>{{ config('app.name') }}</title>
     <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">

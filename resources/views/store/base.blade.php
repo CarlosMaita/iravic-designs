@@ -7,14 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
 
     <!-- SEO Meta Tags -->
-    <title>Ecommerce | Tienda de Ropa</title>
-    <meta name="description" content="Cartzilla - Multipurpose Bootstrap E-Commerce HTML Template">
-    <meta name="keywords" content="online shop, e-commerce, online store, market, multipurpose, product landing, cart, checkout, ui kit, light and dark mode, bootstrap, html5, css3, javascript, gallery, slider, mobile, pwa">
-    <meta name="author" content="Createx Studio">
-
-     <meta name="description" content="Ecommerce of clothes">
-    <meta name="author" content="Brocsoft">
-    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>Iravic - Tienda de ropa para ñiños</title>
+    <meta name="description" content="Tienda de ropa para niños">
+    <meta name="keywords" content="Tienda de ropa, ropa para niños, ecommerce, tienda online">
+    <meta name="author" content="Iravic">
 
     <!-- Webmanifest + Favicon / App icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">

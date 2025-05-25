@@ -108,9 +108,9 @@
                 <td align="left" style="width: 50%;">
                     &copy; {{ date('Y') }} {{ config('app.name') }}
                 </td>
-                <td align="right" style="width: 50%;">
-                    Desarrollado por <a href="https://brocsoft.com" target="_blank">Brocsoft</a>
-                </td>
+                {{-- <td align="right" style="width: 50%;">
+                    Desarrollado por <a href="" target="_blank"></a>
+                </td> --}}
             </tr>
         </table>
     </div>

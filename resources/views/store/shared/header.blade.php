@@ -9,7 +9,7 @@
         </div>
 
         <!-- Navbar brand (Logo) -->
-        <a class="navbar-brand fs-2 py-0 m-0 me-auto me-sm-n5" href="{{route('ecommerce.home')}}">Tienda de ropa</a>
+        <a class="navbar-brand fs-2 py-0 m-0 me-auto me-sm-n5" href="{{route('ecommerce.home')}}">Tienda Virtual - Iravic</a>
 
         <!-- Button group -->
         <div class="d-flex align-items-center">
