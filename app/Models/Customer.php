@@ -5,13 +5,15 @@ namespace App\Models;
 use App\Helpers\FormatHelper;
 use App\Services\Images\ImageService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
-    use SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'customers';
 
@@ -39,7 +41,9 @@ class Customer extends Model
         'cellphone',
         'solvency_date',
         'collection_frequency',
-        'collection_day'
+        'collection_day',
+        'password',
+        'username',
     ];
 
     protected $appends = [
@@ -59,7 +63,26 @@ class Customer extends Model
         'url_card_front',
         'url_card_back',
         'whatsapp_number',
-        'is_solvent'
+        'is_solvent',
+    ];
+
+      /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     const DISK_ADDRESS = 'customers_address';

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\Visit;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,8 +17,10 @@ class VisitPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
+        if( $user instanceof Customer) return true;
+
         return $user->permissions()->contains('view-visit');
     }
 
@@ -51,8 +54,9 @@ class VisitPolicy
      * @param  \App\Models\Visit  $visit
      * @return mixed
      */
-    public function update(User $user, Visit $visit)
+    public function update( $user, Visit $visit)
     {
+         if( $user instanceof Customer) return false;
         return $user->permissions()->contains('update-visit');
     }
 
@@ -63,8 +67,9 @@ class VisitPolicy
      * @param  \App\Models\Visit  $visit
      * @return mixed
      */
-    public function delete(User $user, Visit $visit)
+    public function delete( $user, Visit $visit)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('delete-visit');
     }
 

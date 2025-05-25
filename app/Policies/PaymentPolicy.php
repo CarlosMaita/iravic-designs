@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\Payment;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,8 +17,9 @@ class PaymentPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
+        if( $user instanceof Customer) return true;
         return $user->permissions()->contains('view-payment');
     }
 
@@ -51,8 +53,9 @@ class PaymentPolicy
      * @param  \App\Models\Payment  $payment
      * @return mixed
      */
-    public function update(User $user, Payment $payment)
+    public function update( $user, Payment $payment)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('update-payment');
     }
 
@@ -63,8 +66,9 @@ class PaymentPolicy
      * @param  \App\Models\Payment  $payment
      * @return mixed
      */
-    public function delete(User $user, Payment $payment)
+    public function delete( $user, Payment $payment)
     {
+        if( $user instanceof Customer) return false;
         return $user->permissions()->contains('delete-payment');
     }
 

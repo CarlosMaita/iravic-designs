@@ -593,6 +593,14 @@ class PermissionsSeeder extends Seeder
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],
+            #profile 
+            [
+                'name'         => 'view-profile',
+                'display_name' => 'Ver Perfil',
+                'description'  => 'Ver Perfil',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ]
         ];
 
 
