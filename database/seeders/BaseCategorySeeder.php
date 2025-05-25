@@ -24,65 +24,10 @@ class BaseCategorySeeder extends Seeder
                 'has_size' => true
             ],
             [
-                'name' => 'Calzado',
-                'has_gender' => true,
-                'has_size' => true
-            ],
-            [
                 'name' => 'Accesorios',
                 'has_gender' => true,
                 'has_size' => true
             ],
-            [
-                'name' => 'Sillones',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Sommier/colchones',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Dormitorio',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Sala',
-                'has_gender' => false,
-                'has_size' => false
-            ],            
-            [
-                'name' => 'Baño',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Almohadas',
-                'has_gender' => false,
-                'has_size' => false
-            ],            
-            [
-                'name' => 'Comedor',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Espejos',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Juguetes',
-                'has_gender' => false,
-                'has_size' => false
-            ],
-            [
-                'name' => 'Exterior/ Jardín',
-                'has_gender' => false,
-                'has_size' => false
-            ]
         ];
 
         Schema::disableForeignKeyConstraints();

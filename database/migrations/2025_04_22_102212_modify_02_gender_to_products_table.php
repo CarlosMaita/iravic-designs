@@ -12,7 +12,7 @@ class Modify02GenderToProductsTable extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE products MODIFY COLUMN gender ENUM('F', 'M', 'Unisex Adultos', 'Niño', 'Niña', 'Unisex Niños')");
+        DB::statement("ALTER TABLE products MODIFY COLUMN gender ENUM('NIÑO', 'NIÑA', 'UNISEX')");
     }
 
     /**

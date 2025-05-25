@@ -7,6 +7,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Size;
 use App\Models\StoreType;
+use App\TypeSize;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,9 +33,14 @@ class DatabaseSeeder extends Seeder
             $this->call(ColorsSeeder::class);
         }
 
+        if (!TypeSize::first()) {
+            $this->call(TypeSizeSeeder::class);
+        }
+        
         if (!Size::first()) {
             $this->call(SizesSeeder::class);
         }
+        
 
         $this->call(BaseCategorySeeder::class);
 
