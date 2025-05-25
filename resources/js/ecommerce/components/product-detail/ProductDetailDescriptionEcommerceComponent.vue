@@ -156,6 +156,7 @@
             selectCombination(combination){
                 this.combinationSelected = combination;
                 this.sizeSelected = '', // reset size selection
+                this.currentStock = 1; // reset stock to 1 when a combination is selected
                 // emit event to parent component
                 this.$emit('combination-selected', combination);
             },

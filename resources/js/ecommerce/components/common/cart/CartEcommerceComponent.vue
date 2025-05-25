@@ -36,7 +36,7 @@
       </div>
       <div class="d-flex w-100 gap-3">
           <!-- <a class="btn btn-lg btn-secondary w-100" href="#!">Ver carrito</a>  -->
-        <button @click="sendCartWhatsapp()" class="btn btn-lg btn-dark w-100" :disabled="cart.items.length === 0">Finalizar compra</button>
+        <button @click="goCheckout()" type="button" class="btn btn-lg btn-dark w-100" :disabled="cart.items.length === 0">Finalizar compra</button>
       </div>
     </div>
     <!-- End Footer -->
@@ -96,6 +96,12 @@
               this.setCartLocalStorage(this.cart);
             }
           },
+          goCheckout() {
+              this.sendCartWhatsapp()
+              this.cart.items = []; //clean cart
+              this.setCartLocalStorage(this.cart); 
+          },
+
           sendCartWhatsapp() {
             // Logic to send cart to WhatsApp
             const phoneNumber = '+584143446225'; // Replace with your phone number
