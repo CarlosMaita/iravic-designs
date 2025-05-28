@@ -11,6 +11,7 @@
     <meta name="description" content="Tienda de ropa para niños">
     <meta name="keywords" content="Tienda de ropa, ropa para niños, ecommerce, tienda online">
     <meta name="author" content="Iravic">
+    <meta name="robots" content="nofollow">
 
     <!-- Webmanifest + Favicon / App icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">
