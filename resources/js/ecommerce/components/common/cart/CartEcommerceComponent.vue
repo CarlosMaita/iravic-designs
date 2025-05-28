@@ -104,7 +104,7 @@
 
           sendCartWhatsapp() {
             // Logic to send cart to WhatsApp
-            const phoneNumber = '+584143446225'; // Replace with your phone number
+            const phoneNumber = '+584144519511'; // Replace with your phone number
             const productsList = this.cart.items.map((item, index) => {
               const color = item.color ? ` - Color: ${item.color}` : '';
               const size = item.size ? ` - Talla: ${item.size}` : '';

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Color;
 use App\Models\Permission;
 use App\Models\Role;
@@ -43,6 +45,11 @@ class DatabaseSeeder extends Seeder
         
 
         $this->call(BaseCategorySeeder::class);
+
+        if (!Category::first() && !Brand::first()) {
+            $this->call(CategoriesAndBrandsSeeder::class);
+        }
+        
 
         if (!StoreType::first()) {
             $this->call(StoreTypesSeeder::class);

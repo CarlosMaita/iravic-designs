@@ -9,7 +9,7 @@
             <!-- Item -->
             <div v-for="(image, index) in images" :key="index" class="swiper-slide">
                 <div class="ratio ratio-1x1 bg-white rounded">
-                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center display-4">
+                    <div class="position-absolute top-0 start-0 w-100 d-flex align-items-center justify-content-center display-4" style="height:70vh">
                         <img class="img-fluid" :src="image" alt="Image">
                     </div>
                 </div>

@@ -124,13 +124,13 @@
 
         <!-- Social account links -->
         <div class="d-flex justify-content-center justify-content-lg-start gap-2 mt-n2 mt-md-0">
-          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="#!" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Instagram" aria-label="Follow us on Instagram">
+          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://www.instagram.com/iravic_p/" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Instagram" aria-label="Follow us on Instagram">
             <i class="ci-instagram"></i>
           </a>
-          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="#!" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Facebook" aria-label="Follow us on Facebook">
+          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://www.facebook.com/IravicDesigns" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Facebook" aria-label="Follow us on Facebook">
             <i class="ci-facebook"></i>
           </a>
-          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="#!" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="WhatsApp" aria-label="Follow us on WhatsApp">
+          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://wa.me/584144519511" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="WhatsApp" aria-label="Follow us on WhatsApp">
             <i class="ci-whatsapp"></i>
           </a>
         </div>

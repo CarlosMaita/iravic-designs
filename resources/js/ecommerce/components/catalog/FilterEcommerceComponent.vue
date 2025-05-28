@@ -94,7 +94,7 @@
             >
               <div class="accordion-body p-0 pb-4 mb-1 mb-xl-2">
                 <div
-                  style="height: 220px"
+                  style="height: 200px"
                   data-simplebar
                   data-simplebar-auto-hide="false"
                 >
@@ -117,7 +117,7 @@
           <range-price-filter-ecommerce-component  v-if="!isPriceSelected" @price-filter-applied="applyPriceFilter"></range-price-filter-ecommerce-component>
 
             <!-- Brands -->
-          <div v-if="!selectedBrand" class="accordion-item border-0 pb-1 pb-xl-2">
+          <div v-if="!selectedBrand" class="accordion-item border-0 pb-1 pb-xl-2 d-none">
             <h4 class="accordion-header" id="headingBrands">
               <button
                 type="button"
@@ -178,7 +178,7 @@
             >
               <div class="accordion-body p-0 pb-4 mb-1 mb-xl-2">
                 <div
-                  style="height: 220px"
+                  style="height: 100px"
                   data-simplebar
                   data-simplebar-auto-hide="false"
                 >

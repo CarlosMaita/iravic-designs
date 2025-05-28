@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <!-- Breadcrumb -->
-<nav class="container pt-2 pt-xxl-3 my-3 my-md-4" aria-label="breadcrumb">
+<nav class="container" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a >Inicio</a></li>
         <li class="breadcrumb-item"><a href="/">Catologo</a></li>
