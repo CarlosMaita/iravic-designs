@@ -70,6 +70,8 @@
           setCartLocalStorage(cart) {
             // Logic to set cart items in local storage
             localStorage.setItem('cart', JSON.stringify(cart));
+             // Update the cart count in the header component
+            this.$root.$refs.iconHeaderCartEcommerceComponent.setCartCount(this.cart_count);
           },
           addItem(item) {
             const index = this.cart.items.findIndex(i => i.id === item.id);
@@ -121,11 +123,20 @@
         computed: {
             total_cart() {
                 return parseFloat(this.cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2));
+            },
+            cart_count() {
+                let count = this.cart.items.reduce((count, item) => count + item.quantity, 0);
+                count = count > 99 ? '99+' : count;
+                // Limit the count to 99+
+                return  count;
             }
         },
         mounted() {
             // Logic to fetch cart items and total price
             this.cart = this.getCartLocalStorage();
+             // Update the cart count in the header component
+            this.$root.$refs.iconHeaderCartEcommerceComponent.setCartCount(this.cart_count);
+           
         }
     }
 

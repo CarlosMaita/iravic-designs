@@ -75,7 +75,7 @@
         <div class="d-flex gap-3 pb-3 pb-lg-4 mb-3>">
             <button type="button" class="btn btn-lg btn-warning w-100 gap-3" @click="askWhatsApp()">
                 <i class="ci-whatsapp fs-lg me-2"></i>
-                <span class="">Consultar por WhatsApp</span>
+                <span class="">Solicitar por WhatsApp</span>
             </button>
         </div>
     </div>

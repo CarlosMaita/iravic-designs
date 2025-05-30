@@ -1,4 +1,4 @@
- <header class="navbar navbar-expand-lg navbar-sticky bg-body sticky-top p-0" data-sticky-navbar='{"offset": 100}'>
+ <header class="navbar navbar-expand-lg navbar-sticky bg-body d-lg-block sticky-top p-0" data-sticky-navbar='{"offset": 100}'>
       <div class="container py-2 py-lg-3">
         <div class="d-flex align-items-center gap-3">
           <!-- Mobile offcanvas menu toggler (Hamburger) -->
@@ -76,8 +76,9 @@
           </a> --}}
 
           <!-- Cart button -->
-            <icon-header-cart-ecommerce-component></icon-header-cart-ecommerce-component>
-{{--           
+          <icon-header-cart-ecommerce-component ref="iconHeaderCartEcommerceComponent"></icon-header-cart-ecommerce-component>
+          
+          {{--           
           <button type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary position-relative border-0 rounded-circle animate-scale" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
             <span v-if="cart.items.length > 0" class="position-absolute top-0 start-100 badge fs-xs text-bg-primary rounded-pill mt-1 ms-n4 z-2" style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em">{{ cart.items.length }}</span>
             <i class="ci-shopping-bag animate-target me-1"></i>

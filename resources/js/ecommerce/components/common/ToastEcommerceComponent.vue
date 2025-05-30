@@ -3,12 +3,12 @@
     v-if="isVisible"
     :class="{
       'toast': true,
-      'text-bg-danger': type === 'error',
-      'text-bg-warning': type === 'warning',
-      'text-bg-info': type === 'info',
-      'text-bg-success': type === 'success',
+      'border-danger': type === 'error',
+      'border-warning': type === 'warning',
+      'border-info': type === 'info',
+      'border-success': type === 'success',
       'fade': true,
-      'show': true
+      'show': true,
     }"
     role="alert"
     aria-live="assertive"
@@ -16,12 +16,6 @@
   >
     <div
       class="toast-header"
-      :class="{
-        'bg-danger text-white': type === 'error',
-        'bg-warning text-white': type === 'warning',
-        'bg-info text-white': type === 'info',
-        'bg-success text-white': type === 'success',
-      }"
     >
       <i 
       class="fs-base me-2"

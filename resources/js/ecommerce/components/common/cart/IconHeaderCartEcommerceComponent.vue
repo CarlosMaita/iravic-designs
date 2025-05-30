@@ -5,24 +5,25 @@
         data-bs-target="#shoppingCart" 
         aria-controls="shoppingCart" 
         aria-label="Shopping cart">
-        <span v-if="cartCount.length > 0" 
-            class="position-absolute top-0 start-100 badge fs-xs text-bg-primary rounded-pill mt-1 ms-n4 z-2" 
-            style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em">
-            {{ cartCount.length }}
+        <span v-if="cartCount > 0" class="position-absolute top-0 start-100 badge fs-xs text-bg-primary rounded-pill mt-1 ms-n4 z-2" >
+            {{cartCount}}
         </span>
-        <i class="ci-shopping-bag animate-target me-1"></i>
+        <i class="ci-shopping-cart animate-target me-1"></i>
     </button>
 </template>
 <script>
+
 export default {
     name: 'IconHeaderCartEcommerceComponent',
     data() {
         return {
-            cartCount: 5,
+            cartCount: 0,
         };
     },
     methods: {
-        
+        setCartCount(count) {
+            this.cartCount = count;
+        },
     }
 };
 </script>
