@@ -1,6 +1,6 @@
 <template>
      <!-- A slider equipped with thumbnails that allow users to control and navigate the main slider -->
-    <div class="col-md-6 pb-4 pb-md-0 mb-2 mb-sm-3 mb-md-0">
+    <div class="col-md-6">
         
         <!-- Main slider -->
         <div ref="mainSwiper" class="swiper hover-effect-opacity" >
@@ -9,7 +9,7 @@
             <!-- Item -->
             <div v-for="(image, index) in images" :key="index" class="swiper-slide">
                 <div class="ratio ratio-1x1 bg-white rounded">
-                    <div class="position-absolute top-0 start-0 w-100 d-flex align-items-center justify-content-center display-4" style="height:70vh">
+                    <div class="position-absolute top-0 start-0 w-100 d-flex align-items-center justify-content-center display-4">
                         <img class="img-fluid" :src="image" alt="Image">
                     </div>
                 </div>

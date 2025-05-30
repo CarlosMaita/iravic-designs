@@ -30,6 +30,7 @@ Vue.prototype.$axios = window.axios;
 Vue.component('cart-ecommerce-component', require('../ecommerce/components/common/cart/CartEcommerceComponent.vue').default);
 Vue.component('item-cart-ecommerce-component', require('../ecommerce/components/common/cart/ItemCartEcommerceComponent.vue').default);
 Vue.component('toast-ecommerce-component', require('../ecommerce/components/common/ToastEcommerceComponent.vue').default);
+Vue.component('icon-header-cart-ecommerce-component', require('../ecommerce/components/common/cart/IconHeaderCartEcommerceComponent.vue').default);
 
 // Catalog Ecommerce components
 Vue.component('catalog-ecommerce-component', require('../ecommerce/components/catalog/CatalogEcommerceComponent.vue').default);

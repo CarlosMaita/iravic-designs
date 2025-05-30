@@ -51,7 +51,7 @@
         </div>
 
         <!-- Count input + Add to cart button -->
-        <div v-if="currentStock > 0" class="d-flex gap-3 pb-3 pb-lg-4 mb-3">
+        <div v-if="currentStock > 0" class="d-flex gap-3 pb-3 pb-lg-4">
             <div class="count-input flex-shrink-0">
                 <button @click="quantity--" type="button" class="btn btn-icon btn-lg" data-decrement aria-label="Decrement quantity">
                 <i class="ci-minus"></i>
@@ -67,6 +67,15 @@
             <button type="button" class="btn btn-lg btn-dark w-100 gap-3" disabled>
                 <i class="ci-frown fs-3"></i>
                 Producto agotado
+            </button>
+        </div>
+
+
+        <!-- Solicitar al ws buttom -->
+        <div class="d-flex gap-3 pb-3 pb-lg-4 mb-3>">
+            <button type="button" class="btn btn-lg btn-warning w-100 gap-3" @click="askWhatsApp()">
+                <i class="ci-whatsapp fs-lg me-2"></i>
+                <span class="">Consultar por WhatsApp</span>
             </button>
         </div>
     </div>
@@ -196,7 +205,15 @@
                     message: 'Producto agregado al carrito',
                     type: 'success',
                 });
-            }
+            }, 
+            askWhatsApp() {
+                const message = `Hola, estoy interesado en el producto: ${this.name}. 
+                \nPrecio: ${this.price_str}. 
+                \nPor favor, contáctame para más información.`;
+                const phoneNumber = '+584144519511'; // Reemplaza con el número de WhatsApp
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            },
         }
     }
 </script>

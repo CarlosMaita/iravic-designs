@@ -62,7 +62,7 @@
 
 
     <!-- Page content -->
-    <main class="content-wrapper">
+    <main class="content-wrapper"  >
 
       @yield('breadcrumb')  
      
