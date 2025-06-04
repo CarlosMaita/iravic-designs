@@ -10,7 +10,7 @@
             <div v-for="(image, index) in images" :key="index" class="swiper-slide">
                 <div class="ratio ratio-1x1 bg-white rounded">
                     <div class="position-absolute top-0 start-0 w-100 d-flex align-items-center justify-content-center display-4">
-                        <img class="img-fluid" :src="image" alt="Image">
+                        <img class="img-fluid" :src="image" alt="Image" style="align-self: start;">
                     </div>
                 </div>
             </div>
