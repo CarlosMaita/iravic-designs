@@ -55,6 +55,7 @@ Vue.component('credit-show', require('./components/credits/CreditShowComponent.v
 Vue.component('credit-form', require('./components/credits/CreditFormComponent.vue').default);
 // ecommerce components
 Vue.component('product-detail-skeleton-ecommerce-component', require('./ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue').default);
+Vue.component('product-card-skeleton-ecommerce-component', require('./ecommerce/components/catalog/ProductCardSkeletonEcommerceComponent.vue').default);
 
 // global components
 Vue.component('v-select', vSelect)
