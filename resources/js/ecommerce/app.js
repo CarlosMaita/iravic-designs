@@ -44,6 +44,9 @@ Vue.component('product-detail-ecommerce-component', require('../ecommerce/compon
 Vue.component('product-detail-images-ecommerce-component', require('../ecommerce/components/product-detail/ProductDetailImagesEcommerceComponent.vue').default);
 Vue.component('product-detail-description-ecommerce-component', require('../ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue').default);
 
+// Skeletons ecommerce components
+Vue.component('product-detail-skeleton-ecommerce-component', require('../ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue').default);
+Vue.component('product-card-skeleton-ecommerce-component', require('../ecommerce/components/catalog/ProductCardSkeletonEcommerceComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
