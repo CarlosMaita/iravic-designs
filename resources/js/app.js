@@ -53,6 +53,8 @@ Vue.component('import-inventory', require('./components/inventory/ImportInventor
 // credit components
 Vue.component('credit-show', require('./components/credits/CreditShowComponent.vue').default);
 Vue.component('credit-form', require('./components/credits/CreditFormComponent.vue').default);
+// ecommerce components
+Vue.component('product-detail-skeleton-ecommerce-component', require('./ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue').default);
 
 // global components
 Vue.component('v-select', vSelect)
