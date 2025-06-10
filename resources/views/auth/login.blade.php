@@ -19,11 +19,6 @@
     <div class="container">
       <div class="row justify-content-center">
         <div id="form-wrap" class="col-md-8">
-          <div class="mb-3 text-center">
-            @isset($logoImg->value)
-            <img class="img-fluid" src="{{ asset('storage/img/configs/'. $logoImg->value) }}" alt="Logo" width="120">
-            @endisset
-          </div>
           <div class="card-group">
             <div class="card p-2">
               <div class="card-body">
@@ -75,23 +70,8 @@
                 </div>
               </div>
             </div>
-            @if (Route::has('register'))
-            <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
-              <div class="card-body text-center">
-                <div>
-                  <h2>Sign up</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <a href="{{ route('register') }}" class="btn btn-primary active mt-3">{{ __('Register') }}</a>
-                </div>
-              </div>
-            </div>
-            @endif
           </div>
         </div>
       </div>
     </div>
 @endsection
-
-@push('js')
-
-@endpush

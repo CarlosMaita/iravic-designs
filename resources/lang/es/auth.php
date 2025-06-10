@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'login' => 'Inicio de Sesión.',
+    'login' => 'Ingresar al Sistema de administración.',
     'logout' => 'Cerrar Sesión.',
     'failed' => 'Estas credenciales no coinciden con nuestros registros.',
     'throttle' => 'Demasiados intentos de acceso. Por favor inténtelo de nuevo en :seconds segundos.',

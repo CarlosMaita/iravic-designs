@@ -100,7 +100,8 @@
               <div class="position-relative d-lg-flex align-items-center justify-content-between">
 
                 <!-- Categories mega menu -->
-                <div class="navbar-nav">
+                <div class="navbar-nav d-none d-lg-flex align-items-center justify-content-between flex-wrap gap-3 me-lg-3 mb-2 mb-lg-0">
+                  
                   <div class="dropdown position-static pb-lg-2">
                     <button type="button" class="nav-link animate-underline fw-semibold text-uppercase ps-0" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">
                       <i class="ci-menu fs-lg me-2"></i>
@@ -131,7 +132,23 @@
                     </div>
                   </div>
                 </div>
-                          
+
+                <!-- Search form visible on screens < 992px wide (lg breakpoint) -->
+                  <div class="row d-lg-none">
+                      <div class="col-12">
+                        <h6 class="mb-3">Todas las categorias</h6>
+                      </div>
+                      <div class="col-lg-3">
+                        <ul class="nav flex-column gap-2 mt-0">
+                          @foreach ($categories as $category)
+                          <li class="d-flex w-100 pt-1">
+                              <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="{{ route('ecommerce.home') . '?category=' . $category->id }}">{{ $category->name }}</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                      </div>
+                  </div>
+                      
 
                        
                 <!-- Search toggle visible on screens > 991px wide (lg breakpoint) -->
