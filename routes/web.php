@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['register' => false]);
 Route::get('/', 'HomeController@index')->name('ecommerce.home');
 Route::get('/catalogo/categoria/{category}', 'HomeController@category')->name('ecommerce.categoria');
-Route::get('/catalogo/producto/{product}', 'HomeController@show')->name('ecommerce.product.detail');
+Route::get('/catalogo/producto/{slug}', 'HomeController@show')->name('ecommerce.product.detail');
 
 #
 Route::get('ingresar',           [CustomerLoginController::class, 'showLoginForm'])->name('customer.login.form');

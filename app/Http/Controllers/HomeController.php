@@ -33,9 +33,9 @@ class HomeController extends Controller
         return view('store.catalog.index', compact('search', 'category'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::where('slug', $slug)->firstOrFail();
         $productDetail = (object)  ProductEcommerceHelper::getProductDetail($product);
         return view('store.product-detail.index' , compact('productDetail'));
     }

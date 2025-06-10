@@ -25,7 +25,7 @@ class ProductEcommerceHelper
             'price_str' => $product->regular_price_str,
             'images' => self::getImagesProduct($product->images),
             'stock_total' => $product->stock_total,
-            'url_detail' => route('ecommerce.product.detail', $product->id),
+            'url_detail' => route('ecommerce.product.detail', $product->slug),
             'url_thumbnail' => self::getUrlThumbnailProduct($product->images),
         ];
       
