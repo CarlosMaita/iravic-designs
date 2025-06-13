@@ -1,4 +1,4 @@
- @extends('store.base')
+@extends('store.base')
 
 @section('breadcrumb')
 <!-- Breadcrumb -->

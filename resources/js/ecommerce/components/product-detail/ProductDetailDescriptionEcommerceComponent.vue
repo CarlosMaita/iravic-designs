@@ -78,6 +78,9 @@
                 <span class="">Solicitar por WhatsApp</span>
             </button>
         </div>
+        <div class="text-muted" style="font-size: 0.85rem;">
+            Nota: Si el producto no está disponible, puede solicitarlo por WhatsApp para su confección. El tiempo de confección se le indicará al momento de preguntar.
+        </div>
     </div>
     </div>
 </template>
@@ -207,9 +210,8 @@
                 });
             }, 
             askWhatsApp() {
-                const message = `Hola, estoy interesado en el producto: ${this.name}. 
-                \nPrecio: ${this.price_str}. 
-                \nPor favor, contáctame para más información.`;
+                const message = `Hola, estoy interesado en el producto: 
+                \n${this.name}. Precio: ${this.price_str}.`;
                 const phoneNumber = '+584144519511'; // Reemplaza con el número de WhatsApp
                 const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
