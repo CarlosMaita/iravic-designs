@@ -72,7 +72,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::get('inventario/download', 'InventoryController@download')->name("catalog.inventory.download");
         #
         Route::post('inventario/upload', 'InventoryController@upload')->name("catalog.inventory.upload");
-     
+        #
+        Route::resource('colors', 'ColorController');
 
     });
 
@@ -147,4 +148,6 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('roles', 'RoleController')->except('show');
     });
+
+  
 });

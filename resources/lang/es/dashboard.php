@@ -381,7 +381,8 @@ return [
         'stock'                 => 'Almacenamiento',
         'permissions'           => 'Permisos',
         'privileges'            => 'Privilegios',
-        'zones'                 => 'Zonas'
+        'zones'                 => 'Zonas',
+        'colors'                => 'Colores'
     ],
     'spendings' => [
         'id'      => 'ID',

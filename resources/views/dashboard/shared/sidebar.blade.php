@@ -61,7 +61,8 @@
         Auth::user()->can('viewany', App\Models\Brand::class) || 
         Auth::user()->can('viewany', App\Models\Category::class) || 
         Auth::user()->can('viewany', App\Models\Product::class) || 
-        Auth::user()->can('viewany', App\Models\ProductStockTransfer::class)
+        Auth::user()->can('viewany', App\Models\ProductStockTransfer::class) || 
+        Auth::user()->can('viewany', App\Models\Color::class)
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
@@ -92,6 +93,12 @@
                 @can('viewany', App\Models\ProductStockTransfer::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/stocks-transferencias")}}" href="{{ route('stock-transferencias.index') }}"></span>{{ __('dashboard.sidebar.products_transfers') }}</a>
+                    </li>
+                @endcan
+                {{-- Colors --}}
+                @can('viewany', App\Models\Color::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/colors")}}" href="{{ route('colors.index') }}"></span>{{ __('dashboard.sidebar.colors') }}</a>
                     </li>
                 @endcan
             </ul>
@@ -221,7 +228,6 @@
             </a>
         </li>
     @endif
-
 </ul>
 <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
 </div>

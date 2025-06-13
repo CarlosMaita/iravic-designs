@@ -2519,6 +2519,12 @@ __webpack_require__.r(__webpack_exports__);
       count = count > 99 ? '99+' : count;
       // Limit the count to 99+
       return count;
+    },
+    completionPercentage: function completionPercentage() {
+      return Math.min(this.total_cart / 15 * 100, 100);
+    },
+    completionMessage: function completionMessage() {
+      return this.total_cart >= 15 ? '¡Envío gratuito alcanzado!' : "A\xF1ade $".concat((15 - this.total_cart).toFixed(2), " m\xE1s para env\xEDo gratuito");
     }
   },
   mounted: function mounted() {
@@ -3758,6 +3764,37 @@ var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", [_vm._m(0), _vm._v(" "), _vm.cart.items.length > 0 ? _c("div", {
+    staticClass: "shipping-info-container text-center my-3 d-flex align-items-center justify-content-center"
+  }, [_c("i", {
+    staticClass: "ci-shipping fs-2 text-primary me-2"
+  }), _vm._v(" "), _c("img", {
+    staticClass: "mrw-logo mx-2",
+    attrs: {
+      src: "/img/mrw-logo.jpg",
+      alt: "MRW Logo"
+    }
+  }), _vm._v(" "), _c("p", {
+    staticClass: "mb-0 ms-2"
+  }, [_vm._v("¡Envíos gratis por MRW en compras superiores a $15!")])]) : _vm._e(), _vm._v(" "), _vm.cart.items.length > 0 ? _c("div", {
+    staticClass: "progress-container my-3"
+  }, [_c("div", {
+    staticClass: "progress"
+  }, [_c("div", {
+    staticClass: "progress-bar",
+    "class": {
+      "bg-success": _vm.total_cart >= 15,
+      "bg-warning": _vm.total_cart < 15
+    },
+    style: {
+      width: "".concat(_vm.completionPercentage, "%")
+    },
+    attrs: {
+      role: "progressbar",
+      "aria-valuenow": _vm.completionPercentage,
+      "aria-valuemin": "0",
+      "aria-valuemax": "100"
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.completionMessage) + "\n      ")])])]) : _vm._e(), _vm._v(" "), _vm.cart.items.length > 0 ? _c("div", {
     staticClass: "offcanvas-body overflow-y-auto",
     staticStyle: {
       "max-height": "calc(100vh - 15rem)"
@@ -8793,6 +8830,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 // module
 exports.push([module.i, "\r\n/* Puedes añadir estilos específicos si es necesario, aunque Bootstrap ya maneja mucho */\n.toast[data-v-7ce827dc] {\r\n  position: fixed; /* O 'absolute' dependiendo de dónde quieras que aparezca */\r\n  top: 20px; /* Ajusta la posición vertical */\r\n  right: 20px; /* Ajusta la posición horizontal */\r\n  z-index: 1050; /* Asegura que esté por encima de otros elementos */\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.progress-container {\r\n  width: 100%;\n}\n.progress {\r\n  height: 20px;\r\n  background-color: #e9ecef;\r\n  border-radius: 10px;\r\n  overflow: hidden;\n}\n.progress-bar {\r\n  height: 100%;\r\n  text-align: center;\r\n  line-height: 20px;\r\n  color: #fff;\n}\n.shipping-info-container {\r\n  /* Estilos adicionales si son necesarios */\n}\n.mrw-logo {\r\n  width: 30px; /* Ajusta el tamaño según sea necesario */\r\n  height: auto; /* Mantiene la proporción de la imagen */\n}\r\n", ""]);
 
 // exports
 
@@ -39959,6 +40015,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../../node_modules/css-loader??ref--6-1!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css ***!
@@ -53296,7 +53382,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CartEcommerceComponent_vue_vue_type_template_id_1f6956b8__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CartEcommerceComponent.vue?vue&type=template&id=1f6956b8 */ "./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=template&id=1f6956b8");
 /* harmony import */ var _CartEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CartEcommerceComponent.vue?vue&type=script&lang=js */ "./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _CartEcommerceComponent_vue_vue_type_style_index_0_id_1f6956b8_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css */ "./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -53304,7 +53392,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _CartEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   _CartEcommerceComponent_vue_vue_type_template_id_1f6956b8__WEBPACK_IMPORTED_MODULE_0__["render"],
   _CartEcommerceComponent_vue_vue_type_template_id_1f6956b8__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -53333,6 +53421,22 @@ component.options.__file = "resources/js/ecommerce/components/common/cart/CartEc
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CartEcommerceComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=script&lang=js");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css":
+/*!******************************************************************************************************************************!*\
+  !*** ./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css ***!
+  \******************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_style_index_0_id_1f6956b8_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader!../../../../../../node_modules/css-loader??ref--6-1!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_style_index_0_id_1f6956b8_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_style_index_0_id_1f6956b8_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_style_index_0_id_1f6956b8_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CartEcommerceComponent_vue_vue_type_style_index_0_id_1f6956b8_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 

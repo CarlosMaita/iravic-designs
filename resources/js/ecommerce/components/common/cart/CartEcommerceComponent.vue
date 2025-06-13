@@ -8,6 +8,31 @@
       </div>
     </div>
 
+    <!-- Shipping Info -->
+    <div v-if="cart.items.length > 0" class="shipping-info-container text-center my-3 d-flex align-items-center justify-content-center">
+      <i class="ci-shipping fs-2 text-primary me-2"></i>
+      <img src="/img/mrw-logo.jpg" alt="MRW Logo" class="mrw-logo mx-2">
+      <p class="mb-0 ms-2">¡Envíos gratis por MRW en compras superiores a $15!</p>
+    </div>
+    <!-- End Shipping Info -->
+
+    <!-- Completion Bar -->
+    <div v-if="cart.items.length > 0" class="progress-container my-3">
+      <div class="progress">
+        <div 
+          class="progress-bar" 
+          role="progressbar" 
+          :style="{ width: `${completionPercentage}%` }" 
+          :class="{ 'bg-success': total_cart >= 15, 'bg-warning': total_cart < 15 }"
+          :aria-valuenow="completionPercentage" 
+          aria-valuemin="0" 
+          aria-valuemax="100">
+          {{ completionMessage }}
+        </div>
+      </div>
+    </div>
+    <!-- End Completion Bar -->
+
     <!-- Items -->
     <div  v-if="cart.items.length > 0" class="offcanvas-body overflow-y-auto" style="max-height: calc(100vh - 15rem)">
       <div class="d-flex flex-column gap-4 pt-2">
@@ -129,6 +154,14 @@
                 count = count > 99 ? '99+' : count;
                 // Limit the count to 99+
                 return  count;
+            },
+            completionPercentage() {
+              return Math.min((this.total_cart / 15) * 100, 100);
+            },
+            completionMessage() {
+              return this.total_cart >= 15 
+                ? '¡Envío gratuito alcanzado!'
+                : `Añade $${(15 - this.total_cart).toFixed(2)} más para envío gratuito`;
             }
         },
         mounted() {
@@ -141,4 +174,30 @@
     }
 
 </script>
+
+<style>
+.progress-container {
+  width: 100%;
+}
+.progress {
+  height: 20px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+}
+.shipping-info-container {
+  /* Estilos adicionales si son necesarios */
+}
+
+.mrw-logo {
+  width: 30px; /* Ajusta el tamaño según sea necesario */
+  height: auto; /* Mantiene la proporción de la imagen */
+}
+</style>
 
