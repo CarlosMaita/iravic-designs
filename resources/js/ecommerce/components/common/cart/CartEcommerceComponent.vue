@@ -17,7 +17,7 @@
     <!-- End Shipping Info -->
 
     <!-- Completion Bar -->
-    <div v-if="cart.items.length > 0" class="progress-container my-3">
+    <div v-if="cart.items.length > 0" class="progress-container my-3 px-3">
       <div class="progress">
         <div 
           class="progress-bar" 

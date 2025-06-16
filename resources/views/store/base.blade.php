@@ -7,11 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
 
     <!-- SEO Meta Tags -->
-    <title>Iravic - Tienda de ropa para ñiños</title>
-    <meta name="description" content="Tienda de ropa para niños">
-    <meta name="keywords" content="Tienda de ropa, ropa para niños, ecommerce, tienda online">
+    <title> @yield('title') | Iravic </title>
+    <meta name="description" content="@yield('meta-description', 'Tienda de ropa para niños')">
+    <meta name="keywords" content="@yield('meta-keywords', 'tienda, ecommerce, ropa para niños, moda infantil')">
     <meta name="author" content="Iravic">
     <meta name="robots" content="nofollow">
+
+    @yield('meta-tags')
 
     <!-- Webmanifest + Favicon / App icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">

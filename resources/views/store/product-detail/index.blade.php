@@ -1,5 +1,27 @@
 @extends('store.base')
 
+@section('title', $productDetail->name)
+@section('meta-description', $productDetail->description)
+
+{{-- Open Graph and Twitter Meta Tags --}}
+
+@section('meta-tags')
+
+{{-- Open Graph Meta Tags --}}  
+<meta property="og:type" content="product">
+<meta property="og:title" content="{{ $productDetail->name }}">
+<meta property="og:description" content="{{ $productDetail->description }}">
+<meta property="og:image" content="{{ $productDetail->images[0] ? asset('storage/' . $productDetail->images[0]) : asset('assets/cartzilla/images/og-image.jpg') }}">    
+
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:site_name" content="Iravic">
+<meta property="og:locale" content="es_ES">
+
+{{-- Canonical URL --}}
+<link rel="canonical" href="{{ url()->current() }}">
+
+@endsection
+
 @section('breadcrumb')
 <!-- Breadcrumb -->
 <nav class="container" aria-label="breadcrumb">

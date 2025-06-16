@@ -46,11 +46,11 @@
         <!-- Show more button -->
         <button v-if="pagination.currentPage < pagination.totalPages" @click="loadProducts(pagination.nextPage, sorting)" type="button" class="btn btn-lg btn-outline-secondary w-100" :disabled="loading">
             <template v-if="loading">
-                Loading...
+                Espere miestras se cargan ...
                 <span class="spinner-border spinner-border-sm ms-n1 me-2" role="status" aria-hidden="true"></span>
             </template>
             <template v-else>
-                Show more
+                Cargar mas productos
                 <i class="ci-chevron-down fs-xl ms-2 me-n1"></i>
             </template>
         </button>
