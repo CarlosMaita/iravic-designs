@@ -1,4 +1,4 @@
-@extends('store.base')
+@extends('ecommerce.base')
 
 @section('title', $productDetail->name)
 @section('meta-description', $productDetail->description)

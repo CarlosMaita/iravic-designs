@@ -1,65 +1,213 @@
-<div class="c-wrapper">
-  <header class="c-header c-header-light c-header-fixed c-header-with-subheader">
-    {{--  --}}
-    <button class="c-header-toggler c-class-toggler d-lg-none mr-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show"><span class="c-header-toggler-icon"></span></button><a class="c-header-brand d-sm-none" href="#"><img class="c-header-brand" src="{{ url('/assets/brand/coreui-base.svg') }}" width="97" height="46" alt="CoreUI Logo"></a>
-    {{--  --}}
-    <button class="c-header-toggler c-class-toggler ml-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true"><span class="c-header-toggler-icon"></span></button>
-    {{--  --}}
-    <ul class="c-header-nav ml-auto mr-4">
-      <li class="c-header-nav-item dropdown">
-        {{-- <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          <div class="c-avatar"><img class="c-avatar-img" src="{{ url('/assets/img/avatars/6.jpg') }}" alt="user@email.com"></div>
-        </a> --}}
-        <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          {{-- 
-          <svg class="c-icon mr-2">
-            <use xlink:href="{{ url('/icons/sprites/free.svg#cil-settings') }}"></use>
-          </svg> 
-          --}}
-          <i class="cil-cog"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right pt-0">
-          {{-- Utilizar para accesos directos --}}
-          {{-- 
-          <div class="dropdown-header bg-light py-2"><strong>Account</strong></div><a class="dropdown-item" href="#">
-            <svg class="c-icon mr-2">
-              <use xlink:href="{{ url('/icons/sprites/free.svg#cil-bell') }}"></use>
-            </svg> Updates<span class="badge badge-info ml-auto">42</span></a><a class="dropdown-item" href="#">
-            <svg class="c-icon mr-2">
-              <use xlink:href="{{ url('/icons/sprites/free.svg#cil-envelope-open') }}"></use>
-            </svg> Messages<span class="badge badge-success ml-auto">42</span></a><a class="dropdown-item" href="#">
-            <svg class="c-icon mr-2">
-              <use xlink:href="{{ url('/icons/sprites/free.svg#cil-task') }}"></use>
-            </svg> Tasks<span class="badge badge-danger ml-auto">42</span></a><a class="dropdown-item" href="#">
-            <svg class="c-icon mr-2">
-              <use xlink:href="{{ url('/icons/sprites/free.svg#cil-comment-square') }}"></use>
-            </svg> Comments<span class="badge badge-warning ml-auto">42</span></a>
-          --}}
-          <div class="dropdown-header bg-light py-2">
-            <strong>{{ __('dashboard.header.settings') }}</strong>
+ <header class="navbar navbar-expand-lg navbar-sticky bg-body d-lg-block sticky-top p-0" data-sticky-navbar='{"offset": 100}'>
+      <div class="container py-2 py-lg-3">
+
+          <!-- Categories mega menu -->
+          <div class=" navbar-nav d-none d-lg-flex align-items-center justify-content-between flex-wrap gap-3 me-lg-3 mb-2 mb-lg-0">
+            
+            <div class="dropdown position-relative pb-lg-2">
+              <button type="button" class="nav-link animate-underline fw-semibold text-uppercase ps-0" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">
+                <i class="ci-menu fs-lg me-2"></i>
+                <span class="animate-target">Categorías</span>
+              </button>
+              <div class="dropdown-menu p-4 px-xl-5" style="--cz-dropdown-spacer: .5rem; width: max-content;">
+
+                <div class="row g-4">
+                    <div class="col-12">
+                      <h6 class="mb-3">Todas las categorias</h6>
+                    </div>
+                    @php
+                      $chunks = $categories->chunk(ceil($categories->count() / 4));
+                      @endphp
+                    @foreach ($chunks as $chunk)
+                    <div class="col-lg-3">
+                      <ul class="nav flex-column gap-2 mt-0">
+                        @foreach ($chunk as $category)
+                          <li class="d-flex w-100 pt-1">
+                            <a class="nav-link animate-underline animate-target d-inline fw-normal p-0" href="{{ route('ecommerce.home', ['category' => $category->id]) }}">{{ $category->name }}</a>
+                          </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                    @endforeach
+                </div>
+
+              </div>
+            </div>
           </div>
-          <a class="dropdown-item" href="">
-            <svg class="c-icon mr-2">
-              <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
-            </svg> {{ __('dashboard.header.profile') }}
-          </a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{{ route('customer.logout') }}"
-              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-              <svg class="c-icon mr-2">
-                <use xlink:href="{{ url('/icons/sprites/free.svg#cil-account-logout') }}"></use>
-              </svg>
-              <form id="logout-form" action="{{ route('customer.logout') }}" method="POST">
-                @csrf
-              </form>
-              {{ __('auth.logout') }}
-          </a>
-        </div>
-      </li>
-    </ul>
-    <div class="c-subheader px-3">
-      @include('ecommerce.shared.breadcrumb')
-    </div>
-  </header>
 
           
+          <div class="d-flex d-lg-none align-items-center gap-3">
+            <!-- Mobile offcanvas menu toggler (Hamburger) -->
+            <button type="button" class="navbar-toggler me-4 me-md-2" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+
+          <!-- Navbar brand (Logo) -->
+          <a class="navbar-brand d-flex align-items-center justify-content-end fs-2 py-0 m-0 me-auto me-sm-n5" href="{{route('ecommerce.home')}}">
+                  <h6 class="m-0 text-uppercase" style="font-family: Roboto, sans-serif; letter-spacing: 3px;">Iravic Designs</h6>
+          </a>
+
+
+
+
+
+        <!-- Button group -->
+        <div class="d-flex align-items-center">
+
+
+
+            <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
+          <button  type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar" >
+            <i class="ci-search animate-target"></i>
+          </button>
+
+          <!-- Navbar stuck nav toggler -->
+          <button type="button" class="navbar-toggler d-none navbar-stuck-show me-3" data-bs-toggle="collapse" data-bs-target="#stuckNav" aria-controls="stuckNav" aria-expanded="false" aria-label="Toggle navigation in navbar stuck state">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          
+          <!-- Account button visible on screens > 768px wide (md breakpoint) -->
+          <a class="btn btn-icon btn-sm fs-lg btn-outline-secondary border-0 rounded-circle animate-shake" href="{{route('customer.login.form')}}">
+            <i class="ci-user animate-target"></i>
+            <span class="visually-hidden">Cuenta</span>
+          </a>
+
+          <!-- Theme switcher (light/dark/auto) -->
+          <div class="dropdown">
+            <button type="button" class="theme-switcher btn btn-icon d-none  d-md-flex btn-lg btn-outline-secondary fs-lg border-0 rounded-circle animate-scale" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme (light)">
+              <span class="theme-icon-active d-flex animate-target">
+                <i class="ci-sun"></i>
+              </span>
+            </button>
+            <ul class="dropdown-menu" style="--cz-dropdown-min-width: 9rem">
+              <li>
+                <button type="button" class="dropdown-item active" data-bs-theme-value="light" aria-pressed="true">
+                  <span class="theme-icon d-flex fs-base me-2">
+                    <i class="ci-sun"></i>
+                  </span>
+                  <span class="theme-label">Light</span>
+                  <i class="item-active-indicator ci-check ms-auto"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">
+                  <span class="theme-icon d-flex fs-base me-2">
+                    <i class="ci-moon"></i>
+                  </span>
+                  <span class="theme-label">Dark</span>
+                  <i class="item-active-indicator ci-check ms-auto"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">
+                  <span class="theme-icon d-flex fs-base me-2">
+                    <i class="ci-auto"></i>
+                  </span>
+                  <span class="theme-label">Auto</span>
+                  <i class="item-active-indicator ci-check ms-auto"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Wishlist button visible on screens > 768px wide (md breakpoint) -->
+          {{-- <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="#!">
+            <i class="ci-heart animate-target"></i>
+            <span class="visually-hidden">Deseos</span>
+          </a> --}}
+          
+          <!-- Cart button -->
+          <icon-header-cart-ecommerce-component ref="iconHeaderCartEcommerceComponent"></icon-header-cart-ecommerce-component>
+
+        </div>
+      </div>
+
+      <!-- Main navigation that turns into offcanvas on screens < 992px wide (lg breakpoint) -->
+      <div class="collapse navbar-stuck-hide" id="stuckNav">
+        <nav class="offcanvas offcanvas-start" id="navbarNav" tabindex="-1" aria-labelledby="navbarNavLabel">
+          <div class="offcanvas-header py-3">
+            <h5 class="offcanvas-title" id="navbarNavLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+
+          <div class="offcanvas-body pt-1 pb-3 py-lg-0">
+            <div class="container pb-lg-2 px-0 px-lg-3">
+
+              <div class="position-relative d-lg-flex align-items-center justify-content-between">
+
+                <!-- Categories mega menu -->
+                <div class="navbar-nav d-none d-lg-flex align-items-center justify-content-between flex-wrap gap-3 me-lg-3 mb-2 mb-lg-0">
+                  
+                  <div class="dropdown position-static pb-lg-2">
+                    <div class="dropdown-menu w-100 p-4 px-xl-5" style="--cz-dropdown-spacer: .75rem">
+
+                      <div class="row g-4">
+                          <div class="col-12">
+                            <h6 class="mb-3">Todas las categorias</h6>
+                          </div>
+                        @php
+                            $chunks = $categories->chunk(ceil($categories->count() / 4));
+                            @endphp
+                          @foreach ($chunks as $chunk)
+                          <div class="col-lg-3">
+                            <ul class="nav flex-column gap-2 mt-0">
+                              @foreach ($chunk as $category)
+                                <li class="d-flex w-100 pt-1">
+                                  <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="{{ route('ecommerce.home') . '?category=' . $category->id }}">{{ $category->name }}</a>
+                                </li>
+                              @endforeach
+                            </ul>
+                          </div>
+                          @endforeach
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Search form visible on screens < 992px wide (lg breakpoint) -->
+                <div class="row d-lg-none">
+                    <div class="col-12">
+                      <h6 class="mb-3">Todas las categorias</h6>
+                    </div>
+                    <div class="col-lg-3">
+                      <ul class="nav flex-column gap-2 mt-0">
+                        @foreach ($categories as $category)
+                        <li class="d-flex w-100 pt-1">
+                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="{{ route('ecommerce.home') . '?category=' . $category->id }}">{{ $category->name }}</a>
+                          </li>
+                          @endforeach
+                      </ul>
+                    </div>
+                </div>
+                      
+
+                       
+                <!-- Search toggle visible on screens > 991px wide (lg breakpoint) -->
+                {{-- <button type="button" class="btn btn-outline-secondary justify-content-start w-100 px-3 mb-lg-2 ms-3 d-none d-lg-inline-flex" style="max-width: 240px" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox">
+                  <i class="ci-search fs-base ms-n1 me-2"></i>
+                  <span class="text-body-tertiary fw-normal">Buscar</span>
+                </button> --}}
+                
+              </div>
+            </div>
+          </div>
+
+          <!-- Account and Wishlist buttons visible on screens < 768px wide (md breakpoint) -->
+          <div class="offcanvas-header border-top px-0 py-3 mt-3 d-md-none">
+            <div class="nav nav-justified w-100">
+              {{-- <a class="nav-link border-end" href="{{route('customer.login.form')}}">
+                <i class="ci-user fs-lg opacity-60 me-2"></i>
+                Cuenta
+              </a> --}}
+              {{-- <a class="nav-link" href="#!">
+                <i class="ci-heart fs-lg opacity-60 me-2"></i>
+                Deseos
+              </a> --}}
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>

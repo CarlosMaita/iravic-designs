@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 Route::get('/', 'HomeController@index')->name('ecommerce.home');
-Route::get('/catalogo/categoria/{category}', 'HomeController@category')->name('ecommerce.categoria');
-Route::get('/catalogo/producto/{slug}', 'HomeController@show')->name('ecommerce.product.detail');
+Route::get('/categoria/{category}', 'HomeController@category')->name('ecommerce.categoria');
+Route::get('/producto/{slug}', 'HomeController@show')->name('ecommerce.product.detail');
 
 #
 Route::get('ingresar',           [CustomerLoginController::class, 'showLoginForm'])->name('customer.login.form');
@@ -29,10 +29,6 @@ Route::post('customer/logout',   [CustomerLoginController::class, 'logout'])->na
 
 #
 Route::middleware(['auth:customer'])->group(function () {
-    #
-    Route::get('e/dashboard', [DashboardEcommerceController::class, 'index'] )->name('ecommerce.dashboard');
-    #
-    Route::get('e/mi-perfil', [MyprofileEcommerceController::class, 'index'] )->name('ecommerce.myprofile.index');
 
 });
 

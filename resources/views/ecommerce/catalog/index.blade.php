@@ -1,4 +1,4 @@
- @extends('store.base')
+ @extends('ecommerce.base')
 
 @section('title', 'Catalogo')
 @section('meta-description', 'Catalogo de productos de la tienda')
