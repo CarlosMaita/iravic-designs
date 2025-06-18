@@ -7,7 +7,7 @@
             <div class="dropdown position-relative pb-lg-2">
               <button type="button" class="nav-link animate-underline fw-semibold text-uppercase ps-0" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">
                 <i class="ci-menu fs-lg me-2"></i>
-                <span class="animate-target">Categorias</span>
+                <span class="animate-target">Categorías</span>
               </button>
               <div class="dropdown-menu p-4 px-xl-5" style="--cz-dropdown-spacer: .5rem; width: max-content;">
 
