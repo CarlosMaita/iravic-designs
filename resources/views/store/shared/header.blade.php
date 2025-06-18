@@ -23,7 +23,7 @@
                       <ul class="nav flex-column gap-2 mt-0">
                         @foreach ($chunk as $category)
                           <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal p-0" href="{{ route('ecommerce.home') . '?category=' . $category->id }}">{{ $category->name }}</a>
+                            <a class="nav-link animate-underline animate-target d-inline fw-normal p-0" href="{{ route('ecommerce.home', ['category' => $category->id]) }}">{{ $category->name }}</a>
                           </li>
                         @endforeach
                       </ul>
