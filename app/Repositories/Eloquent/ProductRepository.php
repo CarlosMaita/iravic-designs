@@ -279,6 +279,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'price',
             'price_card_credit',
             'price_credit',
+            'slug',
         );
 
         $product = $this->model->find($id);
@@ -322,6 +323,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'price',
             'price_card_credit',
             'price_credit',
+            'slug',
         );
 
         $product = $this->model->find($id);

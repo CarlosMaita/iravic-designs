@@ -157,7 +157,14 @@ class ProductRequest extends FormRequest
             'name' => 'required|min:3|max:155',
             'brand_id' => 'required|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0',
+            'slug' => [
+                'required',
+                'min:3',
+                'max:191',
+                'alpha_dash',
+                Rule::unique('products', 'slug')->ignore($this->route('producto')->id),
+            ],
         ];
 
         if (isset($this->category_id)) {

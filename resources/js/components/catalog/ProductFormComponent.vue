@@ -54,6 +54,12 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
+                            <label for="slug">Slug</label>
+                            <input class="form-control" id="slug" name="slug" type="text" v-model="product.slug" >
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
                             <label for="category_id">Categoría</label>
                             <v-select placeholder="Seleccionar"
                                         :options="categories" 
