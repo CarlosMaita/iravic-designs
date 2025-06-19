@@ -28,6 +28,7 @@ class Product extends Model
         'name',
         'description',
         'code',
+        'slug', // <-- allow mass assignment of slug
         'cover',
         'is_regular',
         'gender',

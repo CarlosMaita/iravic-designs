@@ -30,20 +30,21 @@ class HomeController extends Controller
     {
         $search = request()->input('search', null);
         $category = request()->input('category', null);
-        return view('store.catalog.index', compact('search', 'category'));
+        return view('ecommerce.catalog.index', compact('search', 'category'));
     }
 
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->firstOrFail();
         $productDetail = (object)  ProductEcommerceHelper::getProductDetail($product);
-        return view('store.product-detail.index' , compact('productDetail'));
+        return view('ecommerce.product-detail.index' , compact('productDetail'));
     }
 
     public function category($id)
     {
-        $category = Category::findOrFail($id);
-        return view('store.catalog.category.index', compact('category'));
+        $search = request()->input('search', null);
+        $category = Category::findOrFail($id)->id;
+        return view('ecommerce.catalog.index', compact('search','category'));
     }
 
 }

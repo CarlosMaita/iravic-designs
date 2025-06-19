@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <base href="./">
+<html lang="en" data-bs-theme="light" data-pwa="true">
+  <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
-    <meta name="author" content="Iravic">
-    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <title>{!! config('app.name')  !!} - Clientes</title>
-    <link rel="manifest" href="{{ asset('assets/favicon/manifest.json') }}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
 
-     @if (app()->environment('production'))
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+
+    <!-- SEO Meta Tags -->
+    <title> @yield('title') | Iravic </title>
+    <meta name="description" content="@yield('meta-description', 'Tienda de ropa para niños')">
+    <meta name="keywords" content="@yield('meta-keywords', 'tienda, ecommerce, ropa para niños, moda infantil')">
+    <meta name="author" content="Iravic">
+    <meta name="robots" content="nofollow">
+
+    @yield('meta-tags')
+
+    <!-- Webmanifest + Favicon / App icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    @if (app()->environment('production'))
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){
@@ -26,278 +31,140 @@
     <!-- End Google Tag Manager -->
     @endif
 
-    <!-- Icons-->
-    <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
-    {{-- <link href="{{ asset('css/flag-icon.min.css') }}" rel="stylesheet"> <!-- icons --> --}}
+    {{-- <link rel="manifest" href="/manifest.json"> --}}
+    <link rel="icon" type="image/png" href="{{ asset('assets/cartzilla/app-icons/icon-32x32.png') }}" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('assets/cartzilla/app-icons/icon-180x180.png') }}">
 
-    <!-- Plugin styles for this application-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatables/css/datatables.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('fonts/font-awesome/css/all.css') }}"> 
-    <link rel="stylesheet" href="{{ asset('plugins/noty/css/noty.css') }}">
+    <!-- Scripts -->
+    <script src="{{ asset('js/ecommerce/app.js') }}" defer></script>
+    
+    <!-- Theme switcher (color modes) -->
+    <script src="{{ asset('assets/cartzilla/js/theme-switcher.js')}}"></script>
 
-    <!-- Main styles for this application-->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <!-- Preloaded local web font (Inter) -->
+    <link rel="preload" href="{{ asset('assets/cartzilla/fonts/inter-variable-latin.woff2')}}" as="font" type="font/woff2" crossorigin>
 
-    @stack('css')
-</head>
-<body class="c-app pb-0">
-    @if (app()->environment('production'))
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TM3WBXHH"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-    @endif
+    <!-- Font icons -->
+    <link rel="preload" href="{{ asset('assets/cartzilla/icons/cartzilla-icons.woff2')}}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/icons/cartzilla-icons.min.css')}}">
 
-    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
-        @include('ecommerce.shared.sidebar')
-        @include('ecommerce.shared.header')
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/vendor/swiper/swiper-bundle.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/vendor/simplebar/dist/simplebar.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/vendor/choices.js/public/assets/styles/choices.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/vendor/nouislider/dist/nouislider.min.css')}}">
 
-        <div class="c-body">
-            <main id="app" class="c-main">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            @include('flash::message')
-                        </div>
-                    </div>
-                    {{--  --}}
-                    @yield('content') 
-                </div>
-            </main>
-            @yield('modals')
-            @include('ecommerce.shared.footer')
-        </div>
-    </div>
+    <!-- Bootstrap + Theme styles -->
+    <link rel="preload" href="{{ asset('assets/cartzilla/css/theme.min.css')}}" as="style">
+    <link rel="preload" href="{{ asset('assets/cartzilla/css/theme.rtl.min.css')}}" as="style">
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/css/theme.min.css')}}" id="theme-styles">
+  </head>
 
-    <!-- CoreUI and necessary plugins-->
-    <script src="{{ asset('plugins/jQuery/jquery-3.5.1.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/coreui-utils.js') }}"></script>
-    <script src="{{ asset('js/popovers.js') }}"></script>
-    <script src="{{ asset('plugins/datatables/js/datatables.min.js') }}"></script>
-    <script src="{{ asset('plugins/noty/js/noty.min.js') }}"></script>
 
-    <script>
-        $(function(){
-            /**
-             * Se agregar el loading a cada peticion Ajax y se elimina cuando estas terminan
-             */
-            $.ajaxSetup({
-                beforeSend: function(xhr) {
-                    $('body').append('<div class="loading">Loading&#8230;</div>');
-                },
-                complete: function() {
-                    $('.loading').remove();
-                }
-            });
-        });
-
-        // Datatable reset
-        $(function () {
-            $.fn.dataTable.ext.errMode = 'none';
-
-            var config_datatable = {
-                'responsive': true,
-                "language": {
-                    "processing": "Procesando...",
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "zeroRecords": "No se encontraron resultados",
-                    "emptyTable": "Ningún dato disponible en esta tabla",
-                    "infoEmpty": "Sin registros disponibles",
-                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "search": "Buscar:",
-                    "infoThousands": ",",
-                    "loadingRecords": "Cargando...",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                    "aria": {
-                        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    "buttons": {
-                        "copy": "Copiar",
-                        "colvis": "Visibilidad",
-                        "collection": "Colección",
-                        "colvisRestore": "Restaurar visibilidad",
-                        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
-                        "copySuccess": {
-                            "1": "Copiada 1 fila al portapapeles",
-                            "_": "Copiadas %d fila al portapapeles"
-                        },
-                        "copyTitle": "Copiar al portapapeles",
-                        "csv": "CSV",
-                        "excel": "Excel",
-                        "pageLength": {
-                            "-1": "Mostrar todas las filas",
-                            "1": "Mostrar 1 fila",
-                            "_": "Mostrar %d filas"
-                        },
-                        "pdf": "PDF",
-                        "print": "Imprimir"
-                    },
-                    "autoFill": {
-                        "cancel": "Cancelar",
-                        "fill": "Rellene todas las celdas con <i>%d<\/i>",
-                        "fillHorizontal": "Rellenar celdas horizontalmente",
-                        "fillVertical": "Rellenar celdas verticalmentemente"
-                    },
-                    "decimal": ",",
-                    "searchBuilder": {
-                        "add": "Añadir condición",
-                        "button": {
-                            "0": "Constructor de búsqueda",
-                            "_": "Constructor de búsqueda (%d)"
-                        },
-                        "clearAll": "Borrar todo",
-                        "condition": "Condición",
-                        "conditions": {
-                            "date": {
-                                "after": "Despues",
-                                "before": "Antes",
-                                "between": "Entre",
-                                "empty": "Vacío",
-                                "equals": "Igual a",
-                                "notBetween": "No entre",
-                                "notEmpty": "No Vacio",
-                                "not": "Diferente de"
-                            },
-                            "number": {
-                                "between": "Entre",
-                                "empty": "Vacio",
-                                "equals": "Igual a",
-                                "gt": "Mayor a",
-                                "gte": "Mayor o igual a",
-                                "lt": "Menor que",
-                                "lte": "Menor o igual que",
-                                "notBetween": "No entre",
-                                "notEmpty": "No vacío",
-                                "not": "Diferente de"
-                            },
-                            "string": {
-                                "contains": "Contiene",
-                                "empty": "Vacío",
-                                "endsWith": "Termina en",
-                                "equals": "Igual a",
-                                "notEmpty": "No Vacio",
-                                "startsWith": "Empieza con",
-                                "not": "Diferente de"
-                            },
-                            "array": {
-                                "not": "Diferente de",
-                                "equals": "Igual",
-                                "empty": "Vacío",
-                                "contains": "Contiene",
-                                "notEmpty": "No Vacío",
-                                "without": "Sin"
-                            }
-                        },
-                        "data": "Data",
-                        "deleteTitle": "Eliminar regla de filtrado",
-                        "leftTitle": "Criterios anulados",
-                        "logicAnd": "Y",
-                        "logicOr": "O",
-                        "rightTitle": "Criterios de sangría",
-                        "title": {
-                            "0": "Constructor de búsqueda",
-                            "_": "Constructor de búsqueda (%d)"
-                        },
-                        "value": "Valor"
-                    },
-                    "searchPanes": {
-                        "clearMessage": "Borrar todo",
-                        "collapse": {
-                            "0": "Paneles de búsqueda",
-                            "_": "Paneles de búsqueda (%d)"
-                        },
-                        "count": "{total}",
-                        "countFiltered": "{shown} ({total})",
-                        "emptyPanes": "Sin paneles de búsqueda",
-                        "loadMessage": "Cargando paneles de búsqueda",
-                        "title": "Filtros Activos - %d"
-                    },
-                    "select": {
-                        "1": "%d fila seleccionada",
-                        "_": "%d filas seleccionadas",
-                        "cells": {
-                            "1": "1 celda seleccionada",
-                            "_": "$d celdas seleccionadas"
-                        },
-                        "columns": {
-                            "1": "1 columna seleccionada",
-                            "_": "%d columnas seleccionadas"
-                        }
-                    },
-                    "thousands": ".",
-                    "datetime": {
-                        "previous": "Anterior",
-                        "next": "Proximo",
-                        "hours": "Horas",
-                        "minutes": "Minutos",
-                        "seconds": "Segundos",
-                        "unknown": "-",
-                        "amPm": [
-                            "am",
-                            "pm"
-                        ]
-                    },
-                    "editor": {
-                        "close": "Cerrar",
-                        "create": {
-                            "button": "Nuevo",
-                            "title": "Crear Nuevo Registro",
-                            "submit": "Crear"
-                        },
-                        "edit": {
-                            "button": "Editar",
-                            "title": "Editar Registro",
-                            "submit": "Actualizar"
-                        },
-                        "remove": {
-                            "button": "Eliminar",
-                            "title": "Eliminar Registro",
-                            "submit": "Eliminar",
-                            "confirm": {
-                                "_": "¿Está seguro que desea eliminar %d filas?",
-                                "1": "¿Está seguro que desea eliminar 1 fila?"
-                            }
-                        },
-                        "error": {
-                            "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
-                        },
-                        "multi": {
-                            "title": "Múltiples Valores",
-                            "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
-                            "restore": "Deshacer Cambios",
-                            "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
-                        }
-                    },
-                    "info": "Mostrando de _START_ a _END_ de _TOTAL_ entradas"
-                },
+  <!-- Body -->
+  <body >
+    <!-- Topbar -->
+    <div class="alert alert-dismissible bg-dark text-white rounded-0 py-2 px-0 m-0 fade show" data-bs-theme="dark">
+      <div class="container position-relative d-flex min-w-0">
+        <div class="d-flex flex-nowrap align-items-center g-2 w-100 min-w-0 mx-auto mt-n1" style="max-width: 458px">
+          <div class="nav me-2">
+            <button type="button" class="nav-link fs-lg p-0" id="topbarPrev" aria-label="Prev">
+              <i class="ci-chevron-left"></i>
+            </button>
+          </div>
+          <div class="swiper fs-sm text-white" data-swiper='{
+            "spaceBetween": 24,
+            "loop": true,
+            "autoplay": {
+              "delay": 5000,
+              "disableOnInteraction": false
+            },
+            "navigation": {
+              "prevEl": "#topbarPrev",
+              "nextEl": "#topbarNext"
             }
+          }'>
+            <div class="swiper-wrapper min-w-0">
+              <div class="swiper-slide text-truncate text-center">🏭 Somos Fabricantes</div>
+              <div class="swiper-slide text-truncate text-center">🚚 Luego de compras de 15$ el envío es gratis</div>
+              <div class="swiper-slide text-truncate text-center">🧵 Confeccionamos sus productos en 2 días</div>
+            </div>
+          </div>
+          <div class="nav ms-2">
+            <button type="button" class="nav-link fs-lg p-0" id="topbarNext" aria-label="Next">
+              <i class="ci-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="btn-close position-static flex-shrink-0 p-1 ms-3 ms-md-n4" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+    <!-- End Topbar -->
 
-            $.extend($.fn.dataTable.defaults, config_datatable);
-        });
 
-        $(function () {
-            Noty.overrideDefaults({
-                layout   : 'topRight',
-                theme    : 'bootstrap-v4',
-                timeout: 3000,
-                // closeWith: ['click', 'button'],
-                // animation: {
-                //     open : 'animated fadeInRight',
-                //     close: 'animated fadeOutRight'
-                // }
-            }); 
-        });
+    {{-- App Vue --}}
+    <div id="app">
+      
+    <!-- shopping cart -->
+    @include('ecommerce.shared.shopping-cart')
+
+    <!-- Search offcanvas -->
+    @include('ecommerce.shared.search-box')
+
+    <!-- Navigation bar (Page header) -->
+    @include('ecommerce.shared.header')
+
+    <!-- Page content -->
+    <main class="content-wrapper"  >
+
+      @yield('breadcrumb')  
+     
+      @yield('content')
+     
+    </main>
+
+
+    @include('ecommerce.shared.footer')
+
+    {{-- Toast Ecommerce component --}}
+    <toast-ecommerce-component 
+      ref="toastEcommerceComponent">
+    </toast-ecommerce-component>
+
+    {{-- include filter --}}
+    @yield('bottom-filter-buttom')
+
+    
+    {{-- Back to top button --}}
+    @include( 'ecommerce.shared.back-to-top-button')
+
+  </div>
+  {{-- end App Vue --}}
+
+    <!-- Vendor scripts -->
+    <script src="{{asset('assets/cartzilla/vendor/swiper/swiper-bundle.min.js')}}"></script>
+    <script src="{{asset('assets/cartzilla/vendor/simplebar/dist/simplebar.min.js')}}"></script>
+    <script src="{{asset('assets/cartzilla/vendor/choices.js/public/assets/scripts/choices.min.js')}}"></script>
+    <script src="{{asset('assets/cartzilla/vendor/nouislider/dist/nouislider.min.js')}}"></script>
+    <script src="{{asset('assets/cartzilla/vendor/list.js/dist/list.min.js')}}"></script>
+
+    <!-- Bootstrap + Theme scripts -->
+    <script src="{{asset('assets/cartzilla/js/theme.min.js')}}"></script>
+    <script>
+      function notyAddCart() {
+        new Noty({
+          theme: 'sunset',
+          type: 'success',
+          layout: 'bottomRight',
+          text: 'Producto agregado al carrito',
+          timeout: 2000,
+          animation: {
+            open: 'noty_effects_open',
+            close: 'noty_effects_close'
+          }
+        }).show();
+      }
     </script>
-
-    @stack('js')
-</body>
+  </body>
 </html>
+
