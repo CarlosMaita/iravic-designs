@@ -84,8 +84,6 @@ class InventoryExcelService
         array_push($header, 'code');
         array_push($header, 'gender');
         array_push($header, 'price');
-        array_push($header, 'price_card_credit');
-        array_push($header, 'price_credit');
         // column for store
         foreach ($this->stores as $store) 
             array_push($header, 'stock_'.$store->name);
@@ -105,8 +103,6 @@ class InventoryExcelService
                 'code' => $product->code,
                 'gender' => $product->gender,
                 'price' => $product->price ?? "0",
-                'price_card_credit' => $product->price_card_credit ?? "0",
-                'price_credit' => $product->price_credit ?? "0",
             ];
             // column for store
             foreach ($this->stores as $store) {
@@ -176,8 +172,6 @@ class InventoryExcelService
         array_push($header, 'product_id');
         array_push($header, 'size_id');
         array_push($header, 'price');
-        array_push($header, 'price_card_credit');
-        array_push($header, 'price_credit');
          // column for store
          foreach ($this->stores as $store) 
             array_push($header, 'stock_'.$store->name);
@@ -201,8 +195,6 @@ class InventoryExcelService
                 'product_id' => $product->product_id,
                 'size_id' => $product->size_id,
                 'price' => $product->price ?? "0",
-                'price_card_credit' => $product->price_card_credit ?? "0",
-                'price_credit' => $product->price_credit ?? "0",
             ];
             // column for store
             foreach ($this->stores as $store) {

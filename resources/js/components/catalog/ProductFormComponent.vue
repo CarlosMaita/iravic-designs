@@ -107,18 +107,6 @@
                             <input class="form-control" name="price" type="number" min="0" step="any" v-model="product.price">
                         </div>
                     </div>
-                    <div v-if="canPricesPerMethodPayment" :class="{'col-4' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }"  >
-                        <div class="form-group">
-                            <label for="price_card_credit">Precio con Tarjeta de Credito</label>
-                            <input class="form-control" name="price_card_credit" type="number" min="0" step="any" v-model="product.price_card_credit">
-                        </div>
-                    </div>
-                    <div v-if="canPricesPerMethodPayment" :class="{'col-4' : canPricesPerMethodPayment, 'col-6': !canPricesPerMethodPayment }" ref="">
-                        <div class="form-group">
-                            <label for="price_credit">Precio con Credito</label>
-                            <input class="form-control" name="price_credit" type="number" min="0" step="any" v-model="product.price_credit">
-                        </div>
-                    </div>
                 </div>
                 <!-- hidden input -->
                 <input type="hidden" name="temp_code" :value="temp_code">
@@ -253,18 +241,6 @@
                                         <div class="form-group">
                                             <label :for="`price-${index}-${index_size}`">Precio</label>
                                             <input class="form-control" :id="`price-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices', size, index, index_size)" v-model="combination.sizes[index_size].price">
-                                        </div>
-                                    </div>
-                                    <div v-if="canPricesPerMethodPayment" class="col-md-3">
-                                        <div class="form-group">
-                                            <label :for="`price_card_credit-${index}-${index_size}`">Precio con tarjeta de credito</label>
-                                            <input class="form-control" :id="`price_card_credit-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices_card_credit', size, index, index_size)" v-model="combination.sizes[index_size].price_card_credit">
-                                        </div>
-                                    </div>
-                                    <div v-if="canPricesPerMethodPayment" class="col-md-3">
-                                        <div class="form-group">
-                                            <label :for="`price_credit-${index}-${index_size}`">Precio con credito</label>
-                                            <input class="form-control" :id="`price_credit-${index}-${index_size}`" type="number" min="0" step="any" :name="getCombinationInputName('prices_credit', size, index, index_size)" v-model="combination.sizes[index_size].price_credit">
                                         </div>
                                     </div>
                                 </div>
@@ -510,8 +486,6 @@
                                         size_id: combination.size_id,
                                         size_prop: combination.size,
                                         price: combination.price,
-                                        price_card_credit: combination.price_card_credit,
-                                        price_credit: combination.price_credit,
                                         product_stores:  this.stores.map((store) => {
                                             const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
                                             return {
@@ -532,8 +506,6 @@
                                 size_id: combination.size_id,
                                 size_prop: combination.size,
                                 price: combination.price,
-                                price_card_credit: combination.price_card_credit,
-                                price_credit: combination.price_credit,
                                 product_stores: this.stores.map((store) => {
                                     const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
                                     return {
@@ -629,8 +601,6 @@
                             size_prop: null,
                             code: null,
                             price: null,
-                            price_card_credit: null,
-                            price_credit: null,
                             product_stores:  this.stores.map((store) => {
                                 return {
                                     store_id: store.id,
@@ -665,8 +635,6 @@
                             size_id: null,
                             size_prop: null,
                             price: null,
-                            price_card_credit: null,
-                            price_credit: null,
                             product_stores:  this.stores.map((store) => {
                                 return {
                                     store_id: store.id,

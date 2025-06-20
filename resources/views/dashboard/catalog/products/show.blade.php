@@ -441,20 +441,6 @@
                                             <input class="form-control" value="{{ $product->regular_price_str }}" readOnly>
                                         </div>
                                     </div>
-                                    @can('prices-per-method-payment')
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Precio con Tarjeta de Credito</label>
-                                            <input class="form-control" value="{{ $product->regular_price_card_credit_str }}" readOnly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Precio con Credito</label>
-                                            <input class="form-control" value="{{ $product->regular_price_credit_str }}" readOnly>
-                                        </div>
-                                    </div>
-                                    @endcan
                                 </div>
                                 <!--  -->
                                 <br>
@@ -596,20 +582,7 @@
                                                                 <input class="form-control" value="{{ $product_combination->regular_price_str }}" readOnly>
                                                             </div>
                                                         </div>
-                                                        @can('prices-per-method-payment')
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label>Precio con Tarjeta de Credito</label>
-                                                                <input class="form-control" value="{{ $product_combination->regular_price_card_credit_str }}" readOnly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label>Precio con Credito</label>
-                                                                <input class="form-control" value="{{ $product_combination->regular_price_credit_str }}" readOnly>
-                                                            </div>
-                                                        </div>
-                                                        @endcan
+                                                      
                                                     </div>
 
                                                     {{-- stores for product NO Regular --}}

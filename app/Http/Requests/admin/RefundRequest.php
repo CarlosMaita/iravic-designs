@@ -237,11 +237,6 @@ class RefundRequest extends FormRequest
                         if ($qty <= 0) { continue; }
 
                         $real_price =  $product->regular_price; // Precio regular por defecto
-                        if(auth()->user()->can('prices-per-method-payment') ) {
-                            if ($this->payment_method == "card" || $this->payment_method == "credit") {
-                                $real_price = $this->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
-                            }
-                        }
                         $subtotal += ($real_price * $qty);
                     }
                 }

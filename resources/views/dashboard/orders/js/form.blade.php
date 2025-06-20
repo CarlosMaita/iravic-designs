@@ -325,19 +325,8 @@
             $('.input-product-qty').not("tr.child .input-product-qty").each(function(index, item) {
                 
                 const price = $(item).data('price'),
-                      priceCardCredit = $(item).data('price-card-credit'),
-                      priceCredit = $(item).data('price-credit'),
                       val = Number(item.value);
                 let finalPrice = price;
-                if (CAN_PRICES_PER_METHOD_PAYMENT == true) {
-                    if(payment_method_selected == "card") {
-                        finalPrice = priceCardCredit;
-                    } else if(payment_method_selected == "credit") {
-                        finalPrice = priceCredit;
-                    }
-                }
-                
-
                 subtotal += (finalPrice * val);
             });
 
@@ -548,8 +537,6 @@
                         data-store-id="${storeId}"
                         data-name="${product.name}"
                         data-price="${product.regular_price}"
-                        data-price-card-credit="${product.regular_price_card_credit}" 
-                        data-price-credit="${product.regular_price_credit}" 
                         data-stock="${storeStock}" 
                         value="${value}">`,
                 `<input type="hidden" name="products[${product.id}][${storeId}]" value="${product.name}">

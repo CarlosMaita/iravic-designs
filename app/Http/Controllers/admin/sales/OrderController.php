@@ -169,11 +169,6 @@ class OrderController extends Controller
                                 continue;
                             }
                             $real_price =  $product->regular_price; // Precio regular por defecto
-                            if(auth()->user()->can('prices-per-method-payment') ) {
-                                if ($request->payment_method == "card" || $request->payment_method == "credit") {
-                                    $real_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
-                                }
-                            }
                             $attributes = array(
                                 'color_id' => $product->color_id,
                                 'order_id'  => $order->id,
@@ -293,11 +288,6 @@ class OrderController extends Controller
                                 continue;
                             }
                             $real_price = $product->regular_price; // Precio regular por defecto
-                            if(auth()->user()->can('prices-per-method-payment') ) {
-                                if ($request->payment_method == "card" || $request->payment_method == "credit") {
-                                    $real_price = $request->payment_method == "card" ?  $product->regular_price_card_credit : $product->regular_price_credit;
-                                }
-                            }
                             $subtotal += ($real_price * $qty);
 
                         }

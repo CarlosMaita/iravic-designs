@@ -41,8 +41,6 @@ class ProductResource extends JsonResource
                     'size_id' => $combination->size_id,
                     'size_name' => $combination->size->name,
                     'price' => $combination->price,
-                    'price_card_credit' => $combination->price_card_credit,
-                    'price_credit' => $combination->price_credit,
                     'product_stores' => $this->stores->map(function ($store) use ($combination) {
                         return [
                             'store_id' => $store->id,

@@ -2148,8 +2148,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                           size_id: combination.size_id,
                           size_prop: combination.size,
                           price: combination.price,
-                          price_card_credit: combination.price_card_credit,
-                          price_credit: combination.price_credit,
                           product_stores: _this2.stores.map(function (store) {
                             var _combination$stores;
                             var productStore = (_combination$stores = combination.stores) === null || _combination$stores === void 0 ? void 0 : _combination$stores.find(function (pStore) {
@@ -2171,8 +2169,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         size_id: combination.size_id,
                         size_prop: combination.size,
                         price: combination.price,
-                        price_card_credit: combination.price_card_credit,
-                        price_credit: combination.price_credit,
                         product_stores: _this2.stores.map(function (store) {
                           var _combination$stores2;
                           var productStore = (_combination$stores2 = combination.stores) === null || _combination$stores2 === void 0 ? void 0 : _combination$stores2.find(function (pStore) {
@@ -2279,8 +2275,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           size_prop: null,
           code: null,
           price: null,
-          price_card_credit: null,
-          price_credit: null,
           product_stores: this.stores.map(function (store) {
             return {
               store_id: store.id,
@@ -2312,8 +2306,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         size_id: null,
         size_prop: null,
         price: null,
-        price_card_credit: null,
-        price_credit: null,
         product_stores: this.stores.map(function (store) {
           return {
             store_id: store.id,
@@ -3009,11 +3001,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var paymentMethodSelected = this.paymentMethodSelected;
       return this.productsSelectedToBuy.reduce(function (prev, cur) {
         var priceReal = cur.product.regular_price;
-        if (paymentMethodSelected === 'card') {
-          priceReal = cur.product.regular_price_card_credit;
-        } else if (paymentMethodSelected === 'credit') {
-          priceReal = cur.product.regular_price_credit;
-        }
         return prev + cur.qty * priceReal;
       }, 0.00);
     },
@@ -4597,76 +4584,7 @@ var render = function render() {
         _vm.$set(_vm.product, "price", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _vm.canPricesPerMethodPayment ? _c("div", {
-    "class": {
-      "col-4": _vm.canPricesPerMethodPayment,
-      "col-6": !_vm.canPricesPerMethodPayment
-    }
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "price_card_credit"
-    }
-  }, [_vm._v("Precio con Tarjeta de Credito")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.product.price_card_credit,
-      expression: "product.price_card_credit"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "price_card_credit",
-      type: "number",
-      min: "0",
-      step: "any"
-    },
-    domProps: {
-      value: _vm.product.price_card_credit
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.product, "price_card_credit", $event.target.value);
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), _vm.canPricesPerMethodPayment ? _c("div", {
-    ref: "",
-    "class": {
-      "col-4": _vm.canPricesPerMethodPayment,
-      "col-6": !_vm.canPricesPerMethodPayment
-    }
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "price_credit"
-    }
-  }, [_vm._v("Precio con Credito")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.product.price_credit,
-      expression: "product.price_credit"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "price_credit",
-      type: "number",
-      min: "0",
-      step: "any"
-    },
-    domProps: {
-      value: _vm.product.price_credit
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.product, "price_credit", $event.target.value);
-      }
-    }
-  })])]) : _vm._e()]), _vm._v(" "), _c("input", {
+  })])])]), _vm._v(" "), _c("input", {
     attrs: {
       type: "hidden",
       name: "temp_code"
@@ -5129,71 +5047,7 @@ var render = function render() {
             _vm.$set(combination.sizes[index_size], "price", $event.target.value);
           }
         }
-      })])]), _vm._v(" "), _vm.canPricesPerMethodPayment ? _c("div", {
-        staticClass: "col-md-3"
-      }, [_c("div", {
-        staticClass: "form-group"
-      }, [_c("label", {
-        attrs: {
-          "for": "price_card_credit-".concat(index, "-").concat(index_size)
-        }
-      }, [_vm._v("Precio con tarjeta de credito")]), _vm._v(" "), _c("input", {
-        directives: [{
-          name: "model",
-          rawName: "v-model",
-          value: combination.sizes[index_size].price_card_credit,
-          expression: "combination.sizes[index_size].price_card_credit"
-        }],
-        staticClass: "form-control",
-        attrs: {
-          id: "price_card_credit-".concat(index, "-").concat(index_size),
-          type: "number",
-          min: "0",
-          step: "any",
-          name: _vm.getCombinationInputName("prices_card_credit", size, index, index_size)
-        },
-        domProps: {
-          value: combination.sizes[index_size].price_card_credit
-        },
-        on: {
-          input: function input($event) {
-            if ($event.target.composing) return;
-            _vm.$set(combination.sizes[index_size], "price_card_credit", $event.target.value);
-          }
-        }
-      })])]) : _vm._e(), _vm._v(" "), _vm.canPricesPerMethodPayment ? _c("div", {
-        staticClass: "col-md-3"
-      }, [_c("div", {
-        staticClass: "form-group"
-      }, [_c("label", {
-        attrs: {
-          "for": "price_credit-".concat(index, "-").concat(index_size)
-        }
-      }, [_vm._v("Precio con credito")]), _vm._v(" "), _c("input", {
-        directives: [{
-          name: "model",
-          rawName: "v-model",
-          value: combination.sizes[index_size].price_credit,
-          expression: "combination.sizes[index_size].price_credit"
-        }],
-        staticClass: "form-control",
-        attrs: {
-          id: "price_credit-".concat(index, "-").concat(index_size),
-          type: "number",
-          min: "0",
-          step: "any",
-          name: _vm.getCombinationInputName("prices_credit", size, index, index_size)
-        },
-        domProps: {
-          value: combination.sizes[index_size].price_credit
-        },
-        on: {
-          input: function input($event) {
-            if ($event.target.composing) return;
-            _vm.$set(combination.sizes[index_size], "price_credit", $event.target.value);
-          }
-        }
-      })])]) : _vm._e()]), _vm._v(" "), _c("div", {
+      })])])]), _vm._v(" "), _c("div", {
         staticClass: "row"
       }, _vm._l(combination.sizes[index_size].product_stores, function (product_store) {
         return _c("div", {
