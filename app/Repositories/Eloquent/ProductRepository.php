@@ -142,8 +142,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'name',
             'description',
             'price',
-            'price_card_credit',
-            'price_credit',
         );
 
         $product = $this->create($attributes);
@@ -182,8 +180,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'name',
             'description',
             'price',
-            'price_card_credit',
-            'price_credit'
         );
 
         $product = $this->create($attributes);
@@ -202,8 +198,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 'text_color' => $request->text_colors[$key][$key_new_combination],
                                 'size_id' => $request->sizes[$key][$key_new_combination],
                                 'price' => $request->prices[$key][$key_new_combination],
-                                'price_card_credit' => $request->prices_card_credit[$key][$key_new_combination] ?? null,
-                                'price_credit' => $request->prices_credit[$key][$key_new_combination] ?? null,
                             ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );
@@ -277,8 +271,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'name',
             'description',
             'price',
-            'price_card_credit',
-            'price_credit',
             'slug',
         );
 
@@ -321,8 +313,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'name',
             'description',
             'price',
-            'price_card_credit',
-            'price_credit',
             'slug',
         );
 
@@ -354,8 +344,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                     'text_color' => $request->text_colors_existing[$key][$product_combination_id],
                                     'size_id' => $request->sizes_existing[$key][$product_combination_id],
                                     'price' => $request->prices_existing[$key][$product_combination_id],
-                                    'price_card_credit' => $request->prices_card_credit_existing[$key][$product_combination_id] ?? null,
-                                    'price_credit' => $request->prices_credit_existing[$key][$product_combination_id] ?? null,
                                 ),
                                 $request->only('brand_id', 'category_id', 'gender', 'name')
                             );
@@ -427,8 +415,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                                 'text_color' => $request->text_colors[$key][($key_new_combination + $total_existing)],
                                 'size_id' => $request->sizes[$key][($key_new_combination + $total_existing)],
                                 'price' => $request->prices[$key][($key_new_combination + $total_existing)],
-                                'price_card_credit' => $request->prices_card_credit[$key][($key_new_combination + $total_existing)] ?? null,
-                                'price_credit' => $request->prices_credit[$key][($key_new_combination + $total_existing)] ?? null,
                             ),
                             $request->only('brand_id', 'category_id', 'gender', 'name')
                         );

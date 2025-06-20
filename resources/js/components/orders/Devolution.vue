@@ -661,12 +661,6 @@
                 let paymentMethodSelected = this.paymentMethodSelected;
                 return this.productsSelectedToBuy.reduce((prev, cur) => {
                     let priceReal = cur.product.regular_price;
-                    if (paymentMethodSelected === 'card') {
-                        priceReal = cur.product.regular_price_card_credit;
-                    } else if (paymentMethodSelected === 'credit') {
-                        priceReal = cur.product.regular_price_credit;
-                    }
-                    
                     return prev + (cur.qty * priceReal);
                 }, 0.00);
             },

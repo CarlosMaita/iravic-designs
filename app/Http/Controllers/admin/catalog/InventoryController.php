@@ -92,11 +92,7 @@ private function processProducts($data_products, $id_row, $price_row, $storeIds,
         $product = $products->firstWhere('id', $id);
         if ($product) {
             $price = $row[$price_row] ?? 0;
-            $price_card_credit = $row[$price_row + 1] ?? 0;
-            $price_credit = $row[$price_row + 2] ?? 0;
             $product->price = $price;
-            $product->price_card_credit = $price_card_credit;
-            $product->price_credit = $price_credit;
             $product->save();
 
             foreach ($storeIds as $index => $store_id) {

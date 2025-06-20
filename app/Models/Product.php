@@ -33,8 +33,6 @@ class Product extends Model
         'is_regular',
         'gender',
         'price',
-        'price_card_credit',
-        'price_credit',
         'is_child_size',
         'combination_index'
     ];
@@ -48,10 +46,6 @@ class Product extends Model
         'real_code',
         'regular_price',
         'regular_price_str',
-        'regular_price_card_credit',
-        'regular_price_card_credit_str',
-        'regular_price_credit',
-        'regular_price_credit_str',
         'stock_total'
     ];
 
@@ -178,32 +172,12 @@ class Product extends Model
         return  $this->price ? $this->price : $this->product_parent->price ?? 0;
     }
 
-    public function getRegularPriceCardCreditAttribute()
-    {
-        return  $this->price_card_credit ? $this->price_card_credit : $this->product_parent->price_card_credit ?? $this->regular_price;
-    }
-
-    public function getRegularPriceCreditAttribute()
-    {
-        return  $this->price_credit ? $this->price_credit : $this->product_parent->price_credit ?? $this->regular_price;
-    }
-    
     /**
      * Retorna en formato moneda, el precio del producto. Si es combinancion, devolvera su precio si lo tiene, sino, devuelve el del producto base
      */
     public function getRegularPriceStrAttribute()
     {
         return  FormatHelper::formatCurrency($this->regular_price);
-    }
-
-    public function getRegularPriceCardCreditStrAttribute()
-    {
-        return  FormatHelper::formatCurrency($this->regular_price_card_credit);
-    }
-
-    public function getRegularPriceCreditStrAttribute()
-    {
-        return  FormatHelper::formatCurrency($this->regular_price_credit);
     }
 
     /**
