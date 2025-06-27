@@ -11,15 +11,16 @@
     <meta name="description" content="@yield('meta-description', 'Tienda de ropa para niños')">
     <meta name="keywords" content="@yield('meta-keywords', 'tienda, ecommerce, ropa para niños, moda infantil')">
     <meta name="author" content="Iravic">
-    <meta name="robots" content="nofollow">
 
+    
     @yield('meta-tags')
-
+    
     <!-- Webmanifest + Favicon / App icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
+    
     @if (app()->environment('production'))
+    
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){
@@ -29,6 +30,10 @@
         })(window,document,'script','dataLayer','GTM-TM3WBXHH');
     </script>
     <!-- End Google Tag Manager -->
+    @else
+    {{--  Si no es produccion que el buscador no la siga --}}
+    <meta name="robots" content="nofollow">
+    
     @endif
 
     {{-- <link rel="manifest" href="/manifest.json"> --}}

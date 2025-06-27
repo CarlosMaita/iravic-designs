@@ -9,7 +9,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Catalogo de Productos">
 <meta property="og:description" content="Explora nuestro catalogo de productos de moda infantil">
-<meta property="og:image" content="{{ asset('assets/cartzilla/images/og-image.jpg') }}">
+<meta property="og:image" content="{{ asset('img/img-catalog.jpg') }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:site_name" content="Iravic">
 <meta property="og:locale" content="es_ES">

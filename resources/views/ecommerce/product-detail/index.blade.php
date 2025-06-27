@@ -11,7 +11,7 @@
 <meta property="og:type" content="product">
 <meta property="og:title" content="{{ $productDetail->name }}">
 <meta property="og:description" content="{{ $productDetail->description }}">
-<meta property="og:image" content="{{ $productDetail->images[0] ? asset('storage/' . $productDetail->images[0]) : asset('assets/cartzilla/images/og-image.jpg') }}">    
+<meta property="og:image" content="{{ $productDetail->images[0] ? $productDetail->images[0] : asset('assets/cartzilla/images/og-image.jpg') }}">    
 
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:site_name" content="Iravic">
