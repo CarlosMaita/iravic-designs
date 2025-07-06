@@ -173,19 +173,29 @@
         Auth::user()->can('viewany', App\Models\Config::class) || 
         Auth::user()->can('viewany', App\Models\Permission::class) || 
         Auth::user()->can('viewany', App\Models\Role::class) || 
-        Auth::user()->can('viewany', App\User::class)
+        Auth::user()->can('viewany', App\User::class) ||
+        Auth::user()->can('viewany', App\Models\Banner::class)
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/config/usuarios", false, true) . " " .
             $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
             $menuService->isActive($url,"/admin/config/permisos", false, true) . " " . 
-            $menuService->isActive($url,"/admin/config/general", false, true)
+            $menuService->isActive($url,"/admin/config/general", false, true) . " " .
+            $menuService->isActive($url,"/admin/banners", false, true)
         }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cog c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.settings') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 @can('viewany', App\Models\Config::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/general")}}" href="{{ route('general.index') }}"></span>{{ __('dashboard.sidebar.general') }}</a>
+                    </li>
+                @endcan
+                {{-- Banner CRUD --}}
+                @can('viewany', App\Models\Banner::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/banners')}}" href="{{ route('banners.index') }}">
+                            <span class="c-sidebar-nav-icon"></span> Banners
+                        </a>
                     </li>
                 @endcan
                 {{--  --}}

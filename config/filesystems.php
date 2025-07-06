@@ -99,6 +99,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'banners' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/img/banners'),
+            'url' => env('APP_URL').'/storage/img/banners',
+            'visibility' => 'public',
+        ],
+
         'spendings' => [
             'driver' => 'local',
             'root' => storage_path('app/public/img/spendings'),

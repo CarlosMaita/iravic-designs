@@ -35,7 +35,9 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|max:100',
-            'base_category_id' => 'required|exists:base_categories,id'
+            'base_category_id' => 'required|exists:base_categories,id',
+            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bg_banner' => 'nullable|string|max:100',
         ];
     }
 }

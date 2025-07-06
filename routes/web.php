@@ -12,15 +12,22 @@
 */
 
 use App\Http\Controllers\Auth\CustomerLoginController;
-use App\Http\Controllers\ecommerce\DashboardEcommerceController;
-use App\Http\Controllers\ecommerce\MyprofileEcommerceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
-Route::get('/', 'HomeController@index')->name('ecommerce.home');
-Route::get('/categoria/{category}', 'HomeController@category')->name('ecommerce.categoria');
-Route::get('/producto/{slug}', 'HomeController@show')->name('ecommerce.product.detail');
+
+# Ecommerce Routes
+Route::group(['namespace' => 'ecommerce'], function () {
+    # Home
+    Route::get('/', 'HomeController@index')->name('ecommerce.home');
+    # Catalog
+    Route::get('/catalog', 'CatalogController@index')->name('ecommerce.catalog');
+    # Category
+    Route::get('/categoria/{category}', 'CatalogController@category')->name('ecommerce.categoria');
+    # Product Detail
+    Route::get('/producto/{slug}', 'CatalogController@show')->name('ecommerce.product.detail');
+});
 
 #
 Route::get('ingresar',           [CustomerLoginController::class, 'showLoginForm'])->name('customer.login.form');
@@ -32,8 +39,8 @@ Route::middleware(['auth:customer'])->group(function () {
 
 });
 
+
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
-    
     Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
     #
     Route::get('mi-perfil', 'MyProfileController@index')->name('my-profile.index');
@@ -42,35 +49,24 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     #
     Route::put('mi-perfil', 'MyProfileController@update')->name('my-profile.update');
 
+    // Banner Resource
+    Route::resource('banners', 'BannerController')->except('show');
+
     # Catalog Routes
     Route::group(['prefix' => 'catalogo', 'namespace' => 'catalog'], function () {
-        #
         Route::resource('categorias', 'CategoryController')->except('show');
-        #
         Route::resource('marcas', 'BrandController')->except('show');
-        #
         Route::resource('productos', 'ProductController');
-        #
         Route::post('productos-stock', 'ProductController@updateStock')->name('productos.stock.update');
-        #
         Route::delete('productos-combinaciones', 'ProductController@destroyCombinations')->name('productos.delete_combinations');
-        #
         Route::resource('productos-stock-history', 'ProductStockHistoryController')->only('index');
-        #
         Route::resource('stock-transferencias', 'ProductStockTransferController')->except('create');
-        #
         Route::resource('producto-imagen', 'ProductImageController')->only('index' , 'store', 'destroy');
-        #
         Route::post('producto-imagen-dropzone', 'ProductImageController@destroyWithRequest')->name('producto-imagen.dropzone.destroy');
-        #
         Route::get('download', 'ProductController@download')->name('catalog.download');
-        #
         Route::get('inventario/download', 'InventoryController@download')->name("catalog.inventory.download");
-        #
         Route::post('inventario/upload', 'InventoryController@upload')->name("catalog.inventory.upload");
-        #
         Route::resource('colors', 'ColorController');
-
     });
 
     # Stock Routes - Rutas de Almacenamiento

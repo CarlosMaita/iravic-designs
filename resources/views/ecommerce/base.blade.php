@@ -77,7 +77,7 @@
               <i class="ci-chevron-left"></i>
             </button>
           </div>
-          <div class="swiper fs-sm text-white" data-swiper='{
+          <div class="swiper promo fs-sm text-white" data-swiper='{
             "spaceBetween": 24,
             "loop": true,
             "autoplay": {
@@ -170,6 +170,10 @@
         }).show();
       }
     </script>
+
+    @stack('scripts')
+    @stack('js')
+
   </body>
 </html>
 

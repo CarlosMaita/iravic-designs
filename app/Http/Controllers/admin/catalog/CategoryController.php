@@ -78,22 +78,30 @@ class CategoryController extends Controller
     {
         try {
             $this->authorize('create', 'App\Models\Category');
-            $this->categoryRepository->create($request->only(['name', 'base_category_id']));
+    
+            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner']);
+    
+            // Handle image upload for image_banner
+            if ($request->hasFile('image_banner')) {
+                $imagePath = $request->file('image_banner')->store('categories', 'public');
+                $categoryData['image_banner'] = $imagePath;
+            }
+    
+            $this->categoryRepository->create($categoryData);
+    
             flash("La categoría <b>$request->name</b> ha sido creada con éxito")->success();
-
+    
+            
             return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'redirect' => route('categorias.index')
-                    ]
+                'success' => true,
+                'data' => [
+                    'redirect' => route('categorias.index')
+                ]
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('dashboard.general.operation_error'),
-                'error' => [
-                    'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
-                ]
+                'error' => $e->getMessage()
             ]);
         }
     }
@@ -123,11 +131,21 @@ class CategoryController extends Controller
     {
         try {
             $this->authorize('update', $categoria);
-            $this->categoryRepository->update($categoria->id, $request->only(['name', 'base_category_id']));
+    
+            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner']);
+    
+            // Handle image upload for image_banner
+            if ($request->hasFile('image_banner')) {
+                $imagePath = $request->file('image_banner')->store('categories', 'public');
+                $categoryData['image_banner'] = $imagePath;
+            }
+    
+            $this->categoryRepository->update($categoria->id, $categoryData);
+    
             flash("La categoría <b>$request->name</b> ha sido actualizada con éxito")->success();
 
             return response()->json([
-                'success' => 'true',
+                'success' => true,
                 'data' => [
                     'redirect' => route('categorias.edit', $categoria->id)
                 ]

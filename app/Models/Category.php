@@ -16,11 +16,16 @@ class Category extends Model
     protected $guarded = [];
 
     public $fillable = [
-        'name', 'base_category_id'
+        'name', 'base_category_id', 'image_banner', 'bg_banner'
     ];
 
     public function baseCategory()
     {
         return $this->hasOne(BaseCategory::class, 'id', 'base_category_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
     }
 }
