@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use App\Models\Product;
+use App\Models\Category;
+use Spatie\Sitemap\SitemapGenerator;
+use Spatie\Sitemap\Tags\Url;
+
+class GenerateSitemap extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'sitemap:generate';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Generate the sitemap.';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        $sitemap = SitemapGenerator::create(config('app.url'))
+            ->getSitemap();
+
+        // Add static pages
+        $sitemap->add(Url::create('/'));
+        $sitemap->add(Url::create('/catalogo'));
+
+        // Add products
+        Product::all()->each(function (Product $product) use ($sitemap) {
+            $sitemap->add(Url::create("/producto/{$product->slug}"));
+        });
+
+        // Add categories
+        Category::all()->each(function (Category $category) use ($sitemap) {
+            $sitemap->add(Url::create("/categoria/{$category->slug}"));
+        });
+
+        $sitemap->writeToFile(public_path('sitemap.xml'));
+
+        $this->info('Sitemap generated successfully.');
+
+        return 0;
+    }
+}
