@@ -1,7 +1,7 @@
 <!-- Search offcanvas -->
 <div class="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabindex="-1">
     <div class="offcanvas-header border-bottom p-0 py-lg-1">
-    <form class="container d-flex align-items-center" action="{{route('ecommerce.home')}}" method="get">
+    <form class="container d-flex align-items-center" action="{{route('ecommerce.catalog')}}" method="get">
         <input id="search-modal" type="search" name="search" class="form-control form-control-lg fs-lg border-0 rounded-0 py-3 ps-0" placeholder="Buscar tus productos" data-autofocus="offcanvas">
         <button type="reset" class="btn-close fs-lg" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </form>

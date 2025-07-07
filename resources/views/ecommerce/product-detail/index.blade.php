@@ -26,8 +26,8 @@
 <!-- Breadcrumb -->
 <nav class="container" aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a >Inicio</a></li>
-        <li class="breadcrumb-item"><a href="/">Catologo</a></li>
+        <li class="breadcrumb-item"><a href="/" >Inicio</a></li>
+        <li class="breadcrumb-item"><a href="/catalogo">Catologo</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{$productDetail->name}}</li>
     </ol>
 </nav>
