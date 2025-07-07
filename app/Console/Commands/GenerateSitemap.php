@@ -31,6 +31,11 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
+        // Remove existing sitemap.xml file
+        if (file_exists(public_path('sitemap.xml'))) {
+            unlink(public_path('sitemap.xml'));
+        }
+
         $sitemap = SitemapGenerator::create(config('app.url'))
             ->getSitemap();
        
