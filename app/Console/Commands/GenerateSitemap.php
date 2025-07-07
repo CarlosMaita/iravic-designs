@@ -35,17 +35,17 @@ class GenerateSitemap extends Command
             ->getSitemap();
 
         // Add static pages
-        $sitemap->add(Url::create('/'));
-        $sitemap->add(Url::create('/catalogo'));
+        $sitemap->add(Url::create('/')->setPriority(1.0));
+        $sitemap->add(Url::create('/catalogo')->setPriority(0.8));
 
         // Add products
         Product::all()->each(function (Product $product) use ($sitemap) {
-            $sitemap->add(Url::create("/producto/{$product->slug}"));
+            $sitemap->add(Url::create("/producto/{$product->slug}")->setPriority(0.6));
         });
 
         // Add categories
         Category::all()->each(function (Category $category) use ($sitemap) {
-            $sitemap->add(Url::create("/categoria/{$category->slug}"));
+            $sitemap->add(Url::create("/categoria/{$category->slug}")->setPriority(0.7));
         });
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
