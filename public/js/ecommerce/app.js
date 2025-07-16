@@ -1950,11 +1950,6 @@ __webpack_require__.r(__webpack_exports__);
       "default": ''
     }
   },
-  computed: {
-    categoryString: function categoryString() {
-      return this.category !== null && this.category !== undefined ? String(this.category) : '';
-    }
-  },
   mounted: function mounted() {},
   data: function data() {
     return {};
@@ -2026,7 +2021,7 @@ __webpack_require__.r(__webpack_exports__);
     }
     if (this.category) {
       this.selectedCategory = this.categories.find(function (category) {
-        return category.slug === _this.category;
+        return category.id == _this.category;
       });
     }
     this.setFilter();
@@ -2892,7 +2887,7 @@ var render = function render() {
       genders: _vm.genders,
       colors: _vm.colors,
       search: _vm.search,
-      category: _vm.categoryString
+      category: _vm.category
     },
     on: {
       "filter-applied": _vm.setFilters

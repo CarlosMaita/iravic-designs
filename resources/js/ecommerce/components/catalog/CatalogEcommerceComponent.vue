@@ -14,7 +14,7 @@
                     :genders="genders"
                     :colors="colors"
                     :search="search"
-                    :category="categoryString"
+                    :category="category"
                     @filter-applied="setFilters"
                     ></filter-ecommerce-component>
                 
@@ -58,11 +58,6 @@
                 type: String,
                 default: '',
             },
-        },
-        computed: {
-            categoryString() {
-                return this.category !== null && this.category !== undefined ? String(this.category) : '';
-            }
         },
         mounted(){
                

@@ -67,7 +67,7 @@ class CatalogController extends Controller
     public function category($slug)
     {
         $search = $this->getSearchInput();
-        $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::where('slug', $slug)->firstOrFail()->id;
         return view('ecommerce.catalog.index', compact('search','category'));
     }
 
