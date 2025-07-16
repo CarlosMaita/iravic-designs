@@ -266,7 +266,7 @@ export default {
         default: '',
       },
       category: {
-        type: String,
+        type: Number,
         default: '',
       },
     }, 
