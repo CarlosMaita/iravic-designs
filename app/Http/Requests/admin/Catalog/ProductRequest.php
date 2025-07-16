@@ -163,7 +163,7 @@ class ProductRequest extends FormRequest
                 'min:3',
                 'max:191',
                 'alpha_dash',
-                Rule::unique('products', 'slug')->ignore($this->route('producto')->id),
+                Rule::unique('products', 'slug')->ignore(optional($this->route('producto'))->id),
             ],
         ];
 
