@@ -61,13 +61,13 @@ class CatalogController extends Controller
     /**
         * Display a listing of products for a specific category.
         *
-        * @param  int  $id The ID of the category to display.
+        * @param  int  $slug ID of the category to display.
         * @return \Illuminate\View\View
         */
-    public function category($id)
+    public function category($slug)
     {
         $search = $this->getSearchInput();
-        $category = Category::findOrFail($id)->id;
+        $category = Category::where('slug', $slug)->firstOrFail();
         return view('ecommerce.catalog.index', compact('search','category'));
     }
 

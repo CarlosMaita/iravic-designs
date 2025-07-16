@@ -24,7 +24,7 @@ Route::group(['namespace' => 'ecommerce'], function () {
     # Catalog
     Route::get('/catalogo', 'CatalogController@index')->name('ecommerce.catalog');
     # Category
-    Route::get('/categoria/{category}', 'CatalogController@category')->name('ecommerce.categoria');
+Route::get('/categoria/{slug}', 'CatalogController@category')->name('ecommerce.categoria');
     # Product Detail
     Route::get('/producto/{slug}', 'CatalogController@show')->name('ecommerce.product.detail');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\admin\Catalog;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
@@ -13,6 +14,7 @@ class CategoryRequest extends FormRequest
             'name.unique' => 'El campo nombre ya se encuentra ocupado por otra categoría',
             'name.max' => 'El campo nombre no puede tener mas de :max caracteres.',
             'base_category_id.required' => 'El campo categoría base es obligatorio.',
+            'slug.unique' => 'El valor del campo slug ya está en uso.',
         ];
     }
 
@@ -33,11 +35,21 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $categoryId = $this->route('categoria') ? $this->route('categoria')->id : null;
+        $rules = [
             'name' => 'required|max:100',
             'base_category_id' => 'required|exists:base_categories,id',
             'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bg_banner' => 'nullable|string|max:100',
+            'slug' => [
+                'required',
+                'min:3',
+                'max:191',
+                'alpha_dash',
+                Rule::unique('categories', 'slug')->ignore($categoryId),
+            ],
         ];
+
+        return $rules;
     }
 }

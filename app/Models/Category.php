@@ -15,9 +15,19 @@ class Category extends Model
 
     protected $guarded = [];
 
-    public $fillable = [
-        'name', 'base_category_id', 'image_banner', 'bg_banner'
+    protected $fillable = [
+        'name', 'base_category_id', 'image_banner', 'bg_banner', 'slug'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = \Illuminate\Support\Str::slug($category->name);
+            }
+        });
+    }
 
     public function baseCategory()
     {

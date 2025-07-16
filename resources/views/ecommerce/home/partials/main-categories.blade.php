@@ -24,7 +24,7 @@
             <p class="fs-xs pb-2 mb-1">{{ $category->products_count ?? '—' }} productos</p>
             <h2 class="h5 mb-2 mb-xxl-3">{{ $category->name }}</h2>
             <div class="nav">
-              <a class="nav-link animate-underline stretched-link text-body-emphasis text-nowrap px-0" href="{{ route('ecommerce.catalog', ['categoria' => $category->slug ?? Str::slug($category->name)]) }}">
+              <a class="nav-link animate-underline stretched-link text-body-emphasis text-nowrap px-0" href="{{ route('ecommerce.categoria', $category->slug) }}">
                 <span class="animate-target">Ver productos</span>
                 <i class="ci-chevron-right fs-base ms-1"></i>
               </a>

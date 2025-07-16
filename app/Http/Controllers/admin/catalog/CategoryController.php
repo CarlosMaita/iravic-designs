@@ -79,7 +79,12 @@ class CategoryController extends Controller
         try {
             $this->authorize('create', 'App\Models\Category');
     
-            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner']);
+            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner', 'slug']);
+
+            // Si no se envía slug, se genera automáticamente (el modelo también lo hace)
+            if (empty($categoryData['slug'])) {
+                $categoryData['slug'] = \Illuminate\Support\Str::slug($categoryData['name']);
+            }
     
             // Handle image upload for image_banner
             if ($request->hasFile('image_banner')) {
@@ -115,9 +120,10 @@ class CategoryController extends Controller
     public function edit(Category $categoria)
     {
         $this->authorize('update', $categoria);
-        return view('dashboard.catalog.categories.edit')
-                ->withCategory($categoria)
-                ->with( 'base_categories', BaseCategory::all());
+        return view('dashboard.catalog.categories.edit', [
+            'category' => $categoria,
+            'base_categories' => BaseCategory::all()
+        ]);
     }
 
     /**
@@ -132,7 +138,7 @@ class CategoryController extends Controller
         try {
             $this->authorize('update', $categoria);
     
-            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner']);
+            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner', 'slug']);
     
             // Handle image upload for image_banner
             if ($request->hasFile('image_banner')) {

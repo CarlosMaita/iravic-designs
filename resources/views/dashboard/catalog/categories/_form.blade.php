@@ -17,6 +17,13 @@
     </div>
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
+            <label for="slug">Slug</label>
+            <input class="form-control" id="slug" name="slug" type="text" value="{{ old('slug', $category->slug) }}" maxlength="100" placeholder="Ejemplo: nombre-categoria">
+            <small class="form-text text-muted">El slug se usa en la URL. Si no se especifica, se generará automáticamente.</small>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group">
             <label for="image_banner">{{ __('Imagen de la tarjeta en Home') }}</label>
             <input class="form-control" id="image_banner" name="image_banner" type="file" accept="image/*">
             @if($category->image_banner)
