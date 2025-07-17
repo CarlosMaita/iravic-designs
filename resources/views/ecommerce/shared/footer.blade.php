@@ -124,39 +124,38 @@
 
         <!-- Social account links -->
         <div class="d-flex justify-content-center justify-content-lg-start gap-2 mt-n2 mt-md-0">
-          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://www.instagram.com/iravic_p/" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Instagram" aria-label="Follow us on Instagram">
-            <i class="ci-instagram"></i>
-          </a>
-          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://www.facebook.com/IravicDesigns" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Facebook" aria-label="Follow us on Facebook">
-            <i class="ci-facebook"></i>
-          </a>
-          <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://wa.me/584144519511" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="WhatsApp" aria-label="Follow us on WhatsApp">
-            <i class="ci-whatsapp"></i>
-          </a>
+          <div class="d-flex w-100 justify-content-between align-items-center">
+            <div class="d-flex gap-2">
+              <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://www.instagram.com/iravic_p/" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Instagram" aria-label="Follow us on Instagram">
+                <i class="ci-instagram"></i>
+              </a>
+              <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://www.facebook.com/IravicDesigns" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="Facebook" aria-label="Follow us on Facebook">
+                <i class="ci-facebook"></i>
+              </a>
+              <a class="btn btn-icon fs-base btn-outline-secondary border-0" href="https://wa.me/584144519511" data-bs-toggle="tooltip" data-bs-template='<div class="tooltip fs-xs mb-n2" role="tooltip"><div class="tooltip-inner bg-transparent text-body p-0"></div></div>' title="WhatsApp" aria-label="Follow us on WhatsApp">
+                <i class="ci-whatsapp"></i>
+              </a>
+            </div>
+            <!-- MercadoLibre logo and link -->
+            <div class="text-end ms-auto">
+              <a href="https://listado.mercadolibre.com.ve/_CustId_339872697?item_id=MLV853890916&category_id=MLV116909&seller_id=339872697&client=recoview-selleritems&recos_listing=true" target="_blank" rel="noopener" title="MercadoLibre Iravic">
+              <img src="/assets/img/mercado-libre-logo.png" alt="MercadoLibre" style="height:40px;max-width:160px;object-fit:contain;">
+              </a>
+              <div class="mt-1 text-body-secondary" style="font-size: 12px; line-height: 120%;">
+                100% recomendado<br>
+                por compradores<br>
+               <a href="https://listado.mercadolibre.com.ve/_CustId_339872697?item_id=MLV853890916&category_id=MLV116909&seller_id=339872697&client=recoview-selleritems&recos_listing=true" target="_blank" rel="noopener" title="MercadoLibre Iravic">
+                Ver perfil
+                </a>
+              </div>
+             
+            </div>
+          </div>
         </div>
 
         <!-- Copyright + Payment methods -->
         <div class="d-lg-flex align-items-center border-top pt-4 mt-3">
           <div class="d-flex gap-2 gap-sm-3 justify-content-center ms-lg-auto mb-3 mb-md-4 mb-lg-0 order-lg-2">
-            {{-- <div>
-              <img src="assets/cartzilla/img/payment-methods/visa-light-mode.svg" class="d-none-dark" alt="Visa">
-              <img src="assets/cartzilla/img/payment-methods/visa-dark-mode.svg" class="d-none d-block-dark" alt="Visa">
-            </div>
-            <div>
-              <img src="assets/cartzilla/img/payment-methods/paypal-light-mode.svg" class="d-none-dark" alt="PayPal">
-              <img src="assets/cartzilla/img/payment-methods/paypal-dark-mode.svg" class="d-none d-block-dark" alt="PayPal">
-            </div>
-            <div>
-              <img src="assets/cartzilla/img/payment-methods/mastercard.svg" alt="Mastercard">
-            </div>
-            <div>
-              <img src="assets/cartzilla/img/payment-methods/google-pay-light-mode.svg" class="d-none-dark" alt="Google Pay">
-              <img src="assets/cartzilla/img/payment-methods/google-pay-dark-mode.svg" class="d-none d-block-dark" alt="Google Pay">
-            </div>
-            <div>
-              <img src="assets/cartzilla/img/payment-methods/apple-pay-light-mode.svg" class="d-none-dark" alt="Apple Pay">
-              <img src="assets/cartzilla/img/payment-methods/apple-pay-dark-mode.svg" class="d-none d-block-dark" alt="Apple Pay">
-            </div> --}}
           </div>
           <div class="d-md-flex justify-content-center order-lg-1">
             <ul class="nav justify-content-center gap-4 order-md-3 mb-4 mb-md-0">
