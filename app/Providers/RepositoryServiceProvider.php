@@ -19,7 +19,6 @@ use App\Repositories\RefundProductRepositoryInterface;
 use App\Repositories\RoleRepositoryInterface;
 use App\Repositories\SpendingRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
-use App\Repositories\ZoneRepositoryInterface;
 use App\Repositories\Eloquent\BaseRepository;
 use App\Repositories\Eloquent\BoxRepository;
 use App\Repositories\Eloquent\CategoryRepository;
@@ -37,7 +36,6 @@ use App\Repositories\Eloquent\RefundProductRepository;
 use App\Repositories\Eloquent\RoleRepository;
 use App\Repositories\Eloquent\SpendingRepository;
 use App\Repositories\Eloquent\UserRepository;
-use App\Repositories\Eloquent\ZoneRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -66,7 +64,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(SpendingRepositoryInterface::class, SpendingRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(ZoneRepositoryInterface::class, ZoneRepository::class);
     }
 
     /**
