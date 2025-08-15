@@ -109,8 +109,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('ventas', 'OrderController')->except('edit', 'update', 'destroy');
         #
         Route::get('ventas-descuento', 'OrderController@calculateDiscount')->name('ventas.discount');
-        #
-        Route::resource('creditos', 'CreditController')->only('index', 'show', 'edit', 'update' , 'destroy');
+
     });
 
     # Config Routes
