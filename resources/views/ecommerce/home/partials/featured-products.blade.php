@@ -47,7 +47,7 @@
                 <a href="{{ route('ecommerce.product.detail', $product->slug) }}" class="product-link">
                   <div class="product-image-container">
                     @if($product->images->count() > 0)
-                      <img src="{{ $product->images->first()->image_url }}" 
+                      <img src="{{ $product->images->first()->full_url_img }}" 
                            alt="{{ $product->name }}" 
                            class="product-image">
                     @else
