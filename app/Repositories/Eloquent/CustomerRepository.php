@@ -5,7 +5,6 @@ namespace App\Repositories\Eloquent;
 use App\Constants\DaysConstants;
 use App\Constants\FrequencyCollectionConstants;
 use App\Models\Customer;
-use App\Models\Visit;
 use Illuminate\Support\Collection;
 use App\Repositories\CustomerRepositoryInterface;
 use Carbon\Carbon;
@@ -99,60 +98,23 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      */
     public function pendingToScheduleToNotify(): Collection
     {
-        $customers = $this->model->where('is_pending_to_schedule', 1 )
-                            ->with('zone')
-                            ->get();
-
-        return $customers;
+        // Return empty collection since scheduling module is removed
+        return collect();
     }
 
     public function pendingToScheduleToNotifyQuery()
     {
-        return $this->model
-            ->where('is_pending_to_schedule', 1)
-            ->with('zone');
+        // Return query that returns no results since scheduling module is removed
+        return $this->model->whereRaw('1 = 0');
     }
 
     public function updateVisits( $collection_frequency, $collection_day, $customer_id ){
-
-        $Visits  = Visit::where('customer_id', $customer_id)
-                        ->whereDate('date', '>=', now())
-                        ->get();   
-
-        $nextDate = self::setNextDateVisit( Carbon::parse(now()) , $collection_frequency, $collection_day);
-        $Visits->each(function ($visit) use ($nextDate, $collection_frequency, $collection_day) {
-            $visit->update(['date' => $nextDate ]);  
-            $nextDate = self::setNextDateVisit( $nextDate , $collection_frequency , $collection_day);
-        });
+        // No-op since visits/scheduling module is removed
     }
 
     public static function setNextDateVisit( $date, $collection_frequency, $collection_day ): Carbon
     {
-        $numberDay  = DaysConstants::collectionDayToNumber($collection_day);
-        $numberWeek = FrequencyCollectionConstants::getWeekWithCollectionFrequency($collection_frequency);
-        /* No hay fecha programada para el cobro, Crea una nueva fecha de cobro */
-        // cada mes
-        switch ($collection_frequency) {
-            case FrequencyCollectionConstants::CADA_MES_PRIMERA_SEMANA:
-            case FrequencyCollectionConstants::CADA_MES_SEGUNDA_SEMANA:
-            case FrequencyCollectionConstants::CADA_MES_TERCERA_SEMANA:
-            case FrequencyCollectionConstants::CADA_MES_CUARTA_SEMANA:
-                $date->addMonth();
-                $date->startOfMonth();
-                $date->next( $numberDay );
-                $date->addWeeks($numberWeek - 1);
-                break;
-            case FrequencyCollectionConstants::CADA_DOS_SEMANAS:
-                $date->next( $numberDay );
-                $date->next( $numberDay );
-                break;
-            case FrequencyCollectionConstants::CADA_SEMANA:
-                $date->next( $numberDay );
-                break;
-            default:
-                break;
-        }
-                
-       return $date;
+        // Kept for backwards compatibility but no longer used since scheduling module is removed
+        return $date;
     }
 }

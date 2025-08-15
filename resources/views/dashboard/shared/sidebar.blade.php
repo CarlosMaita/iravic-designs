@@ -10,12 +10,7 @@
         <a class="c-sidebar-nav-link" href="{{ route('admin.home') }}"><i class="cil-compass c-sidebar-nav-icon"></i> {{ __('dashboard.breadcrumb.home') }}</a>
     </li>
 
-    {{-- Schedule link --}}
-    @if (Auth::user()->can('viewany', App\Models\Schedule::class))
-    <li class="c-sidebar-nav-item {{ $menuService->isActive($url,"/admin/gestion-agendas/agendas", false, true) }}">
-        <a class="c-sidebar-nav-link" href="{{ route('agendas.index') }}"><i class="cil-calendar-check c-sidebar-nav-icon"></i> {{ __('dashboard.sidebar.schedules') }}</a>
-    </li>
-    @endif
+    
     {{-- Orders Management links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Box::class) ||
@@ -129,13 +124,11 @@
     @if (
         Auth::user()->can('viewany', App\Models\Customer::class) ||
         Auth::user()->can('viewany', App\Models\Zone::class) ||
-        Gate::check('view-customers-debtors') ||
-        Gate::check('view-customers-pending-to-schedule')
+        Gate::check('view-customers-debtors')
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) . " " .
             $menuService->isActive($url,"/admin/gestion-clientes/morosos", false, true) . " " .
-            $menuService->isActive($url,"/admin/gestion-clientes/pendiente-agendar", false, true) . " " .
             $menuService->isActive($url,"/admin/gestion-clientes/zonas", false, true)
         }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
@@ -151,12 +144,6 @@
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/morosos")}}" href="{{ route('clientes.debtors') }}"></span>{{ __('dashboard.sidebar.debtors') }}</a>
                     </li>
-                @endif
-                {{-- pending to schedule  --}}
-                @if (Gate::check('view-customers-pending-to-schedule'))
-                <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/pendiente-agendar")}}" href="{{ route('clientes.pendiente.agendar') }}"></span>{{ __('dashboard.sidebar.pending-to-schedule') }}</a>
-                </li>
                 @endif
                 {{-- Zones --}}
                 @can('viewany', App\Models\Zone::class)
