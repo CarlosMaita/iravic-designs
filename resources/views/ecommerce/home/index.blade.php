@@ -28,7 +28,7 @@
   {{-- @include('ecommerce.home.partials.main-categories') --}}
 
   {{--  Featured Products --}}
-  {{-- @include('ecommerce.home.partials.featured-products') --}}
+  @include('ecommerce.home.partials.featured-products', ['featuredProducts' => $featuredProducts])
 
 @endsection
 

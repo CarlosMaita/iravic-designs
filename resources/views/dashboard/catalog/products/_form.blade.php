@@ -5,6 +5,10 @@
             <input class="form-check-input" type="checkbox" name="is_regular" id="is_regular" value="1" @if(($product->exists &&$product->is_regular) || !$product->exists) checked @endif>
             <label class="form-check-label" for="is_regular">{{ __('dashboard.form.fields.products.is_regular') }}</label>
         </div>
+        <div class="form-check form-check-inline mb-4">
+            <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured" value="1" @if($product->exists && $product->is_featured) checked @endif>
+            <label class="form-check-label" for="is_featured">Producto Destacado</label>
+        </div>
     </div>
 </div>
 <div class="row">

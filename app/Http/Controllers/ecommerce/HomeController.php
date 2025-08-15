@@ -25,7 +25,13 @@ class HomeController extends Controller
         $categories = Category::withCount('products')->orderBy('id')->get();
         $categories_cards = Category::withCount('products')->orderBy('id')->take(3)->get();
         $banners = \App\Models\Banner::orderBy('order')->get();
-        return view('ecommerce.home.index', compact('categories', 'categories_cards', 'banners'));
+        $featuredProducts = Product::where('is_featured', true)
+                                  ->with(['images', 'category'])
+                                  ->orderBy('updated_at', 'desc')
+                                  ->take(12)
+                                  ->get();
+        
+        return view('ecommerce.home.index', compact('categories', 'categories_cards', 'banners', 'featuredProducts'));
     }
 
 }
