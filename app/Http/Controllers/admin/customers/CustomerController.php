@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CustomerRequest;
 use App\Models\Customer;
 use App\Repositories\Eloquent\CustomerRepository;
-use App\Repositories\Eloquent\ZoneRepository;
 use App\Services\Images\ImageService;
 use Exception;
 use Illuminate\Support\Facades\Gate;
@@ -23,12 +22,9 @@ class CustomerController extends Controller
 {
     public $customerRepository;
 
-    public $zoneRepository;
-
-    public function __construct(CustomerRepository $customerRepository, ZoneRepository $zoneRepository)
+    public function __construct(CustomerRepository $customerRepository)
     {
         $this->customerRepository = $customerRepository;
-        $this->zoneRepository = $zoneRepository;
     }
 
     /**
@@ -115,13 +111,11 @@ class CustomerController extends Controller
     public function create()
     {
         $this->authorize('create', 'App\Models\Customer');
-        $zones = $this->zoneRepository->all();
         $frequencyOptions = FrequencyCollectionConstants::FREQUENCY_COLLECTION_OPTIONS;
         return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
                 ->withFrequencyOptions($frequencyOptions)
-                ->withQualifications(CustomerConstants::QUALIFICATIONS)
-                ->withZones($zones);
+                ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
 
     /**
@@ -160,8 +154,7 @@ class CustomerController extends Controller
                     'name',
                     'email',
                     'qualification',
-                    'telephone',
-                    'zone_id'
+                    'telephone'
                 )
             );
 
@@ -240,11 +233,9 @@ class CustomerController extends Controller
     public function edit(Customer $cliente)
     {
         $this->authorize('update', $cliente);
-        $zones = $this->zoneRepository->all();
         return view('dashboard.customers.edit')
                 ->withCustomer($cliente)
-                ->withQualifications(CustomerConstants::QUALIFICATIONS)
-                ->withZones($zones);
+                ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
 
     /**
@@ -283,8 +274,7 @@ class CustomerController extends Controller
                     'name', 
                     'email', 
                     'qualification', 
-                    'telephone', 
-                    'zone_id'
+                    'telephone'
                 )
             );
             $this->customerRepository->update($cliente->id, $attributes);

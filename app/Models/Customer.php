@@ -18,7 +18,6 @@ class Customer extends Authenticatable
     protected $table = 'customers';
 
     protected $fillable = [
-        'zone_id',
         'address',
         'address_picture',
         'contact_name',
@@ -126,12 +125,6 @@ class Customer extends Authenticatable
         return $this->hasMany('App\Models\Refund');
     }
 
-
-    public function zone()
-    {
-        return $this->belongsTo('App\Models\Zone');
-    }
-    
     # Attributes
     /**
      * Retorna en formato moneda, el balance del cliente

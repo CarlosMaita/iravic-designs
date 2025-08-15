@@ -81,10 +81,6 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('clientes', 'CustomerController');
         #
         Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
-        #
-        Route::resource('zonas', 'ZoneController');
-        #
-        Route::post('zonas-ordenar', 'ZoneController@sort')->name('zonas.sort');
     });
 
     # Box && Orders Routes
