@@ -105,30 +105,6 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexPendingToSchedule(Request $request)
-    {
-        Gate::authorize('view-customers-pending-to-schedule');
-
-        if ($request->ajax()) {
-            $customers = $this->customerRepository->pendingToScheduleToNotifyQuery();
-            return DataTables::of($customers)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $btn = '';
-
-                        if (Auth::user()->can('view', $row)) {
-                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        }
-
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->toJson();
-        }
-
-        return view('dashboard.customers.index_pending_to_schedule');
-    }
-
     
 
     /**
@@ -283,13 +259,7 @@ class CustomerController extends Controller
         try {
             $this->authorize('update', $cliente);
             DB::beginTransaction();
-            // Actualizar fecha de las visitas si la frecuencia o dia de cobro cambia.
-            if ( $cliente->collection_frequency != $request->collection_frequency ||
-                 $cliente->collection_day != $request->collection_day ) 
-            {
-                // Actualiza las visitas con la nueva frecuencia de cobro.
-                $this->customerRepository->updateVisits( $request->collection_frequency, $request->collection_day, $cliente->id);
-            }
+            
             $attributes = array_merge(
                 array('address_picture' => $cliente->updateImage(Customer::DISK_ADDRESS, $cliente->address_picture, $request->address_picture, $request->delete_address_picture)),
                 array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
@@ -351,11 +321,11 @@ class CustomerController extends Controller
     {
         try {
             $this->authorize('delete', $cliente);
-              #validar existencia de ordenes o visitas antes de eliminar
-              if ($cliente->existsOrders() || $cliente->existsVisits() ){
+              #validar existencia de ordenes antes de eliminar
+              if ($cliente->existsOrders()){
                   return response()->json([
                       'success' => false,
-                      'message' => "El cliente no ha podido ser eliminada existe ordenes y/o visitas asociadas"
+                      'message' => "El cliente no ha podido ser eliminada existe ordenes asociadas"
                   ]); 
               }
             DB::beginTransaction();

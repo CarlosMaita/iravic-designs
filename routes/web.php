@@ -82,23 +82,9 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
         #
-        Route::get('pendiente-agendar', 'CustomerController@indexPendingToSchedule')->name('clientes.pendiente.agendar');
-        #
         Route::resource('zonas', 'ZoneController');
         #
         Route::post('zonas-ordenar', 'ZoneController@sort')->name('zonas.sort');
-    });
-
-    # Schedules Routes
-    Route::group(['prefix' => 'gestion-agendas', 'namespace' => 'schedules'], function () {
-        #
-        Route::resource('agendas', 'ScheduleController')->except('create', 'store', 'edit', 'update');
-        #
-        Route::resource('visitas', 'VisitController')->except('create', 'show');
-        Route::put('visitas/{visita}/update-responsable', 'VisitController@updateResponsable');
-        Route::put('visitas/{visita}/postpone', 'VisitController@postpone')->name('visitas.postpone');
-        Route::put('visitas/{visita}/complete', 'VisitController@complete');
-        Route::post('visitas-ordenar', 'VisitController@sort')->name('visitas.sort');
     });
 
     # Box && Orders Routes

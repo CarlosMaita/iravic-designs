@@ -71,10 +71,6 @@ class Order extends Model
         return $this->hasOne('App\Models\Collection');
     }
 
-    public function visits () {
-        return $this->hasMany('App\Models\Visit');
-    }
-
     # Boot
     protected static function boot()
     {
