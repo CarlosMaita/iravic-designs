@@ -22,11 +22,13 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <div  class="form-check form-check-inline mb-4">
+                            <input type="hidden" name="is_regular" value="0">
                             <input class="form-check-input" type="checkbox" name="is_regular" id="is_regular" value="1"  
                             v-model="is_regular">
                             <label class="form-check-label" for="is_regular">Es producto regular (Sin combinaciones)</label>
                         </div>
                         <div class="form-check form-check-inline mb-4">
+                            <input type="hidden" name="is_featured" value="0">
                             <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured" value="1" 
                             v-model="is_featured">
                             <label class="form-check-label" for="is_featured">Producto Destacado</label>
