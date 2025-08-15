@@ -26,6 +26,11 @@
                             v-model="is_regular">
                             <label class="form-check-label" for="is_regular">Es producto regular (Sin combinaciones)</label>
                         </div>
+                        <div class="form-check form-check-inline mb-4">
+                            <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured" value="1" 
+                            v-model="is_featured">
+                            <label class="form-check-label" for="is_featured">Producto Destacado</label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -282,6 +287,7 @@
                     description: '',
                     code: '',
                     is_regular: 1,
+                    is_featured: 0,
                     product_combinations: []
                 })
             },
@@ -353,6 +359,7 @@
             gender: null,
             product_stores: [],
             is_regular: 1,
+            is_featured: 0,
             combinations: [],
             loading: false,
             mounted: false,
@@ -453,6 +460,9 @@
             if (this.product.id) {
                 if (!this.product.is_regular) {
                     this.is_regular = 0;
+                }
+                if (this.product.is_featured) {
+                    this.is_featured = 1;
                 }
                 this.brand = this.product.brand;
                 this.category = this.product.category;
