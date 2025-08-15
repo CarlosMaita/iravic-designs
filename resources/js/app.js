@@ -49,7 +49,7 @@ Vue.component('product-item-to-buy', require('./components/orders/ProductItemToB
 Vue.component('credit-information', require('./components/orders/CreditInformationComponent.vue').default);
 Vue.component('frequency-collection', require('./components/orders/FrequencyCollectionComponent.vue').default);
 // inventory components
-Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
+Vue.component('import-inventory', require('./components/inventory/importInventoryComponent.vue').default);
 // credit components
 Vue.component('credit-show', require('./components/credits/CreditShowComponent.vue').default);
 Vue.component('credit-form', require('./components/credits/CreditFormComponent.vue').default);
