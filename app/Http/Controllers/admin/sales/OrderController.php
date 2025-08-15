@@ -14,9 +14,7 @@ use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
-use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\StoreRepository;
-use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use Carbon\Carbon;
 use Exception;
@@ -37,10 +35,6 @@ class OrderController extends Controller
 
     public $productRepository;
 
-    public $scheduleRepository;
-
-    public $visitRepository;
-
     public $zoneRepository;
 
     public $creditRepository;
@@ -53,8 +47,8 @@ class OrderController extends Controller
     public function __construct(
         BoxRepository $boxRepository, CustomerRepository $customerRepository,
         OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
-        ProductRepository $productRepository, ScheduleRepository $scheduleRepository, 
-        VisitRepository $visitRepository, ZoneRepository $zoneRepository, 
+        ProductRepository $productRepository,  
+         ZoneRepository $zoneRepository, 
         CreditRepository $creditRepository,
         StoreRepository $storesRepository
     )
@@ -64,8 +58,6 @@ class OrderController extends Controller
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->visitRepository = $visitRepository;
         $this->zoneRepository = $zoneRepository;
         $this->creditRepository = $creditRepository;
         $this->storesRepository = $storesRepository;

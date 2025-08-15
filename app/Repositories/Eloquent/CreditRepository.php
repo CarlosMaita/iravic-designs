@@ -26,7 +26,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
         parent::__construct($model);
     }
     
-    public function all($columns = array('*'))
+    public function getAllWithRelations($columns = array('*'))
     {
         return $this->model->with('order', 'order.customer')->get();
     }
@@ -38,7 +38,7 @@ class CreditRepository extends BaseRepository implements CreditRepositoryInterfa
      */
     public function allGroupedByCustomer($columns = array('*'))
     {
-        $credits = $this->all($columns);
+        $credits = $this->getAllWithRelations($columns);
 
         $grouped = SupportCollection::make($credits)->groupBy('order.customer.id');
 

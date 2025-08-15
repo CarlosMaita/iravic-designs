@@ -7,8 +7,6 @@ use App\Http\Requests\admin\PaymentRequest;
 use App\Models\Payment;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\PaymentRepository;
-use App\Repositories\Eloquent\ScheduleRepository;
-use App\Repositories\Eloquent\VisitRepository;
 use Carbon\Carbon;
 use DataTables;
 use Exception;
@@ -20,21 +18,13 @@ class PaymentController extends Controller
 {
     public $paymentRepository;
 
-    public $scheduleRepository;
-
-    public $visitRepository;
-
     public $customerRepository;
 
     public function __construct(
         PaymentRepository $paymentRepository, 
-        ScheduleRepository $scheduleRepository,
-        VisitRepository $visitRepository, 
         CustomerRepository $customerRepository)
     {
         $this->paymentRepository = $paymentRepository;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->visitRepository = $visitRepository;
         $this->customerRepository = $customerRepository;
         $this->middleware('box.open')->only('create');
     }
