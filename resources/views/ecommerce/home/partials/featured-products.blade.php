@@ -6,7 +6,7 @@
       <div class="col-lg-8 col-xl-6">
         <div class="text-center pb-4 mb-2 mb-md-3">
           <h2 class="h1 mb-0">Productos Destacados</h2>
-          <p class="fs-lg text-body-secondary mb-0">Descubre nuestra selección especial de productos</p>
+          <p class="fs-lg text-body-secondary mb-0">Descubre nuestra selección destacada de productos</p>
         </div>
       </div>
     </div>
