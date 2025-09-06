@@ -46,8 +46,6 @@ class CustomerRequest extends FormRequest
             'cellphone.regex' => 'Ingresa un número de teléfono celular válido. Solo se permiten números, el signo + al inicio y espacios.',
             'contact_telephone.max' => 'El campo teléfono de contacto debe ser menor a :max caracteres.',
             'contact_telephone.regex' => 'Ingresa un número de teléfono de contacto válido. Solo se permiten números, el signo + al inicio y espacios.',
-            'zone_id.required' => 'El campo zona es obligatorio.',
-            'zone_id.exists' => 'La zona seleccionada no existe en nuestra BD.',
             'dni_picture.image' => 'La foto de la C.I debe ser una imagen.',
             'receipt_picture.image' => 'La foto del recibo debe ser una imagen.',
             'card_front.image' => 'La foto del frente de la tarjeta  debe ser una imagen.',
@@ -92,7 +90,6 @@ class CustomerRequest extends FormRequest
             'max_credit' => 'required|numeric|min:0',
             'days_to_notify_debt' => 'required|integer|min:0|max:500',
             'qualification' => ['required', Rule::in(CustomerConstants::QUALIFICATIONS)],
-            'zone_id' => 'required|exists:zones,id',
             'collection_day' => 'required',
             'collection_frequency' => 'required',
         ];

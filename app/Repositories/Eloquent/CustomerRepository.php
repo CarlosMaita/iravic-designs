@@ -30,7 +30,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      */
     public function all(): Collection
     {
-        return $this->model->with('zone')->orderBy('name')->get();
+        return $this->model->orderBy('name')->get();
     }
 
     /**
@@ -40,7 +40,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      */
     public function allQuery()
     {
-        return $this->model->with('zone')->orderBy('name');
+        return $this->model->orderBy('name');
     }
 
 
@@ -66,7 +66,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      */
     public function debtorsToNotify(): Collection
     {
-        $customers = $this->model->with('zone')
+        $customers = $this->model
                             ->whereHas('debts')
                             ->orWhereHas('orders', function($q) {
                                 $q->where('payed_credit', 1);
@@ -81,7 +81,6 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     public function debtorsToNotifyQuery()
     {
         return $this->model
-            ->with('zone')
             ->whereHas('debts')
             ->orWhereHas('orders', function ( $query) {
                 $query->where('payed_credit', true);

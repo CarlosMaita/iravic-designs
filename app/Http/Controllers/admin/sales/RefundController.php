@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin\sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\RefundRequest;
 use App\Models\Refund;
-use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\DebtRepository;
 use App\Repositories\Eloquent\DebtOrderProductRepository;
@@ -39,8 +38,6 @@ class RefundController extends Controller
     
     public $refundProductRepository;
 
-    public $creditRepository;
-
     /**
      * Construct
      */
@@ -52,8 +49,7 @@ class RefundController extends Controller
         OrderProductRepository $orderProductRepository, 
         ProductRepository $productRepository, 
         RefundRepository $refundRepository, 
-        RefundProductRepository $refundProductRepository, 
-        CreditRepository $creditRepository
+        RefundProductRepository $refundProductRepository
     )
     {
         $this->customerRepository = $customerRepository;
@@ -64,7 +60,6 @@ class RefundController extends Controller
         $this->productRepository = $productRepository;
         $this->refundRepository = $refundRepository;
         $this->refundProductRepository = $refundProductRepository;
-        $this->creditRepository = $creditRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -267,42 +262,10 @@ class RefundController extends Controller
 
                 /**
                  * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+                 * Note: Credit functionality has been removed
                  */
-                if ($request->payed_credit) {
-                    $quota = $request->input('quotas');
-                    $amount_quotas = $request->input('amount-quotas');
-                    $start_date = $request->input('start-quotas');
+                // Credit logic removed - credits module has been disabled
 
-                    /**
-                     * Crear Credito para el cliente
-                     */
-                    $attributes = array(
-                        'start_date' => $start_date,
-                        'amount_quotas' => $amount_quotas,
-                        'quota' => $quota,
-                        'total' => $totals['total_order'],   
-                        'order_id' => $order->id,   
-                        'customer_id' => $customer_id,
-                    );
-                    $credit = $this->creditRepository->create($attributes);
-
-                    /**
-                     * Crear Cobros para el cliente apartir de la fecha inicial de cobro 
-                     * 
-                     */
-                    $attributes = array(
-                        'start_date' => $start_date,
-                        'amount_quotas' => $amount_quotas,
-                        'quota' => $quota,
-                        'credit_id' => $credit->id,
-                        'customer_id' => $customer_id,
-                        'user_id' => Auth::user()->id,
-                    ); 
-                    $this->creditRepository->createCollectionsAndVisits($attributes);
-
-                }
-
-               
 
                 if ($is_credit_shared)
                 {

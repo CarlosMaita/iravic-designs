@@ -67,12 +67,7 @@ class RefundRequest extends FormRequest
             }
         }
 
-        if (isset($this->payment_method) && $this->payment_method == 'credit') {
-            $messages['amount-quotas.required'] = 'El campo cantidad de cuotas es obligatorio.';
-            $messages['amount-quotas.min'] = 'El campo cantidad de cuotas debe ser mayor a :min.';
-            $messages['start-quotas.required'] = 'El campo Fecha de inicio de Pago es obligatorio.';
-            $messages['quotas.required'] = 'required';
-        }
+        // Credit payment method validation removed - credits module disabled
 
         return $messages;
     }
@@ -103,7 +98,7 @@ class RefundRequest extends FormRequest
         ];
 
         if (!empty($this->products)) {
-            $rules['payment_method'] = ['required', Rule::in(['bankwire', 'card', 'cash', 'credit'])];
+            $rules['payment_method'] = ['required', Rule::in(['bankwire', 'card', 'cash'])];
             $rules['products'] = 'required|array|min:1';
             // $rules['products.*'] = 'exists:products,id';
             $rules['qtys'] = 'required|array';
@@ -114,11 +109,7 @@ class RefundRequest extends FormRequest
             $rules['customer_id_new_credit'] = 'required|exists:customers,id';
         }
 
-        if (isset($this->payment_method) && $this->payment_method == 'credit') {
-            $rules['amount-quotas'] = 'required|numeric|min:1';
-            $rules['start-quotas'] = 'required|date';
-            $rules['quotas'] = 'required';
-        }
+        // Credit payment method validation rules removed - credits module disabled
 
         return $rules;
     }
@@ -151,25 +142,7 @@ class RefundRequest extends FormRequest
         /***
          * Se debe validar, si la venta es a credito, que el monto no supere el saldo disponible en credito
          */
-        if ( $this->payment_method == "credit")
-        {
-            #identificar a quien se le asignara el credito 
-            $validator->after(function ($validator) {
-                $credit_customer_id = isset($this->customer_id_new_credit) ? $this->customer_id_new_credit : $this->customer_id;
-                $customer_credit = Customer::find($credit_customer_id);
-                $balance = $customer_credit->getBalance();
-                $total_sale_with_discount = $this->getBuyTotal()['total'];
-                $max_credit = $customer_credit->max_credit ; 
-                $available_credit = $max_credit + $balance >= 0 ? $max_credit + $balance : 0;
-                $refund_credit =  $this->getRefundTotal()['total_by_credit'];
-
-                if (!$this->canRefundAndBuyOnCredit( $max_credit, $balance, $refund_credit,  $total_sale_with_discount)){
-                    $validator->errors()->add('payment_method', 'El usuario no cuenta con credito disponible para hacer la venta.
-                     Su compra debe ser menor o igual a $'. number_format(($available_credit + $refund_credit), 2, '.', ',') );
-                }
-
-            });
-        }
+        // Credit payment method validation removed - credits module disabled
 
         if (!$validator->fails()) {
             $this->merge([
@@ -180,8 +153,7 @@ class RefundRequest extends FormRequest
                 $this->merge([
                     'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,
                     'payed_card'        => isset($this->payment_method) && $this->payment_method == 'card' ? 1 : 0,
-                    'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0,
-                    'payed_credit'      => isset($this->payment_method) && $this->payment_method == 'credit' ? 1 : 0
+                    'payed_cash'        => isset($this->payment_method) && $this->payment_method == 'cash' ? 1 : 0
                 ]);
             }
         }

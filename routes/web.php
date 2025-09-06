@@ -81,10 +81,6 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('clientes', 'CustomerController');
         #
         Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
-        #
-        Route::resource('zonas', 'ZoneController');
-        #
-        Route::post('zonas-ordenar', 'ZoneController@sort')->name('zonas.sort');
     });
 
     # Orders Routes
@@ -107,8 +103,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::resource('ventas', 'OrderController')->except('edit', 'update', 'destroy');
         #
         Route::get('ventas-descuento', 'OrderController@calculateDiscount')->name('ventas.discount');
-        #
-        Route::resource('creditos', 'CreditController')->only('index', 'show', 'edit', 'update' , 'destroy');
+
     });
 
     # Config Routes

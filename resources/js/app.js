@@ -46,14 +46,9 @@ Vue.component('modal-add-producto-stock', require('./components/orders/ModalProd
 Vue.component('modal-producto-to-refund', require('./components/orders/ModalProductToRefund.vue').default);
 Vue.component('product-item-to-refund', require('./components/orders/ProductItemToRefund.vue').default);
 Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
-Vue.component('credit-information', require('./components/orders/CreditInformationComponent.vue').default);
 Vue.component('frequency-collection', require('./components/orders/FrequencyCollectionComponent.vue').default);
 // inventory components
 Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
-// credit components
-Vue.component('credit-show', require('./components/credits/CreditShowComponent.vue').default);
-Vue.component('credit-form', require('./components/credits/CreditFormComponent.vue').default);
-
 
 // global components
 Vue.component('v-select', vSelect)

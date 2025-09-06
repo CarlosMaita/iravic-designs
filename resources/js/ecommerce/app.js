@@ -48,6 +48,9 @@ Vue.component('product-detail-description-ecommerce-component', require('../ecom
 Vue.component('product-detail-skeleton-ecommerce-component', require('../ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue').default);
 Vue.component('product-card-skeleton-ecommerce-component', require('../ecommerce/components/catalog/ProductCardSkeletonEcommerceComponent.vue').default);
 
+// Home ecommerce components
+Vue.component('featured-products-carousel-ecommerce-component', require('../ecommerce/components/home/FeaturedProductsCarouselEcommerceComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

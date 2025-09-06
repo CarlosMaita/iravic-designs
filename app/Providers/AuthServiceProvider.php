@@ -30,7 +30,6 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Role'                   => 'App\Policies\RolePolicy',
         'App\Models\Spending'               => 'App\Policies\SpendingPolicy',
         'App\Models\Store'                  => 'App\Policies\StorePolicy',
-        'App\Models\Zone'                   => 'App\Policies\ZonePolicy',
         'App\User'                          => 'App\Policies\UserPolicy'
     ];
 
@@ -53,10 +52,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('view-customers-debtors', function ($user) {
             return $user->permissions()->contains('view-customers-debtors');
-        });
-
-        Gate::define('sort-zones', function ($user) {
-            return $user->permissions()->contains('sort-zones');
         });
 
         Gate::define('prices-per-method-payment', function ($user) {
