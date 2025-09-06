@@ -50,7 +50,6 @@ Vue.component('frequency-collection', require('./components/orders/FrequencyColl
 // inventory components
 Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
 
-
 // global components
 Vue.component('v-select', vSelect)
 Vue.component('v-dropzone', vue2Dropzone)
