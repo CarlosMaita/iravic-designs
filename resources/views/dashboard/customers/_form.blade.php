@@ -192,19 +192,6 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="zone">{{ __('dashboard.form.fields.customers.zone') }}</label>
-                <select id="zone" class="form-control" name="zone_id">
-                    <option selected disabled>Seleccionar</option>
-                    @foreach ($zones as $zone)
-                        <option value="{{ $zone->id }}" @if($customer->zone_id == $zone->id) selected @endif>{{ $zone->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-12 mt-5 col-md-offset-3 text-center">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="location-switch">

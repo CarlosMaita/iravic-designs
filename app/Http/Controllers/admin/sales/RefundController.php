@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin\sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\RefundRequest;
 use App\Models\Refund;
-use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\DebtRepository;
 use App\Repositories\Eloquent\DebtOrderProductRepository;
@@ -14,8 +13,6 @@ use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\RefundRepository;
 use App\Repositories\Eloquent\RefundProductRepository;
-use App\Repositories\Eloquent\ScheduleRepository;
-use App\Repositories\Eloquent\VisitRepository;
 use App\Services\Orders\OrderService;
 use Exception;
 use Illuminate\Http\Request;
@@ -41,12 +38,6 @@ class RefundController extends Controller
     
     public $refundProductRepository;
 
-    public $scheduleRepository;
-
-    public $creditRepository;
-
-    public $visitRepository;
-
     /**
      * Construct
      */
@@ -58,10 +49,7 @@ class RefundController extends Controller
         OrderProductRepository $orderProductRepository, 
         ProductRepository $productRepository, 
         RefundRepository $refundRepository, 
-        RefundProductRepository $refundProductRepository, 
-        ScheduleRepository $scheduleRepository, 
-        CreditRepository $creditRepository,
-        VisitRepository $visitRepository
+        RefundProductRepository $refundProductRepository
     )
     {
         $this->customerRepository = $customerRepository;
@@ -72,9 +60,6 @@ class RefundController extends Controller
         $this->productRepository = $productRepository;
         $this->refundRepository = $refundRepository;
         $this->refundProductRepository = $refundProductRepository;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->visitRepository = $visitRepository;
-        $this->creditRepository = $creditRepository;
         $this->middleware('box.open')->only('create');
     }
 
@@ -213,14 +198,7 @@ class RefundController extends Controller
             $customer = $this->customerRepository->find($customer_id); 
             $balance = $customer->getBalance();
             $total_refund = $totals['total_refund'];
-            if( $balance >= 0)
-            {
-                # Se remoeve las visitas de cobro pendientes
-                $this->visitRepository->removeVisitsOfCollection($customer_id);
-            }else{
-                # Se Re-ajustan los montos sugeridos de las visitas futuras
-                $this->visitRepository->updateCollectionsInFutureVisits($customer_id, $total_refund);
-            }
+            // Note: Visit adjustments removed since scheduling module is no longer available
 
             
             /**
@@ -284,42 +262,10 @@ class RefundController extends Controller
 
                 /**
                  * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+                 * Note: Credit functionality has been removed
                  */
-                if ($request->payed_credit) {
-                    $quota = $request->input('quotas');
-                    $amount_quotas = $request->input('amount-quotas');
-                    $start_date = $request->input('start-quotas');
+                // Credit logic removed - credits module has been disabled
 
-                    /**
-                     * Crear Credito para el cliente
-                     */
-                    $attributes = array(
-                        'start_date' => $start_date,
-                        'amount_quotas' => $amount_quotas,
-                        'quota' => $quota,
-                        'total' => $totals['total_order'],   
-                        'order_id' => $order->id,   
-                        'customer_id' => $customer_id,
-                    );
-                    $credit = $this->creditRepository->create($attributes);
-
-                    /**
-                     * Crear Cobros para el cliente apartir de la fecha inicial de cobro 
-                     * 
-                     */
-                    $attributes = array(
-                        'start_date' => $start_date,
-                        'amount_quotas' => $amount_quotas,
-                        'quota' => $quota,
-                        'credit_id' => $credit->id,
-                        'customer_id' => $customer_id,
-                        'user_id' => Auth::user()->id,
-                    ); 
-                    $this->creditRepository->createCollectionsAndVisits($attributes);
-
-                }
-
-               
 
                 if ($is_credit_shared)
                 {
@@ -362,24 +308,8 @@ class RefundController extends Controller
 
 
                 /**
-                 * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
-                 * Si selecciona una fecha para visita, intenta crear una agenda para esa fecha si aun no existe
-                 * 
-                 * Nota: En este caso 
-                 * Solo deberia haber visita si hay una compra nueva de productos
+                 * Note: Visit creation removed since scheduling module is no longer available
                  */
-                if (isset($request->enable_new_visit) && !empty($request->visit_date)) {
-                    $schedule = $this->scheduleRepository->firstOrCreate(array('date' => $request->visit_date));
-                    $attributes = array(
-                            'customer_id' => $order->customer_id,
-                            'order_id' => $order->id,
-                            'schedule_id' => $schedule->id,
-                            'user_id' => $request->user_id,
-                            'comment' => $request->visit_comment,
-                            'date' => $request->visit_date
-                        );
-                    $this->visitRepository->create($attributes);
-                }
             }
 
             DB::commit();

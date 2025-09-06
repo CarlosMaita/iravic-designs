@@ -18,7 +18,6 @@ class Customer extends Authenticatable
     protected $table = 'customers';
 
     protected $fillable = [
-        'zone_id',
         'address',
         'address_picture',
         'contact_name',
@@ -36,7 +35,6 @@ class Customer extends Authenticatable
         'card_front',
         'card_back',
         'qualification',
-        'is_pending_to_schedule',
         'telephone',
         'cellphone',
         'solvency_date',
@@ -127,16 +125,6 @@ class Customer extends Authenticatable
         return $this->hasMany('App\Models\Refund');
     }
 
-    public function visits()
-    {
-        return $this->hasMany('App\Models\Visit');
-    }
-
-    public function zone()
-    {
-        return $this->belongsTo('App\Models\Zone');
-    }
-    
     # Attributes
     /**
      * Retorna en formato moneda, el balance del cliente
@@ -176,18 +164,11 @@ class Customer extends Authenticatable
     }
 
     /**
-     * Retorna la fecha de la proxima visita (Si tiene)
+     * Retorna la fecha de la proxima visita - DEPRECATED (scheduling module removed)
      */
     public function getDateNextVisitAttribute()
     {
-        $now = now();
-        $date = null;
-
-        if ($next = $this->visits()->whereDate('date', '>=', $now)->orderBy('date', 'ASC')->first()) {
-            $date = $next->date;
-        }
-
-        return $date;
+        return null;
     }
 
     /**
@@ -479,11 +460,11 @@ class Customer extends Authenticatable
     }
 
     /**
-     * Retorna si existen Visitas vinculadas al cliente
+     * Retorna si existen Visitas vinculadas al cliente - DEPRECATED (scheduling module removed)
      */
     public function existsVisits() : bool
     {
-        return count($this->visits) > 0? true : false;
+        return false;
     }
 
     public function haveDebtsCustomer() : bool 
@@ -493,21 +474,20 @@ class Customer extends Authenticatable
 
     public function isPendingToSchedule() : bool 
     {
-        return $this->is_pending_to_schedule == 1 ? true : false ;
+        return false; // Always false since scheduling module is removed
     } 
 
     public function  setPendingToSchedule ($value) : void
     {
-        $this->is_pending_to_schedule = $value;
-        $this->save();
+        // No-op since scheduling module is removed
     }
 
     public function getPlanningCollection(){
         $balance = $this->getBalance();
-        $suggestedCollectionTotal = $this->getSuggestedCollectionTotal();
+        $suggestedCollectionTotal = 0; // No visits to calculate from
         $rest = round($suggestedCollectionTotal + $balance) ;
         return array(
-            'check' => (isset($rest) && $rest == 0 ) || $balance >= 0 ,
+            'check' => $balance >= 0,
             'rest' => $rest,
             'rest_formatted' => FormatHelper::formatCurrency($rest ?? 0),
             'customer_name' => $this->name,
@@ -515,10 +495,6 @@ class Customer extends Authenticatable
     }
 
     private function getSuggestedCollectionTotal(){
-        return  $this->visits()
-            ->where('is_collection', true)
-            ->whereDate('date', '>=', now())
-            ->sum('suggested_collection');
-
+        return 0; // No visits to calculate from since scheduling module is removed
     }
 }

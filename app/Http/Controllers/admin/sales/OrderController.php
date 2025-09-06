@@ -9,14 +9,11 @@ use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
 use App\Models\Store;
 use App\Repositories\Eloquent\BoxRepository;
-use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
 use App\Repositories\Eloquent\ProductRepository;
-use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Eloquent\StoreRepository;
-use App\Repositories\Eloquent\VisitRepository;
 use App\Repositories\Eloquent\ZoneRepository;
 use Carbon\Carbon;
 use Exception;
@@ -37,13 +34,7 @@ class OrderController extends Controller
 
     public $productRepository;
 
-    public $scheduleRepository;
-
-    public $visitRepository;
-
     public $zoneRepository;
-
-    public $creditRepository;
 
     public $storesRepository;
 
@@ -53,9 +44,8 @@ class OrderController extends Controller
     public function __construct(
         BoxRepository $boxRepository, CustomerRepository $customerRepository,
         OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
-        ProductRepository $productRepository, ScheduleRepository $scheduleRepository, 
-        VisitRepository $visitRepository, ZoneRepository $zoneRepository, 
-        CreditRepository $creditRepository,
+        ProductRepository $productRepository,  
+         ZoneRepository $zoneRepository, 
         StoreRepository $storesRepository
     )
     {
@@ -64,10 +54,7 @@ class OrderController extends Controller
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->visitRepository = $visitRepository;
         $this->zoneRepository = $zoneRepository;
-        $this->creditRepository = $creditRepository;
         $this->storesRepository = $storesRepository;
         $this->middleware('box.open')->only('create');
     }
@@ -189,39 +176,9 @@ class OrderController extends Controller
 
             /**
              * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+             * Note: Credit functionality has been removed
              */
-            if ($request->payed_credit) {
-                $quota = $request->input('quotas');
-                $amount_quotas = $request->input('amount-quotas');
-                $start_date = $request->input('start-quotas');
-                /**
-                 * Crear Credito para el cliente
-                 */
-                $attributes = array(
-                    'start_date' => $start_date,
-                    'amount_quotas' => $amount_quotas,
-                    'quota' => $quota,
-                    'total' => $request->total_to_collection,   
-                    'order_id' => $order->id,   
-                    'customer_id' => $request->customer_id,
-                );
-                $credit = $this->creditRepository->create($attributes);
-
-                /**
-                 * Crear Cobros para el cliente apartir de la fecha inicial de cobro 
-                 * 
-                 */
-                $attributes = array(
-                    'start_date' => $start_date,
-                    'amount_quotas' => $amount_quotas,
-                    'quota' => $quota,
-                    'credit_id' => $credit->id,
-                    'customer_id' => $request->customer_id,
-                    'user_id' => Auth::user()->id,
-                ); 
-                $this->creditRepository->createCollectionsAndVisits($attributes);
-
-            }
+            // Credit logic removed - credits module has been disabled
 
             /**
              * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente

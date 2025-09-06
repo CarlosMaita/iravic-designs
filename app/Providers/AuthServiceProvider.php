@@ -29,11 +29,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\ProductStockTransfer'   => 'App\Policies\ProductStockTransferPolicy',
         'App\Models\Refund'                 => 'App\Policies\RefundPolicy',
         'App\Models\Role'                   => 'App\Policies\RolePolicy',
-        'App\Models\Schedule'               => 'App\Policies\SchedulePolicy',
         'App\Models\Spending'               => 'App\Policies\SpendingPolicy',
         'App\Models\Store'                  => 'App\Policies\StorePolicy',
-        'App\Models\Visit'                  => 'App\Policies\VisitPolicy',
-        'App\Models\Zone'                   => 'App\Policies\ZonePolicy',
         'App\User'                          => 'App\Policies\UserPolicy'
     ];
 
@@ -56,14 +53,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('view-customers-debtors', function ($user) {
             return $user->permissions()->contains('view-customers-debtors');
-        });
-
-        Gate::define('view-customers-pending-to-schedule', function ($user) {
-            return $user->permissions()->contains('view-customers-pending-to-schedule');
-        });
-
-        Gate::define('sort-zones', function ($user) {
-            return $user->permissions()->contains('sort-zones');
         });
 
         Gate::define('prices-per-method-payment', function ($user) {

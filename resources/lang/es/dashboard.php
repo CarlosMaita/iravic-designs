@@ -34,8 +34,6 @@ return [
         'graphs' => [
             'orders' => 'Ventas',
             'refunds' => 'Devoluciones',
-            'credits' => 'Ventas a Crédito',
-            'collections' => 'Cobros de Crédito',
             'payments' => 'Pagos por Ventas',
             'cash_payments' => 'Pagos en Efectivo',
             'card_payments' => 'Pagos en Tarjeta',
@@ -89,7 +87,6 @@ return [
         'total_payments'        => 'Total pagos',
         'total_refund_credit'   => 'Total crédito devuelto',
         'total_debts'           => 'Total deudas',
-        'zone'                  => 'Zona',
         
     ],
     'config' => [
@@ -156,7 +153,6 @@ return [
                 'cellphone'           => 'Teléfono celular',
                 'telephone'           => 'Teléfono',
                 'total_debt'          => 'Deuda total',
-                'zone'                => 'Zona',
                 'card_front'          => 'Tarjeta Frente',
                 'card_back'           => 'Tarjeta Dorso'
             ],
@@ -311,18 +307,6 @@ return [
         'quotas'            => 'Monto por Cuotas',
         'total'             => 'Deuda Total',
     ],
-    'credits' => [
-        'index'             => 'Listado de créditos',
-        'create'            => 'Crear nuevo crédito',
-        'edit'              => 'Editar crédito',
-        'id'                => 'ID',
-        'frequency'         => 'Frecuencia',
-        'customer'          => 'Cliente',
-        'start_date'        => 'Fecha de Inicio',
-        'amount_quotas'     => 'N° Cuotas',
-        'quotas'            => 'Monto por Cuotas',
-        'total'             => 'Deuda Total',
-    ],
     'payments' => [
         'id'                => 'ID',
         'amount'            => 'Monto',
@@ -360,10 +344,8 @@ return [
         'brands'                => 'Marcas',
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',
-        'credits'               => 'Créditos',
         'customers-management'  => 'Gestión Clientes',
         'customers'             => 'Clientes',
-        'collections'           => 'Cobros',
         'inventory'             => 'Inventario',
         'debtors'               => 'Morosos',
         'pending-to-schedule'   => 'Pendientes por agendar',
@@ -381,7 +363,6 @@ return [
         'stock'                 => 'Almacenamiento',
         'permissions'           => 'Permisos',
         'privileges'            => 'Privilegios',
-        'zones'                 => 'Zonas',
         'colors'                => 'Colores'
     ],
     'spendings' => [
@@ -414,14 +395,5 @@ return [
         'planning_collection_positive_alert'  => 'La planificación de cobranza de :customer tiene un EXCEDENTE en la suma total de cobros sugeridos de las visitas programadas en la agenda.
                                          Se recomienda eliminar o modificar las visitas existentes  ajustando el cobro sugerido excedente de :suggested_collection_total.',                           
         'whatsapp'      => 'Whatsapp',
-        'zone'          => 'Zona',
-    ],
-    'zones' => [
-        'index'                 => 'Listado de Zonas',
-        'create'                => 'Crear nueva zona',
-        'edit'                  => 'Editar zona',
-        'address_destination'   => 'Dirección destino',
-        'name'                  => 'Nombre',
-        'position'              => 'Posición'
     ]
 ];

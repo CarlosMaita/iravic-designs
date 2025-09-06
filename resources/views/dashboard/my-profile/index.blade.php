@@ -37,10 +37,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link" id="debts-tab" data-toggle="tab" href="#debts" role="tab" aria-controls="debts" aria-selected="true">Deudas</a>
                                     </li>
-                                    <!--  -->
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="visits-tab" data-toggle="tab" href="#visits" role="tab" aria-controls="visits" aria-selected="true">Visitas</a>
-                                    </li>
                                 </ul>
                                 <!--  -->
                                 <div class="tab-content" id="myTabContent">
@@ -57,7 +53,6 @@
                                     <!--  -->
                                     @include('dashboard.my-profile._partials.debts')
                                     <!--  -->
-                                    @include('dashboard.my-profile._partials.visits')
                                 </div>
                             </div>
                         </div>
@@ -120,5 +115,4 @@
     @include('dashboard.debts.js.index')
     @include('dashboard.operations.js.index')
     @include('dashboard.payments.js.index')
-    @include('dashboard.visits.js.index')
 @endpush
