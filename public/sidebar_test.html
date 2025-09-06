@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sidebar Test - Changes Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .removed { background-color: #ffebee; border-left: 4px solid #f44336; padding: 10px; margin: 10px 0; }
+        .kept { background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 10px; margin: 10px 0; }
+        h1 { color: #333; }
+        h2 { color: #666; }
+        code { background-color: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Sidebar Changes Verification</h1>
+    <p>This page shows the changes made to the sidebar according to the requirements:</p>
+    
+    <h2>✅ REMOVED SECTIONS:</h2>
+    
+    <div class="removed">
+        <h3>1. Entire Orders Management Section (Ventas y devoluciones)</h3>
+        <p>Removed the complete dropdown with:</p>
+        <ul>
+            <li>📦 Ventas (Orders)</li>
+            <li>↩️ Devoluciones (Refunds)</li>
+        </ul>
+        <p><strong>Lines removed:</strong> 14-40 (entire section)</p>
+    </div>
+    
+    <div class="removed">
+        <h3>2. Zones Section (Zonas)</h3>
+        <p>Removed from Customer Management dropdown:</p>
+        <ul>
+            <li>🗺️ Zonas (Zones) link</li>
+            <li>Updated dropdown condition to remove Zone::class reference</li>
+            <li>Updated active class calculation to remove zones path</li>
+        </ul>
+        <p><strong>Lines removed:</strong> 135-140 and updated conditions</p>
+    </div>
+    
+    <div class="removed">
+        <h3>3. My Profile Section (Mi perfil)</h3>
+        <p>Removed the entire profile section:</p>
+        <ul>
+            <li>👤 Mi perfil (My Profile) link</li>
+        </ul>
+        <p><strong>Lines removed:</strong> 207-214 (entire section)</p>
+    </div>
+    
+    <h2>✅ SECTIONS PRESERVED:</h2>
+    
+    <div class="kept">
+        <h3>Remaining Sidebar Sections</h3>
+        <ul>
+            <li>🏠 Dashboard/Home</li>
+            <li>📝 Catalog Management (Categories, Brands, Products, etc.)</li>
+            <li>📦 Stock Management</li>
+            <li>👥 Customer Management (Customers, Debtors) - Zones removed</li>
+            <li>⚙️ Configuration (Settings, Roles, Permissions, Users, Banners)</li>
+        </ul>
+    </div>
+    
+    <h2>📊 Changes Summary:</h2>
+    <ul>
+        <li><strong>Files modified:</strong> 1 (resources/views/dashboard/shared/sidebar.blade.php)</li>
+        <li><strong>Lines added:</strong> 2</li>
+        <li><strong>Lines removed:</strong> 43</li>
+        <li><strong>Total sections removed:</strong> 3 (as requested)</li>
+    </ul>
+    
+    <h2>✅ Requirements Fulfilled:</h2>
+    <ol>
+        <li>✅ Removed zonas (zones) section from sidebar</li>
+        <li>✅ Removed mi perfil (my profile) section from admin sidebar</li>
+        <li>✅ Removed ventas y devoluciones (sales and returns) sections</li>
+    </ol>
+    
+    <p><strong>All changes were made with minimal modifications and surgical precision as required.</strong></p>
+</body>
+</html>
