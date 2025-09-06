@@ -268,6 +268,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-shadow: none;
 }
 
 /* Product info */
@@ -287,6 +288,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 2.6rem;
+  text-shadow: none;
 }
 
 .product-price {
@@ -294,6 +296,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
   font-weight: 700;
   color: #e74c3c;
   margin-bottom: 0;
+  text-shadow: none;
 }
 
 /* Hover effects */
@@ -371,10 +374,12 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
   
   .product-name {
     font-size: 0.85rem;
+    text-shadow: none;
   }
   
   .product-price {
     font-size: 1rem;
+    text-shadow: none;
   }
   
   .btn-icon {
@@ -391,10 +396,12 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
   .product-name {
     font-size: 0.8rem;
     min-height: 2.4rem;
+    text-shadow: none;
   }
   
   .product-price {
     font-size: 0.95rem;
+    text-shadow: none;
   }
 }
 
