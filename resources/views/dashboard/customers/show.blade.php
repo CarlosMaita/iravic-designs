@@ -12,22 +12,16 @@
                                 <!--  -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link @if(!$showOrdersTab && !$showRefundsTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                        <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="account-status-tab" data-toggle="tab" href="#account-status" role="tab" aria-controls="account-status" aria-selected="true">Estado de Cuenta</a>
                                     </li>
                                     <!--  -->
-                                    <li class="nav-item">
-                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Ventas</a>
-                                    </li>
+                                    {{-- Sales tab removed - Sales module disabled --}}
                                     <!--  -->
-                                    @if (count($customer->orders))
-                                    <li class="nav-item">
-                                        <a class="nav-link @if($showRefundsTab) active @endif" id="refunds-tab" data-toggle="tab" href="#refunds" role="tab" aria-controls="refunds" aria-selected="true">Devoluciones</a>
-                                    </li>
-                                    @endif
+                                    {{-- Returns tab removed - Returns module disabled --}}
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
@@ -44,9 +38,9 @@
                                     <!--  -->
                                     @include('dashboard.customers._partials.account_status')
                                     <!--  -->
-                                    @include('dashboard.customers._partials.orders')
+                                    {{-- Orders partial removed - Sales module disabled --}}
                                     <!--  -->
-                                    @include('dashboard.customers._partials.refunds')
+                                    {{-- Refunds partial removed - Returns module disabled --}}
                                     <!--  -->
                                     @include('dashboard.customers._partials.payments')
                                     <!--  -->

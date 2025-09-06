@@ -13,22 +13,16 @@
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <!--  -->
                                     <li class="nav-item">
-                                        <a class="nav-link @if(!$showOrdersTab) active @endif" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                                        <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
                                     </li>
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="account-status-tab" data-toggle="tab" href="#account-status" role="tab" aria-controls="account-status" aria-selected="true">Estado de Cuenta</a>
                                     </li>
                                     <!--  -->
-                                    <li class="nav-item">
-                                        <a class="nav-link @if($showOrdersTab) active @endif" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="true">Ventas</a>
-                                    </li>
+                                    {{-- Sales tab removed - Sales module disabled --}}
                                     <!--  -->
-                                    @if (count($box->orders))
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="refunds-tab" data-toggle="tab" href="#refunds" role="tab" aria-controls="refunds" aria-selected="true">Devoluciones</a>
-                                    </li>
-                                    @endif
+                                    {{-- Returns tab removed - Returns module disabled --}}
                                     <!--  -->
                                     <li class="nav-item">
                                         <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Pagos/Cobros</a>
@@ -208,41 +202,9 @@
                                         </div>
                                     </div>
                                     <!--  -->
-                                    <div class="tab-pane fade @if($showOrdersTab) show active @endif" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                        @can('create', App\Models\Order::class)
-                                            @if (!$box->isClosed() && $boxIsMine)
-                                            <div class="row"> 
-                                                <a href="{{ route('ventas.create') }}?box={{ $box->id }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_o') }}</a>
-                                            </div>
-                                            @endif
-                                        @endcan
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="table-responsive">
-                                                    @include('dashboard.orders._datatable', ['orders' => $orders])
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{-- Orders tab content removed - Sales module disabled --}}
                                     <!--  -->
-                                    @if (count($box->orders))
-                                    <div class="tab-pane fade" id="refunds" role="tabpanel" aria-labelledby="refunds-tab">
-                                        @can('create', App\Models\Refund::class)
-                                            @if (!$box->isClosed() && $boxIsMine)
-                                            <div class="row"> 
-                                                <a href="{{ route('devoluciones.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
-                                            </div>
-                                            @endif
-                                        @endcan
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="table-responsive">
-                                                    @include('dashboard.refunds._datatable', ['refunds' => $box->refunds()->orderBy('date', 'DESC')->get()])
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endif
+                                    {{-- Refunds tab content removed - Returns module disabled --}}
                                     <!--  -->
                                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                                         @can('create', App\Models\Payment::class)
@@ -317,31 +279,7 @@
             // })
             // .show();
 
-            let datatable_orders = $('#datatable_orders').DataTable({
-                ordering: false,
-                pageLength: 25
-            });
-
-            let datatable_refunds = $('#datatable_refunds').DataTable({
-                ordering: false,
-                pageLength: 25
-            });
-
-            $('#orders-tab').on('click', function(e) {
-                setTimeout(function(e) {
-                    datatable_orders
-                    .columns.adjust()
-                    .responsive.recalc();
-                }, 1000);
-            });
-
-            $('#refunds-tab').on('click', function(e) {
-                setTimeout(function(e) {
-                    datatable_refunds
-                    .columns.adjust()
-                    .responsive.recalc();
-                }, 1000);
-            });
+            // DataTables for orders and refunds removed - Sales and Returns modules disabled
         });
     </script>
 

@@ -162,17 +162,15 @@ class CustomerController extends Controller
             
             DB::commit();
 
-            if (isset($request->from_orders)) {
-                flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
-                return response()->json([
-                        'success' => true,
-                        'data' => [
-                            'customer' => $customer,
-                            'redirect' => route('ventas.create'), 
-                            'from_orders' => true 
-                        ]
-                ]);
-            }
+            // Note: Sales module disabled - redirect to customers index instead
+            flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
+            return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'customer' => $customer,
+                        'redirect' => route('clientes.index') 
+                    ]
+            ]);
             
             flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
             return response()->json([
@@ -209,18 +207,11 @@ class CustomerController extends Controller
             return response()->json($customer);
         }
         $this->authorize('view', $customer);
-        $orders = $customer->orders()->orderBy('date', 'desc')->get();
-        $refunds = $customer->refunds()->orderBy('date', 'desc')->get();
-        $showOrdersTab = isset($request->pedidos) ? true : false;
-        $showRefundsTab = isset($request->devoluciones) ? true : false;
+        // Note: Sales and Returns modules disabled
         $planningCollection = $customer->getPlanningCollection();
 
         return view('dashboard.customers.show')
                 ->withCustomer($customer)
-                ->withOrders($orders)
-                ->withRefunds($refunds)
-                ->withShowOrdersTab($showOrdersTab)
-                ->withShowRefundsTab($showRefundsTab)
                 ->withPlanningCollection($planningCollection);
     }
 
