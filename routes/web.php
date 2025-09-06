@@ -83,28 +83,7 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
     });
 
-    # Orders Routes
-    Route::group(['prefix' => 'cajas-ventas', 'namespace' => 'sales'], function () {
-        #
-        Route::resource('devoluciones', 'RefundController', ['parameters' => [
-            'devoluciones' => 'devolucion'
-        ]])->except('edit', 'update', 'destroy');
-        #
-        Route::resource('deudas', 'DebtController')->except('create');
-        #
-        Route::resource('gastos', 'SpendingController')->except('create');
-        #
-        Route::resource('operaciones', 'OperationController')->only('index');
-        #
-        Route::get('operaciones-pdf', 'OperationController@download')->name('operaciones.download');
-        #
-        Route::resource('pagos', 'PaymentController')->except('create');
-        #
-        Route::resource('ventas', 'OrderController')->except('edit', 'update', 'destroy');
-        #
-        Route::get('ventas-descuento', 'OrderController@calculateDiscount')->name('ventas.discount');
 
-    });
 
     # Config Routes
     Route::group(['prefix' => 'config', 'namespace' => 'config'], function () {

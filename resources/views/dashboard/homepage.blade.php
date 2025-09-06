@@ -9,14 +9,14 @@
               <div class="card">
                   <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.breadcrumb.dashboard') }}</div>
                   <div class="card-body">
-                    {{--  filters --}}
-                    @include('dashboard.homepage._filters')  
-                    <br>
-                    {{--  content --}}
-                    @include('dashboard.homepage._cards')
-                    <hr>
-                    {{-- graphs --}}
-                    @include('dashboard.homepage._graphs')
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="alert alert-info">
+                          <h4>Panel de Control</h4>
+                          <p>Sales and refunds module has been removed. Use the navigation menu to access other system features like catalog management, customer management, and configuration.</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
               </div>
           </div>
@@ -25,12 +25,3 @@
     </div>
   </div>
 @endsection
-
-@push('js')
-  @include('plugins.datepicker')
-  @include('dashboard.homepage.js.homepage')
-@endpush
-
-@push("css")
-  @include('dashboard.homepage.css.homepage')
-@endpush

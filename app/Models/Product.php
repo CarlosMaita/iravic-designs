@@ -99,10 +99,7 @@ class Product extends Model
         return $this->belongsTo('App\Models\Product', 'product_id', 'id');
     }
 
-    public function products_ordered()
-    {
-        return $this->hasMany('App\Models\OrderProduct', 'product_id', 'id');
-    }
+    # Sales relationships removed
 
     public function size()
     {

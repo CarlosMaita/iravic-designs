@@ -45,23 +45,14 @@ class Customer extends Authenticatable
     ];
 
     protected $appends = [
-        'balance',
-        'balance_numeric',
         'date_next_visit',
         'max_credit_str',
-        'available_credit_str',
-        'total_buyed',
-        'total_credit',
-        'total_debt',
-        'total_payments',
-        'total_refund_credit',
         'url_address',
         'url_dni',
         'url_receipt',
         'url_card_front',
         'url_card_back',
         'whatsapp_number',
-        'is_solvent',
     ];
 
       /**
@@ -105,42 +96,9 @@ class Customer extends Authenticatable
     }
 
     # Relationships
-    public function debts()
-    {
-        return $this->hasMany('App\Models\Debt');
-    }
-
-    public function orders()
-    {
-        return $this->hasMany('App\Models\Order');
-    }
-
-    public function payments()
-    {
-        return $this->hasMany('App\Models\Payment');
-    }
-
-    public function refunds()
-    {
-        return $this->hasMany('App\Models\Refund');
-    }
+    # Sales and refunds relationships removed
 
     # Attributes
-    /**
-     * Retorna en formato moneda, el balance del cliente
-     */
-    public function getBalanceAttribute()
-    {
-        return FormatHelper::formatCurrency($this->getBalance());
-    }
-
-    /**
-     * Retorna en formato numerico, el balance del cliente
-     */
-    public function getBalanceNumericAttribute()
-    {
-        return $this->getBalance();
-    }
 
     /**
      * Retorna en formato moneda, el credito maximo otorgado al cliente
@@ -158,8 +116,8 @@ class Customer extends Authenticatable
      */
     public function getAvailableCreditStrAttribute()
     {
-        $used_credit = $this->getBalance() <= 0 ?  $this->getBalance() : 0 ;
-        $available_credit = $this->max_credit + $used_credit > 0 ? ($this->max_credit + $used_credit) : 0;
+        // Sales functionality removed - always return available credit as max credit
+        $available_credit = $this->max_credit > 0 ? $this->max_credit : 0;
         return FormatHelper::formatCurrency($available_credit);
     }
 
@@ -171,46 +129,7 @@ class Customer extends Authenticatable
         return null;
     }
 
-    /**
-     * Retorna en formato moneda el total comprardo
-     */
-    public function getTotalBuyedAttribute()
-    {
-        return FormatHelper::formatCurrency($this->getTotalBuyed());
-    }
 
-    /**
-     * Retorna en formato moneda, total comprado a credito
-     */
-    public function getTotalCreditAttribute()
-    {
-        return FormatHelper::formatCurrency($this->getTotalCredit());
-    }
-
-    /**
-     * Retorna en formato moneda, total comprado a debito
-     */
-    public function getTotalDebtAttribute()
-    {
-        $total = $this->getTotalDebt();
-        return FormatHelper::formatCurrency($total, $total > 0 ? '$ -' : '$ ');
-    }
-
-    /**
-     * Retorna en formato moneda, total de pagos
-     */
-    public function getTotalPaymentsAttribute()
-    {
-        return FormatHelper::formatCurrency($this->getTotalPayments());
-    }
-
-    /**
-     * Retorna en formato moneda, el total devoluciones a credito
-     */
-    public function getTotalRefundCreditAttribute()
-    {
-        return FormatHelper::formatCurrency($this->getTotalRefundCredit());
-    }
 
     /**
      * Retorna url de imagen de direccion
