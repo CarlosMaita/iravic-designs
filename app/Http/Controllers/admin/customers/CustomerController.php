@@ -11,7 +11,6 @@ use App\Models\Customer;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Services\Images\ImageService;
 use Exception;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,43 +64,10 @@ class CustomerController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexDebtors(Request $request)
-    {
-        Gate::authorize('view-customers-debtors');
-
-        if ($request->ajax()) {
-            $customers = $this->customerRepository->debtorsToNotifyQuery();
-            return DataTables::of($customers)
-                    ->addIndexColumn()
-                    ->addColumn('lastdatefordebt', function($customer){
-                        return $customer->getLastDateForDebtNotification();
-                    })
-                    ->addColumn('action', function($row){
-                        $btn = '';
-
-                        if (Auth::user()->can('view', $row)) {
-                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        }
-
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->toJson();
-        }
-
-        return view('dashboard.customers.index_debtors');
-    }
-
-       /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
 
     /**
      * Show the form for creating a new resource.
@@ -144,7 +110,6 @@ class CustomerController extends Controller
                     'contact_name',
                     'contact_telephone',
                     'contact_dni',
-                    'days_to_notify_debt',
                     'dni',
                     'latitude',
                     'longitude',
@@ -264,7 +229,6 @@ class CustomerController extends Controller
                     'contact_name',
                     'contact_telephone', 
                     'contact_dni', 
-                    'days_to_notify_debt', 
                     'dni', 
                     'latitude', 
                     'longitude', 

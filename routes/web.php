@@ -79,8 +79,6 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     Route::group(['prefix' => 'gestion-clientes', 'namespace' => 'customers'], function () {
         #
         Route::resource('clientes', 'CustomerController');
-        #
-        Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
     });
 
 

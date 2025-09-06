@@ -57,38 +57,6 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
             ->get();
     }
 
- 
-    /**
-     * Retorna listado de clientes que tienen deudas y necesitan ser avisados/visitados.
-     * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado
-     * 
-     * @return Collection
-     */
-    public function debtorsToNotify(): Collection
-    {
-        $customers = $this->model
-                            ->whereHas('debts')
-                            ->orWhereHas('orders', function($q) {
-                                $q->where('payed_credit', 1);
-                            })
-                            ->get();
-
-        return $customers->filter(function ($customer) {
-            return $customer->needsToNotifyDebt();
-        })->values();
-    }
-
-    public function debtorsToNotifyQuery()
-    {
-        return $this->model
-            ->whereHas('debts')
-            ->orWhereHas('orders', function ( $query) {
-                $query->where('payed_credit', true);
-            })
-            ->get()
-            ->filter(fn (Customer $customer) => $customer->needsToNotifyDebt());
-    }
-
     /**
      * Retorna listado de clientes que se les ha postergado la visita y necesitan ser reagendados. 
      * Cada modelo de cliente tiene un metodo "needsToNotifyDebt" para validar si necesita entrar en este listado
