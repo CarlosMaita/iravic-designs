@@ -11,33 +11,7 @@
     </li>
 
     
-    {{-- Orders Management links --}}
-    @if (
-        Auth::user()->can('viewany', App\Models\Order::class) ||
-        Auth::user()->can('viewany', App\Models\Refund::class)
-    )
-        <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/cajas-ventas/ventas", false, true) . " " .
-            $menuService->isActive($url,"/admin/cajas-ventas/devoluciones", false, true)
-        }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.orders') }}</a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                {{-- Refunds --}}
-                @can('viewany', App\Models\Refund::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/devoluciones")}}" href="{{ route('devoluciones.index') }}"></span>{{ __('dashboard.sidebar.refunds') }}</a>
-                    </li>
-                @endcan
-                {{-- Orders --}}
-                @can('viewany', App\Models\Order::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/ventas")}}" href="{{ route('ventas.index') }}"></span>{{ __('dashboard.sidebar.orders') }}</a>
-                    </li>
-                @endcan
 
-            </ul>
-        </li>
-    @endif
     {{-- Catalog links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Brand::class) || 
@@ -110,13 +84,11 @@
     {{-- Customer Management links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Customer::class) ||
-        Auth::user()->can('viewany', App\Models\Zone::class) ||
         Gate::check('view-customers-debtors')
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) . " " .
-            $menuService->isActive($url,"/admin/gestion-clientes/morosos", false, true) . " " .
-            $menuService->isActive($url,"/admin/gestion-clientes/zonas", false, true)
+            $menuService->isActive($url,"/admin/gestion-clientes/morosos", false, true)
         }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
@@ -132,12 +104,6 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/morosos")}}" href="{{ route('clientes.debtors') }}"></span>{{ __('dashboard.sidebar.debtors') }}</a>
                     </li>
                 @endif
-                {{-- Zones --}}
-                @can('viewany', App\Models\Zone::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/zonas")}}" href="{{ route('zonas.index') }}"></span>{{ __('dashboard.sidebar.zones') }}</a>
-                    </li>
-                @endcan
             </ul>
         </li>
     @endif
@@ -204,14 +170,7 @@
         </li>
     @endif
 
-    {{-- profile --}}
-    @if(Auth::user()->can('viewany' , App\Customer::class)) 
-        <li class="c-sidebar-nav-item {{$menuService->isActive($url,"/admin/mi-perfil", false, true)}}">
-            <a class="c-sidebar-nav-link" href="{{ route('my-profile.index') }}">
-                <i class="cil-user c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.my-profile') }}
-            </a>
-        </li>
-    @endif
+
 </ul>
 <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
 </div>
