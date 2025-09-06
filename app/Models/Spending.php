@@ -12,7 +12,6 @@ class Spending extends Model
     public $table = 'spendings';
 
     public $fillable = [
-        'box_id',
         'user_id',
         'amount',
         'comment',
@@ -28,11 +27,6 @@ class Spending extends Model
     const DISK = 'spendings';
 
     # Relationships
-    public function box()
-    {
-        return $this->belongsTo('App\Models\Box');
-    }
-
     public function user()
     {
         return $this->belongsTo('App\User');

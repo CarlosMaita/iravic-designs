@@ -5,29 +5,6 @@ return [
         'advanced_search' => 'Búsqueda Avanzada',
         'clear_filter'    => 'Limpiar filtro'
     ],
-    'boxes' => [
-        'index'             => 'Listado de Cajas',
-        'create'            => 'Crear nueva Caja',
-        'edit'              => 'Editar Caja',
-        'box'               => 'Caja',
-        'cash_initial'      => 'Efectivo inicial',
-        'cash_in_box'       => 'Efectivo en caja',
-        'closed'            => 'Cerrada',
-        'date'              => 'Fecha',
-        'date_start'        => 'Fecha Inicio',
-        'date_end'          => 'Fecha Fin',
-        'sure_to_close_box' => 'Seguro de cerrar la caja',
-        'total_bankwire'    => 'Total Transferencia',
-        'total_card'        => 'Total Tarjeta',
-        'total_cash'        => 'Total Efectivo',
-        'total_credit'      => 'Total Crédito',
-        'total_payed'       => 'Total Pagado',
-        'total_refunded'    => 'Total Devuelto',
-        'total_spent'       => 'Total Gastado',
-        'total_charges'     => 'Total en Pagos/Cobros',
-        'total_final_sales' => 'Total en Ventas',
-        'user'              => 'Usuario'
-    ],
     'breadcrumb' => [
         'home' => 'Inicio',
         'dashboard' => 'Panel de Control',
@@ -131,9 +108,6 @@ return [
         'save'          => 'Guardar',
         'update'        => 'Actualizar',
         'fields' => [
-            'boxes' => [
-                'cash_initial' => 'Efectivo inicial'
-            ],
             'config' => [
                 'discount_password' => 'Contraseña para descuentos',
                 'name_project'      => 'Nombre de la Aplicación',
@@ -278,7 +252,6 @@ return [
         'edit'              => 'Editar venta',
         'order'             => 'Venta',
         'id'                => 'ID',
-        'box_id'            => 'ID Caja',
         'customer'          => 'Cliente',
         'date'              => 'Fecha',
         'payment_method'    => 'Método de pago',
@@ -326,8 +299,6 @@ return [
     'payments' => [
         'id'                => 'ID',
         'amount'            => 'Monto',
-        'box'               => 'Caja',
-        'comment'           => 'Comentario',
         'customer'          => 'Cliente',
         'date'              => 'Fecha',
         'payment_method'    => 'Método de Pago'
@@ -339,7 +310,6 @@ return [
         'order'             => 'Venta',
         'id'                => 'ID',
         'box_id'            => 'ID Caja',
-        'customer'          => 'Cliente',
         'date'              => 'Fecha',
         'payment_method'    => 'Método de pago',
         'discount'          => 'Descuento',
@@ -355,8 +325,6 @@ return [
         'view-map'          => 'Ver mapa'
     ],
     'sidebar' => [
-        'boxes'                 => 'Cajas',
-        'boxes-orders'          => 'Cajas y Ventas',
         'brands'                => 'Marcas',
         'catalog'               => 'Catálogo',
         'categories'            => 'Categorías',

@@ -11,7 +11,6 @@ class Refund extends Model
     protected $table = 'refunds';
     
     public $fillable = [
-        'box_id',
         'customer_id',
         'user_id',
         'date',
@@ -25,11 +24,6 @@ class Refund extends Model
     ];
 
     # Relationships
-    public function box()
-    {
-        return $this->belongsTo('App\Models\Box');
-    }
-
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer')->withTrashed();

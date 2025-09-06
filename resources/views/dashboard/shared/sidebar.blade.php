@@ -13,23 +13,15 @@
     
     {{-- Orders Management links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Box::class) ||
         Auth::user()->can('viewany', App\Models\Order::class) ||
         Auth::user()->can('viewany', App\Models\Refund::class)
     )
         <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/cajas-ventas/cajas", false, true) . " " .
             $menuService->isActive($url,"/admin/cajas-ventas/ventas", false, true) . " " .
             $menuService->isActive($url,"/admin/cajas-ventas/devoluciones", false, true)
         }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.boxes-orders') }}</a>
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-calculator c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.orders') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
-                {{-- Boxes --}}
-                @can('viewany', App\Models\Box::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/cajas-ventas/cajas")}}" href="{{ route('cajas.index') }}"></span>{{ __('dashboard.sidebar.boxes') }}</a>
-                    </li>
-                @endcan
                 {{-- Refunds --}}
                 @can('viewany', App\Models\Refund::class)
                     <li class="c-sidebar-nav-item">
