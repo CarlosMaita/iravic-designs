@@ -50,11 +50,6 @@ class User extends Authenticatable
     ];
 
     // Relations
-    public function boxes()
-    {
-        return $this->hasMany('App\Models\Box');
-    }
-
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role')->withTimestamps();

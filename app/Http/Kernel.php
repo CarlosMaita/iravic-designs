@@ -62,9 +62,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'redirect.home.role' => \App\Http\Middleware\RedirectHomeByRole::class,
-        'box.create' => \App\Http\Middleware\CheckForCreateBox::class,
-        'box.open' => \App\Http\Middleware\CheckOpenBox::class,
-        'box.destroy' => \App\Http\Middleware\CheckForDestroyBox::class,
     ];
 
     /**

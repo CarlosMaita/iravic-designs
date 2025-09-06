@@ -10,7 +10,6 @@ class Debt extends Model
     public $table = 'debts';
 
     public $fillable = [
-        'box_id',
         'customer_id',
         'order_product_id',
         'user_id',
@@ -24,11 +23,6 @@ class Debt extends Model
     ];
 
     # Relationships
-    public function box()
-    {
-        return $this->belongsTo('App\Models\Box');
-    }
-
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer');

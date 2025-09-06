@@ -83,10 +83,8 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         Route::get('morosos', 'CustomerController@indexDebtors')->name('clientes.debtors');
     });
 
-    # Box && Orders Routes
+    # Orders Routes
     Route::group(['prefix' => 'cajas-ventas', 'namespace' => 'sales'], function () {
-        #
-        Route::resource('cajas', 'BoxController');
         #
         Route::resource('devoluciones', 'RefundController', ['parameters' => [
             'devoluciones' => 'devolucion'

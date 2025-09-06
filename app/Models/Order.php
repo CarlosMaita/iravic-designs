@@ -13,7 +13,6 @@ class Order extends Model
     protected $guarded = [];
     
     public $fillable = [
-        'box_id',
         'customer_id',
         'refund_id',
         'user_id',
@@ -36,11 +35,6 @@ class Order extends Model
     ];
 
     # Relationships
-    public function box()
-    {
-        return $this->belongsTo('App\Models\Box');
-    }
-
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer')->withTrashed();

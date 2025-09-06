@@ -2,19 +2,11 @@
 
 namespace App\Http\Requests\admin;
 
-use App\Models\Box;
-use App\Repositories\Eloquent\BoxRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class SpendingRequest extends FormRequest
 {
-    public $boxRepository;
-
-    public function __construct(BoxRepository $boxRepository)
-    {
-        $this->boxRepository = $boxRepository;
-    }
 
     public function messages()
     {
@@ -49,25 +41,7 @@ class SpendingRequest extends FormRequest
 
     public function withValidator($validator)
     {
-       
-
-         /**
-         *  Para realizar una devolución, el usuario debe tener una caja abierta
-         */
-        if (!$this->box_id) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add('box', 'El usuario no tiene una caja abierta en este momento.');
-            });
-        }
-        #si existe la caja consultar su efectivo en caja
-        $box = Box::find($this->box_id);
-        if(($box->getTotalCashInBox() - $this->amount) < 0){
-            #Para realizar una gasto la caja debe contar con efectivo
-            $validator->after(function ($validator) {
-                $validator->errors()->add('box', 'No se dispone de suficiente efectivo en caja para registrar este gasto.');
-            });
-        }
-        
+        // Box validation removed - spendings can be created without box restrictions
     }
 
     /**
@@ -78,10 +52,8 @@ class SpendingRequest extends FormRequest
     protected function prepareForValidation()
     {
         $user = Auth::user();
-        $box = $this->boxRepository->getOpenByUserId($user->id); // Se busca la caja abierta del usuario
 
         $this->merge([
-            'box_id'            => $box ? $box->id : null,
             'date'              => now(),
             'user_id'           => $user->id
         ]);

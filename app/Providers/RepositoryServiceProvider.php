@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Repositories\BoxRepositoryInterface;
 use App\Repositories\CategoryRepositoryInterface;
 use App\Repositories\CustomerRepositoryInterface;
 use App\Repositories\DebtRepositoryInterface;
@@ -20,7 +19,6 @@ use App\Repositories\RoleRepositoryInterface;
 use App\Repositories\SpendingRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\Eloquent\BaseRepository;
-use App\Repositories\Eloquent\BoxRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\DebtRepository;
@@ -47,7 +45,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(BoxRepositoryInterface::class, BoxRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(CustomerRepository::class, CustomerRepositoryInterface::class);
         $this->app->bind(DebtRepository::class, DebtRepositoryInterface::class);
