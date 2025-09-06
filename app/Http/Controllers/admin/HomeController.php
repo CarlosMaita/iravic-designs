@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Eloquent\BoxRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\PaymentRepository;
 use App\Repositories\Eloquent\RefundRepository;
@@ -13,14 +12,12 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    private $boxRepository;
     private $orderRepository;
     private $paymentRepository;
     private $refundRepository;
 
-    public function __construct(OrderRepository $orderRepository, BoxRepository $boxRepository, PaymentRepository $paymentRepository, RefundRepository $refundRepository)
+    public function __construct(OrderRepository $orderRepository, PaymentRepository $paymentRepository, RefundRepository $refundRepository)
     {
-        $this->boxRepository = $boxRepository;
         $this->orderRepository = $orderRepository;
         $this->paymentRepository = $paymentRepository;
         $this->refundRepository = $refundRepository;
@@ -41,7 +38,7 @@ class HomeController extends Controller
         $fechaActual = Carbon::now();
         switch ($filter) {
             case 'month':
-                $open_closed_boxes = $this->boxRepository->countBoxes_perMonths(0, 0) . ' / ' . $this->boxRepository->countBoxes_perMonths(1, 0);
+                $open_closed_boxes = 0;
                 $total_sales = FormatHelper::formatCurrency($this->orderRepository->getTotalSales_perMonths(0));
                 $total_paid = FormatHelper::formatCurrency($this->orderRepository->getTotalPaid_perMonths(0));
                 $total_collected = FormatHelper::formatCurrency($this->paymentRepository->getTotalCollections_perMonths(0));
@@ -59,7 +56,7 @@ class HomeController extends Controller
                 $total_card_graph = $this->orderRepository->getTotalPaymentMethodGraph_perDay(0, 'card');
                 break;
             case 'six_months':
-                $open_closed_boxes = $this->boxRepository->countBoxes_perMonths(0, 6) . ' / ' . $this->boxRepository->countBoxes_perMonths(1, 6);
+                $open_closed_boxes = 0;
                 $total_sales = FormatHelper::formatCurrency($this->orderRepository->getTotalSales_perMonths(6));
                 $total_paid = FormatHelper::formatCurrency($this->orderRepository->getTotalPaid_perMonths(6));
                 $total_collected = FormatHelper::formatCurrency($this->paymentRepository->getTotalCollections_perMonths(6));
@@ -77,7 +74,7 @@ class HomeController extends Controller
                 $total_card_graph = $this->orderRepository->getTotalPaymentMethodGraph_perMonths(6, 'card');
                 break;
             case 'twelve_months':
-                $open_closed_boxes = $this->boxRepository->countBoxes_perMonths(0, 12) . ' / ' . $this->boxRepository->countBoxes_perMonths(1, 12);
+                $open_closed_boxes = 0;
                 $total_sales = FormatHelper::formatCurrency($this->orderRepository->getTotalSales_perMonths(12));
                 $total_paid = FormatHelper::formatCurrency($this->orderRepository->getTotalPaid_perMonths(12));
                 $total_collected = FormatHelper::formatCurrency($this->paymentRepository->getTotalCollections_perMonths(12));
@@ -95,7 +92,7 @@ class HomeController extends Controller
                 $total_card_graph = $this->orderRepository->getTotalPaymentMethodGraph_perMonths(12, 'card');
                 break;
             case 'on_date':
-                $open_closed_boxes = $this->boxRepository->countBoxes_OnDates(0, $start, $end) . ' / ' . $this->boxRepository->countBoxes_OnDates(1, $start, $end);
+                $open_closed_boxes = 0;
                 $total_sales = FormatHelper::formatCurrency($this->orderRepository->getTotalSales_OnDates($start, $end));
                 $total_paid = FormatHelper::formatCurrency($this->orderRepository->getTotalPaid_OnDates($start, $end));
                 $total_collected = FormatHelper::formatCurrency($this->paymentRepository->getTotalCollections_OnDates($start, $end));
@@ -113,7 +110,7 @@ class HomeController extends Controller
                 $total_card_graph = $this->orderRepository->getTotalPaymentMethodGraph_OnDates($start, $end, 'card');
                 break;
             case 'on_months':
-                $open_closed_boxes = $this->boxRepository->countBoxes_OnMonths(0, $start, $end) . ' / ' . $this->boxRepository->countBoxes_OnMonths(1, $start, $end);
+                $open_closed_boxes = 0;
                 $total_sales = FormatHelper::formatCurrency($this->orderRepository->getTotalSales_OnMonths($start, $end));
                 $total_paid = FormatHelper::formatCurrency($this->orderRepository->getTotalPaid_OnMonths($start, $end));
                 $total_collected = FormatHelper::formatCurrency($this->paymentRepository->getTotalCollections_OnMonths($start, $end));
@@ -131,7 +128,7 @@ class HomeController extends Controller
                 $total_card_graph = $this->orderRepository->getTotalPaymentMethodGraph_OnMonths($start, $end, 'card');
                 break;
             default:
-                $open_closed_boxes = $this->boxRepository->countBoxes_perMonths(0, 0) . ' / ' . $this->boxRepository->countBoxes_perMonths(1, 0);
+                $open_closed_boxes = 0;
                 $total_sales = FormatHelper::formatCurrency($this->orderRepository->getTotalSales_perMonths(0));
                 $total_paid = FormatHelper::formatCurrency($this->orderRepository->getTotalPaid_perMonths(0));
                 $total_collected = FormatHelper::formatCurrency($this->paymentRepository->getTotalCollections_perMonths(0));

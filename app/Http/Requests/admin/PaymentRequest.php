@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\admin;
 
-use App\Repositories\Eloquent\BoxRepository;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -10,12 +9,6 @@ use Illuminate\Validation\Rule;
 
 class PaymentRequest extends FormRequest
 {
-    public $boxRepository;
-
-    public function __construct(BoxRepository $boxRepository)
-    {
-        $this->boxRepository = $boxRepository;
-    }
 
     public function messages()
     {
@@ -80,11 +73,7 @@ class PaymentRequest extends FormRequest
         */
         
         if ($this->isMethod('POST')) {
-            if (!$this->box_id) {
-                $validator->after(function ($validator) {
-                    $validator->errors()->add('box', 'No posee una caja abierta en la cual se puedan registrar pagos.');
-                });
-            }
+            // Box validation removed - payments can be created without box restrictions
         }
     }
 
@@ -96,12 +85,10 @@ class PaymentRequest extends FormRequest
     protected function prepareForValidation()
     {
         $user = Auth::user();
-        $box = $this->boxRepository->getOpenByUserId($user->id);// Se busca la caja abierta del usuario
         $visit_date = $this->isMethod('POST') && !empty($this->visit_date) ? 
                     Carbon::createFromFormat('d-m-Y', $this->visit_date) : null; // Se puede pautar una visita al realizar una venta
 
         $this->merge([
-            'box_id'            => $box ? $box->id : null,
             'date'              => now(),
             'visit_date'        => $visit_date ? $visit_date->format('Y-m-d') : null,
             'payed_bankwire'    => isset($this->payment_method) && $this->payment_method == 'bankwire' ? 1 : 0,

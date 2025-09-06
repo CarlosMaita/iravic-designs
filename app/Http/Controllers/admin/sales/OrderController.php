@@ -8,7 +8,6 @@ use App\Http\Requests\admin\OrderRequest;
 use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
 use App\Models\Store;
-use App\Repositories\Eloquent\BoxRepository;
 use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
@@ -25,8 +24,6 @@ use Yajra\DataTables\DataTables as DataTables;
 
 class OrderController extends Controller
 {
-    public $boxRepository;
-
     public $customerRepository;
     
     public $orderRepository;
@@ -45,7 +42,7 @@ class OrderController extends Controller
      * Construct
      */
     public function __construct(
-        BoxRepository $boxRepository, CustomerRepository $customerRepository,
+        CustomerRepository $customerRepository,
         OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
         ProductRepository $productRepository,  
          ZoneRepository $zoneRepository, 
@@ -53,7 +50,6 @@ class OrderController extends Controller
         StoreRepository $storesRepository
     )
     {
-        $this->boxRepository = $boxRepository;
         $this->customerRepository = $customerRepository;
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
@@ -61,7 +57,6 @@ class OrderController extends Controller
         $this->zoneRepository = $zoneRepository;
         $this->creditRepository = $creditRepository;
         $this->storesRepository = $storesRepository;
-        $this->middleware('box.open')->only('create');
     }
 
     /**
@@ -104,14 +99,12 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $this->authorize('create', 'App\Models\Order');
-        $boxParam = $this->boxRepository->findOnly($request->box);
         $customers = $this->customerRepository->allOnlyName();
         $customerParam = $this->customerRepository->findOnly($request->cliente);
         $products = $this->productRepository->all();
         $zones = $this->zoneRepository->all();
 
         return view('dashboard.orders.create')
-                ->withBoxParam($boxParam)
                 ->withCustomers($customers)
                 ->withCustomerParam($customerParam)
                 ->withQualifications(CustomerConstants::QUALIFICATIONS)
@@ -235,8 +228,6 @@ class OrderController extends Controller
 
             if (isset($request->customer_param)) {
                 $redirect = route('clientes.show', [$request->customer_param]) . '?ventas=true';
-            } else if (isset($request->box_param)) {
-                $redirect = route('cajas.show', [$request->box_param]) . '?ventas=true';
             } else {
                 $redirect = route('ventas.index');
             }
