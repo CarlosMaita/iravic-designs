@@ -254,10 +254,7 @@
                                             <label for="card">Tarjeta</label>
                                             <input v-model="paymentMethodSelected" id="card" class="d-none" type="radio" name="payment_method" value="card">
                                         </div>
-                                        <div class='radio' data-value="credit" for="credit" :class="{ 'selected' : paymentMethodSelected == 'credit' }">
-                                            <label for="credit">Crédito </label>
-                                            <input v-model="paymentMethodSelected" id="credit" class="d-none" type="radio" name="payment_method" value="credit">
-                                        </div>
+                                        <!-- Credit payment method removed - credits module disabled -->
                                         <br>
                                     </div>
                                     <div v-if="customerSelected" class="row">
@@ -293,16 +290,10 @@
                                             </div>
                                             <!-- frequency collection component -->
                                             <input type="hidden" id="total-to-collection" :value="totalCancelar">
-                                            <credit-information-component v-if="paymentMethodSelected  == 'credit'"></credit-information-component>
+                                            <!-- credit component removed - credits module disabled -->
                                             <!-- end frequency collection component -->
                                             <hr> 
-                                            <div v-if="paymentMethodSelected == 'credit' && totalCompra > totalDevolucionCredito" class="row">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-md-10 mx-auto">
-                                                            <div class="alert alert-warning" role="alert">
-                                                                El monto total a cancelar es superior al total para Devolución de Crédito.
-                                                            </div>
+                                            <!-- Credit-related warnings removed - credits module disabled -->
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -537,7 +528,7 @@
     import ModalProductToRefund from './ModalProductToRefund.vue'
     import ProductItemToRefund from './ProductItemToRefund.vue'
     import ProductItemToBuy from './ProductItemToBuy.vue'
-    import CreditInformationComponent from './CreditInformationComponent.vue'
+    // CreditInformationComponent removed - credits module disabled
 
     export default {
         components: {
@@ -545,8 +536,8 @@
             ModalProductStock,
             ModalProductToRefund,
             ProductItemToRefund,
-            ProductItemToBuy,
-            CreditInformationComponent
+            ProductItemToBuy
+            // CreditInformationComponent removed
         },
         props: {
             crsf: {

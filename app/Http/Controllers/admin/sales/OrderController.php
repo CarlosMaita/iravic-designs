@@ -9,7 +9,6 @@ use App\Http\Requests\admin\OrderDiscountRequest;
 use App\Models\Order;
 use App\Models\Store;
 use App\Repositories\Eloquent\BoxRepository;
-use App\Repositories\Eloquent\CreditRepository;
 use App\Repositories\Eloquent\CustomerRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\OrderProductRepository;
@@ -37,8 +36,6 @@ class OrderController extends Controller
 
     public $zoneRepository;
 
-    public $creditRepository;
-
     public $storesRepository;
 
     /**
@@ -49,7 +46,6 @@ class OrderController extends Controller
         OrderRepository $orderRepository, OrderProductRepository $orderProductRepository, 
         ProductRepository $productRepository,  
          ZoneRepository $zoneRepository, 
-        CreditRepository $creditRepository,
         StoreRepository $storesRepository
     )
     {
@@ -59,7 +55,6 @@ class OrderController extends Controller
         $this->orderProductRepository = $orderProductRepository;
         $this->productRepository = $productRepository;
         $this->zoneRepository = $zoneRepository;
-        $this->creditRepository = $creditRepository;
         $this->storesRepository = $storesRepository;
         $this->middleware('box.open')->only('create');
     }
@@ -181,39 +176,9 @@ class OrderController extends Controller
 
             /**
              * Si el pago es a credito se crea una instacia de cobro con la cantidad de cuotas, frecuencia y fecha de inicio
+             * Note: Credit functionality has been removed
              */
-            if ($request->payed_credit) {
-                $quota = $request->input('quotas');
-                $amount_quotas = $request->input('amount-quotas');
-                $start_date = $request->input('start-quotas');
-                /**
-                 * Crear Credito para el cliente
-                 */
-                $attributes = array(
-                    'start_date' => $start_date,
-                    'amount_quotas' => $amount_quotas,
-                    'quota' => $quota,
-                    'total' => $request->total_to_collection,   
-                    'order_id' => $order->id,   
-                    'customer_id' => $request->customer_id,
-                );
-                $credit = $this->creditRepository->create($attributes);
-
-                /**
-                 * Crear Cobros para el cliente apartir de la fecha inicial de cobro 
-                 * 
-                 */
-                $attributes = array(
-                    'start_date' => $start_date,
-                    'amount_quotas' => $amount_quotas,
-                    'quota' => $quota,
-                    'credit_id' => $credit->id,
-                    'customer_id' => $request->customer_id,
-                    'user_id' => Auth::user()->id,
-                ); 
-                $this->creditRepository->createCollectionsAndVisits($attributes);
-
-            }
+            // Credit logic removed - credits module has been disabled
 
             /**
              * Cuando se realiza un pago, se puede pautar una proxima visita para el cliente
