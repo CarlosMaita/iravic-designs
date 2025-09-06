@@ -44,10 +44,6 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        Gate::define('view-customers-debtors', function ($user) {
-            return $user->permissions()->contains('view-customers-debtors');
-        });
-
         Gate::define('prices-per-method-payment', function ($user) {
             return $user->permissions()->contains('prices-per-method-payment');
         });

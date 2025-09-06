@@ -225,13 +225,6 @@ class PermissionsSeeder extends Seeder
                 'updated_at'   => now(),
             ],
             [
-                'name'         => 'view-customers-debtors',
-                'display_name' => 'Morosos Listar',
-                'description'  => 'Morosos Listar',
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ],
-            [
                 'name'         => 'view-customers-pending-to-schedule',
                 'display_name' => 'Clientes pendientes por agendar Listar',
                 'description'  => 'Clientes pendientes por agendar Listar',
@@ -256,13 +249,6 @@ class PermissionsSeeder extends Seeder
                 'name'         => 'delete-customer',
                 'display_name' => 'Clientes Eliminar',
                 'description'  => 'Clientes Eliminar',
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ],
-            [
-                'name'         => 'view-customers-debtors',
-                'display_name' => 'Clientes morosos Listar',
-                'description'  => 'Clientes morosos Listar',
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ],

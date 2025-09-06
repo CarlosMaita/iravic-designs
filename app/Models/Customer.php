@@ -23,7 +23,6 @@ class Customer extends Authenticatable
         'contact_name',
         'contact_telephone',
         'contact_dni',
-        'days_to_notify_debt',
         'dni',
         'dni_picture',
         'latitude',

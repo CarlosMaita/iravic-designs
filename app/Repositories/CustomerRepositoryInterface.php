@@ -6,5 +6,5 @@ use Illuminate\Support\Collection;
 
 interface CustomerRepositoryInterface
 {
-    public function debtorsToNotify(): Collection;
+    // Interface updated - removed debtorsToNotify method
 }

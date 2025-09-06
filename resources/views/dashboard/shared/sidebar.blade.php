@@ -83,13 +83,8 @@
 
     {{-- Customer Management links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Customer::class) ||
-        Gate::check('view-customers-debtors')
-    )
-        <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) . " " .
-            $menuService->isActive($url,"/admin/gestion-clientes/morosos", false, true)
-        }}">
+        Auth::user()->can('viewany', App\Models\Customer::class) )
+        <li class="c-sidebar-nav-dropdown {{ $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
                 {{-- customers --}}
@@ -98,12 +93,6 @@
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/clientes")}}" href="{{ route('clientes.index') }}"></span>{{ __('dashboard.sidebar.customers') }}</a>
                     </li>
                 @endcan
-                {{-- debtors customers --}}
-                @if (Gate::check('view-customers-debtors'))
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/morosos")}}" href="{{ route('clientes.debtors') }}"></span>{{ __('dashboard.sidebar.debtors') }}</a>
-                    </li>
-                @endif
             </ul>
         </li>
     @endif
