@@ -139,14 +139,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label>{{ __('dashboard.form.fields.customers.zone') }}</label>
-                    <input class="form-control" type="text" value="{{ optional($customer->zone)->name }}" readOnly>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label>{{ __('dashboard.form.fields.customers.address') }}:</label>
