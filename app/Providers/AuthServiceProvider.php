@@ -18,17 +18,11 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Category'               => 'App\Policies\CategoryPolicy',
         'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
         'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
-        'App\Models\Credit'                  => 'App\Policies\CreditPolicy',
-        'App\Models\Debt'                   => 'App\Policies\DebtPolicy',
-        'App\Models\Order'                  => 'App\Policies\OrderPolicy',
-        'App\Models\Payment'                => 'App\Policies\PaymentPolicy',
         'App\Models\Permission'             => 'App\Policies\PermissionPolicy',
         'App\Models\Product'                => 'App\Policies\ProductPolicy',
         'App\Models\ProductImage'           => 'App\Policies\ProductImagePolicy',
         'App\Models\ProductStockTransfer'   => 'App\Policies\ProductStockTransferPolicy',
-        'App\Models\Refund'                 => 'App\Policies\RefundPolicy',
         'App\Models\Role'                   => 'App\Policies\RolePolicy',
-        'App\Models\Spending'               => 'App\Policies\SpendingPolicy',
         'App\Models\Store'                  => 'App\Policies\StorePolicy',
         'App\User'                          => 'App\Policies\UserPolicy'
     ];
