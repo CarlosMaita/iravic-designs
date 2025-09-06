@@ -247,88 +247,41 @@ class Customer extends Authenticatable
      */
     public function getBalance()
     {
-        #pagos totales
-        $payments = $this->payments()->sum('amount');
-        $total_orders_to_cash = $this->orders()->where('payed_credit', 0)->sum('total');
-        $total_payments = $payments + $total_orders_to_cash; //pagos + ordenes pagas en Efectivo, targeta y transferencia
-        
-        #ordenes totales
-        $total_orders = $this->orders()->sum('total');
-
-        #total de devoluciones
-        $total_refunds = $this->refunds()->sum('total');
-
-        #total de deudas 
-        $total_debts = $this->debts()->sum('amount');
-        
-        $balance = ($total_payments - $total_debts - $total_orders + $total_refunds);
-        return $balance;
+        // Sales functionality removed - always return 0 balance
+        return 0;
     }
 
     /**
-     * Retorna en formato numerico, el total devuelto con compra pagada a debito
+     * Sales functionality removed - return default values
      */
     public function getTotalDebitRefundedBalance()
     {
-        $refunded = $this->refunds()->has('order')->sum('total_refund_debit');
-        $ordered = $this->orders()->whereHas('refund', function($q) {
-            $q->where('total_refund_debit', '>', 0);
-        })
-        ->where('payed_credit', 0)
-        ->sum('total');
-        
-        #cuando se llevan mas del monto devuelto pagando con debito. el saldo queda negativo, cuando deberia quedar en 0
-        return $refunded - $ordered >= 0 ? ($refunded - $ordered) : 0 ;
+        return 0;
     }
 
-    /**
-     * Retorna en formato numerico, total comprado
-     */
     public function getTotalBuyed()
     {
-        return $this->orders()->sum('total');
+        return 0;
     }
 
-    /**
-     * Retorna en formato numerico, total comprado a credito
-     */
     public function getTotalCredit()
     {
-        return $this->orders()->where('payed_credit', 1)->sum('total');
+        return 0;
     }
 
-    /**
-     * Retorna en formato numerico, total pagado
-     */
     public function getTotalPayments()
     {
-        return $this->payments()->sum('amount');
+        return 0;
     }
 
-    /**
-     * Retorna en formato numerico, total devuelto comprado a credito
-     */
     public function getTotalRefundCredit()
     {
-        $total = 0;
-
-        foreach ($this->refunds as $refund) {
-            foreach ($refund->products as $refund_product) {
-                if ($refund_product->order_product->order->payed_credit) {
-                    $total += ($refund_product->product_price * $refund_product->qty);
-                }
-            }
-        }
-        
-        return $total;
+        return 0;
     }
 
-    /**
-     * Retorn en formato numerico, total de deuda
-     */
     public function getTotalDebt()
     {
-        return $this->debts()->sum('amount');
+        return 0;
     }
 
     /**
@@ -337,58 +290,29 @@ class Customer extends Authenticatable
      */
     public function needsToNotifyDebt()
     {
-        if ($this->getBalance() < 0) {
-            $now = now();
-            $days_to_notify = is_int($this->days_to_notify_debt) ? $this->days_to_notify_debt : 0;
-            $date_last_payment = $this->getLastDateForDebtNotification();
-            if ($date_last_payment->diffInDays($now, false) >= $days_to_notify) {
-                return true;
-            }
-        }
+        // Sales functionality removed - always return false
         return false;
     }
 
     /**
-     * Retorna fecha del ultimo pago/deuda/orden registrada despues de la fecha de solvencia
+     * Sales functionality removed - return current date
      */
     public function getLastDateForDebtNotification()
     {
-        $solvencyDate = Carbon::parse($this->solvency_date)->format('Y-m-d H:i:s');
-        $latestPayment = $this->payments()->where('date', '>', $solvencyDate)->latest()->first();
-        if ($latestPayment) {
-            return Carbon::parse($latestPayment->date);
-        }
-        #segundo considera la fecha de la ultima deuda despues de la fecha de solvencia
-        if ($debt = $this->debts()->where('date', '>', $solvencyDate)->oldest()->first()) {
-            return Carbon::parse($debt->date);
-        }
-        #tercero considera la fecha de la ultima orden a credito despues de la fecha de solvencia
-        if($order = $this->orders()->where('payed_credit', '1')->where('date', '>', $solvencyDate)->oldest()->first()){
-            return Carbon::parse($order->date);
-        }
-        #by default
         return now();
     }
     
     /**
-     * Retorna si existen ordenes vinculadas al cliente
+     * Sales functionality removed - return default values
      */
-    public function existsOrders() : bool
-    {
-        return count($this->orders) > 0 ? true : false;
-    }
-
-    /**
-     * Retorna si existen Visitas vinculadas al cliente - DEPRECATED (scheduling module removed)
-     */
-    public function existsVisits() : bool
+    public function existsOrders(): bool
     {
         return false;
     }
 
-    public function haveDebtsCustomer() : bool 
+    public function haveDebtsCustomer(): bool 
     {
-        return $this->getBalance() < 0 ? true : false;
+        return false;
     }
 
     public function isPendingToSchedule() : bool 
@@ -402,13 +326,11 @@ class Customer extends Authenticatable
     }
 
     public function getPlanningCollection(){
-        $balance = $this->getBalance();
-        $suggestedCollectionTotal = 0; // No visits to calculate from
-        $rest = round($suggestedCollectionTotal + $balance) ;
+        // Sales functionality removed - return default values
         return array(
-            'check' => $balance >= 0,
-            'rest' => $rest,
-            'rest_formatted' => FormatHelper::formatCurrency($rest ?? 0),
+            'check' => true,
+            'rest' => 0,
+            'rest_formatted' => FormatHelper::formatCurrency(0),
             'customer_name' => $this->name,
         );
     }
