@@ -24,5 +24,10 @@ jobs:
             cd ~/public_html/ecommerce-iravic
             sudo git pull origin main
             sudo composer install --no-interaction --prefer-dist --optimize-autoloader
+            sudo php artisan package:discover --ansi
+            sudo php artisan config:clear
+            sudo php artisan cache:clear
+            sudo php artisan route:clear
+            sudo php artisan view:clear
             sudo php artisan migrate --force
             sudo php artisan optimize
