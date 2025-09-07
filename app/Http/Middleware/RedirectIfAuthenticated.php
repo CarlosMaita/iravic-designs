@@ -18,6 +18,10 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+            // Redirect to appropriate dashboard based on guard
+            if ($guard === 'customer') {
+                return redirect('/e/dashboard');
+            }
             return redirect('/admin');
         }
 
