@@ -50,9 +50,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $logo_img     = Config::getConfig('logo_img');
-        return view('auth.login')
-                ->with( 'logoImg', $logo_img);
+        return view('auth.login');
     }
 
     /**

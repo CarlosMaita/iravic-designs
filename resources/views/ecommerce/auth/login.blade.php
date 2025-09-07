@@ -58,26 +58,11 @@
       background-color: #667eea;
       border-color: #667eea;
     }
-    .logo-section {
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-    .logo-section img {
-      max-width: 120px;
-      height: auto;
-    }
   </style>
 @endpush
 
 @section('content')
     <div class="login-container">
-      <!-- Logo Section -->
-      <div class="logo-section">
-        @isset($logoImg->value)
-        <img class="img-fluid" src="{{ asset('storage/img/configs/'. $logoImg->value) }}" alt="Logo">
-        @endisset
-      </div>
-
       <!-- Login Card -->
       <div class="card login-card">
         <div class="login-header">
