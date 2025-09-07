@@ -22,4 +22,12 @@ class Size extends Model
         return $this->belongsTo(TypeSize::class);
     }
 
+    /**
+     * Get the products for the size.
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'size_id');
+    }
+
 }

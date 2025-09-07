@@ -28,7 +28,6 @@ class Product extends Model
         'name',
         'description',
         'code',
-        'slug', // <-- allow mass assignment of slug
         'cover',
         'is_regular',
         'is_featured',
@@ -54,18 +53,18 @@ class Product extends Model
     public static function boot()
     {
         parent::boot();
-        static::saving(function ($product) {
-            if (empty($product->slug) && !empty($product->name)) {
-                $slug = Str::slug($product->name);
-                $originalSlug = $slug;
-                $i = 1;
-                while (Product::where('slug', $slug)->where('id', '!=', $product->id)->exists()) {
-                    $slug = $originalSlug . '-' . $i;
-                    $i++;
-                }
-                $product->slug = $slug;
-            }
-        });
+        // static::saving(function ($product) {
+        //     if (empty($product->slug) && !empty($product->name)) {
+        //         $slug = Str::slug($product->name);
+        //         $originalSlug = $slug;
+        //         $i = 1;
+        //         while (Product::where('slug', $slug)->where('id', '!=', $product->id)->exists()) {
+        //             $slug = $originalSlug . '-' . $i;
+        //             $i++;
+        //         }
+        //         $product->slug = $slug;
+        //     }
+        // });
     }
 
     # Relationships
