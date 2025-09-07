@@ -48,7 +48,7 @@ Vue.component('product-item-to-refund', require('./components/orders/ProductItem
 Vue.component('product-item-to-buy', require('./components/orders/ProductItemToBuy.vue').default);
 Vue.component('frequency-collection', require('./components/orders/FrequencyCollectionComponent.vue').default);
 // inventory components
-Vue.component('import-inventory', require('./components/inventory/ImportInventoryComponent.vue').default);
+Vue.component('import-inventory', require('./components/inventory/importInventoryComponent.vue').default);
 
 // global components
 Vue.component('v-select', vSelect)

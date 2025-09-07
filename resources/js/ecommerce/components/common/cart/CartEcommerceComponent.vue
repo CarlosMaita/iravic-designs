@@ -61,10 +61,21 @@
       </div>
       <div class="d-flex w-100 gap-3">
           <!-- <a class="btn btn-lg btn-secondary w-100" href="#!">Ver carrito</a>  -->
-        <button @click="goCheckout()" type="button" class="btn btn-lg btn-dark w-100" :disabled="cart.items.length === 0">Finalizar compra</button>
+        <button @click="goCheckout()" type="button" class="btn btn-lg btn-dark w-100" :disabled="cart.items.length === 0 || isProcessingCheckout">
+          <span v-if="isProcessingCheckout" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ isProcessingCheckout ? 'Verificando...' : 'Finalizar compra' }}
+        </button>
       </div>
     </div>
     <!-- End Footer -->
+
+    <!-- Shipping Modal -->
+    <shipping-modal-component 
+      ref="shippingModal"
+      :cart-items="cart.items"
+      @order-created="onOrderCreated"
+      @order-error="onOrderError"
+    ></shipping-modal-component>
 
   </div> 
 </template>
@@ -78,6 +89,7 @@
                 cart: {
                     items: [],
                 },
+                isProcessingCheckout: false
             }
         },
         methods: {
@@ -123,10 +135,54 @@
               this.setCartLocalStorage(this.cart);
             }
           },
-          goCheckout() {
-              this.createOrder();
+          
+          async goCheckout() {
+            // Check if cart is empty
+            if (this.cart.items.length === 0) {
+              alert('El carrito está vacío');
+              return;
+            }
+
+            this.isProcessingCheckout = true;
+
+            try {
+              // Check authentication status first
+              const authResponse = await fetch('/api/customer/auth-check');
+              const authData = await authResponse.json();
+
+              if (!authData.authenticated) {
+                // User is not authenticated, redirect to login
+                window.location.href = '/ingresar';
+                return;
+              }
+
+              // User is authenticated, show shipping modal
+              this.$refs.shippingModal.showModal();
+
+            } catch (error) {
+              console.error('Error checking authentication:', error);
+              alert('Error al verificar la autenticación. Intente nuevamente.');
+            } finally {
+              this.isProcessingCheckout = false;
+            }
           },
 
+          onOrderCreated(result) {
+            // Clear cart and redirect
+            this.cart.items = [];
+            this.setCartLocalStorage(this.cart);
+            
+            alert('¡Orden creada exitosamente! Será redirigido para completar el pago.');
+            if (result.redirect) {
+              window.location.href = result.redirect;
+            }
+          },
+
+          onOrderError(message) {
+            alert(message);
+          },
+
+          // Legacy methods - kept for compatibility but will not be used in new flow
           async createOrder() {
             try {
               // Check if cart is empty
