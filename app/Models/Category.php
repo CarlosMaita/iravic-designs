@@ -16,17 +16,17 @@ class Category extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'name', 'base_category_id', 'image_banner', 'bg_banner', 'slug'
+        'name', 'base_category_id', 'image_banner', 'bg_banner'
     ];
 
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($category) {
-            if (empty($category->slug)) {
-                $category->slug = \Illuminate\Support\Str::slug($category->name);
-            }
-        });
+        // static::creating(function ($category) {
+        //     if (empty($category->slug)) {
+        //         $category->slug = \Illuminate\Support\Str::slug($category->name);
+        //     }
+        // });
     }
 
     public function baseCategory()

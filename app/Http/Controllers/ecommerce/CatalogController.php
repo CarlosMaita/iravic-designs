@@ -23,13 +23,118 @@ class CatalogController extends Controller
         */
     public function __construct()
     {
-        $categories = Category::orderBy('name')->get();
-        $brands = Brand::orderBy('name')->get();
-        $genders = GenderConstants::ALL;
-        $sizes = Size::orderBy('name')->get();
-        $colors = Color::orderBy('name')->get();
+        $categories = $this->getAvailableCategories();
+        $brands = $this->getAvailableBrands();
+        $genders = $this->getAvailableGenders();
+        $sizes = $this->getAvailableSizes();
+        $colors = $this->getAvailableColors();
 
         view()->share(compact('categories', 'brands', 'genders', 'sizes', 'colors'));
+    }
+
+    /**
+     * Get categories that have products with stock
+     */
+    private function getAvailableCategories()
+    {
+        return Category::whereHas('products', function ($query) {
+            $query->where('product_id', null) // Only main products
+                  ->where(function ($q) {
+                      // Check legacy stock columns
+                      $q->where('stock_depot', '>', 0)
+                        ->orWhere('stock_local', '>', 0)
+                        ->orWhere('stock_truck', '>', 0)
+                        // OR products with stock through combinations
+                        ->orWhereHas('product_combinations', function ($combinationQuery) {
+                            $combinationQuery->where(function($cq) {
+                                $cq->where('stock_depot', '>', 0)
+                                  ->orWhere('stock_local', '>', 0)
+                                  ->orWhere('stock_truck', '>', 0);
+                            });
+                        });
+                  });
+        })->orderBy('name')->get();
+    }
+
+    /**
+     * Get brands that have products with stock
+     */
+    private function getAvailableBrands()
+    {
+        return Brand::whereHas('products', function ($query) {
+            $query->where('product_id', null) // Only main products
+                  ->where(function ($q) {
+                      // Check legacy stock columns
+                      $q->where('stock_depot', '>', 0)
+                        ->orWhere('stock_local', '>', 0)
+                        ->orWhere('stock_truck', '>', 0)
+                        // OR products with stock through combinations
+                        ->orWhereHas('product_combinations', function ($combinationQuery) {
+                            $combinationQuery->where(function($cq) {
+                                $cq->where('stock_depot', '>', 0)
+                                  ->orWhere('stock_local', '>', 0)
+                                  ->orWhere('stock_truck', '>', 0);
+                            });
+                        });
+                  });
+        })->orderBy('name')->get();
+    }
+
+    /**
+     * Get genders that have products with stock
+     */
+    private function getAvailableGenders()
+    {
+        $availableGenders = Product::where('product_id', null) // Only main products
+            ->where(function ($q) {
+                // Check legacy stock columns
+                $q->where('stock_depot', '>', 0)
+                  ->orWhere('stock_local', '>', 0)
+                  ->orWhere('stock_truck', '>', 0)
+                  // OR products with stock through combinations
+                  ->orWhereHas('product_combinations', function ($combinationQuery) {
+                      $combinationQuery->where(function($cq) {
+                          $cq->where('stock_depot', '>', 0)
+                            ->orWhere('stock_local', '>', 0)
+                            ->orWhere('stock_truck', '>', 0);
+                      });
+                  });
+            })
+            ->whereNotNull('gender')
+            ->distinct()
+            ->pluck('gender')
+            ->toArray();
+
+        // Filter the GenderConstants::ALL array to only include available genders
+        return array_intersect(GenderConstants::ALL, $availableGenders);
+    }
+
+    /**
+     * Get sizes that have products with stock
+     */
+    private function getAvailableSizes()
+    {
+        return Size::whereHas('products', function ($query) {
+            $query->where(function($q) {
+                $q->where('stock_depot', '>', 0)
+                  ->orWhere('stock_local', '>', 0)
+                  ->orWhere('stock_truck', '>', 0);
+            });
+        })->orderBy('name')->get();
+    }
+
+    /**
+     * Get colors that have products with stock
+     */
+    private function getAvailableColors()
+    {
+        return Color::whereHas('products', function ($query) {
+            $query->where(function($q) {
+                $q->where('stock_depot', '>', 0)
+                  ->orWhere('stock_local', '>', 0)
+                  ->orWhere('stock_truck', '>', 0);
+            });
+        })->orderBy('name')->get();
     }
 
 
