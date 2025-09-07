@@ -29,6 +29,7 @@ Vue.prototype.$axios = window.axios;
 // Common Ecommerce components
 Vue.component('cart-ecommerce-component', require('../ecommerce/components/common/cart/CartEcommerceComponent.vue').default);
 Vue.component('item-cart-ecommerce-component', require('../ecommerce/components/common/cart/ItemCartEcommerceComponent.vue').default);
+Vue.component('shipping-modal-component', require('../ecommerce/components/common/cart/ShippingModalComponent.vue').default);
 Vue.component('toast-ecommerce-component', require('../ecommerce/components/common/ToastEcommerceComponent.vue').default);
 Vue.component('icon-header-cart-ecommerce-component', require('../ecommerce/components/common/cart/IconHeaderCartEcommerceComponent.vue').default);
 
