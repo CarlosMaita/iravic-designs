@@ -13,12 +13,15 @@ class RemoveZoneConstraintFromCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            // Drop the foreign key constraint
-            $table->dropForeign(['zone_id']);
-            // Drop the zone_id column
-            $table->dropColumn('zone_id');
-        });
+        // Check if zone_id column exists before trying to drop foreign key and column
+        if (Schema::hasColumn('customers', 'zone_id')) {
+            Schema::table('customers', function (Blueprint $table) {
+                // Drop the foreign key constraint
+                $table->dropForeign(['zone_id']);
+                // Drop the zone_id column
+                $table->dropColumn('zone_id');
+            });
+        }
     }
 
     /**
