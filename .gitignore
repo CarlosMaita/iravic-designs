@@ -16,3 +16,19 @@ composer.phar
 .DS_Store
 *.DS_Store
 **/.DS_Store
+
+# PHP CS Fixer cache
+.php-cs-fixer.cache
+
+# ESLint cache
+.eslintcache
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+/tmp/
+*.tmp
