@@ -40,18 +40,16 @@ class CatalogController extends Controller
         return Category::whereHas('products', function ($query) {
             $query->where('product_id', null) // Only main products
                   ->where(function ($q) {
-                      // Check legacy stock columns
-                      $q->where('stock_depot', '>', 0)
-                        ->orWhere('stock_local', '>', 0)
-                        ->orWhere('stock_truck', '>', 0)
-                        // OR products with stock through combinations
-                        ->orWhereHas('product_combinations', function ($combinationQuery) {
-                            $combinationQuery->where(function($cq) {
-                                $cq->where('stock_depot', '>', 0)
-                                  ->orWhere('stock_local', '>', 0)
-                                  ->orWhere('stock_truck', '>', 0);
-                            });
-                        });
+                      // Check if product has stock through stores
+                      $q->whereHas('stores', function ($storeQuery) {
+                          $storeQuery->where('stock', '>', 0);
+                      })
+                      // OR products with stock through combinations
+                      ->orWhereHas('product_combinations', function ($combinationQuery) {
+                          $combinationQuery->whereHas('stores', function ($storeQuery) {
+                              $storeQuery->where('stock', '>', 0);
+                          });
+                      });
                   });
         })->orderBy('name')->get();
     }
@@ -64,18 +62,16 @@ class CatalogController extends Controller
         return Brand::whereHas('products', function ($query) {
             $query->where('product_id', null) // Only main products
                   ->where(function ($q) {
-                      // Check legacy stock columns
-                      $q->where('stock_depot', '>', 0)
-                        ->orWhere('stock_local', '>', 0)
-                        ->orWhere('stock_truck', '>', 0)
-                        // OR products with stock through combinations
-                        ->orWhereHas('product_combinations', function ($combinationQuery) {
-                            $combinationQuery->where(function($cq) {
-                                $cq->where('stock_depot', '>', 0)
-                                  ->orWhere('stock_local', '>', 0)
-                                  ->orWhere('stock_truck', '>', 0);
-                            });
-                        });
+                      // Check if product has stock through stores
+                      $q->whereHas('stores', function ($storeQuery) {
+                          $storeQuery->where('stock', '>', 0);
+                      })
+                      // OR products with stock through combinations
+                      ->orWhereHas('product_combinations', function ($combinationQuery) {
+                          $combinationQuery->whereHas('stores', function ($storeQuery) {
+                              $storeQuery->where('stock', '>', 0);
+                          });
+                      });
                   });
         })->orderBy('name')->get();
     }
@@ -87,18 +83,16 @@ class CatalogController extends Controller
     {
         $availableGenders = Product::where('product_id', null) // Only main products
             ->where(function ($q) {
-                // Check legacy stock columns
-                $q->where('stock_depot', '>', 0)
-                  ->orWhere('stock_local', '>', 0)
-                  ->orWhere('stock_truck', '>', 0)
-                  // OR products with stock through combinations
-                  ->orWhereHas('product_combinations', function ($combinationQuery) {
-                      $combinationQuery->where(function($cq) {
-                          $cq->where('stock_depot', '>', 0)
-                            ->orWhere('stock_local', '>', 0)
-                            ->orWhere('stock_truck', '>', 0);
-                      });
-                  });
+                // Check if product has stock through stores
+                $q->whereHas('stores', function ($storeQuery) {
+                    $storeQuery->where('stock', '>', 0);
+                })
+                // OR products with stock through combinations
+                ->orWhereHas('product_combinations', function ($combinationQuery) {
+                    $combinationQuery->whereHas('stores', function ($storeQuery) {
+                        $storeQuery->where('stock', '>', 0);
+                    });
+                });
             })
             ->whereNotNull('gender')
             ->distinct()
@@ -115,10 +109,8 @@ class CatalogController extends Controller
     private function getAvailableSizes()
     {
         return Size::whereHas('products', function ($query) {
-            $query->where(function($q) {
-                $q->where('stock_depot', '>', 0)
-                  ->orWhere('stock_local', '>', 0)
-                  ->orWhere('stock_truck', '>', 0);
+            $query->whereHas('stores', function ($storeQuery) {
+                $storeQuery->where('stock', '>', 0);
             });
         })->orderBy('name')->get();
     }
@@ -129,10 +121,8 @@ class CatalogController extends Controller
     private function getAvailableColors()
     {
         return Color::whereHas('products', function ($query) {
-            $query->where(function($q) {
-                $q->where('stock_depot', '>', 0)
-                  ->orWhere('stock_local', '>', 0)
-                  ->orWhere('stock_truck', '>', 0);
+            $query->whereHas('stores', function ($storeQuery) {
+                $storeQuery->where('stock', '>', 0);
             });
         })->orderBy('name')->get();
     }
