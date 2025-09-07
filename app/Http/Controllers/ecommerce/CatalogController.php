@@ -37,20 +37,9 @@ class CatalogController extends Controller
      */
     private function getAvailableCategories()
     {
+        // Temporary fix for missing stores table - return all categories
         return Category::whereHas('products', function ($query) {
-            $query->where('product_id', null) // Only main products
-                  ->where(function ($q) {
-                      // Check if product has stock through stores
-                      $q->whereHas('stores', function ($storeQuery) {
-                          $storeQuery->where('stock', '>', 0);
-                      })
-                      // OR products with stock through combinations
-                      ->orWhereHas('product_combinations', function ($combinationQuery) {
-                          $combinationQuery->whereHas('stores', function ($storeQuery) {
-                              $storeQuery->where('stock', '>', 0);
-                          });
-                      });
-                  });
+            $query->where('product_id', null); // Only main products
         })->orderBy('name')->get();
     }
 
@@ -59,20 +48,9 @@ class CatalogController extends Controller
      */
     private function getAvailableBrands()
     {
+        // Temporary fix for missing stores table - return all brands
         return Brand::whereHas('products', function ($query) {
-            $query->where('product_id', null) // Only main products
-                  ->where(function ($q) {
-                      // Check if product has stock through stores
-                      $q->whereHas('stores', function ($storeQuery) {
-                          $storeQuery->where('stock', '>', 0);
-                      })
-                      // OR products with stock through combinations
-                      ->orWhereHas('product_combinations', function ($combinationQuery) {
-                          $combinationQuery->whereHas('stores', function ($storeQuery) {
-                              $storeQuery->where('stock', '>', 0);
-                          });
-                      });
-                  });
+            $query->where('product_id', null); // Only main products
         })->orderBy('name')->get();
     }
 
@@ -81,19 +59,8 @@ class CatalogController extends Controller
      */
     private function getAvailableGenders()
     {
+        // Temporary fix for missing stores table - return all available genders
         $availableGenders = Product::where('product_id', null) // Only main products
-            ->where(function ($q) {
-                // Check if product has stock through stores
-                $q->whereHas('stores', function ($storeQuery) {
-                    $storeQuery->where('stock', '>', 0);
-                })
-                // OR products with stock through combinations
-                ->orWhereHas('product_combinations', function ($combinationQuery) {
-                    $combinationQuery->whereHas('stores', function ($storeQuery) {
-                        $storeQuery->where('stock', '>', 0);
-                    });
-                });
-            })
             ->whereNotNull('gender')
             ->distinct()
             ->pluck('gender')
@@ -108,11 +75,8 @@ class CatalogController extends Controller
      */
     private function getAvailableSizes()
     {
-        return Size::whereHas('products', function ($query) {
-            $query->whereHas('stores', function ($storeQuery) {
-                $storeQuery->where('stock', '>', 0);
-            });
-        })->orderBy('name')->get();
+        // Temporary fix for missing stores table - return all sizes
+        return Size::whereHas('products')->orderBy('name')->get();
     }
 
     /**
@@ -120,11 +84,8 @@ class CatalogController extends Controller
      */
     private function getAvailableColors()
     {
-        return Color::whereHas('products', function ($query) {
-            $query->whereHas('stores', function ($storeQuery) {
-                $storeQuery->where('stock', '>', 0);
-            });
-        })->orderBy('name')->get();
+        // Temporary fix for missing stores table - return all colors
+        return Color::whereHas('products')->orderBy('name')->get();
     }
 
 
