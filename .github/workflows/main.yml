@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd /public_html/ecommerce-iravic
+            cd ~/public_html/ecommerce-iravic
             git pull origin main
             composer install --no-interaction --prefer-dist --optimize-autoloader
             php artisan migrate --force
