@@ -15,7 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('zone_id')->nullable();
+            // $table->unsignedBigInteger('zone_id')->nullable(); // Removed zones reference
             $table->string('name');
             $table->text('address')->nullable();
             $table->string('latitude')->nullable();
@@ -33,10 +33,11 @@ class CreateCustomersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('zone_id')
-                ->references('id')
-                ->on('zones')
-                ->onDelete('cascade');
+            // Removed foreign key constraint to zones table
+            // $table->foreign('zone_id')
+            //     ->references('id')
+            //     ->on('zones')
+            //     ->onDelete('cascade');
         });
     }
 

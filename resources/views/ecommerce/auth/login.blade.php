@@ -117,10 +117,19 @@
             </button>
 
             <!-- Forgot Password Link -->
-            <div class="text-center">
+            <div class="text-center mb-2">
               <a href="{{ route('password.request') }}" class="text-decoration-none">
                 {{ __('Forgot Your Password?') }}
               </a>
+            </div>
+
+            <!-- Registration Link -->
+            <div class="text-center">
+              <p class="mb-0">¿No tienes cuenta? 
+                <a href="{{ route('customer.register.form') }}" class="text-decoration-none fw-bold">
+                  Regístrate
+                </a>
+              </p>
             </div>
           </form>
         </div>
