@@ -2,17 +2,12 @@ name: Deploy Laravel App
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      REMOTE_PATH: /public_html/ecommerce-iravic
-      HOST: ${{ secrets.HOST }}
-      USERNAME: ${{ secrets.USERNAME }}
-
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,12 +17,12 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ secrets.HOST }}" >> ~/.ssh/known_hosts
 
       - name: Deploy Laravel Project
         run: |
-          ssh -i ~/.ssh/id_ed25519 $USERNAME@"$HOST" "
-            cd $REMOTE_PATH &&
+          ssh -i ~/.ssh/id_ed25519 ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
+            cd /public_html/ecommerce-iravic &&
             git pull origin main &&
             composer install --no-interaction --prefer-dist --optimize-autoloader &&
             php artisan migrate --force &&
