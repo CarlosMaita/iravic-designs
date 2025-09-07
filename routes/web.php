@@ -29,14 +29,19 @@ Route::get('/categoria/{slug}', 'CatalogController@category')->name('ecommerce.c
     Route::get('/producto/{slug}', 'CatalogController@show')->name('ecommerce.product.detail');
 });
 
-#
+# Customer Authentication Routes
 Route::get('ingresar',           [CustomerLoginController::class, 'showLoginForm'])->name('customer.login.form');
 Route::post('customer/login',    [CustomerLoginController::class, 'login'])->name('customer.login');
 Route::post('customer/logout',   [CustomerLoginController::class, 'logout'])->name('customer.logout');
 
-#
-Route::middleware(['auth:customer'])->group(function () {
+# Customer Registration Routes
+Route::get('registrarse',        [\App\Http\Controllers\Auth\CustomerRegisterController::class, 'showRegistrationForm'])->name('customer.register.form');
+Route::post('customer/register', [\App\Http\Controllers\Auth\CustomerRegisterController::class, 'register'])->name('customer.register');
 
+# Customer Protected Routes
+Route::middleware(['auth:customer'])->group(function () {
+    Route::get('/e/dashboard', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'index'])->name('customer.dashboard');
+    Route::get('/e/perfil', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'profile'])->name('customer.profile');
 });
 
 
