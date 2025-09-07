@@ -97,6 +97,30 @@
         </li>
     @endif
 
+    {{-- Orders Management links --}}
+    @if (Auth::user()->can('view-order'))
+        <li class="c-sidebar-nav-dropdown {{ 
+            $menuService->isActive($url,"/admin/ordenes", false, true) . " " .
+            $menuService->isActive($url,"/admin/pagos", false, true)
+        }}">
+            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cart c-sidebar-nav-icon"></i>Órdenes</a>
+            <ul class="c-sidebar-nav-dropdown-items">
+                {{-- Orders --}}
+                @can('view-order')
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/ordenes")}}" href="{{ route('admin.orders.index') }}"><span class="c-sidebar-nav-icon"></span>Órdenes</a>
+                    </li>
+                @endcan
+                {{-- Payments --}}
+                @can('view-order')
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/pagos")}}" href="{{ route('admin.payments.index') }}"><span class="c-sidebar-nav-icon"></span>Pagos</a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
+    @endif
+
     {{-- Configuration links --}}
     @if (
         Auth::user()->can('viewany', App\Models\Config::class) || 

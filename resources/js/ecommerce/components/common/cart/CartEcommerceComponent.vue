@@ -124,9 +124,103 @@
             }
           },
           goCheckout() {
-              this.sendCartWhatsapp()
-              this.cart.items = []; //clean cart
-              this.setCartLocalStorage(this.cart); 
+              this.createOrder();
+          },
+
+          async createOrder() {
+            try {
+              // Check if cart is empty
+              if (this.cart.items.length === 0) {
+                alert('El carrito está vacío');
+                return;
+              }
+
+              // Prepare order data
+              const orderData = {
+                items: this.cart.items.map(item => ({
+                  product_id: item.product_id || item.id,
+                  quantity: item.quantity,
+                  price: item.price,
+                  color_id: item.color_id || null,
+                  size_id: item.size_id || null
+                })),
+                shipping_data: {
+                  name: '',
+                  dni: '',
+                  phone: '',
+                  agency: 'MRW',
+                  address: ''
+                }
+              };
+
+              // Show shipping form or use existing customer data
+              if (await this.collectShippingInfo(orderData.shipping_data)) {
+                // Send order creation request
+                const response = await fetch('/api/orders/create', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                  },
+                  body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                  // Clear cart and redirect
+                  this.cart.items = [];
+                  this.setCartLocalStorage(this.cart);
+                  
+                  alert('¡Orden creada exitosamente! Será redirigido para completar el pago.');
+                  if (result.redirect) {
+                    window.location.href = result.redirect;
+                  }
+                } else {
+                  if (result.redirect) {
+                    // Redirect to login if not authenticated
+                    window.location.href = result.redirect;
+                  } else {
+                    alert(result.message || 'Error al crear la orden');
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('Error creating order:', error);
+              alert('Error al procesar la orden. Intente nuevamente.');
+            }
+          },
+
+          async collectShippingInfo(shippingData) {
+            return new Promise((resolve) => {
+              // Simple form to collect shipping info
+              const name = prompt('Nombre completo para envío:');
+              if (!name) { resolve(false); return; }
+              
+              const dni = prompt('Cédula:');
+              if (!dni) { resolve(false); return; }
+              
+              const phone = prompt('Teléfono:');
+              if (!phone) { resolve(false); return; }
+              
+              const agency = prompt('Agencia de envío (MRW, ZOOM, Domesa):', 'MRW');
+              if (!agency || !['MRW', 'ZOOM', 'Domesa'].includes(agency)) { 
+                alert('Agencia inválida');
+                resolve(false); 
+                return; 
+              }
+              
+              const address = prompt('Dirección de la agencia:');
+              if (!address) { resolve(false); return; }
+
+              shippingData.name = name;
+              shippingData.dni = dni;
+              shippingData.phone = phone;
+              shippingData.agency = agency;
+              shippingData.address = address;
+              
+              resolve(true);
+            });
           },
 
           sendCartWhatsapp() {

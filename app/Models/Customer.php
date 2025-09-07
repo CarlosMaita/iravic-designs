@@ -41,6 +41,8 @@ class Customer extends Authenticatable
         'collection_day',
         'password',
         'username',
+        'shipping_agency',
+        'shipping_agency_address',
     ];
 
     protected $appends = [
@@ -336,5 +338,37 @@ class Customer extends Authenticatable
 
     private function getSuggestedCollectionTotal(){
         return 0; // No visits to calculate from since scheduling module is removed
+    }
+
+    // Shipping validation methods
+    public function hasCompleteShippingInfo()
+    {
+        return !empty($this->name) && 
+               !empty($this->dni) && 
+               !empty($this->cellphone) && 
+               !empty($this->shipping_agency) && 
+               !empty($this->shipping_agency_address);
+    }
+
+    public function getMissingShippingFields()
+    {
+        $missing = [];
+        if (empty($this->name)) $missing[] = 'Nombre';
+        if (empty($this->dni)) $missing[] = 'Cédula';
+        if (empty($this->cellphone)) $missing[] = 'Teléfono';
+        if (empty($this->shipping_agency)) $missing[] = 'Agencia de envío';
+        if (empty($this->shipping_agency_address)) $missing[] = 'Dirección de la agencia';
+        return $missing;
+    }
+
+    // Relationships
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

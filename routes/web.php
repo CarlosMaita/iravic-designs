@@ -42,7 +42,15 @@ Route::post('customer/register', [\App\Http\Controllers\Auth\CustomerRegisterCon
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/e/dashboard', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'index'])->name('customer.dashboard');
     Route::get('/e/perfil', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'profile'])->name('customer.profile');
+    
+    # Order Routes
+    Route::get('/e/ordenes', [\App\Http\Controllers\Ecommerce\OrderController::class, 'index'])->name('customer.orders.index');
+    Route::get('/e/ordenes/{order}', [\App\Http\Controllers\Ecommerce\OrderController::class, 'show'])->name('customer.orders.show');
+    Route::post('/e/ordenes/{order}/pagos', [\App\Http\Controllers\Ecommerce\OrderController::class, 'addPayment'])->name('customer.orders.add_payment');
 });
+
+# Order Creation Routes (public API for cart)
+Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderController::class, 'create'])->name('api.orders.create');
 
 
 Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
@@ -85,6 +93,24 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
         #
         Route::resource('clientes', 'CustomerController');
     });
+
+    # Orders Routes
+    Route::resource('ordenes', 'OrderController')->except(['create', 'store', 'destroy'])->names([
+        'index' => 'admin.orders.index',
+        'show' => 'admin.orders.show', 
+        'edit' => 'admin.orders.edit',
+        'update' => 'admin.orders.update'
+    ]);
+    Route::patch('ordenes/{order}/status', 'OrderController@updateStatus')->name('admin.orders.update_status');
+
+    # Payments Routes
+    Route::resource('pagos', 'PaymentController')->only(['index', 'show'])->names([
+        'index' => 'admin.payments.index',
+        'show' => 'admin.payments.show'
+    ]);
+    Route::post('pagos/{payment}/verify', 'PaymentController@verify')->name('admin.payments.verify');
+    Route::post('pagos/{payment}/reject', 'PaymentController@reject')->name('admin.payments.reject');
+    Route::patch('pagos/{payment}/status', 'PaymentController@updateStatus')->name('admin.payments.update_status');
 
 
 
