@@ -95,19 +95,15 @@ Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'adm
     });
 
     # Orders Routes
-    Route::resource('ordenes', 'OrderController')->except(['create', 'store', 'destroy'])->names([
-        'index' => 'admin.orders.index',
-        'show' => 'admin.orders.show', 
-        'edit' => 'admin.orders.edit',
-        'update' => 'admin.orders.update'
-    ]);
+    Route::get('ordenes', 'OrderController@index')->name('admin.orders.index');
+    Route::get('ordenes/{order}', 'OrderController@show')->name('admin.orders.show');
+    Route::get('ordenes/{order}/edit', 'OrderController@edit')->name('admin.orders.edit');
+    Route::put('ordenes/{order}', 'OrderController@update')->name('admin.orders.update');
     Route::patch('ordenes/{order}/status', 'OrderController@updateStatus')->name('admin.orders.update_status');
 
     # Payments Routes
-    Route::resource('pagos', 'PaymentController')->only(['index', 'show'])->names([
-        'index' => 'admin.payments.index',
-        'show' => 'admin.payments.show'
-    ]);
+    Route::get('pagos', 'PaymentController@index')->name('admin.payments.index');
+    Route::get('pagos/{payment}', 'PaymentController@show')->name('admin.payments.show');
     Route::post('pagos/{payment}/verify', 'PaymentController@verify')->name('admin.payments.verify');
     Route::post('pagos/{payment}/reject', 'PaymentController@reject')->name('admin.payments.reject');
     Route::patch('pagos/{payment}/status', 'PaymentController@updateStatus')->name('admin.payments.update_status');

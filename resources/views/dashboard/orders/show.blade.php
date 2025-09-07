@@ -10,7 +10,7 @@
                             <i class="fa fa-shopping-cart"></i> Orden #{{ $order->id }}
                             <div class="card-header-actions">
                                 @can('update-order')
-                                    <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-success">
+                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
                                 @endcan
