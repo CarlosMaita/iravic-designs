@@ -81,14 +81,14 @@
               </div>
             @endif
 
-            <!-- Username Field -->
+            <!-- Email Field -->
             <div class="mb-3">
-              <label for="username" class="form-label">Número de Documento</label>
+              <label for="email" class="form-label">Correo Electrónico</label>
               <div class="input-group">
                 <span class="input-group-text">
                   <i class="ci-user"></i>
                 </span>
-                <input class="form-control" type="text" id="username" placeholder="{{ __('C.I. (solo números)') }}" name="username" value="{{ old('username') }}" required autofocus>
+                <input class="form-control" type="email" id="email" placeholder="{{ __('tu@email.com') }}" name="email" value="{{ old('email') }}" required autofocus>
               </div>
             </div>
 
