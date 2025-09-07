@@ -1,92 +1,143 @@
-@extends('auth.base')
+@extends('auth.cartzilla-base')
 
 @push('css')
   <style>
-    @media only screen and (max-width: 500px) {
-      h1 {
-        font-size: 16px;
-      }
+    .login-container {
+      max-width: 440px;
+      width: 100%;
     }
-    @media only screen and (min-height: 670px) {
-      #form-wrap {
-        margin-bottom: 150px;
-      }
+    .login-card {
+      border: none;
+      box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+      border-radius: 1rem;
+    }
+    .login-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 1rem 1rem 0 0;
+      text-align: center;
+    }
+    .login-body {
+      padding: 2rem;
+    }
+    .form-control {
+      border-radius: 0.5rem;
+      border: 1px solid #e1e5e9;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+    }
+    .form-control:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    .btn-login {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .btn-login:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0.5rem 1rem rgba(102, 126, 234, 0.3);
+    }
+    .input-group-text {
+      background: transparent;
+      border: 1px solid #e1e5e9;
+      border-right: none;
+      border-radius: 0.5rem 0 0 0.5rem;
+      color: #6c757d;
+    }
+    .input-group .form-control {
+      border-left: none;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+    .form-check-input:checked {
+      background-color: #667eea;
+      border-color: #667eea;
+    }
+    .logo-section {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .logo-section img {
+      max-width: 120px;
+      height: auto;
     }
   </style>
 @endpush
 
 @section('content')
-    <div class="container">
-      <div class="row justify-content-center">
-        <div id="form-wrap" class="col-md-8">
-          <div class="mb-3 text-center">
-            @isset($logoImg->value)
-            <img class="img-fluid" src="{{ asset('storage/img/configs/'. $logoImg->value) }}" alt="Logo" width="120">
-            @endisset
-          </div>
-          <div class="card-group">
-            <div class="card p-2">
-              <div class="card-body">
-                <h1>Inicio de Sesion - Clientes</h1>
-                <form method="POST" action="{{ route('customer.login') }}">
-                  @csrf
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <input class="form-control" type="text" placeholder="{{ __('C.I. (solo números)') }}" name="username" value="{{ old('username') }}" required autofocus>
-                  </div>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-lock-locked"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <input class="form-control" type="password" placeholder="{{ __('Password') }}" name="password" required>
-                  </div>
-                  <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" value="1" id="remember_me" name="remember_me" value='1'>
-                    <label class="form-check-label" for="remember_me">
-                      {{ __('Remember Me') }}
-                    </label>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                        @if(Session::has('message'))
-                            <p class="alert alert-danger">{{ Session::get('message') }}</p>
-                        @endif
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                        <button class="btn btn-primary px-4" type="submit">{{ __('Login') }}</button>
-                    </div>
-                  </div>
-                </form>
-                <div class="col-12 text-right">
-                    <a href="{{ route('password.request') }}" class="btn btn-link px-0">{{ __('Forgot Your Password?') }}</a>
-                </div>
-                </div>
+    <div class="login-container">
+      <!-- Logo Section -->
+      <div class="logo-section">
+        @isset($logoImg->value)
+        <img class="img-fluid" src="{{ asset('storage/img/configs/'. $logoImg->value) }}" alt="Logo">
+        @endisset
+      </div>
+
+      <!-- Login Card -->
+      <div class="card login-card">
+        <div class="login-header">
+          <h1 class="h4 mb-1">Bienvenido</h1>
+          <p class="mb-0 opacity-75">Ingresa a tu cuenta de cliente</p>
+        </div>
+        <div class="login-body">
+          <form method="POST" action="{{ route('customer.login') }}">
+            @csrf
+            
+            <!-- Error Messages -->
+            @if(Session::has('message'))
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
-            </div>
-            @if (Route::has('register'))
-            <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
-              <div class="card-body text-center">
-                <div>
-                  <h2>Sign up</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <a href="{{ route('register') }}" class="btn btn-primary active mt-3">{{ __('Register') }}</a>
-                </div>
-              </div>
-            </div>
             @endif
-          </div>
+
+            <!-- Username Field -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Número de Documento</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="ci-user"></i>
+                </span>
+                <input class="form-control" type="text" id="username" placeholder="{{ __('C.I. (solo números)') }}" name="username" value="{{ old('username') }}" required autofocus>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="ci-locked"></i>
+                </span>
+                <input class="form-control" type="password" id="password" placeholder="{{ __('Password') }}" name="password" required>
+              </div>
+            </div>
+
+            <!-- Remember Me Checkbox -->
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" value="1" id="remember_me" name="remember_me">
+              <label class="form-check-label" for="remember_me">
+                {{ __('Remember Me') }}
+              </label>
+            </div>
+
+            <!-- Login Button -->
+            <button class="btn btn-primary btn-login w-100 mb-3" type="submit">
+              <i class="ci-sign-in me-2"></i>{{ __('Login') }}
+            </button>
+
+            <!-- Forgot Password Link -->
+            <div class="text-center">
+              <a href="{{ route('password.request') }}" class="text-decoration-none">
+                {{ __('Forgot Your Password?') }}
+              </a>
+            </div>
+          </form>
         </div>
       </div>
     </div>
