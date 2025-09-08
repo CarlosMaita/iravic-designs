@@ -119,6 +119,13 @@ return [
             'url' => env('APP_URL').'/storage/img/configs',
             'visibility' => 'public',
         ],
+
+        'special-offers' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/img/special-offers'),
+            'url' => env('APP_URL').'/storage/img/special-offers',
+            'visibility' => 'public',
+        ],
     ],
 
 ];

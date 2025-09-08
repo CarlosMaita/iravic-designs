@@ -73,6 +73,11 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
     // Banner Resource
     Route::resource('banners', 'BannerController')->except('show');
 
+    // Special Offers Resource
+    Route::resource('ofertas-especiales', 'SpecialOfferController', [
+        'as' => 'special-offers'
+    ])->except('show');
+
     # Catalog Routes
     Route::group(['prefix' => 'catalogo', 'namespace' => 'catalog'], function () {
         Route::resource('categorias', 'CategoryController')->except('show');
