@@ -138,7 +138,8 @@
             $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
             $menuService->isActive($url,"/admin/config/permisos", false, true) . " " . 
             $menuService->isActive($url,"/admin/config/general", false, true) . " " .
-            $menuService->isActive($url,"/admin/banners", false, true)
+            $menuService->isActive($url,"/admin/banners", false, true) . " " .
+            $menuService->isActive($url,"/admin/ofertas-especiales", false, true)
         }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cog c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.settings') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
@@ -152,6 +153,14 @@
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/banners')}}" href="{{ route('banners.index') }}">
                             <span class="c-sidebar-nav-icon"></span> Banners
+                        </a>
+                    </li>
+                @endcan
+                {{-- Special Offers CRUD --}}
+                @can('viewany', App\Models\SpecialOffer::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/ofertas-especiales')}}" href="{{ route('special-offers.index') }}">
+                            <span class="c-sidebar-nav-icon"></span> Ofertas Especiales
                         </a>
                     </li>
                 @endcan

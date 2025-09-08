@@ -23,6 +23,8 @@
   {{--  Carousel --}}
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
 
+  {{--  Special Offers --}}
+  @include('ecommerce.home.partials.special-offers', ['specialOffers' => $specialOffers])
   
   {{-- Main Categories  --}}
   {{-- @include('ecommerce.home.partials.main-categories') --}}
