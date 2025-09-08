@@ -174,9 +174,6 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
                       </span>
                     </a>
                   </div>
-                  <div class="text-muted small">
-                    <span class="text-truncate">{{ $product->name }}</span>
-                  </div>
                 </div>
               </div>
             </div>
