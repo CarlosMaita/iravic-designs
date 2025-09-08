@@ -236,36 +236,75 @@ export default {
 </script>
 
 <style scoped>
+/* Fix z-index issues for modal interaction */
+.modal {
+  z-index: 1055 !important;
+}
+
+.modal-dialog {
+  z-index: 1056 !important;
+}
+
+.modal-content {
+  z-index: 1057 !important;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  z-index: 1058 !important;
+  position: relative;
+}
+
 .form-label {
   font-weight: 600;
   color: #333;
+  position: relative;
+  z-index: 1059;
 }
 
 .form-control, .form-select {
   border-radius: 0.5rem;
   border: 1px solid #e1e5e9;
+  position: relative;
+  z-index: 1059 !important;
 }
 
 .form-control:focus, .form-select:focus {
   border-color: #667eea;
   box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  z-index: 1060 !important;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-radius: 0.5rem;
+  position: relative;
+  z-index: 1059;
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 }
 
+.btn-secondary {
+  position: relative;
+  z-index: 1059;
+}
+
 .text-danger {
   font-size: 0.875rem;
+  position: relative;
+  z-index: 1059;
 }
 
 .modal-body {
   padding: 1.5rem;
+}
+
+/* Ensure form elements are clickable */
+input, select, textarea, button {
+  pointer-events: auto !important;
 }
 </style>

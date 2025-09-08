@@ -59,6 +59,15 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
 
+            // Update customer shipping information from the shipping data
+            $customer->update([
+                'name' => $request->shipping_data['name'],
+                'dni' => $request->shipping_data['dni'],
+                'cellphone' => $request->shipping_data['phone'],
+                'shipping_agency' => $request->shipping_data['agency'],
+                'shipping_agency_address' => $request->shipping_data['address'],
+            ]);
+
             // Calculate totals
             $subtotal = 0;
             $orderItems = [];
@@ -69,13 +78,13 @@ class OrderController extends Controller
                     throw new \Exception('Producto no encontrado.');
                 }
 
-                $itemTotal = $product->regular_price * $item['quantity'];
+                $itemTotal = $product->price * $item['quantity'];
                 $subtotal += $itemTotal;
 
                 $orderItems[] = [
                     'product_id' => $product->id,
                     'product_name' => $product->name,
-                    'product_price' => $product->regular_price,
+                    'product_price' => $product->price,
                     'qty' => $item['quantity'],
                     'total' => $itemTotal,
                     'color_id' => $item['color_id'] ?? null,
