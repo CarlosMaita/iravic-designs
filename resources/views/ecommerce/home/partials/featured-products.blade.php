@@ -280,7 +280,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 
 .product-name {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 400;
   color: #212529;
   margin-bottom: 8px;
   line-height: 1.3;
@@ -294,7 +294,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 
 .product-price {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #e74c3c;
   margin-bottom: 0;
   text-shadow: none;
