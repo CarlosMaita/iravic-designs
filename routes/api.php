@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/products', 'Api\ProductController@index');
+Route::get('/products', 'App\Http\Controllers\Api\ProductController@index');
 
 // Customer authentication check endpoint
 Route::get('/customer/auth-check', function (Request $request) {

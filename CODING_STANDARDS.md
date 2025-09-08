@@ -1,6 +1,6 @@
 # Estándares de Codificación - Iravic Designs
 
-Este documento define los estándares de codificación para el proyecto Iravic Designs, un sistema e-commerce desarrollado con Laravel 8 y Vue.js, utilizando la plantilla Cartzilla.
+Este documento define los estándares de codificación para el proyecto Iravic Designs, un sistema e-commerce desarrollado con Laravel 9 y Vue.js, utilizando la plantilla Cartzilla.
 
 ## Tabla de Contenidos
 
