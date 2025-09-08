@@ -46,27 +46,54 @@ $offers = $specialOffers->count() > 0 ? $specialOffers : $mockOffers;
 @endphp
 
 @if($offers->count() > 0)
-<section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-  <div class="container">
-    <!-- Section Header -->
-    <div class="text-center mb-5">
-      <h2 class="h1 mb-3" style="color: #2c3e50; font-weight: 700;">🎯 Ofertas Especiales</h2>
-      <p class="lead text-muted">¡No te pierdas estas increíbles promociones por tiempo limitado!</p>
+<!-- Special Offers Section with Cartzilla Design -->
+<section class="container pt-4 pb-5 mb-2 mb-sm-3 mb-lg-4 mb-xl-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+      <div class="text-center pb-4 mb-2 mb-md-3">
+        <h2 class="h1 mb-0">Ofertas Especiales</h2>
+        <p class="fs-lg text-body-secondary mb-0">¡No te pierdas estas increíbles promociones por tiempo limitado!</p>
+      </div>
     </div>
+  </div>
 
-    <!-- Special Offers Grid -->
-    <div class="row g-4">
-      @foreach($offers as $offer)
-        <div class="col-lg-6 col-xl-4">
-          <div class="card border-0 shadow-lg h-100 overflow-hidden" style="border-radius: 20px;">
-            <!-- Offer Image -->
-            <div class="position-relative overflow-hidden">
-              <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}" class="card-img-top" style="height: 250px; object-fit: cover; transition: transform 0.3s ease;">
-              
+  <!-- Special Offers Carousel -->
+  <div class="position-relative">
+    <div class="swiper special-offers-swiper" data-swiper='{
+      "slidesPerView": 1,
+      "spaceBetween": 24,
+      "loop": true,
+      "pagination": {
+        "el": ".special-offers-pagination",
+        "clickable": true
+      },
+      "navigation": {
+        "nextEl": ".special-offers-next",
+        "prevEl": ".special-offers-prev"
+      },
+      "breakpoints": {
+        "576": {
+          "slidesPerView": 1
+        },
+        "768": {
+          "slidesPerView": 2
+        },
+        "992": {
+          "slidesPerView": 2
+        },
+        "1200": {
+          "slidesPerView": 3
+        }
+      }
+    }'>
+      <div class="swiper-wrapper">
+        @foreach($offers as $offer)
+          <div class="swiper-slide h-auto">
+            <div class="position-relative d-flex flex-column h-100 bg-warning-subtle border border-warning rounded-5 overflow-hidden p-4">
               <!-- Discount Badge -->
               @if($offer->discount_percentage)
-                <div class="position-absolute top-0 end-0 m-3">
-                  <span class="badge bg-danger fs-6 px-3 py-2" style="border-radius: 25px; font-weight: 600;">
+                <div class="position-absolute top-0 end-0 m-3 z-2">
+                  <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill">
                     -{{ number_format($offer->discount_percentage, 0) }}%
                   </span>
                 </div>
@@ -74,10 +101,10 @@ $offers = $specialOffers->count() > 0 ? $specialOffers : $mockOffers;
 
               <!-- Time Remaining Badge -->
               @if($offer->is_current && isset($offer->days_remaining))
-                <div class="position-absolute bottom-0 start-0 m-3">
-                  <span class="badge bg-warning text-dark fs-6 px-3 py-2" style="border-radius: 25px; font-weight: 600;">
+                <div class="position-absolute top-0 start-0 m-3 z-2">
+                  <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill">
                     @if($offer->days_remaining > 1)
-                      {{ $offer->days_remaining }} días restantes
+                      {{ $offer->days_remaining }} días
                     @elseif($offer->days_remaining == 1)
                       ¡Último día!
                     @else
@@ -86,117 +113,104 @@ $offers = $specialOffers->count() > 0 ? $specialOffers : $mockOffers;
                   </span>
                 </div>
               @endif
-            </div>
 
-            <div class="card-body p-4">
-              <!-- Offer Title -->
-              <h3 class="card-title h4 mb-3" style="color: #2c3e50; font-weight: 600;">
-                {{ $offer->title }}
-              </h3>
-
-              <!-- Offer Description -->
-              @if($offer->description)
-                <p class="card-text text-muted mb-3">
-                  {{ Str::limit($offer->description, 100) }}
-                </p>
-              @endif
-
-              <!-- Product Information -->
-              @if(isset($offer->product))
-                <div class="d-flex align-items-center mb-3">
-                  @if($offer->product->images && $offer->product->images->count() > 0)
-                    <img src="{{ $offer->product->images->first()->full_url_img }}" alt="{{ $offer->product->name }}" 
-                         class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="d-flex flex-column flex-grow-1">
+                <!-- Offer Content -->
+                <div class="flex-grow-1 mb-4">
+                  <h3 class="h4 mb-3">{{ $offer->title }}</h3>
+                  @if($offer->description)
+                    <p class="text-body-secondary mb-3">{{ Str::limit($offer->description, 120) }}</p>
                   @endif
-                  <div>
-                    <h6 class="mb-1 fw-semibold">{{ $offer->product->name }}</h6>
-                    <div class="d-flex align-items-center">
-                      @if($offer->discount_percentage && isset($offer->product->price))
-                        <span class="text-muted text-decoration-line-through me-2">
-                          ${{ number_format($offer->product->price, 2) }}
-                        </span>
-                        <span class="text-success fw-bold">
-                          ${{ number_format($offer->product->price * (1 - $offer->discount_percentage / 100), 2) }}
-                        </span>
-                      @elseif(isset($offer->product->price))
-                        <span class="text-success fw-bold">
-                          ${{ number_format($offer->product->price, 2) }}
-                        </span>
+                  
+                  <!-- Product Information -->
+                  @if(isset($offer->product))
+                    <div class="d-flex align-items-center mb-3">
+                      @if($offer->product->images && $offer->product->images->count() > 0)
+                        <div class="ratio rounded-circle overflow-hidden me-3" style="width: 48px; height: 48px;">
+                          <img src="{{ $offer->product->images->first()->full_url_img }}" 
+                               alt="{{ $offer->product->name }}" 
+                               class="object-fit-cover">
+                        </div>
                       @endif
+                      <div>
+                        <h6 class="mb-1">{{ $offer->product->name }}</h6>
+                        <div class="d-flex align-items-center">
+                          @if($offer->discount_percentage && isset($offer->product->price))
+                            <span class="text-decoration-line-through me-2 fs-sm text-body-secondary">
+                              ${{ number_format($offer->product->price, 2) }}
+                            </span>
+                            <span class="text-success fw-semibold">
+                              ${{ number_format($offer->product->price * (1 - $offer->discount_percentage / 100), 2) }}
+                            </span>
+                          @elseif(isset($offer->product->price))
+                            <span class="text-success fw-semibold">
+                              ${{ number_format($offer->product->price, 2) }}
+                            </span>
+                          @endif
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              @endif
+                  @endif
 
-              <!-- Countdown Timer -->
-              @if($offer->is_current && isset($offer->end_date))
-                <div class="mb-3">
-                  <small class="text-muted d-block mb-1">La oferta termina el:</small>
-                  <strong class="text-danger">{{ $offer->end_date->format('d/m/Y H:i') }}</strong>
+                  <!-- Countdown Timer -->
+                  @if($offer->is_current && isset($offer->end_date))
+                    <div class="mb-3">
+                      <small class="text-body-secondary d-block mb-1">La oferta termina el:</small>
+                      <strong class="text-danger">{{ $offer->end_date->format('d/m/Y H:i') }}</strong>
+                    </div>
+                  @endif
                 </div>
-              @endif
-            </div>
 
-            <!-- Card Footer with Action Button -->
-            <div class="card-footer bg-transparent border-0 p-4 pt-0">
-              @if(isset($offer->product))
-                <a href="{{ route('ecommerce.product.detail', $offer->product->slug) }}" 
-                   class="btn btn-primary w-100 py-3 fw-semibold" 
-                   style="border-radius: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; transition: all 0.3s ease;">
-                  <i class="fas fa-shopping-cart me-2"></i>
-                  Ver Producto
-                </a>
-              @else
-                <a href="{{ route('ecommerce.catalog') }}" 
-                   class="btn btn-primary w-100 py-3 fw-semibold" 
-                   style="border-radius: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; transition: all 0.3s ease;">
-                  <i class="fas fa-shopping-cart me-2"></i>
-                  Ver Catálogo
-                </a>
+                <!-- Action Button -->
+                <div class="nav">
+                  @if(isset($offer->product))
+                    <a class="nav-link animate-underline stretched-link text-body-emphasis text-nowrap px-0" 
+                       href="{{ route('ecommerce.product.detail', $offer->product->slug) }}">
+                      <span class="animate-target">Ver Producto</span>
+                      <i class="ci-chevron-right fs-base ms-1"></i>
+                    </a>
+                  @else
+                    <a class="nav-link animate-underline stretched-link text-body-emphasis text-nowrap px-0" 
+                       href="{{ route('ecommerce.catalog') }}">
+                      <span class="animate-target">Ver Catálogo</span>
+                      <i class="ci-chevron-right fs-base ms-1"></i>
+                    </a>
+                  @endif
+                </div>
+              </div>
+
+              <!-- Offer Image as Background Element -->
+              @if($offer->image_url)
+                <div class="ratio position-absolute bottom-0 end-0 rtl-flip opacity-25" style="max-width: 180px; --cz-aspect-ratio: calc(200 / 180 * 100%); margin-bottom: -20px; margin-right: -20px;">
+                  <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}" class="object-fit-cover">
+                </div>
               @endif
             </div>
           </div>
-        </div>
-      @endforeach
+        @endforeach
+      </div>
     </div>
 
-    <!-- View All Offers Button -->
-    @if($specialOffers->count() > 3)
-      <div class="text-center mt-5">
-        <a href="{{ route('ecommerce.catalog') }}" class="btn btn-outline-primary btn-lg px-5 py-3" style="border-radius: 25px; font-weight: 600;">
-          <i class="fas fa-eye me-2"></i>
-          Ver Todas las Ofertas
-        </a>
-      </div>
-    @endif
+    <!-- Navigation buttons -->
+    <button type="button" class="btn btn-icon btn-outline-secondary special-offers-prev position-absolute top-50 start-0 translate-middle-y z-5 ms-n5 d-none d-xl-inline-flex" aria-label="Previous">
+      <i class="ci-chevron-left"></i>
+    </button>
+    <button type="button" class="btn btn-icon btn-outline-secondary special-offers-next position-absolute top-50 end-0 translate-middle-y z-5 me-n5 d-none d-xl-inline-flex" aria-label="Next">
+      <i class="ci-chevron-right"></i>
+    </button>
+
+    <!-- Pagination (bullets) -->
+    <div class="swiper-pagination special-offers-pagination d-xl-none pt-4"></div>
   </div>
+
+  <!-- View All Offers Button -->
+  @if($specialOffers->count() > 3)
+    <div class="text-center pt-4 mt-2 mt-md-3">
+      <a href="{{ route('ecommerce.catalog') }}" class="btn btn-outline-primary">
+        <i class="ci-eye fs-base me-2"></i>
+        Ver Todas las Ofertas
+      </a>
+    </div>
+  @endif
 </section>
-
-@push('styles')
-<style>
-.card:hover {
-  transform: translateY(-5px);
-  transition: transform 0.3s ease;
-}
-
-.card:hover .card-img-top {
-  transform: scale(1.05);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-@media (max-width: 768px) {
-  .card-img-top {
-    height: 200px;
-  }
-  
-  .h1 {
-    font-size: 2rem;
-  }
-}
-</style>
-@endpush
 @endif
