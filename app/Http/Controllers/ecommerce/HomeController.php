@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Size;
+use App\Models\SpecialOffer;
 use Illuminate\Support\Facades\Request;
 
 class HomeController extends Controller
@@ -49,7 +50,19 @@ class HomeController extends Controller
             $featuredProducts = collect(); // Empty collection if column doesn't exist
         }
         
-        return view('ecommerce.home.index', compact('categories', 'categories_cards', 'banners', 'featuredProducts'));
+        // Handle special offers
+        try {
+            $specialOffers = SpecialOffer::active()
+                                       ->current()
+                                       ->with(['product', 'product.images'])
+                                       ->ordered()
+                                       ->take(6)
+                                       ->get();
+        } catch (\Exception $e) {
+            $specialOffers = collect(); // Empty collection if table doesn't exist
+        }
+        
+        return view('ecommerce.home.index', compact('categories', 'categories_cards', 'banners', 'featuredProducts', 'specialOffers'));
     }
 
 }
