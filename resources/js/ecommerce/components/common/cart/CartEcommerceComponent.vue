@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="cartOffcanvas">
     <!-- Header -->
     <div class="offcanvas-header flex-column align-items-start py-3 pt-lg-4">
       <div class="d-flex align-items-center justify-content-between w-100 mb-3 mb-lg-4">
@@ -156,8 +156,26 @@
                 return;
               }
 
-              // User is authenticated, show shipping modal
-              this.$refs.shippingModal.showModal();
+              // Oculta el offcanvas del carrito antes de mostrar el modal de envío
+              const tryShowShippingModal = () => this.$refs.shippingModal.showModal();
+
+              let offcanvasEl = this.$refs.cartOffcanvas;
+              // Si el ref no es el offcanvas real, busca el que esté abierto actualmente
+              if (!offcanvasEl || !offcanvasEl.classList.contains('offcanvas')) {
+                offcanvasEl = document.querySelector('.offcanvas.show');
+              }
+
+              if (offcanvasEl && window.bootstrap && window.bootstrap.Offcanvas) {
+                const instance = window.bootstrap.Offcanvas.getInstance(offcanvasEl) || new window.bootstrap.Offcanvas(offcanvasEl);
+                // Espera a que termine de ocultarse para evitar superposición de backdrops
+                offcanvasEl.addEventListener('hidden.bs.offcanvas', () => {
+                  tryShowShippingModal();
+                }, { once: true });
+                instance.hide();
+              } else {
+                // Si no hay offcanvas abierto, muestra el modal de envío de inmediato
+                tryShowShippingModal();
+              }
 
             } catch (error) {
               console.error('Error checking authentication:', error);

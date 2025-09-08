@@ -124,14 +124,20 @@ export default {
     }
   },
   methods: {
-    showModal() {
-      // Reset form and errors
-      this.resetForm();
-      
-      // Show the modal using Bootstrap's modal API
-      const modal = new bootstrap.Modal(this.$refs.shippingModal);
-      modal.show();
-    },
+      showModal() {
+        // Reset form and errors
+        this.resetForm();
+        // Asegura que el modal esté montado directamente en <body> para evitar stacking-context del offcanvas
+        const el = this.$refs.shippingModal;
+        if (el && el.parentNode !== document.body) {
+          document.body.appendChild(el);
+        }
+        // Evita doble inicialización del modal Bootstrap
+        if (!this._modalInstance) {
+          this._modalInstance = new bootstrap.Modal(el);
+        }
+        this._modalInstance.show();
+      },
 
     closeModal() {
       // Hide the modal using Bootstrap's modal API
@@ -301,6 +307,10 @@ export default {
 
 .modal-body {
   padding: 1.5rem;
+}
+
+#shipping-modal.modal {
+  z-index: 1080 !important;
 }
 
 /* Ensure form elements are clickable */

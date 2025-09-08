@@ -5596,7 +5596,7 @@ textarea.form-control-lg {
 }
 
 .modal-backdrop {
-  --cz-backdrop-zindex: 1050;
+  --cz-backdrop-zindex: 1079;
   --cz-backdrop-bg: #131920;
   --cz-backdrop-opacity: 0.75;
   position: fixed;
