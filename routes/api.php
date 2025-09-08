@@ -16,11 +16,3 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/products', 'App\Http\Controllers\Api\ProductController@index');
-
-// Customer authentication check endpoint
-Route::get('/customer/auth-check', function (Request $request) {
-    return response()->json([
-        'authenticated' => Auth::guard('customer')->check(),
-        'customer' => Auth::guard('customer')->check() ? Auth::guard('customer')->user()->only(['id', 'name', 'email']) : null
-    ]);
-});

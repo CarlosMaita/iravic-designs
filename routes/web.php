@@ -52,6 +52,14 @@ Route::middleware(['auth:customer'])->group(function () {
 # Order Creation Routes (public API for cart)
 Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderController::class, 'create'])->name('api.orders.create');
 
+# Customer authentication check endpoint (needs session access)
+Route::get('/api/customer/auth-check', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'authenticated' => Auth::guard('customer')->check(),
+        'customer' => Auth::guard('customer')->check() ? Auth::guard('customer')->user()->only(['id', 'name', 'email']) : null
+    ]);
+});
+
 
 Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
