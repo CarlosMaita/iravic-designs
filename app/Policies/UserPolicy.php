@@ -13,41 +13,71 @@ class UserPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
+        // Only admin users (App\User) have permissions, customers don't have access to admin features
+
+        if ($user instanceof \App\Models\Customer) {
+
+            return false;
+
+        }
+
+        
+
         return $user->permissions()->contains('view-user');
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \App\User  $model
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view($user, User $model)
     {
+        // Only admin users (App\User) have permissions, customers don't have access to admin features
+
+        if ($user instanceof \App\Models\Customer) {
+
+            return false;
+
+        }
+
+        
+
         return $user->permissions()->contains('view-user');
     }
 
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
+        // Only admin users (App\User) have permissions, customers don't have access to admin features
+
+        if ($user instanceof \App\Models\Customer) {
+
+            return false;
+
+        }
+
+        
+
         return $user->permissions()->contains('create-user');
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \App\User  $model
      * @return mixed
      */
@@ -64,7 +94,7 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \App\User  $model
      * @return mixed
      */
@@ -76,11 +106,11 @@ class UserPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \App\User  $model
      * @return mixed
      */
-    public function restore(User $user, User $model)
+    public function restore($user, User $model)
     {
         //
     }
@@ -88,11 +118,11 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \App\User  $model
      * @return mixed
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete($user, User $model)
     {
         //
     }
