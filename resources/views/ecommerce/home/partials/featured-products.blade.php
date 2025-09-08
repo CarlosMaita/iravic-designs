@@ -143,36 +143,39 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
         <div class="swiper-wrapper">
           @foreach($displayProducts as $product)
             <div class="swiper-slide">
-              <div class="product-card">
-                <a href="{{ route('ecommerce.product.detail', $product->slug) }}" class="product-link">
-                  <div class="product-image-container">
-                    @if($product->images->count() > 0)
-                      <img src="{{ $product->images->first()->full_url_img }}" 
-                           alt="{{ $product->name }}" 
-                           class="product-image">
-                    @else
-                      <div class="product-placeholder">
-                        <i class="fas fa-image text-muted"></i>
-                        <p class="text-muted small mb-0">Sin imagen</p>
+              <!-- Product card with catalog design -->
+              <div class="col-6 col-md-4 mb-2 mb-sm-3 mb-md-0">
+                <div class="animate-underline hover-effect-opacity">
+                  <div class="position-relative mb-3">
+                    <button type="button" class="btn btn-icon btn-secondary animate-pulse fs-base bg-transparent border-0 position-absolute top-0 end-0 z-2 mt-1 mt-sm-2 me-1 me-sm-2" aria-label="Add to Wishlist">
+                      <i class="ci-heart animate-target"></i>
+                    </button>
+                    <a class="d-flex bg-white border border-black rounded p-3" href="{{ route('ecommerce.product.detail', $product->slug) }}">
+                      <div class="ratio" style="--cz-aspect-ratio: calc(308 / 274 * 100%)">
+                        @if($product->images->count() > 0)
+                          <img class="object-fit-contain product-image-zoom" 
+                               src="{{ $product->images->first()->full_url_img }}" 
+                               alt="{{ $product->name }}" 
+                               style="display:block;" />
+                        @else
+                          <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="fas fa-image text-muted" style="font-size: 2rem;"></i>
+                          </div>
+                        @endif
                       </div>
-                    @endif
-                    
-                    <!-- Product overlay with category -->
-                    <div class="product-overlay">
-                      @if(isset($product->category))
-                        <span class="product-category">{{ $product->category->name }}</span>
-                      @endif
-                    </div>
+                    </a>
                   </div>
-                  
-                  <!-- Product info -->
-                  <div class="product-info">
-                    <h6 class="product-name">{{ $product->name }}</h6>
+                  <div class="nav mb-2">
+                    <a class="nav-link animate-target min-w-0 text-dark-emphasis p-0" href="{{ route('ecommerce.product.detail', $product->slug) }}">
+                      <span class="text-truncate">{{ $product->name }}</span>
+                    </a>
+                  </div>
+                  <div class="h6 mb-2">
                     @if($product->price)
-                      <div class="product-price">${{ number_format($product->price, 2) }}</div>
+                      ${{ number_format($product->price, 2) }}
                     @endif
                   </div>
-                </a>
+                </div>
               </div>
             </div>
           @endforeach
@@ -194,125 +197,13 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 </section>
 
 <style>
-.product-card {
-  transition: all 0.3s ease;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: none;
-  border: 1px solid #000;
-  height: 100%;
-  position: relative;
+/* Zoom effect on image hover */
+.product-image-zoom {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.product-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  height: 100%;
-}
-
-.product-image-container {
-  position: relative;
-  overflow: hidden;
-  background: #fff;
-  aspect-ratio: 4/5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 0.4s ease;
-}
-
-.product-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 20px;
-  color: #6c757d;
-}
-
-.product-placeholder i {
-  font-size: 2rem;
-  margin-bottom: 8px;
-}
-
-/* Product overlay */
-.product-overlay {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.product-category {
-  background: rgba(255, 255, 255, 0.95);
-  color: #495057;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-shadow: none;
-}
-
-/* Product info */
-.product-info {
-  padding: 16px;
-  text-align: center;
-}
-
-.product-name {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #212529;
-  margin-bottom: 8px;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 2.6rem;
-  text-shadow: none;
-}
-
-.product-price {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #e74c3c;
-  margin-bottom: 0;
-  text-shadow: none;
-}
-
-/* Hover effects */
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border-color: #000;
-}
-
-.product-card:hover .product-image {
-  transform: scale(1.08);
-}
-
-.product-card:hover .product-overlay {
-  opacity: 1;
+.product-image-zoom:hover {
+  transform: scale(1.1);
+  z-index: 2;
 }
 
 /* Navigation button styles */
@@ -365,61 +256,16 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 
 /* Responsive adjustments */
 @media (max-width: 767.98px) {
-  .product-card {
-    border-radius: 12px;
-  }
-  
-  .product-info {
-    padding: 12px;
-  }
-  
-  .product-name {
-    font-size: 0.85rem;
-    text-shadow: none;
-  }
-  
-  .product-price {
-    font-size: 1rem;
-    text-shadow: none;
-  }
-  
   .btn-icon {
     width: 2.5rem;
     height: 2.5rem;
   }
 }
 
-@media (max-width: 575.98px) {
-  .product-info {
-    padding: 10px;
-  }
-  
-  .product-name {
-    font-size: 0.8rem;
-    min-height: 2.4rem;
-    text-shadow: none;
-  }
-  
-  .product-price {
-    font-size: 0.95rem;
-    text-shadow: none;
-  }
-}
-
-/* Enhanced focus styles for accessibility */
-.product-link:focus {
-  outline: 2px solid #007bff;
-  outline-offset: 2px;
-}
-
-/* Loading state (if needed) */
-.product-card.loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.product-card.loading .product-image {
-  filter: blur(2px);
+/* Ensure z-index for navigation buttons */
+.featured-products-prev,
+.featured-products-next {
+  z-index: 10;
 }
 </style>
 @endif
