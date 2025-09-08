@@ -129,7 +129,7 @@
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <a href="#" class="text-decoration-none">
+                            <a href="{{ route('customer.orders.index') }}" class="text-decoration-none">
                                 <div class="d-flex align-items-center p-3 bg-light rounded">
                                     <i class="ci-shopping-bag text-warning me-3" style="font-size: 1.5rem;"></i>
                                     <div>
