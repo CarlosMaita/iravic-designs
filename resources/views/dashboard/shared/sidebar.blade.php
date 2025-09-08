@@ -14,11 +14,13 @@
 
     {{-- Catalog links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Brand::class) || 
-        Auth::user()->can('viewany', App\Models\Category::class) || 
-        Auth::user()->can('viewany', App\Models\Product::class) || 
-        Auth::user()->can('viewany', App\Models\ProductStockTransfer::class) || 
-        Auth::user()->can('viewany', App\Models\Color::class)
+        Auth::check() && (
+            Auth::user()->can('viewany', App\Models\Brand::class) || 
+            Auth::user()->can('viewany', App\Models\Category::class) || 
+            Auth::user()->can('viewany', App\Models\Product::class) || 
+            Auth::user()->can('viewany', App\Models\ProductStockTransfer::class) || 
+            Auth::user()->can('viewany', App\Models\Color::class)
+        )
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
@@ -63,7 +65,7 @@
 
     {{-- Stock Management links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Store::class)
+        Auth::check() && Auth::user()->can('viewany', App\Models\Store::class)
     )
     <li class="c-sidebar-nav-dropdown {{
         $menuService->isActive($url,"/admin/almacenamiento/depositos", false, true) 
@@ -83,7 +85,7 @@
 
     {{-- Customer Management links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Customer::class) )
+        Auth::check() && Auth::user()->can('viewany', App\Models\Customer::class) )
         <li class="c-sidebar-nav-dropdown {{ $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) }}">
             <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
             <ul class="c-sidebar-nav-dropdown-items">
@@ -98,7 +100,7 @@
     @endif
 
     {{-- Orders Management links --}}
-    @if (Auth::user()->can('view-order'))
+    @if (Auth::check() && Auth::user()->can('view-order'))
         <li class="c-sidebar-nav-dropdown {{ 
             $menuService->isActive($url,"/admin/ordenes", false, true) . " " .
             $menuService->isActive($url,"/admin/pagos", false, true)
@@ -123,11 +125,13 @@
 
     {{-- Configuration links --}}
     @if (
-        Auth::user()->can('viewany', App\Models\Config::class) || 
-        Auth::user()->can('viewany', App\Models\Permission::class) || 
-        Auth::user()->can('viewany', App\Models\Role::class) || 
-        Auth::user()->can('viewany', App\User::class) ||
-        Auth::user()->can('viewany', App\Models\Banner::class)
+        Auth::check() && (
+            Auth::user()->can('viewany', App\Models\Config::class) || 
+            Auth::user()->can('viewany', App\Models\Permission::class) || 
+            Auth::user()->can('viewany', App\Models\Role::class) || 
+            Auth::user()->can('viewany', App\User::class) ||
+            Auth::user()->can('viewany', App\Models\Banner::class)
+        )
     )
         <li class="c-sidebar-nav-dropdown {{
             $menuService->isActive($url,"/admin/config/usuarios", false, true) . " " .
@@ -152,7 +156,7 @@
                     </li>
                 @endcan
                 {{--  --}}
-                @if (Auth::user()->can('viewany', App\Models\Role::class) || Auth::user()->can('viewany', App\Models\Permission::class))
+                @if (Auth::check() && (Auth::user()->can('viewany', App\Models\Role::class) || Auth::user()->can('viewany', App\Models\Permission::class)))
                     <li class="c-sidebar-nav-dropdown {{
                                 $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
                                 $menuService->isActive($url,"/admin/config/permisos", false, true)
