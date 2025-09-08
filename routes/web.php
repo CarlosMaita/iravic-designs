@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['register' => false]);
 
 # Ecommerce Routes
-Route::group(['namespace' => 'ecommerce'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\ecommerce'], function () {
     # Home
     Route::get('/', 'HomeController@index')->name('ecommerce.home');
     # Catalog
@@ -53,7 +53,7 @@ Route::middleware(['auth:customer'])->group(function () {
 Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderController::class, 'create'])->name('api.orders.create');
 
 
-Route::group(['namespace' => 'admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
     #
     Route::get('mi-perfil', 'MyProfileController@index')->name('my-profile.index');
