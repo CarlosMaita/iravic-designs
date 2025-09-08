@@ -74,8 +74,14 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
     Route::resource('banners', 'BannerController')->except('show');
 
     // Special Offers Resource
-    Route::resource('ofertas-especiales', 'SpecialOfferController', [
-        'as' => 'special-offers'
+    Route::resource('ofertas-especiales', 'SpecialOfferController')->names([
+        'index' => 'special-offers.index',
+        'create' => 'special-offers.create',
+        'store' => 'special-offers.store',
+        'edit' => 'special-offers.edit',
+        'update' => 'special-offers.update',
+        'destroy' => 'special-offers.destroy',
+        'show' => 'special-offers.show',
     ])->except('show');
 
     # Catalog Routes
