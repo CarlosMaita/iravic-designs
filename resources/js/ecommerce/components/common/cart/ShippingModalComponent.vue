@@ -124,6 +124,29 @@ export default {
     }
   },
   methods: {
+    getCsrfToken() {
+      // Try meta tag first
+      const meta = document.querySelector('meta[name="csrf-token"]');
+      if (meta && typeof meta.getAttribute === 'function') {
+        const v = meta.getAttribute('content');
+        if (v) return v;
+      }
+      // Try Laravel XSRF cookie
+      const m = document.cookie && document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+      if (m && m[1]) {
+        try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; }
+      }
+      // Try global (optional)
+      if (window.Laravel && window.Laravel.csrfToken) return window.Laravel.csrfToken;
+      return null;
+    },
+    getXsrfCookie() {
+      const m = document.cookie && document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+      if (m && m[1]) {
+        try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; }
+      }
+      return null;
+    },
       showModal() {
         // Reset form and errors
         this.resetForm();
@@ -190,6 +213,13 @@ export default {
         return;
       }
 
+      // Verifica que todos los items tengan product_id (migración de carrito viejo)
+      const invalidItems = this.cartItems.filter(it => !it.product_id);
+      if (invalidItems.length > 0) {
+        this.$emit('order-error', 'Algunos productos del carrito son antiguos. Por favor elimínelos y vuelva a agregarlos para continuar.');
+        return;
+      }
+
       this.isLoading = true;
 
       try {
@@ -206,33 +236,51 @@ export default {
         };
 
         // Send order creation request
+        const csrf = this.getCsrfToken();
+        const xsrf = this.getXsrfCookie();
+        if (!csrf) {
+          throw new Error('No se encontró el token CSRF. Actualice la página e intente nuevamente.');
+        }
+
         const response = await fetch('/api/orders/create', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': csrf,
+            ...(xsrf ? { 'X-XSRF-TOKEN': xsrf } : {}),
+            'X-Requested-With': 'XMLHttpRequest'
           },
           body: JSON.stringify(orderData)
         });
 
-        const result = await response.json();
+        // Try to parse JSON; if not ok and not JSON, fall back to text
+        let result;
+        try {
+          result = await response.json();
+  } catch (e) {
+          const text = await response.text();
+          throw new Error(text || 'Respuesta no válida del servidor');
+        }
 
-        if (result.success) {
+  if (response.ok && result.success) {
           // Emit success event to parent component
           this.$emit('order-created', result);
           this.closeModal();
         } else {
-          if (result.redirect) {
+          if (result && result.redirect) {
             // Redirect to login if not authenticated
             window.location.href = result.redirect;
           } else {
             // Show error message
-            this.$emit('order-error', result.message || 'Error al crear la orden');
+            const validationErrors = result && result.errors ? Object.values(result.errors).flat().join('\n') : null;
+            this.$emit('order-error', (result && result.message) || validationErrors || 'Error al crear la orden');
           }
         }
       } catch (error) {
         console.error('Error creating order:', error);
-        this.$emit('order-error', 'Error al procesar la orden. Intente nuevamente.');
+  this.$emit('order-error', error && error.message ? error.message : 'Error al procesar la orden. Intente nuevamente.');
       } finally {
         this.isLoading = false;
       }

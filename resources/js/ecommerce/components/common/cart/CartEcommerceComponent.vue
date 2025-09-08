@@ -139,7 +139,11 @@
           async goCheckout() {
             // Check if cart is empty
             if (this.cart.items.length === 0) {
-              alert('El carrito está vacío');
+              this.$root.$refs.toastEcommerceComponent.showToast({
+                title: 'Carrito vacío',
+                message: 'Agrega productos antes de continuar.',
+                type: 'warning',
+              });
               return;
             }
 
@@ -179,7 +183,11 @@
 
             } catch (error) {
               console.error('Error checking authentication:', error);
-              alert('Error al verificar la autenticación. Intente nuevamente.');
+              this.$root.$refs.toastEcommerceComponent.showToast({
+                title: 'Error',
+                message: 'No se pudo verificar la autenticación. Intente nuevamente.',
+                type: 'error',
+              });
             } finally {
               this.isProcessingCheckout = false;
             }
@@ -189,15 +197,22 @@
             // Clear cart and redirect
             this.cart.items = [];
             this.setCartLocalStorage(this.cart);
-            
-            alert('¡Orden creada exitosamente! Será redirigido para completar el pago.');
+            this.$root.$refs.toastEcommerceComponent.showToast({
+              title: 'Orden creada',
+              message: 'Serás redirigido para completar el pago.',
+              type: 'success',
+            });
             if (result.redirect) {
               window.location.href = result.redirect;
             }
           },
 
           onOrderError(message) {
-            alert(message);
+            this.$root.$refs.toastEcommerceComponent.showToast({
+              title: 'Error',
+              message: message || 'Ocurrió un error al crear la orden.',
+              type: 'error',
+            });
           },
 
           // Legacy methods - kept for compatibility but will not be used in new flow

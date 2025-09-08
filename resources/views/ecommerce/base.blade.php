@@ -12,6 +12,9 @@
     <meta name="keywords" content="@yield('meta-keywords', 'tienda, ecommerce, ropa para niños, moda infantil')">
     <meta name="author" content="Iravic">
 
+  <!-- CSRF Token for AJAX / SPA requests -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
     
     @yield('meta-tags')
     
@@ -41,6 +44,10 @@
     <link rel="apple-touch-icon" href="{{ asset('assets/cartzilla/app-icons/icon-180x180.png') }}">
 
     <!-- Scripts -->
+    <script>
+      // Expose csrfToken early for scripts that need it before app.js mounts
+      window.Laravel = Object.assign({}, window.Laravel, { csrfToken: '{{ csrf_token() }}' });
+    </script>
     <script src="{{ asset('js/ecommerce/app.js') }}" defer></script>
     
     <!-- Theme switcher (color modes) -->

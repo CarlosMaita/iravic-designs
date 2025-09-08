@@ -189,6 +189,11 @@
 
                 const item = {
                     id: encryptedId,
+                    // Identificadores necesarios para crear la orden
+                    product_id: this.is_regular ? this.id : (this.sizeSelected?.product_id || null),
+                    color_id: this.is_regular ? null : (this.combinationSelected?.color_id || null),
+                    size_id: this.is_regular ? null : (this.sizeSelected?.size_id || null),
+                    // Datos de presentación
                     name: this.name,
                     price: this.price,
                     price_str: this.price_str,

@@ -92,6 +92,6 @@ export default {
   position: fixed; /* O 'absolute' dependiendo de dónde quieras que aparezca */
   top: 20px; /* Ajusta la posición vertical */
   right: 20px; /* Ajusta la posición horizontal */
-  z-index: 1050; /* Asegura que esté por encima de otros elementos */
+  z-index: 2000 !important; /* Por encima del modal/backdrop personalizado */
 }
 </style>

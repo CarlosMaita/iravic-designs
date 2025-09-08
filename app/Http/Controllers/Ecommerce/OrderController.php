@@ -47,14 +47,8 @@ class OrderController extends Controller
 
         $customer = Auth::guard('customer')->user();
 
-        // Validate customer has complete shipping info
-        if (!$customer->hasCompleteShippingInfo()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Debe completar su información de envío antes de realizar una compra.',
-                'missing_fields' => $customer->getMissingShippingFields()
-            ], 400);
-        }
+    // No exigir que el cliente tenga información previa guardada.
+    // Usaremos la información enviada en shipping_data y, además, la persistiremos en el perfil para futuras compras.
 
         try {
             DB::beginTransaction();
