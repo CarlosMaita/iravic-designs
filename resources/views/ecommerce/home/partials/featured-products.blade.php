@@ -197,10 +197,10 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 .product-card {
   transition: all 0.3s ease;
   background: #fff;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: none;
+  border: 1px solid #000;
   height: 100%;
   position: relative;
 }
@@ -215,17 +215,18 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 .product-image-container {
   position: relative;
   overflow: hidden;
-  background: #f8f9fa;
+  background: #fff;
   aspect-ratio: 4/5;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.4s ease;
 }
 
@@ -301,9 +302,9 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
 
 /* Hover effects */
 .product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-  border-color: rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-color: #000;
 }
 
 .product-card:hover .product-image {
