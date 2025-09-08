@@ -13,22 +13,32 @@ class ConfigPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
+        // Only admin users (App\User) have permissions, customers don't have access to admin features
+
+        if ($user instanceof \App\Models\Customer) {
+
+            return false;
+
+        }
+
+        
+
         return $user->permissions()->contains('view-configuration');
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \Models\Config  $config
      * @return mixed
      */
-    public function view(User $user, Config $config)
+    public function view($user, Config $config)
     {
         //
     }
@@ -36,22 +46,32 @@ class ConfigPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
+        // Only admin users (App\User) have permissions, customers don't have access to admin features
+
+        if ($user instanceof \App\Models\Customer) {
+
+            return false;
+
+        }
+
+        
+
         return $user->permissions()->contains('create-configuration');
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \Models\Config  $config
      * @return mixed
      */
-    public function update(User $user, Config $config)
+    public function update($user, Config $config)
     {
         //
     }
@@ -59,11 +79,11 @@ class ConfigPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \Models\Config  $config
      * @return mixed
      */
-    public function delete(User $user, Config $config)
+    public function delete($user, Config $config)
     {
         //
     }
@@ -71,11 +91,11 @@ class ConfigPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \Models\Config  $config
      * @return mixed
      */
-    public function restore(User $user, Config $config)
+    public function restore($user, Config $config)
     {
         //
     }
@@ -83,11 +103,11 @@ class ConfigPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @param  \Models\Config  $config
      * @return mixed
      */
-    public function forceDelete(User $user, Config $config)
+    public function forceDelete($user, Config $config)
     {
         //
     }

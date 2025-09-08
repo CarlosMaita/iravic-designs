@@ -13,11 +13,16 @@ class CategoryPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param  \App\User|\App\Models\Customer  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
+        // Only admin users (App\User) have permissions, customers don't have access to admin features
+        if ($user instanceof \App\Models\Customer) {
+            return false;
+        }
+        
         return $user->permissions()->contains('view-category');
     }
 
