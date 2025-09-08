@@ -114,7 +114,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
     <div class="position-relative">
       <!-- Swiper slider -->
       <div class="swiper featured-products-swiper" data-swiper='{
-        "slidesPerView": 2,
+        "slidesPerView": 1,
         "spaceBetween": 24,
         "loop": true,
         "pagination": {
@@ -127,13 +127,13 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
         },
         "breakpoints": {
           "576": {
-            "slidesPerView": 3
+            "slidesPerView": 2
           },
           "768": {
-            "slidesPerView": 4
+            "slidesPerView": 3
           },
           "992": {
-            "slidesPerView": 5
+            "slidesPerView": 4
           },
           "1200": {
             "slidesPerView": 6
@@ -144,7 +144,7 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
           @foreach($displayProducts as $product)
             <div class="swiper-slide">
               <!-- Product card with catalog design -->
-              <div class="col-6 col-md-4 mb-2 mb-sm-3 mb-md-0">
+              <div class="mb-2 mb-sm-3 mb-md-0">
                 <div class="animate-underline hover-effect-opacity">
                   <div class="position-relative mb-3">
                     <button type="button" class="btn btn-icon btn-secondary animate-pulse fs-base bg-transparent border-0 position-absolute top-0 end-0 z-2 mt-1 mt-sm-2 me-1 me-sm-2" aria-label="Add to Wishlist">
@@ -167,13 +167,15 @@ $displayProducts = $featuredProducts->count() > 0 ? $featuredProducts : $mockPro
                   </div>
                   <div class="nav mb-2">
                     <a class="nav-link animate-target min-w-0 text-dark-emphasis p-0" href="{{ route('ecommerce.product.detail', $product->slug) }}">
-                      <span class="text-truncate">{{ $product->name }}</span>
+                      <span class="h6 mb-0 fw-bold">
+                        @if($product->price)
+                          ${{ number_format($product->price, 2) }}
+                        @endif
+                      </span>
                     </a>
                   </div>
-                  <div class="h6 mb-2">
-                    @if($product->price)
-                      ${{ number_format($product->price, 2) }}
-                    @endif
+                  <div class="text-muted small">
+                    <span class="text-truncate">{{ $product->name }}</span>
                   </div>
                 </div>
               </div>
