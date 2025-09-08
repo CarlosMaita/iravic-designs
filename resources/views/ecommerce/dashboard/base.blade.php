@@ -36,7 +36,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand" href="{{ route('customer.dashboard') }}">
-                <img src="{{ asset('assets/cartzilla/img/logo.svg') }}" alt="Logo" width="120">
+                <h6 class="m-0 text-uppercase" style="font-family: Roboto, sans-serif; letter-spacing: 3px;">Iravic Designs</h6>
             </a>
 
             <!-- Mobile menu toggle -->
