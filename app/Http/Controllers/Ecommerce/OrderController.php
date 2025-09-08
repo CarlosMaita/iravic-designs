@@ -146,7 +146,10 @@ class OrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('ecommerce.orders.index', compact('orders'));
+        // Add categories for header navigation (empty collection to prevent errors)
+        $categories = collect();
+
+        return view('ecommerce.orders.index', compact('orders', 'categories'));
     }
 
     /**
@@ -167,7 +170,10 @@ class OrderController extends Controller
 
         $order->load(['orderProducts.product', 'payments']);
 
-        return view('ecommerce.orders.show', compact('order'));
+        // Add categories for header navigation (empty collection to prevent errors)
+        $categories = collect();
+
+        return view('ecommerce.orders.show', compact('order', 'categories'));
     }
 
     /**
