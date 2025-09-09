@@ -184,7 +184,12 @@ class Product extends Model
      */
     public function getStockTotalAttribute() : int
     {   
-        return  $this->stores()->sum('stock');
+        try {
+            return $this->stores()->sum('stock');
+        } catch (\Exception $e) {
+            // Fallback if stores table doesn't exist or there's a database error
+            return 0;
+        }
     }
 
     # Scopes

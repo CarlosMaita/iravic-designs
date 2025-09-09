@@ -20,6 +20,12 @@
   {{--  Carousel --}}
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
 
+  {{-- Featured Products Section - Inside Vue App Scope --}}
+  <featured-products-carousel-ecommerce-component
+    :featured-products='@json($featuredProducts ?? [])'
+    product-detail-route='{{ route('ecommerce.product.detail', ':slug') }}'
+  />
+
 @endsection
 
 @push('scripts')
