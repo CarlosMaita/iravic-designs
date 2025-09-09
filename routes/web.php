@@ -50,6 +50,12 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('/e/ordenes', [\App\Http\Controllers\Ecommerce\OrderController::class, 'index'])->name('customer.orders.index');
     Route::get('/e/ordenes/{order}', [\App\Http\Controllers\Ecommerce\OrderController::class, 'show'])->name('customer.orders.show');
     Route::post('/e/ordenes/{order}/pagos', [\App\Http\Controllers\Ecommerce\OrderController::class, 'addPayment'])->name('customer.orders.add_payment');
+    
+    # Favorites Routes
+    Route::get('/e/favoritos', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'index'])->name('customer.favorites.index');
+    Route::post('/api/favorites/toggle', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'toggle'])->name('api.favorites.toggle');
+    Route::post('/api/favorites', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'store'])->name('api.favorites.store');
+    Route::delete('/api/favorites', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'destroy'])->name('api.favorites.destroy');
 });
 
 # Order Creation Routes (public API for cart)

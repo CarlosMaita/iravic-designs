@@ -371,4 +371,14 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function favoriteProducts()
+    {
+        return $this->belongsToMany(Product::class, 'customer_favorites')->withTimestamps();
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(\App\Models\CustomerFavorite::class);
+    }
 }
