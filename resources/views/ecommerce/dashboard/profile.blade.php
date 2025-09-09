@@ -164,6 +164,61 @@
                         </div>
                     </div>
 
+                    <!-- Shipping Information (editable) -->
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="mb-3">Información de Envío</h5>
+
+                            @if (session('status'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('status') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <form method="POST" action="{{ route('customer.profile.shipping.update') }}" class="row g-3">
+                                @csrf
+
+                                <div class="col-md-6">
+                                    <label for="ship-name" class="form-label">Nombre completo</label>
+                                    <input type="text" class="form-control" id="ship-name" name="name" value="{{ old('name', $customer->name) }}" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="ship-dni" class="form-label">Cédula</label>
+                                    <input type="text" class="form-control" id="ship-dni" name="dni" value="{{ old('dni', $customer->dni) }}" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="ship-phone" class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control" id="ship-phone" name="phone" value="{{ old('phone', $customer->cellphone) }}" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="ship-agency" class="form-label">Agencia de envío</label>
+                                    <select class="form-select" id="ship-agency" name="agency" required>
+                                        @php($agency = old('agency', $customer->shipping_agency ?? 'MRW'))
+                                        <option value="">Seleccione una agencia</option>
+                                        <option value="MRW" {{ $agency === 'MRW' ? 'selected' : '' }}>MRW</option>
+                                        <option value="ZOOM" {{ $agency === 'ZOOM' ? 'selected' : '' }}>ZOOM</option>
+                                        <option value="Domesa" {{ $agency === 'Domesa' ? 'selected' : '' }}>Domesa</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="ship-address" class="form-label">Dirección de la agencia</label>
+                                    <textarea class="form-control" id="ship-address" name="address" rows="3" required>{{ old('address', $customer->shipping_agency_address) }}</textarea>
+                                </div>
+
+                                <div class="col-12 d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <a href="{{ route('customer.profile') }}" class="btn btn-outline-secondary">Cancelar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     @if($customer->address)
                     <!-- Address Information -->
                     <hr class="my-4">

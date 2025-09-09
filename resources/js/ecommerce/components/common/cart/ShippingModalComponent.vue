@@ -147,15 +147,37 @@ export default {
       }
       return null;
     },
-      showModal() {
-        // Reset form and errors
+      async showModal() {
+        // Reset form and errors first
         this.resetForm();
-        // Asegura que el modal esté montado directamente en <body> para evitar stacking-context del offcanvas
+
+        // Try to prefill from customer saved shipping info
+        try {
+          const resp = await fetch('/api/customer/shipping', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } });
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data && data.success && data.shipping) {
+              const s = data.shipping;
+              this.shippingData = {
+                name: s.name || '',
+                dni: s.dni || '',
+                phone: s.phone || '',
+                agency: s.agency || 'MRW',
+                address: s.address || ''
+              };
+            }
+          }
+        } catch (e) {
+          // Silent fail – we'll keep empty defaults
+          console.warn('No se pudo prefijar la información de envío', e);
+        }
+
+        // Ensure modal is attached to body to avoid offcanvas stacking issues
         const el = this.$refs.shippingModal;
         if (el && el.parentNode !== document.body) {
           document.body.appendChild(el);
         }
-        // Evita doble inicialización del modal Bootstrap
+        // Avoid double init
         if (!this._modalInstance) {
           this._modalInstance = new bootstrap.Modal(el);
         }

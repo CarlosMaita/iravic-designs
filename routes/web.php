@@ -42,6 +42,9 @@ Route::post('customer/register', [\App\Http\Controllers\Auth\CustomerRegisterCon
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/e/dashboard', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'index'])->name('customer.dashboard');
     Route::get('/e/perfil', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'profile'])->name('customer.profile');
+    // Customer shipping info endpoints
+    Route::get('/api/customer/shipping', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'getShippingJson'])->name('customer.shipping.json');
+    Route::post('/e/perfil/shipping', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'updateShipping'])->name('customer.profile.shipping.update');
     
     # Order Routes
     Route::get('/e/ordenes', [\App\Http\Controllers\Ecommerce\OrderController::class, 'index'])->name('customer.orders.index');
@@ -56,7 +59,14 @@ Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderControll
 Route::get('/api/customer/auth-check', function (\Illuminate\Http\Request $request) {
     return response()->json([
         'authenticated' => Auth::guard('customer')->check(),
-        'customer' => Auth::guard('customer')->check() ? Auth::guard('customer')->user()->only(['id', 'name', 'email']) : null
+        'customer' => Auth::guard('customer')->check() ? (function () {
+            $u = Auth::guard('customer')->user();
+            return [
+                'id' => $u->id,
+                'name' => $u->name,
+                'email' => $u->email,
+            ];
+        })() : null
     ]);
 });
 

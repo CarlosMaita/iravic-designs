@@ -92468,7 +92468,11 @@ Vue.component('product-item-to-refund', __webpack_require__(/*! ./components/ord
 Vue.component('product-item-to-buy', __webpack_require__(/*! ./components/orders/ProductItemToBuy.vue */ "./resources/js/components/orders/ProductItemToBuy.vue")["default"]);
 Vue.component('frequency-collection', __webpack_require__(/*! ./components/orders/FrequencyCollectionComponent.vue */ "./resources/js/components/orders/FrequencyCollectionComponent.vue")["default"]);
 // inventory components
-Vue.component('import-inventory', __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './components/inventory/ImportInventoryComponent.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))["default"]);
+// Fallback stub to avoid runtime error in this build where the module was not bundled
+Vue.component('import-inventory', {
+  props: ['urlImport'],
+  template: '<div class="alert alert-warning">Importar inventario no está disponible en este build.</div>'
+});
 
 // global components
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_0___default.a);

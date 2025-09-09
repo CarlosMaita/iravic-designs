@@ -49,6 +49,38 @@
       window.Laravel = Object.assign({}, window.Laravel, { csrfToken: '{{ csrf_token() }}' });
     </script>
     <script src="{{ asset('js/ecommerce/app.js') }}" defer></script>
+    <script>
+      // Prefill shipping modal fields from saved customer shipping info when the modal opens
+      document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('show.bs.modal', function (evt) {
+          var target = evt && evt.target;
+          if (!target || target.id !== 'shipping-modal') return;
+          try {
+            fetch('/api/customer/shipping', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+              .then(function(resp){ if (!resp || !resp.ok) return null; return resp.json(); })
+              .then(function(data){
+                if (!data || !data.success || !data.shipping) return;
+                var s = data.shipping;
+                var setVal = function(id, val){
+                  var el = document.getElementById(id);
+                  if (!el) return;
+                  el.value = val || '';
+                  try {
+                    el.dispatchEvent(new Event('input', { bubbles: true }));
+                    el.dispatchEvent(new Event('change', { bubbles: true }));
+                  } catch (e) {}
+                };
+                setVal('shipping-name', s.name);
+                setVal('shipping-dni', s.dni);
+                setVal('shipping-phone', s.phone);
+                setVal('shipping-agency', s.agency || 'MRW');
+                setVal('shipping-address', s.address);
+              })
+              .catch(function(){});
+          } catch (e) {}
+        });
+      });
+    </script>
     
     <!-- Theme switcher (color modes) -->
     <script src="{{ asset('assets/cartzilla/js/theme-switcher.js')}}"></script>
