@@ -67,7 +67,8 @@ class CatalogController extends Controller
             ->toArray();
 
         // Filter the GenderConstants::ALL array to only include available genders
-        return array_intersect(GenderConstants::ALL, $availableGenders);
+        // Use array_values to ensure sequential keys for proper JSON encoding as JavaScript array
+        return array_values(array_intersect(GenderConstants::ALL, $availableGenders));
     }
 
     /**
