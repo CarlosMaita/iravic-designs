@@ -10,7 +10,7 @@
   <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm position-sticky top-0 z-fixed">
     <div class="container">
       <a class="navbar-brand pe-4 pe-sm-0" href="{{ url('/') }}">
-        <span class="text-primary fw-bold h4 mb-0">{{ config('app.name', 'Iravic') }}</span>
+        <h6 class="m-0 text-uppercase text-primary" style="font-family: Roboto, sans-serif; letter-spacing: 3px;">Iravic Designs</h6>
       </a>
       <div class="navbar-nav ms-auto">
         <a class="nav-link text-decoration-none" href="{{ url('/') }}">
@@ -84,7 +84,7 @@
             <div class="row g-3">
               <div class="col-sm-6">
                 <a href="{{ url('/') }}" class="d-flex align-items-center text-decoration-none text-dark">
-                  <i class="ci-store text-primary me-2"></i>
+                  <i class="ci-grid text-primary me-2"></i>
                   <span>Catálogo de Productos</span>
                 </a>
               </div>
@@ -102,7 +102,7 @@
               </div>
               <div class="col-sm-6">
                 <a href="{{ url('/') }}" class="d-flex align-items-center text-decoration-none text-dark">
-                  <i class="ci-support text-primary me-2"></i>
+                  <i class="ci-message-circle text-primary me-2"></i>
                   <span>Soporte</span>
                 </a>
               </div>
@@ -121,7 +121,7 @@
     <div class="row align-items-center">
       <div class="col-md-6">
         <p class="text-light opacity-75 mb-0">
-          &copy; {{ date('Y') }} {{ config('app.name', 'Iravic') }}. Todos los derechos reservados.
+          &copy; {{ date('Y') }} Iravic Designs. Todos los derechos reservados.
         </p>
       </div>
       <div class="col-md-6 text-md-end">
