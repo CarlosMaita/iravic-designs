@@ -72,17 +72,23 @@ class SitemapController extends Controller
      */
     private function addCategoryPages(Sitemap $sitemap): void
     {
-        $categories = Category::whereHas('products', function ($query) {
-            $query->where('product_id', null); // Only main products
-        })->orderBy('updated_at', 'desc')->get();
+        $categories = Category::whereNotNull('slug')
+                            ->where('slug', '!=', '')
+                            ->orderBy('updated_at', 'desc')
+                            ->get();
 
         foreach ($categories as $category) {
-            $sitemap->add(
-                Url::create(route('ecommerce.categoria', $category->slug))
-                    ->setLastModificationDate($category->updated_at)
-                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                    ->setPriority(0.8)
-            );
+            try {
+                $sitemap->add(
+                    Url::create(route('ecommerce.categoria', $category->slug))
+                        ->setLastModificationDate($category->updated_at)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                        ->setPriority(0.8)
+                );
+            } catch (\Exception $e) {
+                // Skip categories with invalid slugs
+                continue;
+            }
         }
     }
 
@@ -93,16 +99,22 @@ class SitemapController extends Controller
     {
         $products = Product::where('product_id', null) // Only main products
             ->whereNotNull('slug')
+            ->where('slug', '!=', '')
             ->orderBy('updated_at', 'desc')
             ->get();
 
         foreach ($products as $product) {
-            $sitemap->add(
-                Url::create(route('ecommerce.product.detail', $product->slug))
-                    ->setLastModificationDate($product->updated_at)
-                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                    ->setPriority(0.7)
-            );
+            try {
+                $sitemap->add(
+                    Url::create(route('ecommerce.product.detail', $product->slug))
+                        ->setLastModificationDate($product->updated_at)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                        ->setPriority(0.7)
+                );
+            } catch (\Exception $e) {
+                // Skip products with invalid slugs
+                continue;
+            }
         }
     }
 }
