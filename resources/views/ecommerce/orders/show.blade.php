@@ -155,6 +155,11 @@
                     <h5 class="card-title mb-0">Acciones</h5>
                 </div>
                 <div class="card-body">
+                    @if($order->canBeCancelled())
+                        <button class="btn btn-danger w-100 mb-2" onclick="cancelOrder()">
+                            <i class="ci-close me-2"></i>Cancelar Orden
+                        </button>
+                    @endif
                     <a href="{{ route('customer.orders.index') }}" class="btn btn-outline-secondary w-100 mb-2">
                         <i class="ci-arrow-left me-2"></i>Volver a Órdenes
                     </a>
@@ -267,4 +272,31 @@ document.getElementById('paymentForm').addEventListener('submit', function(e) {
 });
 </script>
 @endif
+
+<script>
+function cancelOrder() {
+    if (confirm('¿Está seguro que desea cancelar esta orden? Esta acción no se puede deshacer.')) {
+        fetch('{{ route("customer.orders.cancel", $order->id) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert(result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cancelar la orden. Intente nuevamente.');
+        });
+    }
+}
+</script>
 @endsection

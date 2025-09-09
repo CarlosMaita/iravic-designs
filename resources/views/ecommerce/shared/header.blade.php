@@ -97,6 +97,11 @@
                   </a>
                 </li>
                 <li>
+                  <a class="dropdown-item" href="{{ route('customer.payments.index') }}">
+                    <i class="ci-credit-card me-2"></i>Mis Pagos
+                  </a>
+                </li>
+                <li>
                   <a class="dropdown-item" href="{{ route('customer.favorites.index') }}">
                     <i class="ci-heart me-2"></i>Favoritos
                   </a>

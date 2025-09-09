@@ -220,4 +220,44 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Cancel order.
+     */
+    public function cancel(Request $request, Order $order)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json(['success' => false, 'message' => 'No autorizado.'], 401);
+        }
+
+        $customer = Auth::guard('customer')->user();
+
+        // Check if order belongs to customer
+        if ($order->customer_id !== $customer->id) {
+            return response()->json(['success' => false, 'message' => 'No autorizado.'], 403);
+        }
+
+        // Check if order can be cancelled
+        if (!$order->canBeCancelled()) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Esta orden no puede ser cancelada. Solo las órdenes en estado "Creada" pueden ser canceladas.'
+            ], 400);
+        }
+
+        try {
+            $order->cancel();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Orden cancelada exitosamente.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cancelar la orden: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -50,7 +50,10 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('/e/ordenes', [\App\Http\Controllers\Ecommerce\OrderController::class, 'index'])->name('customer.orders.index');
     Route::get('/e/ordenes/{order}', [\App\Http\Controllers\Ecommerce\OrderController::class, 'show'])->name('customer.orders.show');
     Route::post('/e/ordenes/{order}/pagos', [\App\Http\Controllers\Ecommerce\OrderController::class, 'addPayment'])->name('customer.orders.add_payment');
-    Route::post('/e/ordenes/{order}/cancel', [\App\Http\Controllers\admin\OrderController::class, 'cancel'])->name('customer.orders.cancel');
+    Route::post('/e/ordenes/{order}/cancel', [\App\Http\Controllers\Ecommerce\OrderController::class, 'cancel'])->name('customer.orders.cancel');
+    
+    # Payment Routes
+    Route::get('/e/pagos', [\App\Http\Controllers\Ecommerce\PaymentController::class, 'index'])->name('customer.payments.index');
     
     # Favorites Routes
     Route::get('/e/favoritos', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'index'])->name('customer.favorites.index');
