@@ -167,7 +167,6 @@
      
     </main>
 
-
     @include('ecommerce.shared.footer')
 
     {{-- Toast Ecommerce component --}}

@@ -13,22 +13,18 @@
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:site_name" content="Iravic">
 <meta property="og:locale" content="es_ES">
-
-</script>
-
 @endsection
 
 @section('content')
 
   {{--  Carousel --}}
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
-  
-  {{--  Special Offers --}}
-  @include('ecommerce.home.partials.special-offers', ['specialOffers' => $specialOffers])
-  
-  {{--  Featured Products --}}
-  @include('ecommerce.home.partials.featured-products', ['featuredProducts' => $featuredProducts])
-  
+
+  {{-- Featured Products Section - Inside Vue App Scope --}}
+  <featured-products-carousel-ecommerce-component
+    :featured-products='@json($featuredProducts ?? [])'
+    product-detail-route='{{ route('ecommerce.product.detail', ':slug') }}'
+  />
 
 @endsection
 
