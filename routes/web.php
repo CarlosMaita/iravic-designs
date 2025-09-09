@@ -50,6 +50,7 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('/e/ordenes', [\App\Http\Controllers\Ecommerce\OrderController::class, 'index'])->name('customer.orders.index');
     Route::get('/e/ordenes/{order}', [\App\Http\Controllers\Ecommerce\OrderController::class, 'show'])->name('customer.orders.show');
     Route::post('/e/ordenes/{order}/pagos', [\App\Http\Controllers\Ecommerce\OrderController::class, 'addPayment'])->name('customer.orders.add_payment');
+    Route::post('/e/ordenes/{order}/cancel', [\App\Http\Controllers\admin\OrderController::class, 'cancel'])->name('customer.orders.cancel');
     
     # Favorites Routes
     Route::get('/e/favoritos', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'index'])->name('customer.favorites.index');
@@ -137,10 +138,12 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
     Route::get('ordenes/{order}/edit', 'OrderController@edit')->name('admin.orders.edit');
     Route::put('ordenes/{order}', 'OrderController@update')->name('admin.orders.update');
     Route::patch('ordenes/{order}/status', 'OrderController@updateStatus')->name('admin.orders.update_status');
+    Route::post('ordenes/{order}/cancel', 'OrderController@cancel')->name('admin.orders.cancel');
 
     # Payments Routes
     Route::get('pagos', 'PaymentController@index')->name('admin.payments.index');
     Route::get('pagos/{payment}', 'PaymentController@show')->name('admin.payments.show');
+    Route::post('pagos', 'PaymentController@store')->name('admin.payments.store');
     Route::post('pagos/{payment}/verify', 'PaymentController@verify')->name('admin.payments.verify');
     Route::post('pagos/{payment}/reject', 'PaymentController@reject')->name('admin.payments.reject');
     Route::patch('pagos/{payment}/status', 'PaymentController@updateStatus')->name('admin.payments.update_status');
