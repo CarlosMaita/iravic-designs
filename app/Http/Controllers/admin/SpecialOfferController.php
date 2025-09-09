@@ -53,6 +53,7 @@ class SpecialOfferController extends Controller
             'end_date' => 'required|date|after:start_date',
             'product_id' => 'required|exists:products,id',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'background_color' => ['nullable','string','max:20','regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/'],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'order' => 'nullable|integer|min:0'
         ]);
@@ -101,6 +102,7 @@ class SpecialOfferController extends Controller
             'end_date' => 'required|date|after:start_date',
             'product_id' => 'required|exists:products,id',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'background_color' => ['nullable','string','max:20','regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/'],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'order' => 'nullable|integer|min:0'
         ]);

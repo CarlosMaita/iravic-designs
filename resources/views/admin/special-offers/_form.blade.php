@@ -68,6 +68,40 @@
     </div>
 </div>
 
+<div class="row">
+        <div class="col-md-6">
+                <div class="mb-3">
+                        <label for="background_color" class="form-label">Color de fondo</label>
+                        <div class="input-group">
+                                <span class="input-group-text p-1">
+                                        <input type="color" id="background_color_picker" class="form-control form-control-color border-0 p-0" value="{{ old('background_color', $specialOffer->background_color ?? '#dceee7') }}" style="width: 2.25rem; height: 2.25rem">
+                                </span>
+                                <input type="text" name="background_color" id="background_color" class="form-control" placeholder="#RRGGBB"
+                                             value="{{ old('background_color', $specialOffer->background_color ?? '') }}">
+                        </div>
+                        <small class="text-muted">Formato HEX, p. ej.: #dceee7</small>
+                        @error('background_color') <div class="text-danger">{{ $message }}</div> @enderror
+                </div>
+        </div>
+</div>
+
+@push('scripts')
+<script>
+    (function(){
+        var picker = document.getElementById('background_color_picker');
+        var input  = document.getElementById('background_color');
+        if (!picker || !input) return;
+        try {
+            picker.addEventListener('input', function(){ input.value = picker.value; });
+            input.addEventListener('input', function(){
+                var v = (input.value || '').trim();
+                if (/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(v)) picker.value = v;
+            });
+        } catch (e) {}
+    })();
+</script>
+@endpush
+
 <div class="mb-3">
     <label for="image" class="form-label">Imagen de la Oferta</label>
     <input type="file" name="image" id="image" class="form-control" accept="image/*">

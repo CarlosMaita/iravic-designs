@@ -51,13 +51,19 @@ class HomeController extends Controller
         }
         
         // Handle special offers
-        try {
-            $specialOffers = SpecialOffer::active()
-                                       ->current()
-                                       ->with(['product', 'product.images'])
-                                       ->ordered()
-                                       ->take(6)
-                                       ->get();
+          try {
+                $specialOffers = SpecialOffer::active()
+                                                    ->current()
+                                                    ->with(['product', 'product.images'])
+                                                    ->ordered()
+                                                    ->take(12)
+                                                    ->get()
+                                                    ->filter(function($offer){
+                                                        // Seguridad extra: no mostrar si ya venció al día de hoy
+                                                        return $offer->end_date && $offer->end_date->isFuture();
+                                                    })
+                                                    ->take(6)
+                                                    ->values();
         } catch (\Exception $e) {
             $specialOffers = collect(); // Empty collection if table doesn't exist
         }

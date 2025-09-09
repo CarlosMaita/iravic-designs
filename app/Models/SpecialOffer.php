@@ -19,6 +19,7 @@ class SpecialOffer extends Model
         'title',
         'description',
         'image',
+    'background_color',
         'start_date',
         'end_date',
         'is_active',
@@ -54,7 +55,12 @@ class SpecialOffer extends Model
     public function getImageUrlAttribute()
     {
         if ($this->image && Storage::disk($this->filedisk)->exists($this->image)) {
-            return asset(Storage::disk($this->filedisk)->url($this->image));
+            $base = config('filesystems.disks.' . $this->filedisk . '.url');
+            if ($base) {
+                return rtrim($base, '/') . '/' . ltrim($this->image, '/');
+            }
+            // Fallback to storage path
+            return asset('storage/img/special-offers/' . ltrim($this->image, '/'));
         }
         // Return a default image if no image is set
         return asset('images/default-special-offer.png');
