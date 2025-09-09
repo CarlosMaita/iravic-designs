@@ -56,7 +56,7 @@
             },
             category : {
                 type: Number,
-                default: '',
+                default: null,
             },
         },
         mounted(){
