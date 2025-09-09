@@ -1,295 +1,603 @@
-# CoreUI Free Laravel Bootstrap Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=CoreUI%20-%20Free%20Bootstrap%204%20Admin%20Template%20&url=https://coreui.io&hashtags=bootstrap,admin,template,dashboard,panel,free,angular,react,vue)
+# Iravic Designs - Sistema E-commerce
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Laravel](https://img.shields.io/badge/Laravel-9.x-red.svg)](https://laravel.com)
+[![Vue.js](https://img.shields.io/badge/Vue.js-2.6-green.svg)](https://vuejs.org)
+[![PHP](https://img.shields.io/badge/PHP-8.0+-blue.svg)](https://php.net)
 
-[![Bootstrap Admin Template](https://coreui.io/images/github/vue-free-template-3.gif)](https://coreui.io/laravel/)
+**Iravic Designs** es una plataforma de comercio electrónico completa desarrollada con Laravel 9 y Vue.js. El sistema incluye un panel de administración avanzado construido con CoreUI, gestión integral de inventarios, procesamiento de órdenes, y un frontend responsivo para clientes.
 
-Curious why I decided to create CoreUI? Please read this article: [Jack of all trades, master of none. Why Bootstrap Admin Templates suck.](https://medium.com/@lukaszholeczek/jack-of-all-trades-master-of-none-5ea53ef8a1f#.7eqx1bcd8)
+## 🌟 Descripción del Proyecto
 
-CoreUI offers 6 versions: [Bootstrap](https://github.com/coreui/coreui-free-bootstrap-admin-template), [Angular](https://github.com/coreui/coreui-free-angular-admin-template), [Laravel](https://github.com/coreui/coreui-free-laravel-admin-template), [React.js](https://github.com/coreui/coreui-free-react-admin-template), [Vue.js](https://github.com/coreui/coreui-free-vue-admin-template), and [Vue.js + Laravel](https://github.com/coreui/coreui-free-vue-laravel-admin-template).
+Iravic Designs es una solución e-commerce robusta que combina la potencia del backend de Laravel con la interactividad del frontend de Vue.js. Está diseñado para manejar operaciones comerciales complejas, desde la gestión de productos hasta el procesamiento de pagos y la administración de clientes.
 
-CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
+## 📋 Tabla de Contenidos
 
-## Table of Contents
+* [Características Principales](#-características-principales)
+* [Tecnologías y Versiones](#-tecnologías-y-versiones)
+* [Requisitos del Sistema](#-requisitos-del-sistema)
+* [Instalación](#-instalación)
+* [Configuración](#-configuración)
+* [Uso](#-uso)
+* [Funcionalidades](#-funcionalidades)
+* [Estructura del Proyecto](#-estructura-del-proyecto)
+* [API](#-api)
+* [Testing](#-testing)
+* [Desarrollo](#-desarrollo)
+* [Contribución](#-contribución)
+* [Licencia](#-licencia)
+* [Soporte](#-soporte)
 
-* [Versions](#versions)
-* [CoreUI Pro](#coreui-pro)
-* [Admin Templates built on top of CoreUI Pro](#admin-templates-built-on-top-of-coreui-pro)
-* [Installation](#installation)
-* [Usage](#Usage)
-* [Features](#Features)
-* [Creators](#creators)
-* [Community](#community)
-* [Community Projects](#community-projects)
-* [License](#license)
-* [Support CoreUI Development](#support-coreui-development)
+## ✨ Características Principales
 
-## Versions
+- **Panel de Administración Completo**: Interfaz moderna basada en CoreUI 3.2.0
+- **Gestión de Productos**: Catálogo completo con categorías, marcas, imágenes y variantes
+- **Control de Inventario**: Seguimiento de stock, transferencias entre almacenes
+- **Gestión de Clientes**: Perfiles de cliente, historial de compras, favoritos
+- **Procesamiento de Órdenes**: Workflow completo desde carrito hasta entrega
+- **Sistema de Pagos**: Integración con múltiples métodos de pago
+- **Reportes y Analytics**: Dashboard con métricas de ventas y rendimiento
+- **Control de Roles**: Sistema avanzado de permisos y roles de usuario
+- **Responsive Design**: Optimizado para dispositivos móviles y desktop
+- **API RESTful**: Endpoints completos para integración con aplicaciones móviles
 
-CoreUI is built on top of Bootstrap 4 and supports popular frameworks.
+## 🔧 Tecnologías y Versiones
 
-* [CoreUI Free Bootstrap Admin Template](https://github.com/coreui/coreui-free-bootstrap-admin-template)
-* [CoreUI Free Angular Admin Template](https://github.com/coreui/coreui-free-angular-admin-template)
-* [CoreUI Free Laravel Admin Template](https://github.com/coreui/coreui-free-laravel-admin-template)
-* [CoreUI Free React.js Admin Template](https://github.com/coreui/coreui-free-react-admin-template)
-* [CoreUI Free Vue.js Admin Template](https://github.com/coreui/coreui-free-vue-admin-template)
-* [CoreUI Free Vue.js + Laravel Admin Template](https://github.com/coreui/coreui-free-vue-laravel-admin-template)
+### Backend
+- **Laravel**: 9.x
+- **PHP**: 8.0+
+- **Base de Datos**: MySQL/PostgreSQL/SQLite
+- **Cache**: Redis
+- **Queue**: Laravel Queue Workers
 
-## CoreUI Pro
+### Frontend
+- **Vue.js**: 2.6.14
+- **CoreUI**: 3.2.0
+- **Bootstrap**: 4.x
+- **Chart.js**: 2.9.4
+- **Axios**: 0.19.0
 
-* 💪  [CoreUI Pro Bootstrap Admin Template](https://coreui.io/pro/)
-* 💪  [CoreUI Pro Angular Admin Template](https://coreui.io/pro/angular)
-* 💪  [CoreUI Pro Laravel Admin Template](https://coreui.io/pro/laravel)
-* 💪  [CoreUI Pro React Admin Template](https://coreui.io/pro/react)
-* 💪  [CoreUI Pro Vue Admin Template](https://coreui.io/pro/vue)
-* 💪  [CoreUI Pro Vue + Laravel Admin Template](https://coreui.io/pro/vue-laravel)
+### Herramientas de Desarrollo
+- **Laravel Mix**: 5.0.4
+- **Webpack**: Bundling de assets
+- **Sass**: Preprocesador CSS
+- **ESLint**: Linting de JavaScript/Vue
+- **PHP CS Fixer**: Formateo de código PHP
 
-## Admin Templates built on top of CoreUI Pro
+### Paquetes Principales
+- **Spatie Media Library**: Gestión de archivos multimedia
+- **Laravel DataTables**: Tablas dinámicas
+- **DomPDF**: Generación de reportes PDF
+- **Laravel UI**: Scaffolding de autenticación
+- **PHPSpreadsheet**: Importación/exportación Excel
 
-| Default Theme | Legacy Theme | Dark Layout |
-| --- | --- | --- |
-| [![CoreUI Pro Bootstrap Admin Template](https://coreui.io/images/mockups/mockup_3_1_default.png)](https://coreui.io/pro/laravel/) | [![CoreUI Pro Bootstrap Admin Template](https://coreui.io/images/mockups/mockup_3_1_legacy.png)](https://coreui.io/pro/laravel/)| [![CoreUI Pro Bootstrap Admin Template](https://coreui.io/images/mockups/mockup_3_1_dark.png)](https://coreui.io/pro/laravel/)
+## 📋 Requisitos del Sistema
 
-## Installation
+- **PHP**: 8.0 o superior
+- **Composer**: 2.0+
+- **Node.js**: 16+ (recomendado 20+)
+- **NPM**: 8+
+- **Base de Datos**: MySQL 5.7+, PostgreSQL 10+, o SQLite 3.8+
+- **Extensiones PHP requeridas**:
+  - OpenSSL
+  - PDO
+  - Mbstring
+  - Tokenizer
+  - XML
+  - Ctype
+  - JSON
+  - BCMath
+  - GD (para procesamiento de imágenes)
 
-``` bash
-# clone the repo
-$ git clone https://github.com/coreui/coreui-free-laravel-admin-template.git my-project
+## 🚀 Instalación
 
-# go into app's directory
-$ cd my-project
+### 1. Clonar el Repositorio
 
-# install app's dependencies
-$ composer install
-
-# install app's dependencies
-$ npm install
-
+```bash
+git clone https://github.com/CarlosMaita/iravic-designs.git
+cd iravic-designs
 ```
 
-### If you choice to use SQLite
+### 2. Instalar Dependencias PHP
 
-``` bash
-
-# create database
-$ touch database/database.sqlite
+```bash
+composer install --no-dev --prefer-dist --no-interaction
 ```
-Copy file ".env.example", and change its name to ".env".
-Then in file ".env" replace this database configuration:
-* DB_CONNECTION=mysql
-* DB_HOST=127.0.0.1
-* DB_PORT=3306
-* DB_DATABASE=laravel
-* DB_USERNAME=root
-* DB_PASSWORD=
+> ⚠️ **Nota**: Este proceso toma aproximadamente 3-4 minutos. No cancelar la operación.
 
-To this:
+### 3. Instalar Dependencias Node.js
 
-* DB_CONNECTION=sqlite
-* DB_DATABASE=/path_to_your_project/database/database.sqlite
-
-### If you choice to use PostgreSQL
-
-1. Install PostgreSQL
-
-2. Create user
-``` bash
-$ sudo -u postgres createuser --interactive
-enter name of role to add: laravel
-shall the new role be a superuser (y/n) n
-shall the new role be allowed to create database (y/n) n
-shall the new role be allowed to create more new roles (y/n) n
+```bash
+npm install --ignore-scripts
 ```
-3. Set user password
-``` bash
-$ sudo -u postgres psql
-postgres= ALTER USER laravel WITH ENCRYPTED PASSWORD 'password';
-postgres= \q
-```
-4. Create database
-``` bash
-$ sudo -u postgres createdb laravel
-```
-5. Copy file ".env.example", and change its name to ".env".
-Then in file ".env" replace this database configuration:
+> ⚠️ **Nota**: Este proceso toma aproximadamente 8-10 minutos. Se esperan advertencias de deprecación.
 
-* DB_CONNECTION=mysql
-* DB_HOST=127.0.0.1
-* DB_PORT=3306
-* DB_DATABASE=laravel
-* DB_USERNAME=root
-* DB_PASSWORD=
+### 4. Configuración del Entorno
 
-To this:
+```bash
+# Copiar archivo de configuración
+cp .env.example .env
 
-* DB_CONNECTION=pgsql
-* DB_HOST=127.0.0.1
-* DB_PORT=5432
-* DB_DATABASE=laravel
-* DB_USERNAME=laravel
-* DB_PASSWORD=password
-
-### If you choice to use MySQL
-
-Copy file ".env.example", and change its name to ".env".
-Then in file ".env" complete this database configuration:
-* DB_CONNECTION=mysql
-* DB_HOST=127.0.0.1
-* DB_PORT=3306
-* DB_DATABASE=laravel
-* DB_USERNAME=root
-* DB_PASSWORD=
-
-### Set APP_URL
-
-> If your project url looks like: example.com/sub-folder 
-Then go to `my-project/.env`
-And modify this line:
-
-* APP_URL = 
-
-To make it look like this:
-
-* APP_URL = http://example.com/sub-folder
-
-
-### Next step
-
-``` bash
-# in your app directory
-# generate laravel APP_KEY
-$ php artisan key:generate
-
-# run database migration and seed
-$ php artisan migrate:refresh --seed
-
-# generate mixing
-$ npm run dev
-
-# and repeat generate mixing
-$ npm run dev
+# Generar clave de aplicación
+php artisan key:generate
 ```
 
-## Usage
+## ⚙️ Configuración
 
-``` bash
-# start local server
-$ php artisan serve
+### Configuración de Base de Datos
 
-# test
-$ php vendor/bin/phpunit
+#### Para SQLite (Recomendado para desarrollo)
+
+```bash
+# Crear archivo de base de datos
+touch database/database.sqlite
 ```
 
-Open your browser with address: [localhost:8000](localhost:8000)  
-Click "Login" on sidebar menu and log in with credentials:
+Editar el archivo `.env`:
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=/ruta/absoluta/al/proyecto/database/database.sqlite
+```
 
-* E-mail: _admin@admin.com_
-* Password: _password_
+#### Para MySQL
 
-This user has roles: _user_ and _admin_
+Editar el archivo `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=iravic_designs
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+```
 
---- 
+#### Para PostgreSQL
 
-### How to add a link to the sidebar:
+```bash
+# Crear usuario PostgreSQL
+sudo -u postgres createuser --interactive
+# nombre: iravic_user
 
-> Instructions for CoreUI Free Laravel admin template only. _Pro and Vue.js versions have separate instructions._
+# Establecer contraseña
+sudo -u postgres psql
+postgres=# ALTER USER iravic_user WITH ENCRYPTED PASSWORD 'tu_contraseña';
+postgres=# \q
 
-#### To add a __link__ to the sidebar - modify seeds file:  
-`my-project/database/seeds/MenusTableSeeder.php`
+# Crear base de datos
+sudo -u postgres createdb iravic_designs
+```
 
-In `run()` function - add `insertLink()`:
+Editar el archivo `.env`:
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=iravic_designs
+DB_USERNAME=iravic_user
+DB_PASSWORD=tu_contraseña
+```
+
+### Migrar Base de Datos
+
+```bash
+# Ejecutar migraciones y seeders
+php artisan migrate:refresh --seed
+```
+
+> ⚠️ **Limitaciones Conocidas**: Algunas migraciones pueden fallar con SQLite debido a sintaxis específica de MySQL (ENUM, MODIFY COLUMN). El sistema funcionará con esquema básico.
+
+### Configuración de Assets
+
+> ⚠️ **Problema Conocido**: La compilación de assets falla actualmente debido a incompatibilidad de node-sass con Node.js 20+.
+
+```bash
+# Intentar compilar assets (puede fallar)
+npm run dev
+```
+
+**Solución temporal**: Usar assets precompilados disponibles en el directorio `public/`.
+
+## 🎯 Uso
+
+### Iniciar el Servidor
+
+```bash
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+### Acceso al Sistema
+
+- **URL**: [http://localhost:8000](http://localhost:8000)
+- **Panel Admin**: [http://localhost:8000/login](http://localhost:8000/login)
+
+### Credenciales por Defecto
+
+- **Email**: admin@admin.com
+- **Contraseña**: password
+- **Roles**: usuario y administrador
+
+### Ejecutar Tests
+
+```bash
+# Instalar dependencias de desarrollo
+composer install
+
+# Ejecutar suite de tests
+vendor/bin/phpunit
+```
+
+## 🛍️ Funcionalidades
+
+### Módulo de Administración
+
+#### 🏪 Gestión de Productos
+- **Catálogo de Productos**: CRUD completo de productos
+- **Categorías y Subcategorías**: Organización jerárquica
+- **Marcas**: Gestión de marcas y fabricantes
+- **Variantes de Producto**: Colores, tallas, etc.
+- **Galería de Imágenes**: Múltiples imágenes por producto
+- **SEO**: URLs amigables y metadatos
+
+#### 📦 Control de Inventario
+- **Gestión de Stock**: Seguimiento en tiempo real
+- **Múltiples Almacenes**: Gestión multi-ubicación
+- **Transferencias**: Movimiento entre almacenes
+- **Alertas de Stock**: Notificaciones de stock bajo
+- **Importación/Exportación**: Excel para inventarios masivos
+
+#### 👥 Gestión de Clientes
+- **Perfiles de Cliente**: Información completa
+- **Historial de Compras**: Seguimiento de órdenes
+- **Lista de Favoritos**: Productos guardados
+- **Segmentación**: Grupos de clientes
+- **Comunicación**: Sistema de mensajería
+
+#### 📋 Procesamiento de Órdenes
+- **Workflow de Órdenes**: Desde carrito hasta entrega
+- **Estados de Orden**: Seguimiento completo
+- **Facturación**: Generación automática de facturas
+- **Devoluciones**: Gestión de productos devueltos
+- **Reportes**: Analytics de ventas
+
+#### 💳 Sistema de Pagos
+- **Múltiples Métodos**: Tarjetas, transferencias, efectivo
+- **Procesamiento Seguro**: Integración con gateways
+- **Conciliación**: Seguimiento de pagos
+- **Reportes Financieros**: Estado de cuentas
+
+#### 📊 Reportes y Analytics
+- **Dashboard Ejecutivo**: Métricas clave
+- **Reportes de Ventas**: Por período, producto, cliente
+- **Analytics de Inventario**: Rotación, valorización
+- **Reportes Financieros**: Ingresos, gastos, rentabilidad
+
+### Módulo Frontend (E-commerce)
+
+#### 🛒 Experiencia de Compra
+- **Catálogo Responsive**: Navegación intuitiva
+- **Búsqueda Avanzada**: Filtros múltiples
+- **Carrito de Compras**: Persistente y dinámico
+- **Checkout Optimizado**: Proceso simplificado
+- **Cuenta de Usuario**: Perfil y historial
+
+#### 🔐 Sistema de Roles y Permisos
+- **Roles Personalizables**: Admin, Vendedor, Cliente
+- **Permisos Granulares**: Control específico por módulo
+- **Auditoria**: Registro de acciones de usuario
+- **Seguridad**: Autenticación de dos factores
+
+
+## 🏗️ Estructura del Proyecto
+
+```
+iravic-designs/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/              # Controladores del panel admin
+│   │   │   │   ├── Catalog/        # Productos, categorías, marcas
+│   │   │   │   ├── Customers/      # Gestión de clientes
+│   │   │   │   ├── Orders/         # Gestión de órdenes
+│   │   │   │   └── Config/         # Configuración del sistema
+│   │   │   ├── Api/                # Controladores API
+│   │   │   └── Ecommerce/          # Frontend público
+│   │   ├── Requests/               # Form requests
+│   │   └── Middleware/             # Middleware personalizado
+│   ├── Models/                     # Modelos Eloquent
+│   ├── Services/                   # Lógica de negocio
+│   ├── Repositories/               # Acceso a datos
+│   └── Helpers/                    # Funciones auxiliares
+├── database/
+│   ├── migrations/                 # Migraciones de base de datos
+│   ├── seeders/                    # Datos iniciales
+│   └── factories/                  # Factories para testing
+├── resources/
+│   ├── js/
+│   │   ├── components/
+│   │   │   ├── catalog/            # Componentes Vue de catálogo
+│   │   │   ├── orders/             # Componentes Vue de órdenes
+│   │   │   ├── customers/          # Componentes Vue de clientes
+│   │   │   └── shared/             # Componentes reutilizables
+│   │   └── app.js                  # Punto de entrada Vue
+│   ├── sass/                       # Estilos SCSS
+│   └── views/                      # Vistas Blade
+│       ├── admin/                  # Vistas del panel admin
+│       └── ecommerce/              # Vistas del frontend
+├── public/                         # Assets públicos
+├── routes/
+│   ├── web.php                     # Rutas web
+│   └── api.php                     # Rutas API
+└── tests/                          # Tests automatizados
+```
+
+## 🔌 API
+
+### Endpoints Principales
+
+#### Autenticación
+```http
+POST /api/login          # Iniciar sesión
+POST /api/logout         # Cerrar sesión
+POST /api/register       # Registro de cliente
+```
+
+#### Productos
+```http
+GET    /api/products              # Listar productos
+GET    /api/products/{id}         # Obtener producto específico
+POST   /api/products              # Crear producto (admin)
+PUT    /api/products/{id}         # Actualizar producto (admin)
+DELETE /api/products/{id}         # Eliminar producto (admin)
+```
+
+#### Categorías
+```http
+GET    /api/categories            # Listar categorías
+GET    /api/categories/{id}       # Obtener categoría específica
+```
+
+#### Carrito y Órdenes
+```http
+GET    /api/cart                  # Obtener carrito actual
+POST   /api/cart/add              # Agregar producto al carrito
+PUT    /api/cart/update           # Actualizar cantidad
+DELETE /api/cart/remove           # Remover producto
+POST   /api/orders                # Crear orden
+GET    /api/orders                # Listar órdenes del usuario
+```
+
+### Autenticación API
+
+La API utiliza Laravel Sanctum para autenticación:
+
+```javascript
+// Ejemplo de uso con axios
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+```
+
+## 🧪 Testing
+
+### Configuración de Tests
+
+```bash
+# Copiar configuración de testing
+cp .env.example .env.testing
+
+# Configurar base de datos de testing
+php artisan key:generate --env=testing
+```
+
+### Ejecutar Tests
+
+```bash
+# Tests completos
+vendor/bin/phpunit
+
+# Tests específicos
+vendor/bin/phpunit --filter ProductTest
+
+# Con coverage
+vendor/bin/phpunit --coverage-html coverage/
+```
+
+### Tipos de Tests
+
+- **Unit Tests**: Lógica de negocio y modelos
+- **Feature Tests**: Endpoints y flujos completos
+- **Browser Tests**: Pruebas de interfaz (Laravel Dusk)
+
+## 👨‍💻 Desarrollo
+
+### Comandos de Desarrollo
+
+```bash
+# Instalación inicial
+composer install
+npm install
+
+# Desarrollo diario
+php artisan serve                 # Servidor local
+npm run watch                     # Watch assets (si funciona)
+
+# Linting y formateo
+npm run lint:js                   # Verificar JavaScript/Vue
+npm run lint:js:fix               # Corregir automáticamente
+composer run format:php           # Formatear código PHP
+
+# Base de datos
+php artisan migrate:refresh --seed    # Resetear BD con datos
+php artisan migrate:status             # Estado de migraciones
+```
+
+### Estándares de Código
+
+El proyecto sigue estándares específicos documentados en:
+- `CODING_STANDARDS.md` - Estándares detallados
+- `IMPLEMENTATION_GUIDE.md` - Guía de implementación
+
+#### Herramientas de Calidad
+- **PHP CS Fixer**: Formateo automático de PHP
+- **ESLint**: Linting de JavaScript/Vue
+- **StyleCI**: Integración continua de estilo
+
+### Agregar Nuevas Funcionalidades
+
+1. **Crear Modelo y Migración**:
+```bash
+php artisan make:model NuevoModelo -m
+```
+
+2. **Crear Controlador**:
+```bash
+php artisan make:controller Admin/NuevoController --resource
+```
+
+3. **Crear Form Request**:
+```bash
+php artisan make:request Admin/NuevoRequest
+```
+
+4. **Agregar Rutas**:
 ```php
-$id = $this->insertLink( $rolesString, $visibleName, $href, $iconString);
-```
-* `$rolesString` - a string with list of user roles this menu element will be available, ex. `"guest,user,admin"`
-* `$visibleName` - a string caption visible in sidebar
-* `$href` - a href, ex. `/homepage` or `http://example.com`
-* `$iconString` - a string containing valid CoreUI Icon name (kebab-case), ex. `cil-speedometer` or `cil-pencil`
-
-To add a __title__ to the sidebar - use function `insertTitle()`:
-```php
-$id = $this->insertTitle( $rolesString, $title );
-```
-* `$rolesString` - a string with list of user roles this menu element will be available, ex. `"guest,user,admin"`
-* `$title` - a string caption visible in sidebar
-
-To add a __dropdown__ menu to the sidebar - use function `beginDropdown()`:
-```php
-$id = $this->beginDropdown( $rolesString, $visibleName, $iconString);
-```
-* `$rolesString` - a string with list of user roles this menu element will be available, ex. `"guest,user,admin"`
-* `$visibleName` - a string caption visible in sidebar
-* `$iconString` - a string containing valid CoreUI icon name (kebab-case). For example: `cil-speedometer` or `cil-pencil`
-
-To end dropdown section - use function `endDropdown()`. 
-
-To add __link__ to __dropdown__ call function `insertLink()` between function calls `beginDropdown()` and `endDropdown()`. 
-Example:
-```php
-$id = $this->beginDropdown('guest,user,admin', 'Some dropdown', 'cil-puzzle');
-$id = $this->insertLink('guest,user,admin', 'Dropdown name', 'http://example.com');
-$this->endDropdown();
+// routes/web.php
+Route::resource('admin/nuevo', NuevoController::class);
 ```
 
-__IMPORTANT__ - At the end of `run()` function, call `joinAllByTransaction()` function:
-```php
-$this->joinAllByTransaction();
+5. **Crear Componente Vue**:
+```bash
+# En resources/js/components/
+touch nuevo-component.vue
 ```
 
-Once done with seeds file edit, __run__:
-``` bash 
-$ php artisan migrate:refresh --seed
-# This command also rollbacks database and migrates it again.
+### Variables de Entorno Importantes
+
+```env
+APP_NAME=IravicDesigns
+APP_ENV=local|production
+APP_DEBUG=true|false
+APP_URL=http://localhost:8000
+
+# Base de datos
+DB_CONNECTION=mysql|pgsql|sqlite
+DB_HOST=127.0.0.1
+DB_DATABASE=iravic_designs
+
+# Cache y sesiones
+CACHE_DRIVER=file|redis
+SESSION_DRIVER=file|database
+
+# Email
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.mailtrap.io
+
+# Almacenamiento
+FILESYSTEM_DRIVER=local|s3
 ```
 
-## Features
+## 🤝 Contribución
 
-### Table of contents:
-* [Users](#users)
+### Proceso de Contribución
 
+1. **Fork del repositorio**
+2. **Crear rama feature**:
+```bash
+git checkout -b feature/nueva-funcionalidad
+```
+3. **Seguir estándares de codificación**
+4. **Ejecutar tests y linters**:
+```bash
+vendor/bin/phpunit
+npm run lint:js:fix
+composer run format:php
+```
+5. **Crear Pull Request**
 
-## Creators
+### Guías de Contribución
 
-**Łukasz Holeczek**
+- Seguir los estándares definidos en `CODING_STANDARDS.md`
+- Escribir tests para nuevas funcionalidades
+- Documentar cambios en código
+- Usar commits descriptivos en español
+- Respetar la arquitectura existente
 
-* <https://twitter.com/lukaszholeczek>
-* <https://github.com/mrholek>
+### Reportar Issues
 
-**Andrzej Kopański**
+Al reportar problemas, incluir:
+- Versión de PHP y Node.js
+- Pasos para reproducir
+- Logs de error
+- Capturas de pantalla (si aplica)
 
-* <https://github.com/xidedix>
+## 📄 Licencia
 
-**Marcin Michałek**
+Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
 
-* <https://github.com/rakieta2015>
+```
+MIT License
 
+Copyright (c) 2025 Iravic Designs
 
-## Community
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Get updates on CoreUI's development and chat with the project maintainers and community members.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
-- Read and subscribe to [CoreUI Blog](https://coreui.io/blog/).
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
+## 📞 Soporte
 
-## CoreUI Icons (500+ Free icons) - Premium designed free icon set with marks in SVG, Webfont and raster formats.
+### Documentación Adicional
+- [Estándares de Codificación](CODING_STANDARDS.md)
+- [Guía de Implementación](IMPLEMENTATION_GUIDE.md)
+- [Documentación de Laravel](https://laravel.com/docs)
+- [Documentación de Vue.js](https://vuejs.org/v2/guide/)
+- [Documentación de CoreUI](https://coreui.io/docs/)
 
-CoreUI Icons are beautifully crafted symbols for common actions and items. You can use them in your digital products for web or mobile app. Ready-to-use fonts and stylesheets that work with your favorite frameworks.
+### Contacto
 
-![CoreUI Free Icons](https://coreui.io/images/icons_free_bg_set.png)
+Para soporte, dudas o sugerencias:
+- **Email**: soporte@iravicdesigns.com
+- **Issues**: [GitHub Issues](https://github.com/CarlosMaita/iravic-designs/issues)
+- **Contribuciones**: [GitHub Pull Requests](https://github.com/CarlosMaita/iravic-designs/pulls)
 
+### Community y Recursos
 
-### CoreUI Icons Preview & Docs
+- [Laravel España](https://laraveles.com/)
+- [Vue.js Madrid](https://www.meetup.com/VueJS-Madrid/)
+- [PHP España](https://php.es/)
 
-[https://coreui.io/icons/](https://coreui.io/icons/)
+## 🔄 Changelog
 
-## Copyright and license
+### Versión Actual: 1.0.5
 
-copyright 2020 creativeLabs Łukasz Holeczek. Code released under [the MIT license](https://github.com/coreui/coreui-free-laravel-admin-template/blob/master/LICENSE).
-There is only one limitation you can't can’t re-distribute the CoreUI as stock. You can’t do this if you modify the CoreUI. In past we faced some problems with persons who tried to sell CoreUI based templates.
+#### Funcionalidades Principales
+- ✅ Sistema completo de e-commerce
+- ✅ Panel de administración avanzado
+- ✅ Gestión de inventarios multi-almacén
+- ✅ API RESTful completa
+- ✅ Sistema de roles y permisos
+- ✅ Reportes y analytics
 
-## Support CoreUI Development
+#### Próximas Mejoras
+- 🔄 Actualización a Laravel 10
+- 🔄 Migración a Vue.js 3
+- 🔄 Integración con PWA
+- 🔄 Sistema de notificaciones push
+- 🔄 Integración con APIs de envío
 
-CoreUI is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support development by donating on [PayPal](https://www.paypal.me/holeczek), buying [CoreUI Pro Version](https://coreui.io/pro) or buying one of our [premium admin templates](https://genesisui.com/?support=1).
+---
 
-As of now I am exploring the possibility of working on CoreUI fulltime - if you are a business that is building core products using CoreUI, I am also open to conversations regarding custom sponsorship / consulting arrangements. Get in touch on [Twitter](https://twitter.com/lukaszholeczek).
+**Desarrollado con ❤️ por el equipo de Iravic Designs**
+
