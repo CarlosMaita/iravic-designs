@@ -27,6 +27,8 @@ class ProductEcommerceHelper
             'stock_total' => $product->stock_total,
             'url_detail' => route('ecommerce.product.detail', $product->slug),
             'url_thumbnail' => self::getUrlThumbnailProduct($product->images),
+            'category' => $product->category ? $product->category->name : null,
+            'brand' => $product->brand ? $product->brand->name : null,
         ];
       
         if ($product->product_combinations) {
