@@ -35,7 +35,7 @@
 {{-- Product specific Open Graph tags --}}
 @if($productDetail->price)
 <meta property="product:price:amount" content="{{ $productDetail->price }}">
-<meta property="product:price:currency" content="COP">
+<meta property="product:price:currency" content="USD">
 @endif
 @if($productDetail->brand)
 <meta property="product:brand" content="{{ $productDetail->brand }}">
@@ -71,7 +71,7 @@
   "offers": {
     "@type": "Offer",
     "price": "{{ $productDetail->price }}",
-    "priceCurrency": "COP",
+    "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
     "url": "{{ url()->current() }}"
   },
