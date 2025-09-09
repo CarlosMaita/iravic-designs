@@ -89,7 +89,7 @@ class Order extends Model
 
     public function getTotalPaidAttribute()
     {
-        return $this->payments()->where('status', Payment::STATUS_VERIFIED)->sum('amount');
+        return $this->payments()->where('status', Payment::STATUS_VERIFIED)->get()->sum('equivalent_usd_amount');
     }
 
     public function getRemainingBalanceAttribute()
@@ -132,6 +132,16 @@ class Order extends Model
     public function canBeCancelled()
     {
         return in_array($this->status, [self::STATUS_CREATED, self::STATUS_PAID]);
+    }
+
+    public function cancel()
+    {
+        if ($this->canBeCancelled()) {
+            $this->status = self::STATUS_CANCELLED;
+            $this->save();
+            return true;
+        }
+        return false;
     }
 
     public function updateStatus($newStatus)

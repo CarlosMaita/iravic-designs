@@ -130,4 +130,40 @@ class OrderController extends Controller
             'status' => $order->status_label
         ]);
     }
+
+    /**
+     * Cancel an order (for customers).
+     */
+    public function cancel(Order $order)
+    {
+        // Allow customers to cancel their own orders or admins to cancel any order
+        if (Auth::user()->can('update-order') || 
+            (Auth::user()->customer && Auth::user()->customer->id === $order->customer_id)) {
+            
+            if ($order->status !== Order::STATUS_CREATED) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo se pueden cancelar órdenes en estado "Creada".'
+                ], 400);
+            }
+
+            if ($order->cancel()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Orden cancelada exitosamente.',
+                    'status' => $order->status_label
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo cancelar la orden.'
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No tiene permisos para cancelar esta orden.'
+        ], 403);
+    }
 }

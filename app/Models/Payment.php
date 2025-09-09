@@ -16,6 +16,9 @@ class Payment extends Model
         'user_id',
         'date',
         'amount',
+        'currency',
+        'exchange_rate',
+        'local_amount',
         'status',
         'payment_method',
         'reference_number',
@@ -29,6 +32,8 @@ class Payment extends Model
     protected $casts = [
         'date' => 'datetime',
         'mobile_payment_date' => 'datetime',
+        'exchange_rate' => 'decimal:4',
+        'local_amount' => 'decimal:2',
     ];
 
     // Payment status constants
@@ -41,6 +46,11 @@ class Payment extends Model
     const METHOD_TRANSFER = 'transferencia';
     const METHOD_CASH = 'efectivo';
     const METHOD_CARD = 'tarjeta';
+
+    // Currency constants
+    const CURRENCY_USD = 'USD';
+    const CURRENCY_VES = 'VES'; // Venezuelan Bolívar
+    const CURRENCY_LOCAL = 'VES'; // Default local currency
 
     public static function getStatuses()
     {
@@ -58,6 +68,14 @@ class Payment extends Model
             self::METHOD_TRANSFER => 'Transferencia',
             self::METHOD_CASH => 'Efectivo',
             self::METHOD_CARD => 'Tarjeta',
+        ];
+    }
+
+    public static function getCurrencies()
+    {
+        return [
+            self::CURRENCY_USD => 'USD',
+            self::CURRENCY_VES => 'VES',
         ];
     }
 
@@ -91,6 +109,28 @@ class Payment extends Model
     public function getFormattedAmountAttribute()
     {
         return '$' . number_format($this->amount, 2);
+    }
+
+    public function getFormattedLocalAmountAttribute()
+    {
+        if ($this->local_amount && $this->currency !== self::CURRENCY_USD) {
+            $symbol = $this->currency === self::CURRENCY_VES ? 'Bs. ' : '';
+            return $symbol . number_format($this->local_amount, 2);
+        }
+        return $this->formatted_amount;
+    }
+
+    public function getEquivalentUsdAmountAttribute()
+    {
+        if ($this->currency === self::CURRENCY_USD) {
+            return $this->amount;
+        }
+        
+        if ($this->local_amount && $this->exchange_rate > 0) {
+            return round($this->local_amount / $this->exchange_rate, 2);
+        }
+        
+        return $this->amount;
     }
 
     public function getReferenceDigitsAttribute()

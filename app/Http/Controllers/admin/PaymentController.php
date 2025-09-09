@@ -136,13 +136,29 @@ class PaymentController extends Controller
 
         $request->validate([
             'status' => 'required|in:' . implode(',', array_keys(Payment::getStatuses())),
-            'comment' => 'nullable|string|max:1000'
+            'comment' => 'nullable|string|max:1000',
+            'currency' => 'nullable|in:' . implode(',', array_keys(Payment::getCurrencies())),
+            'exchange_rate' => 'nullable|numeric|min:0.0001',
+            'local_amount' => 'nullable|numeric|min:0.01'
         ]);
 
-        $payment->update([
+        $updateData = [
             'status' => $request->status,
             'comment' => $request->comment
-        ]);
+        ];
+
+        // Handle currency fields if provided
+        if ($request->has('currency')) {
+            $updateData['currency'] = $request->currency;
+        }
+        if ($request->has('exchange_rate')) {
+            $updateData['exchange_rate'] = $request->exchange_rate;
+        }
+        if ($request->has('local_amount')) {
+            $updateData['local_amount'] = $request->local_amount;
+        }
+
+        $payment->update($updateData);
 
         // If payment is verified and order is fully paid, update order status
         if ($request->status === 'verificado' && 
@@ -156,6 +172,50 @@ class PaymentController extends Controller
             'success' => true,
             'message' => 'Estado de pago actualizado exitosamente.',
             'status' => $payment->status_label
+        ]);
+    }
+
+    /**
+     * Store a new payment with multi-currency support.
+     */
+    public function store(Request $request)
+    {
+        $this->authorize('create-order'); // Using order permission for payments
+
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'amount' => 'required|numeric|min:0.01',
+            'currency' => 'required|in:' . implode(',', array_keys(Payment::getCurrencies())),
+            'exchange_rate' => 'required|numeric|min:0.0001',
+            'local_amount' => 'nullable|numeric|min:0.01',
+            'payment_method' => 'required|in:' . implode(',', array_keys(Payment::getPaymentMethods())),
+            'reference_number' => 'nullable|string|max:255',
+            'mobile_payment_date' => 'nullable|date',
+            'comment' => 'nullable|string|max:1000'
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+
+        $payment = Payment::create([
+            'order_id' => $order->id,
+            'customer_id' => $order->customer_id,
+            'user_id' => Auth::id(),
+            'date' => now(),
+            'amount' => $request->amount,
+            'currency' => $request->currency,
+            'exchange_rate' => $request->exchange_rate,
+            'local_amount' => $request->local_amount,
+            'status' => Payment::STATUS_PENDING,
+            'payment_method' => $request->payment_method,
+            'reference_number' => $request->reference_number,
+            'mobile_payment_date' => $request->mobile_payment_date,
+            'comment' => $request->comment
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pago registrado exitosamente.',
+            'payment' => $payment->load(['order', 'customer'])
         ]);
     }
 }
