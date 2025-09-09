@@ -81,6 +81,9 @@ app/
 └── Helpers/
 
 resources/
+|
+├── templates/
+│   └── cartzilla/                # Plantillas y recursos de Cartzilla
 ├── js/
 │   ├── components/
 │   │   ├── catalog/              # Componentes de catálogo

@@ -1,0 +1,103 @@
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const techSection = document.querySelector('.job-technologies');
+  const techItems = document.querySelectorAll('.tech-item');
+  const heading = document.getElementById('selected-specialization-heading');
+  const allPuestos = document.querySelectorAll('.puestos-item');
+  const DELAY_PUESTOS = 2000;
+  let autoPlayIntervalPuestos;
+
+  const hideTechItem = (item) => {
+    item.style.opacity = 0;
+    setTimeout(() => {
+      item.style.display = 'none';
+    }, 1);
+  };
+
+  const showTechItem = (item) => {
+    item.style.display = 'flex';
+    setTimeout(() => {
+      item.style.opacity = 1;
+    }, 50);
+  };
+
+  function filterAndDisplayTechs(selectedJobs) {
+    techItems.forEach(item => {
+      const relatedJobs = (item.dataset.job || '').toLowerCase().split(',').map(j => j.trim());
+      selectedJobs.some(j => relatedJobs.includes(j)) ? showTechItem(item) : hideTechItem(item);
+    });
+  }
+
+  function triggerNextPuesto() {
+    const visiblePuestos = Array.from(allPuestos).filter(p => p.offsetParent !== null);
+    if (!visiblePuestos.length) return;
+    const activePuestoIndex = visiblePuestos.findIndex(p => p.classList.contains('active'));
+    const nextIndex = (activePuestoIndex + 1) % visiblePuestos.length;
+    visiblePuestos[nextIndex].click();
+  }
+
+  function startAutoPlayPuestos() {
+    clearInterval(autoPlayIntervalPuestos);
+    autoPlayIntervalPuestos = setInterval(triggerNextPuesto, DELAY_PUESTOS);
+  }
+
+  function stopAutoPlayPuestos() {
+    clearInterval(autoPlayIntervalPuestos);
+  }
+
+  if (techSection) {
+    techSection.style.display = 'none';
+  }
+
+  // Oculta todas las tecnologías al inicio
+  techItems.forEach(hideTechItem);
+
+  allPuestos.forEach((puesto) => {
+    puesto.addEventListener('click', function () {
+      stopAutoPlayPuestos();
+      allPuestos.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+
+      const jobs = (this.dataset.job || '').toLowerCase().split(',').map(j => j.trim());
+      const title = this.dataset.title;
+
+      if (heading && title) {
+        heading.textContent = `${title} Technologies`;
+      }
+
+      if (techSection) {
+        techSection.style.display = 'block';
+      }
+
+      filterAndDisplayTechs(jobs);
+      setTimeout(startAutoPlayPuestos, DELAY_PUESTOS * 1.5);
+    });
+  });
+
+  // Activa el primer puesto después de un breve instante para evitar el conflicto inicial
+  if (allPuestos.length > 0) {
+    setTimeout(() => {
+        allPuestos[0].click();
+    }, 100);
+  }
+});
+</script>
+
+<style>
+.tech-item {
+}
+
+.job-technologies {
+   min-height: 200px;
+}
+
+.puestos-item.active {
+  background-color: #EAF9F9;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.puestos-item {
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out;
+}
+</style>
