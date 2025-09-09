@@ -52,6 +52,7 @@ Vue.component('product-card-skeleton-ecommerce-component', require('../ecommerce
 // Home ecommerce components
 Vue.component('featured-products-carousel-ecommerce-component', require('../ecommerce/components/home/FeaturedProductsCarouselEcommerceComponent.vue').default);
 Vue.component('featured-product-card-ecommerce-component', require('../ecommerce/components/home/FeaturedProductCardEcommerceComponent.vue').default);
+Vue.component('special-offers-carousel-ecommerce-component', require('../ecommerce/components/home/SpecialOffersCarouselEcommerceComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
