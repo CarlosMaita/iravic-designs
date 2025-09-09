@@ -39,7 +39,11 @@
                     <h3 class="h5 mt-3">No encontramos productos que coincidan con tu busqueda</h3>
                     <p class="fs-sm text-body">Intenta con otros terminos de busqueda</p>
                 </div>
-                <item-product-ecommerce-component v-for="product in products" :key="product.id" :product="product"></item-product-ecommerce-component>
+                <item-product-ecommerce-component 
+                    v-for="product in products" 
+                    :key="product.id" 
+                    :product="product"
+                    @show-toast="showToast"></item-product-ecommerce-component>
             </template>
         </div>
             
@@ -121,6 +125,36 @@ export default {
             this.filters = filters;
             this.loadProducts();
         },
+
+        showToast(message, type = 'info') {
+            // Emit to parent component or handle toast display
+            this.$emit('show-toast', message, type);
+            
+            // Fallback: Create simple toast if no parent handler
+            if (!this.$parent || !this.$parent.showToast) {
+                this.createSimpleToast(message, type);
+            }
+        },
+
+        createSimpleToast(message, type) {
+            // Create a simple toast notification
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
 
     }
 };

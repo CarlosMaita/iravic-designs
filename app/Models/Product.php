@@ -307,4 +307,10 @@ class Product extends Model
             ->whereIn('is_accepted', [ProductStockTransfer::PENDING])
             ->exists();
     }
+
+    // Favorites relationship
+    public function favoritedByCustomers()
+    {
+        return $this->belongsToMany(Customer::class, 'customer_favorites')->withTimestamps();
+    }
 }

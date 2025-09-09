@@ -140,6 +140,17 @@
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
+                            <a href="{{ route('customer.favorites.index') }}" class="text-decoration-none">
+                                <div class="d-flex align-items-center p-3 bg-light rounded">
+                                    <i class="ci-heart text-danger me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h6 class="mb-0">Mis Favoritos</h6>
+                                        <small class="text-muted">Productos guardados</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
                             <a href="#" class="text-decoration-none">
                                 <div class="d-flex align-items-center p-3 bg-light rounded">
                                     <i class="ci-support text-info me-3" style="font-size: 1.5rem;"></i>

@@ -69,10 +69,56 @@
 
           
           <!-- Account button visible on screens > 768px wide (md breakpoint) -->
-          <a class="btn btn-icon btn-sm fs-lg btn-outline-secondary border-0 rounded-circle animate-shake" href="{{route('customer.login.form')}}">
-            <i class="ci-user animate-target"></i>
-            <span class="visually-hidden">Cuenta</span>
-          </a>
+          @auth('customer')
+            <!-- User dropdown when authenticated -->
+            <div class="dropdown">
+              <button type="button" class="btn btn-icon btn-sm fs-lg btn-outline-secondary border-0 rounded-circle animate-shake" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ci-user animate-target"></i>
+                <span class="visually-hidden">Cuenta</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" style="--cz-dropdown-min-width: 200px">
+                <li>
+                  <h6 class="dropdown-header">{{ Auth::guard('customer')->user()->name }}</h6>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="{{ route('customer.dashboard') }}">
+                    <i class="ci-grid me-2"></i>Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ route('customer.profile') }}">
+                    <i class="ci-user me-2"></i>Mi Perfil
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ route('customer.orders.index') }}">
+                    <i class="ci-shopping-bag me-2"></i>Mis Pedidos
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ route('customer.favorites.index') }}">
+                    <i class="ci-heart me-2"></i>Favoritos
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form method="POST" action="{{ route('customer.logout') }}">
+                    @csrf
+                    <button type="submit" class="dropdown-item">
+                      <i class="ci-sign-out me-2"></i>Cerrar Sesión
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          @else
+            <!-- Login link when not authenticated -->
+            <a class="btn btn-icon btn-sm fs-lg btn-outline-secondary border-0 rounded-circle animate-shake" href="{{route('customer.login.form')}}">
+              <i class="ci-user animate-target"></i>
+              <span class="visually-hidden">Cuenta</span>
+            </a>
+          @endauth
 
           <!-- Theme switcher (light/dark/auto) -->
           <div class="dropdown">
@@ -198,14 +244,25 @@
           <!-- Account and Wishlist buttons visible on screens < 768px wide (md breakpoint) -->
           <div class="offcanvas-header border-top px-0 py-3 mt-3 d-md-none">
             <div class="nav nav-justified w-100">
-              {{-- <a class="nav-link border-end" href="{{route('customer.login.form')}}">
-                <i class="ci-user fs-lg opacity-60 me-2"></i>
-                Cuenta
-              </a> --}}
-              {{-- <a class="nav-link" href="#!">
-                <i class="ci-heart fs-lg opacity-60 me-2"></i>
-                Deseos
-              </a> --}}
+              @auth('customer')
+                <a class="nav-link border-end" href="{{route('customer.dashboard')}}">
+                  <i class="ci-user fs-lg opacity-60 me-2"></i>
+                  Mi Cuenta
+                </a>
+                <a class="nav-link" href="{{route('customer.favorites.index')}}">
+                  <i class="ci-heart fs-lg opacity-60 me-2"></i>
+                  Favoritos
+                </a>
+              @else
+                <a class="nav-link border-end" href="{{route('customer.login.form')}}">
+                  <i class="ci-user fs-lg opacity-60 me-2"></i>
+                  Iniciar Sesión
+                </a>
+                <a class="nav-link" href="{{route('customer.register.form')}}">
+                  <i class="ci-user-plus fs-lg opacity-60 me-2"></i>
+                  Registrarse
+                </a>
+              @endauth
             </div>
           </div>
         </nav>
