@@ -143,7 +143,11 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || window.Laravel?.csrfToken,
+            'X-CSRF-TOKEN': (function(){
+              var el = document.querySelector('meta[name="csrf-token"]');
+              var content = el && el.getAttribute('content');
+              return content || (window.Laravel && window.Laravel.csrfToken) || '';
+            })(),
             'X-Requested-With': 'XMLHttpRequest'
           },
           body: JSON.stringify({ 

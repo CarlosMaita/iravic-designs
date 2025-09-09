@@ -21,7 +21,7 @@
                     <div class="h6 mb-3">
                       <template v-if="finalPrice(offer) !== null && percent(offer)">
                         ${{ finalPrice(offer).toFixed(2) }}
-                        <del class="fs-sm fw-normal text-body-tertiary">${{ origPrice(offer)?.toFixed(2) }}</del>
+                        <del class="fs-sm fw-normal text-body-tertiary">${{ origPrice(offer) ? origPrice(offer).toFixed(2) : '' }}</del>
                       </template>
                       <template v-else-if="finalPrice(offer) !== null">
                         ${{ finalPrice(offer).toFixed(2) }}
@@ -34,17 +34,17 @@
 
                   <div v-if="endDate(offer)" class="card-footer d-flex align-items-center justify-content-center bg-transparent border-0 pb-4">
                     <div class="btn btn-secondary pe-none px-2">
-                      <span>{{ countdown[idx]?.days || 0 }}</span>
+                      <span>{{ (countdown[idx] && countdown[idx].days) || 0 }}</span>
                       <span>d</span>
                     </div>
                     <div class="animate-blinking text-body-tertiary fs-lg fw-medium mx-2">:</div>
                     <div class="btn btn-secondary pe-none px-2">
-                      <span>{{ countdown[idx]?.hours || 0 }}</span>
+                      <span>{{ (countdown[idx] && countdown[idx].hours) || 0 }}</span>
                       <span>h</span>
                     </div>
                     <div class="animate-blinking text-body-tertiary fs-lg fw-medium mx-2">:</div>
                     <div class="btn btn-secondary pe-none px-2">
-                      <span>{{ countdown[idx]?.minutes || 0 }}</span>
+                      <span>{{ (countdown[idx] && countdown[idx].minutes) || 0 }}</span>
                       <span>m</span>
                     </div>
                   </div>

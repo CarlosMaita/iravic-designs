@@ -448,7 +448,7 @@
              * Cargar stores de producto Regular
              */
             this.product_stores = this.stores.map((store) => {
-                const productStore =  this.product.stores?.find(pStore => pStore.id === store.id);
+                const productStore =  (this.product.stores && this.product.stores.find) ? this.product.stores.find(pStore => pStore.id === store.id) : null;
                 return {
                     store_id: store.id,
                     store_name: store.name,
@@ -499,7 +499,7 @@
                                         size_prop: combination.size,
                                         price: combination.price,
                                         product_stores:  this.stores.map((store) => {
-                                            const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
+                                            const productStore =  (combination.stores && combination.stores.find) ? combination.stores.find(pStore => pStore.id === store.id) : null;
                                             return {
                                                 store_id: store.id,
                                                 store_name: store.name,
@@ -519,7 +519,7 @@
                                 size_prop: combination.size,
                                 price: combination.price,
                                 product_stores: this.stores.map((store) => {
-                                    const productStore =  combination.stores?.find(pStore => pStore.id === store.id);
+                                    const productStore =  (combination.stores && combination.stores.find) ? combination.stores.find(pStore => pStore.id === store.id) : null;
                                     return {
                                         store_id: store.id,
                                         store_name: store.name,

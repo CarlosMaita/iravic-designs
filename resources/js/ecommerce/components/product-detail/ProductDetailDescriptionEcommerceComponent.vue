@@ -216,15 +216,15 @@
                 const item = {
                     id: encryptedId,
                     // Identificadores necesarios para crear la orden
-                    product_id: this.is_regular ? this.id : (this.sizeSelected?.product_id || null),
-                    color_id: this.is_regular ? null : (this.combinationSelected?.color_id || null),
-                    size_id: this.is_regular ? null : (this.sizeSelected?.size_id || null),
+                    product_id: this.is_regular ? this.id : ((this.sizeSelected && this.sizeSelected.product_id) || null),
+                    color_id: this.is_regular ? null : ((this.combinationSelected && this.combinationSelected.color_id) || null),
+                    size_id: this.is_regular ? null : ((this.sizeSelected && this.sizeSelected.size_id) || null),
                     // Datos de presentación
                     name: this.name,
                     price: this.price,
                     price_str: this.price_str,
-                    color: !this.is_regular ? this.combinationSelected?.text_color : null,
-                    size: !this.is_regular ? this.sizeSelected?.size_name?.toUpperCase() : null,
+                    color: !this.is_regular ? (this.combinationSelected && this.combinationSelected.text_color) : null,
+                    size: !this.is_regular ? ((this.sizeSelected && this.sizeSelected.size_name) ? this.sizeSelected.size_name.toUpperCase() : null) : null,
                     image: !this.is_regular ? this.combinationSelected.url_thumbnail : this.url_thumbnail,
                     url: this.url_detail,
                     quantity: this.quantity,
@@ -289,7 +289,11 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || window.Laravel?.csrfToken,
+                            'X-CSRF-TOKEN': (function(){
+                                var el = document.querySelector('meta[name="csrf-token"]');
+                                var content = el && el.getAttribute('content');
+                                return content || (window.Laravel && window.Laravel.csrfToken) || '';
+                            })(),
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         body: JSON.stringify({ 

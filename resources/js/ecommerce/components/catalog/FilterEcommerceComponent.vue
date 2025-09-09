@@ -325,10 +325,10 @@ export default {
       },
       setFilter() {
         const filter = {
-          category: this.selectedCategory?.id,
-          brand: this.selectedBrand?.id,
+          category: this.selectedCategory ? this.selectedCategory.id : null,
+          brand: this.selectedBrand ? this.selectedBrand.id : null,
           gender: this.selectedGender,
-          color: this.selectedColor?.id, 
+          color: this.selectedColor ? this.selectedColor.id : null,
           minPrice: this.selectedminPrice,
           maxPrice: this.selectedmaxPrice,
           search: this.selectedSearch,
