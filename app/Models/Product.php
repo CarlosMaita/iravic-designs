@@ -137,8 +137,10 @@ class Product extends Model
         if ($this->color) {
             $name .= ' - Color: ' . $this->color->name;
         }
-        $baseCategory = $this->category()->withTrashed()->first()->baseCategory;
-        if ($baseCategory->has_size && $this->size) {
+        
+        $category = $this->category()->withTrashed()->first();
+        $baseCategory = $category ? $category->baseCategory : null;
+        if ($baseCategory && $baseCategory->has_size && $this->size) {
             $name .= ' - Talla: ' . $this->size->name;
         }
 

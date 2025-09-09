@@ -13,9 +13,6 @@
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:site_name" content="Iravic">
 <meta property="og:locale" content="es_ES">
-
-</script>
-
 @endsection
 
 @section('content')

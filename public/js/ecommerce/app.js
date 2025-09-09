@@ -2298,6 +2298,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var imageUrl;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -2310,6 +2311,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 3;
             return _this.checkAuthAndFavoriteStatus();
           case 3:
+            // If there's no image to load, set imageLoaded to true immediately
+            imageUrl = _this.currentCombination ? _this.currentCombination.url_thumbnail : _this.product.url_thumbnail;
+            if (!imageUrl) {
+              _this.imageLoaded = true;
+            }
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -2321,6 +2328,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     selectCombinancion: function selectCombinancion(combination) {
       this.currentCombination = combination;
       this.imageLoaded = false;
+
+      // If the new combination has no image, set imageLoaded to true immediately
+      if (!combination.url_thumbnail) {
+        this.imageLoaded = true;
+      }
     },
     onImageLoad: function onImageLoad() {
       this.imageLoaded = true;
@@ -4738,7 +4750,7 @@ var render = function render() {
       display: "block"
     },
     attrs: {
-      src: _vm.currentCombination ? _vm.currentCombination.url_thumbnail : _vm.product.url_thumbnail,
+      src: (_vm.currentCombination ? _vm.currentCombination.url_thumbnail : _vm.product.url_thumbnail) || "/img/no_image.jpg",
       alt: "Image"
     },
     on: {
@@ -10744,7 +10756,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\r\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-4f19b6b7] {\r\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-4f19b6b7]:hover {\r\n  transform: scale(1.1);\r\n  z-index: 2;\n}\r\n", ""]);
+exports.push([module.i, "\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-4f19b6b7] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-4f19b6b7]:hover {\n  transform: scale(1.1);\n  z-index: 2;\n}\n", ""]);
 
 // exports
 
@@ -10763,7 +10775,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.skeleton-product-card[data-v-ea7bef32] {\r\n  background: #fff;\r\n  border: 1px solid #eee;\r\n  border-radius: 8px;\r\n  overflow: hidden;\r\n  min-height: 350px;\r\n  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);\n}\n.skeleton-image[data-v-ea7bef32] {\r\n  height: 180px;\r\n  background: #d1d5db;\r\n  animation: pulse-ea7bef32 1.5s infinite;\n}\n.skeleton-title[data-v-ea7bef32],\r\n.skeleton-price[data-v-ea7bef32],\r\n.skeleton-button[data-v-ea7bef32] {\r\n  background: #d1d5db;\r\n  border-radius: 4px;\r\n  animation: pulse-ea7bef32 1.5s infinite;\n}\n.skeleton-title[data-v-ea7bef32] { height: 24px; width: 70%; margin-bottom: 12px;\n}\n.skeleton-price[data-v-ea7bef32] { height: 18px; width: 40%; margin-bottom: 12px;\n}\n.skeleton-button[data-v-ea7bef32] { height: 36px; width: 60%;\n}\n@keyframes pulse-ea7bef32 {\n0% { opacity: 1;\n}\n50% { opacity: 0.5;\n}\n100% { opacity: 1;\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.skeleton-product-card[data-v-ea7bef32] {\n  background: #fff;\n  border: 1px solid #eee;\n  border-radius: 8px;\n  overflow: hidden;\n  min-height: 350px;\n  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);\n}\n.skeleton-image[data-v-ea7bef32] {\n  height: 180px;\n  background: #d1d5db;\n  animation: pulse-ea7bef32 1.5s infinite;\n}\n.skeleton-title[data-v-ea7bef32],\n.skeleton-price[data-v-ea7bef32],\n.skeleton-button[data-v-ea7bef32] {\n  background: #d1d5db;\n  border-radius: 4px;\n  animation: pulse-ea7bef32 1.5s infinite;\n}\n.skeleton-title[data-v-ea7bef32] { height: 24px; width: 70%; margin-bottom: 12px;\n}\n.skeleton-price[data-v-ea7bef32] { height: 18px; width: 40%; margin-bottom: 12px;\n}\n.skeleton-button[data-v-ea7bef32] { height: 36px; width: 60%;\n}\n@keyframes pulse-ea7bef32 {\n0% { opacity: 1;\n}\n50% { opacity: 0.5;\n}\n100% { opacity: 1;\n}\n}\n", ""]);
 
 // exports
 
@@ -10782,7 +10794,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\r\n/* Puedes añadir estilos específicos si es necesario, aunque Bootstrap ya maneja mucho */\n.toast[data-v-7ce827dc] {\r\n  position: fixed; /* O 'absolute' dependiendo de dónde quieras que aparezca */\r\n  top: 20px; /* Ajusta la posición vertical */\r\n  right: 20px; /* Ajusta la posición horizontal */\r\n  z-index: 2000 !important; /* Por encima del modal/backdrop personalizado */\n}\r\n", ""]);
+exports.push([module.i, "\n/* Puedes añadir estilos específicos si es necesario, aunque Bootstrap ya maneja mucho */\n.toast[data-v-7ce827dc] {\n  position: fixed; /* O 'absolute' dependiendo de dónde quieras que aparezca */\n  top: 20px; /* Ajusta la posición vertical */\n  right: 20px; /* Ajusta la posición horizontal */\n  z-index: 2000 !important; /* Por encima del modal/backdrop personalizado */\n}\n", ""]);
 
 // exports
 
@@ -10801,7 +10813,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n.progress-container {\r\n  width: 100%;\n}\n.progress {\r\n  height: 20px;\r\n  background-color: #e9ecef;\r\n  border-radius: 10px;\r\n  overflow: hidden;\n}\n.progress-bar {\r\n  height: 100%;\r\n  text-align: center;\r\n  line-height: 20px;\r\n  color: #fff;\n}\n.shipping-info-container {\r\n  /* Estilos adicionales si son necesarios */\n}\n.mrw-logo {\r\n  width: 30px; /* Ajusta el tamaño según sea necesario */\r\n  height: auto; /* Mantiene la proporción de la imagen */\n}\r\n", ""]);
+exports.push([module.i, "\n.progress-container {\n  width: 100%;\n}\n.progress {\n  height: 20px;\n  background-color: #e9ecef;\n  border-radius: 10px;\n  overflow: hidden;\n}\n.progress-bar {\n  height: 100%;\n  text-align: center;\n  line-height: 20px;\n  color: #fff;\n}\n.shipping-info-container {\n  /* Estilos adicionales si son necesarios */\n}\n.mrw-logo {\n  width: 30px; /* Ajusta el tamaño según sea necesario */\n  height: auto; /* Mantiene la proporción de la imagen */\n}\n", ""]);
 
 // exports
 
@@ -10820,7 +10832,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\r\n/* Fix z-index issues for modal interaction */\n.modal[data-v-eedfb736] {\r\n  z-index: 1055 !important;\n}\n.modal-dialog[data-v-eedfb736] {\r\n  z-index: 1056 !important;\n}\n.modal-content[data-v-eedfb736] {\r\n  z-index: 1057 !important;\n}\n.modal-header[data-v-eedfb736],\r\n.modal-body[data-v-eedfb736],\r\n.modal-footer[data-v-eedfb736] {\r\n  z-index: 1058 !important;\r\n  position: relative;\n}\n.form-label[data-v-eedfb736] {\r\n  font-weight: 600;\r\n  color: #333;\r\n  position: relative;\r\n  z-index: 1059;\n}\n.form-control[data-v-eedfb736], .form-select[data-v-eedfb736] {\r\n  border-radius: 0.5rem;\r\n  border: 1px solid #e1e5e9;\r\n  position: relative;\r\n  z-index: 1059 !important;\n}\n.form-control[data-v-eedfb736]:focus, .form-select[data-v-eedfb736]:focus {\r\n  border-color: #667eea;\r\n  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);\r\n  z-index: 1060 !important;\n}\n.btn-primary[data-v-eedfb736] {\r\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\r\n  border: none;\r\n  border-radius: 0.5rem;\r\n  position: relative;\r\n  z-index: 1059;\n}\n.btn-primary[data-v-eedfb736]:hover {\r\n  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);\n}\n.btn-secondary[data-v-eedfb736] {\r\n  position: relative;\r\n  z-index: 1059;\n}\n.text-danger[data-v-eedfb736] {\r\n  font-size: 0.875rem;\r\n  position: relative;\r\n  z-index: 1059;\n}\n.modal-body[data-v-eedfb736] {\r\n  padding: 1.5rem;\n}\n#shipping-modal.modal[data-v-eedfb736] {\r\n  z-index: 1080 !important;\n}\r\n\r\n/* Ensure form elements are clickable */\ninput[data-v-eedfb736], select[data-v-eedfb736], textarea[data-v-eedfb736], button[data-v-eedfb736] {\r\n  pointer-events: auto !important;\n}\r\n", ""]);
+exports.push([module.i, "\n/* Fix z-index issues for modal interaction */\n.modal[data-v-eedfb736] {\n  z-index: 1055 !important;\n}\n.modal-dialog[data-v-eedfb736] {\n  z-index: 1056 !important;\n}\n.modal-content[data-v-eedfb736] {\n  z-index: 1057 !important;\n}\n.modal-header[data-v-eedfb736],\n.modal-body[data-v-eedfb736],\n.modal-footer[data-v-eedfb736] {\n  z-index: 1058 !important;\n  position: relative;\n}\n.form-label[data-v-eedfb736] {\n  font-weight: 600;\n  color: #333;\n  position: relative;\n  z-index: 1059;\n}\n.form-control[data-v-eedfb736], .form-select[data-v-eedfb736] {\n  border-radius: 0.5rem;\n  border: 1px solid #e1e5e9;\n  position: relative;\n  z-index: 1059 !important;\n}\n.form-control[data-v-eedfb736]:focus, .form-select[data-v-eedfb736]:focus {\n  border-color: #667eea;\n  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);\n  z-index: 1060 !important;\n}\n.btn-primary[data-v-eedfb736] {\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  border: none;\n  border-radius: 0.5rem;\n  position: relative;\n  z-index: 1059;\n}\n.btn-primary[data-v-eedfb736]:hover {\n  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);\n}\n.btn-secondary[data-v-eedfb736] {\n  position: relative;\n  z-index: 1059;\n}\n.text-danger[data-v-eedfb736] {\n  font-size: 0.875rem;\n  position: relative;\n  z-index: 1059;\n}\n.modal-body[data-v-eedfb736] {\n  padding: 1.5rem;\n}\n#shipping-modal.modal[data-v-eedfb736] {\n  z-index: 1080 !important;\n}\n\n/* Ensure form elements are clickable */\ninput[data-v-eedfb736], select[data-v-eedfb736], textarea[data-v-eedfb736], button[data-v-eedfb736] {\n  pointer-events: auto !important;\n}\n", ""]);
 
 // exports
 
@@ -10839,7 +10851,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\r\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-6aec98ba] {\r\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-6aec98ba]:hover {\r\n  transform: scale(1.1);\r\n  z-index: 2;\n}\r\n", ""]);
+exports.push([module.i, "\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-6aec98ba] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-6aec98ba]:hover {\n  transform: scale(1.1);\n  z-index: 2;\n}\n", ""]);
 
 // exports
 
@@ -10858,7 +10870,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\r\n/* Navigation button styles */\n.btn-icon[data-v-8f0ff81a] {\r\n  width: 3rem;\r\n  height: 3rem;\r\n  padding: 0;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  border-radius: 50%;\r\n  background: #fff;\r\n  border: 2px solid #e9ecef;\r\n  color: #495057;\r\n  transition: all 0.3s ease;\r\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n}\n.btn-icon[data-v-8f0ff81a]:hover {\r\n  background: #007bff;\r\n  border-color: #007bff;\r\n  color: #fff;\r\n  transform: scale(1.1);\r\n  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);\n}\n.btn-icon[data-v-8f0ff81a]:focus {\r\n  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);\n}\r\n\r\n/* Swiper pagination customization */\n.featured-products-pagination[data-v-8f0ff81a] {\r\n  text-align: center;\r\n  margin-top: 2rem;\n}\n.featured-products-pagination .swiper-pagination-bullet[data-v-8f0ff81a] {\r\n  width: 12px;\r\n  height: 12px;\r\n  background: #dee2e6;\r\n  opacity: 1;\r\n  margin: 0 6px;\r\n  transition: all 0.3s ease;\n}\n.featured-products-pagination .swiper-pagination-bullet-active[data-v-8f0ff81a] {\r\n  background: #007bff;\r\n  transform: scale(1.2);\n}\r\n\r\n/* Responsive adjustments */\n@media (max-width: 767.98px) {\n.btn-icon[data-v-8f0ff81a] {\r\n    width: 2.5rem;\r\n    height: 2.5rem;\n}\n}\r\n\r\n/* Ensure z-index for navigation buttons */\n.featured-products-prev[data-v-8f0ff81a],\r\n.featured-products-next[data-v-8f0ff81a] {\r\n  z-index: 10;\n}\r\n", ""]);
+exports.push([module.i, "\n/* Navigation button styles */\n.btn-icon[data-v-8f0ff81a] {\n  width: 3rem;\n  height: 3rem;\n  padding: 0;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid #e9ecef;\n  color: #495057;\n  transition: all 0.3s ease;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n}\n.btn-icon[data-v-8f0ff81a]:hover {\n  background: #007bff;\n  border-color: #007bff;\n  color: #fff;\n  transform: scale(1.1);\n  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);\n}\n.btn-icon[data-v-8f0ff81a]:focus {\n  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);\n}\n\n/* Swiper pagination customization */\n.featured-products-pagination[data-v-8f0ff81a] {\n  text-align: center;\n  margin-top: 2rem;\n}\n.featured-products-pagination .swiper-pagination-bullet[data-v-8f0ff81a] {\n  width: 12px;\n  height: 12px;\n  background: #dee2e6;\n  opacity: 1;\n  margin: 0 6px;\n  transition: all 0.3s ease;\n}\n.featured-products-pagination .swiper-pagination-bullet-active[data-v-8f0ff81a] {\n  background: #007bff;\n  transform: scale(1.2);\n}\n\n/* Responsive adjustments */\n@media (max-width: 767.98px) {\n.btn-icon[data-v-8f0ff81a] {\n    width: 2.5rem;\n    height: 2.5rem;\n}\n}\n\n/* Ensure z-index for navigation buttons */\n.featured-products-prev[data-v-8f0ff81a],\n.featured-products-next[data-v-8f0ff81a] {\n  z-index: 10;\n}\n", ""]);
 
 // exports
 
@@ -10877,7 +10889,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.object-fit-cover[data-v-5170b019]{ object-fit: cover;\n}\r\n", ""]);
+exports.push([module.i, "\n.object-fit-cover[data-v-5170b019]{ object-fit: cover;\n}\n", ""]);
 
 // exports
 
@@ -10896,7 +10908,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.skeleton-product-detail[data-v-79ac96c6] {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 16px;\r\n  max-width: 400px;\r\n  margin: 0 auto;\n}\n.skeleton-image[data-v-79ac96c6],\r\n.skeleton-title[data-v-79ac96c6],\r\n.skeleton-price[data-v-79ac96c6],\r\n.skeleton-description[data-v-79ac96c6],\r\n.skeleton-button[data-v-79ac96c6] {\r\n  background: #d1d5db; /* gris más oscuro para mejor contraste */\r\n  border-radius: 4px;\r\n  animation: pulse-79ac96c6 1.5s infinite;\n}\n.skeleton-image[data-v-79ac96c6] { height: 200px;\n}\n.skeleton-title[data-v-79ac96c6] { height: 32px; width: 70%;\n}\n.skeleton-price[data-v-79ac96c6] { height: 24px; width: 30%;\n}\n.skeleton-description[data-v-79ac96c6] { height: 80px; width: 100%;\n}\n.skeleton-button[data-v-79ac96c6] { height: 40px; width: 40%;\n}\n@keyframes pulse-79ac96c6 {\n0% { opacity: 1;\n}\n50% { opacity: 0.5;\n}\n100% { opacity: 1;\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.skeleton-product-detail[data-v-79ac96c6] {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n  max-width: 400px;\n  margin: 0 auto;\n}\n.skeleton-image[data-v-79ac96c6],\n.skeleton-title[data-v-79ac96c6],\n.skeleton-price[data-v-79ac96c6],\n.skeleton-description[data-v-79ac96c6],\n.skeleton-button[data-v-79ac96c6] {\n  background: #d1d5db; /* gris más oscuro para mejor contraste */\n  border-radius: 4px;\n  animation: pulse-79ac96c6 1.5s infinite;\n}\n.skeleton-image[data-v-79ac96c6] { height: 200px;\n}\n.skeleton-title[data-v-79ac96c6] { height: 32px; width: 70%;\n}\n.skeleton-price[data-v-79ac96c6] { height: 24px; width: 30%;\n}\n.skeleton-description[data-v-79ac96c6] { height: 80px; width: 100%;\n}\n.skeleton-button[data-v-79ac96c6] { height: 40px; width: 40%;\n}\n@keyframes pulse-79ac96c6 {\n0% { opacity: 1;\n}\n50% { opacity: 0.5;\n}\n100% { opacity: 1;\n}\n}\n", ""]);
 
 // exports
 
@@ -56400,7 +56412,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Carlo\Projects\Upsofte\ecommerce-iravic\resources\js\ecommerce\app.js */"./resources/js/ecommerce/app.js");
+module.exports = __webpack_require__(/*! /home/runner/work/iravic-designs/iravic-designs/resources/js/ecommerce/app.js */"./resources/js/ecommerce/app.js");
 
 
 /***/ })
