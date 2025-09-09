@@ -62,11 +62,31 @@
                 </button>
             </div>
             <button @click="addItemCart()" type="button" class="btn btn-lg btn-dark w-100">Agregar al carrito</button>
+            <!-- Favorites button -->
+            <button 
+                v-if="isAuthenticated"
+                @click="toggleFavorite" 
+                type="button" 
+                :class="['btn btn-icon btn-lg', isFavorite ? 'btn-danger' : 'btn-outline-secondary']"
+                :disabled="favoriteLoading"
+                :title="isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'">
+                <i :class="favoriteLoading ? 'ci-refresh spinner-border-sm' : (isFavorite ? 'ci-heart-filled' : 'ci-heart')"></i>
+            </button>
         </div>
         <div v-else class="d-flex gap-3 pb-3 pb-lg-4 mb-3">
             <button type="button" class="btn btn-lg btn-dark w-100 gap-3" disabled>
                 <i class="ci-frown fs-3"></i>
                 Producto agotado
+            </button>
+            <!-- Favorites button (always visible even when out of stock) -->
+            <button 
+                v-if="isAuthenticated"
+                @click="toggleFavorite" 
+                type="button" 
+                :class="['btn btn-icon btn-lg', isFavorite ? 'btn-danger' : 'btn-outline-secondary']"
+                :disabled="favoriteLoading"
+                :title="isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'">
+                <i :class="favoriteLoading ? 'ci-refresh spinner-border-sm' : (isFavorite ? 'ci-heart-filled' : 'ci-heart')"></i>
             </button>
         </div>
 
@@ -137,9 +157,13 @@
                 combinationSelected: null ,
                 sizeSelected: '',
                 currentStock: 0,
+                // Favorites functionality
+                isFavorite: false,
+                favoriteLoading: false,
+                isAuthenticated: false
             };
         },
-         mounted() {
+         async mounted() {
             // Set the default combination when the component is mounted
             if (this.combinations && this.combinations.length > 0 && !this.is_regular) {
                 this.selectCombination(this.combinations[0]);
@@ -148,6 +172,8 @@
             // Set the default stock when the component is mounted
             this.currentStock = this.is_regular ? this.total_stock : 1; // por defecto 1 si es NO regular
 
+            // Check authentication status and favorite status
+            await this.checkAuthAndFavoriteStatus();
         },
         watch: {
             quantity(newValue) {
@@ -221,6 +247,85 @@
                 const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
             },
+
+            async checkAuthAndFavoriteStatus() {
+                try {
+                    const response = await fetch('/api/customer/auth-check', {
+                        credentials: 'same-origin'
+                    });
+                    const data = await response.json();
+                    this.isAuthenticated = data.authenticated;
+
+                    // If authenticated, check if this product is in favorites
+                    if (this.isAuthenticated) {
+                        await this.checkFavoriteStatus();
+                    }
+                } catch (error) {
+                    console.error('Error checking auth status:', error);
+                    this.isAuthenticated = false;
+                }
+            },
+
+            async checkFavoriteStatus() {
+                try {
+                    // For now, we'll set it to false and update when we actually toggle
+                    this.isFavorite = false;
+                } catch (error) {
+                    console.error('Error checking favorite status:', error);
+                }
+            },
+
+            async toggleFavorite() {
+                if (!this.isAuthenticated) {
+                    // Redirect to login
+                    window.location.href = '/ingresar';
+                    return;
+                }
+
+                this.favoriteLoading = true;
+
+                try {
+                    const response = await fetch('/api/favorites/toggle', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || window.Laravel?.csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ 
+                            product_id: this.id 
+                        }),
+                        credentials: 'same-origin'
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.isFavorite = data.is_favorite;
+                        // Show success message using the existing toast component
+                        this.$root.$refs.toastEcommerceComponent.showToast({
+                            title: data.is_favorite ? 'Agregado a favoritos' : 'Removido de favoritos',
+                            message: data.message,
+                            type: 'success',
+                        });
+                    } else {
+                        this.$root.$refs.toastEcommerceComponent.showToast({
+                            title: 'Error',
+                            message: data.message || 'Error al actualizar favoritos',
+                            type: 'error',
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error toggling favorite:', error);
+                    this.$root.$refs.toastEcommerceComponent.showToast({
+                        title: 'Error',
+                        message: 'Error de conexión. Inténtalo de nuevo.',
+                        type: 'error',
+                    });
+                } finally {
+                    this.favoriteLoading = false;
+                }
+            }
         }
     }
 </script>
