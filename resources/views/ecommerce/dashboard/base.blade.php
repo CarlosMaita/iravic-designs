@@ -85,6 +85,16 @@
                                 <i class="ci-user me-2"></i>Mi Perfil
                             </a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('customer.orders.index') }}">
+                                <i class="ci-shopping-bag me-2"></i>Mis Pedidos
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('customer.favorites.index') }}">
+                                <i class="ci-heart me-2"></i>Favoritos
+                            </a>
+                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('customer.logout') }}">
