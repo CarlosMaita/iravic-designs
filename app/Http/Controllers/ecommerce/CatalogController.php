@@ -98,6 +98,7 @@ class CatalogController extends Controller
     {
         $search = $this->getSearchInput();
         $category = request()->input('category', null);
+        $category = $category ? (int) $category : null;
         return view('ecommerce.catalog.index', compact('search', 'category'));
     }
     /**
