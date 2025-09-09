@@ -100,7 +100,19 @@ class CatalogController extends Controller
         $search = $this->getSearchInput();
         $category = request()->input('category', null);
         $category = $category ? (int) $category : null;
-        return view('ecommerce.catalog.index', compact('search', 'category'));
+        
+        // Get additional filter parameters from URL
+        $brand = request()->input('brand', null);
+        $brand = $brand ? (int) $brand : null;
+        $gender = request()->input('gender', null);
+        $color = request()->input('color', null);
+        $color = $color ? (int) $color : null;
+        $minPrice = request()->input('min_price', null);
+        $maxPrice = request()->input('max_price', null);
+        
+        return view('ecommerce.catalog.index', compact(
+            'search', 'category', 'brand', 'gender', 'color', 'minPrice', 'maxPrice'
+        ));
     }
     /**
         * Display the specified product.
