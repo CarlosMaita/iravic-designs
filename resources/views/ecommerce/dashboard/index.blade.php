@@ -140,6 +140,17 @@
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
+                            <a href="{{ route('customer.payments.index') }}" class="text-decoration-none">
+                                <div class="d-flex align-items-center p-3 bg-light rounded">
+                                    <i class="ci-credit-card text-info me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h6 class="mb-0">Mis Pagos</h6>
+                                        <small class="text-muted">Estado de pagos</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
                             <a href="{{ route('customer.favorites.index') }}" class="text-decoration-none">
                                 <div class="d-flex align-items-center p-3 bg-light rounded">
                                     <i class="ci-heart text-danger me-3" style="font-size: 1.5rem;"></i>
