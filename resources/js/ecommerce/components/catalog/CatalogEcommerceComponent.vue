@@ -15,6 +15,11 @@
                     :colors="colors"
                     :search="search"
                     :category="category"
+                    :brand="brand"
+                    :gender="gender"
+                    :color="color"
+                    :min-price="minPrice"
+                    :max-price="maxPrice"
                     @filter-applied="setFilters"
                     ></filter-ecommerce-component>
                 
@@ -55,6 +60,26 @@
                 default: '',
             },
             category : {
+                type: Number,
+                default: null,
+            },
+            brand : {
+                type: Number,
+                default: null,
+            },
+            gender : {
+                type: String,
+                default: null,
+            },
+            color : {
+                type: Number,
+                default: null,
+            },
+            minPrice : {
+                type: Number,
+                default: null,
+            },
+            maxPrice : {
                 type: Number,
                 default: null,
             },

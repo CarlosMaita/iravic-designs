@@ -269,6 +269,26 @@ export default {
         type: Number,
         default: null,
       },
+      brand: {
+        type: Number,
+        default: null,
+      },
+      gender: {
+        type: String,
+        default: null,
+      },
+      color: {
+        type: Number,
+        default: null,
+      },
+      minPrice: {
+        type: Number,
+        default: null,
+      },
+      maxPrice: {
+        type: Number,
+        default: null,
+      },
     }, 
     
     data() {
@@ -285,12 +305,30 @@ export default {
         };
     },
     mounted(){
+      // Initialize from URL parameters
       if(this.search){
         this.selectedSearch = this.search;
       }
       if(this.category){
         this.selectedCategory = this.categories.find(category => category.id == this.category);
       }
+      if(this.brand){
+        this.selectedBrand = this.brands.find(brand => brand.id == this.brand);
+      }
+      if(this.gender){
+        this.selectedGender = this.gender;
+      }
+      if(this.color){
+        this.selectedColor = this.colors.find(color => color.id == this.color);
+      }
+      if(this.minPrice && this.maxPrice){
+        this.selectedminPrice = this.minPrice;
+        this.selectedmaxPrice = this.maxPrice;
+        this.isPriceSelected = true;
+      }
+      
+      // Check if any filters are active
+      this.checkFilterActive();
       this.setFilter();
     },
     methods : {
@@ -333,13 +371,19 @@ export default {
           maxPrice: this.selectedmaxPrice,
           search: this.selectedSearch,
         };
+        
+        // Update URL with filter parameters
+        this.updateURL(filter);
+        
         // Emit an event to the parent component with the selected filters
         this.$emit('filter-applied', filter);
       },
 
       checkFilterActive(){
-        if (this.selectedCategory == null && this.selectedBrand == null && this.selectedGender == null && this.selectedColor == null && this.selectedminPrice == null && this.selectedmaxPrice == null) {
+        if (this.selectedCategory == null && this.selectedBrand == null && this.selectedGender == null && this.selectedColor == null && this.selectedminPrice == null && this.selectedmaxPrice == null && this.selectedSearch == null) {
           this.isFilterActive = false
+        } else {
+          this.isFilterActive = true
         }
       },
       removeSelection(type) {
@@ -362,6 +406,9 @@ export default {
         this.selectedBrand = null;
         this.selectedGender = null;
         this.selectedColor = null;
+        this.selectedSearch = null;
+        this.selectedminPrice = null;
+        this.selectedmaxPrice = null;
         this.isPriceSelected = false;
         this.isFilterActive = false;
         this.setFilter();
@@ -369,6 +416,45 @@ export default {
       cleanSearchParams(param) {
         const url = new URL(window.location.href);
         url.searchParams.delete(param);
+        window.history.replaceState({}, '', url);
+      },
+      
+      updateURL(filters) {
+        const url = new URL(window.location.href);
+        
+        // Clear existing filter parameters
+        url.searchParams.delete('search');
+        url.searchParams.delete('category');
+        url.searchParams.delete('brand');
+        url.searchParams.delete('gender');
+        url.searchParams.delete('color');
+        url.searchParams.delete('min_price');
+        url.searchParams.delete('max_price');
+        
+        // Add current filter parameters
+        if (filters.search) {
+          url.searchParams.set('search', filters.search);
+        }
+        if (filters.category) {
+          url.searchParams.set('category', filters.category);
+        }
+        if (filters.brand) {
+          url.searchParams.set('brand', filters.brand);
+        }
+        if (filters.gender) {
+          url.searchParams.set('gender', filters.gender);
+        }
+        if (filters.color) {
+          url.searchParams.set('color', filters.color);
+        }
+        if (filters.minPrice) {
+          url.searchParams.set('min_price', filters.minPrice);
+        }
+        if (filters.maxPrice) {
+          url.searchParams.set('max_price', filters.maxPrice);
+        }
+        
+        // Update the URL without reloading the page
         window.history.replaceState({}, '', url);
       }
       

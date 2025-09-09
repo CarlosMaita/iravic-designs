@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="es" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
-    <meta name="description" content="Sistema de login para clientes">
+    
+    <!-- SEO Meta Tags -->
+    <title>@yield('title', 'Ingreso de Clientes') | {{ config('app.name') }}</title>
+    <meta name="description" content="@yield('meta-description', 'Accede a tu cuenta en Iravic y descubre nuestra colección de moda infantil. Gestiona tus pedidos y favoritos.')">
+    <meta name="keywords" content="@yield('meta-keywords', 'login, registro, cuenta cliente, tienda online, moda infantil')">
     <meta name="author" content="Iravic">
-    <title>{{ config('app.name') }} - Ingreso de Clientes</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    @yield('meta-tags')
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('assets/cartzilla/app-icons/icon-32x32.png') }}" sizes="32x32">

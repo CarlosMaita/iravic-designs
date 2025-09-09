@@ -1,5 +1,18 @@
 @extends('auth.cartzilla-base')
 
+@section('title', 'Iniciar Sesión')
+@section('meta-description', 'Inicia sesión en tu cuenta de Iravic para acceder a tus pedidos, favoritos y disfrutar de una experiencia de compra personalizada.')
+@section('meta-keywords', 'login, iniciar sesión, cuenta cliente, acceso, tienda online')
+
+@section('meta-tags')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Iniciar Sesión | Iravic">
+<meta property="og:description" content="Accede a tu cuenta en Iravic y gestiona tus pedidos de moda infantil.">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:site_name" content="Iravic">
+<meta property="og:locale" content="es_ES">
+@endsection
+
 @push('css')
   <style>
     .login-container {

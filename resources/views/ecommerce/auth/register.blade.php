@@ -1,5 +1,18 @@
 @extends('auth.cartzilla-base')
 
+@section('title', 'Crear Cuenta')
+@section('meta-description', 'Regístrate en Iravic y únete a nuestra comunidad. Crea tu cuenta para acceder a ofertas exclusivas y gestionar tus compras de moda infantil.')
+@section('meta-keywords', 'registro, crear cuenta, nueva cuenta, registro cliente, tienda online')
+
+@section('meta-tags')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crear Cuenta | Iravic">
+<meta property="og:description" content="Regístrate en Iravic y disfruta de ofertas exclusivas en moda infantil.">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:site_name" content="Iravic">
+<meta property="og:locale" content="es_ES">
+@endsection
+
 @push('css')
   <style>
     .register-container {

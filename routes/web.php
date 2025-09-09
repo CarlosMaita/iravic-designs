@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 
+# Sitemap Route
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+
 # Ecommerce Routes
 Route::group(['namespace' => 'App\Http\Controllers\ecommerce'], function () {
     # Home

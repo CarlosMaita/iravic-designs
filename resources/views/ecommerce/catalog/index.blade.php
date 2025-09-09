@@ -1,19 +1,58 @@
  @extends('ecommerce.base')
 
-@section('title', 'Catalogo')
-@section('meta-description', 'Catalogo de productos de la tienda')
-@section('meta-keywords', 'catalogo, ecommerce, tienda online, ropa para niños')
+@php
+    $titleSuffix = '';
+    $descriptionSuffix = '';
+    $keywords = ['catalogo', 'ecommerce', 'tienda online', 'ropa para niños', 'moda infantil'];
+    
+    if ($category) {
+        $categoryObj = $categories->firstWhere('id', $category);
+        if ($categoryObj) {
+            $titleSuffix = ' - ' . $categoryObj->name;
+            $descriptionSuffix = ' de ' . $categoryObj->name;
+            $keywords[] = strtolower($categoryObj->name);
+        }
+    }
+    
+    if ($search) {
+        $titleSuffix = ' - Búsqueda: ' . $search;
+        $descriptionSuffix = ' para "' . $search . '"';
+        $keywords[] = strtolower($search);
+    }
+    
+    $pageTitle = 'Catálogo' . $titleSuffix;
+    $metaDescription = 'Descubre nuestro catálogo de productos de moda infantil' . $descriptionSuffix . '. Ropa cómoda y estilosa para niños y niñas.';
+    $metaKeywords = implode(', ', array_unique($keywords));
+@endphp
+
+@section('title', $pageTitle)
+@section('meta-description', $metaDescription)
+@section('meta-keywords', $metaKeywords)
 
 @section('meta-tags')
 {{-- Open Graph Meta Tags --}}
 <meta property="og:type" content="website">
-<meta property="og:title" content="Catalogo de Productos">
-<meta property="og:description" content="Explora nuestro catalogo de productos de moda infantil">
+<meta property="og:title" content="{{ $pageTitle }} | Iravic">
+<meta property="og:description" content="{{ $metaDescription }}">
 <meta property="og:image" content="{{ asset('img/img-catalog.jpg') }}">
-<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:url" content="{{ url()->current() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}">
 <meta property="og:site_name" content="Iravic">
 <meta property="og:locale" content="es_ES">
 
+{{-- Structured Data for Catalog --}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ $pageTitle }}",
+  "description": "{{ $metaDescription }}",
+  "url": "{{ url()->current() }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Iravic",
+    "url": "{{ url('/') }}"
+  }
+}
 </script>
 
 @endsection
@@ -38,6 +77,11 @@
     :colors="{{ json_encode($colors) }}"
     :search="{{ json_encode($search) }}"
     :category="{{ json_encode($category) }}"
+    :brand="{{ json_encode($brand ?? null) }}"
+    :gender="{{ json_encode($gender ?? null) }}"
+    :color="{{ json_encode($color ?? null) }}"
+    :min-price="{{ json_encode($minPrice ?? null) }}"
+    :max-price="{{ json_encode($maxPrice ?? null) }}"
     ></catalog-ecommerce-component>
 @endsection
 
