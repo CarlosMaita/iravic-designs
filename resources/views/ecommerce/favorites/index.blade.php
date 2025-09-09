@@ -80,7 +80,7 @@
                     <div class="card product-card h-100">
                         <div class="position-relative">
                             @if($product->images->count() > 0)
-                                <img src="{{ $product->images->first()->url ?? asset('img/no_image.jpg') }}" 
+                                <img src="{{ $product->images->first()->url_img ?? asset('img/no_image.jpg') }}" 
                                      class="card-img-top product-image" 
                                      alt="{{ $product->name }}">
                             @else
@@ -108,12 +108,6 @@
                                     {{ $product->name }}
                                 </a>
                             </h5>
-                            
-                            @if($product->description)
-                                <p class="card-text text-muted small mb-2">
-                                    {{ Str::limit($product->description, 80) }}
-                                </p>
-                            @endif
                             
                             <div class="mt-auto">
                                 @if($product->category)
