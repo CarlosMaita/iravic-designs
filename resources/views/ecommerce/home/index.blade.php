@@ -19,13 +19,6 @@
 
   {{--  Carousel --}}
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
-  
-  {{--  Special Offers --}}
-  @include('ecommerce.home.partials.special-offers', ['specialOffers' => $specialOffers])
-  
-  {{--  Featured Products --}}
-  @include('ecommerce.home.partials.featured-products', ['featuredProducts' => $featuredProducts])
-  
 
 @endsection
 

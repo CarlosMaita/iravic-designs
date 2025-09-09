@@ -1,8 +1,55 @@
 <template>
-  <div style="background: red; color: white; padding: 20px; margin: 10px;">
-    <h2>TEST COMPONENT IS WORKING!</h2>
-    <p>Products count: {{ featuredProducts ? featuredProducts.length : 0 }}</p>
-  </div>
+  <section v-if="featuredProducts && featuredProducts.length > 0" class="py-5 bg-body-tertiary">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+          <div class="text-center pb-4 mb-2 mb-md-3">
+            <h2 class="h1 mb-0">Productos Destacados</h2>
+            <p class="fs-lg text-body-secondary mb-0">Descubre nuestra selección destacada de productos</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="position-relative">
+        <!-- Swiper slider -->
+        <div 
+          ref="featuredSwiper" 
+          class="swiper featured-products-swiper"
+          :data-swiper="swiperConfig"
+        >
+          <div class="swiper-wrapper">
+            <div 
+              v-for="product in featuredProducts" 
+              :key="product.id"
+              class="swiper-slide"
+            >
+              <featured-product-card-ecommerce-component
+                :product="product"
+                :product-detail-route="productDetailRoute"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Navigation buttons -->
+        <button 
+          type="button" 
+          class="btn btn-icon btn-outline-primary featured-products-prev position-absolute top-50 start-0 translate-middle-y z-5 ms-n5 d-none d-xl-inline-flex"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-icon btn-outline-primary featured-products-next position-absolute top-50 end-0 translate-middle-y z-5 me-n5 d-none d-xl-inline-flex"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <!-- Pagination (bullets) -->
+        <div class="swiper-pagination featured-products-pagination d-xl-none pt-4"></div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>

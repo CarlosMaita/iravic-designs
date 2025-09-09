@@ -5721,16 +5721,71 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", {
-    staticStyle: {
-      background: "red",
-      color: "white",
-      padding: "20px",
-      margin: "10px"
+  return _vm.featuredProducts && _vm.featuredProducts.length > 0 ? _c("section", {
+    staticClass: "py-5 bg-body-tertiary"
+  }, [_c("div", {
+    staticClass: "container"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "position-relative"
+  }, [_c("div", {
+    ref: "featuredSwiper",
+    staticClass: "swiper featured-products-swiper",
+    attrs: {
+      "data-swiper": _vm.swiperConfig
     }
-  }, [_c("h2", [_vm._v("TEST COMPONENT IS WORKING!")]), _vm._v(" "), _c("p", [_vm._v("Products count: " + _vm._s(_vm.featuredProducts ? _vm.featuredProducts.length : 0))])]);
+  }, [_c("div", {
+    staticClass: "swiper-wrapper"
+  }, _vm._l(_vm.featuredProducts, function (product) {
+    return _c("div", {
+      key: product.id,
+      staticClass: "swiper-slide"
+    }, [_c("featured-product-card-ecommerce-component", {
+      attrs: {
+        product: product,
+        "product-detail-route": _vm.productDetailRoute
+      }
+    })], 1);
+  }), 0)]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "swiper-pagination featured-products-pagination d-xl-none pt-4"
+  })])])]) : _vm._e();
 };
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row justify-content-center"
+  }, [_c("div", {
+    staticClass: "col-lg-8 col-xl-6"
+  }, [_c("div", {
+    staticClass: "text-center pb-4 mb-2 mb-md-3"
+  }, [_c("h2", {
+    staticClass: "h1 mb-0"
+  }, [_vm._v("Productos Destacados")]), _vm._v(" "), _c("p", {
+    staticClass: "fs-lg text-body-secondary mb-0"
+  }, [_vm._v("Descubre nuestra selección destacada de productos")])])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "btn btn-icon btn-outline-primary featured-products-prev position-absolute top-50 start-0 translate-middle-y z-5 ms-n5 d-none d-xl-inline-flex",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-chevron-left"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "btn btn-icon btn-outline-primary featured-products-next position-absolute top-50 end-0 translate-middle-y z-5 me-n5 d-none d-xl-inline-flex",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-chevron-right"
+  })]);
+}];
 render._withStripped = true;
 
 
