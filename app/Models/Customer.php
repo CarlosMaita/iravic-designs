@@ -137,7 +137,7 @@ class Customer extends Authenticatable
      */
     public function getUrlAddressAttribute()
     {
-        if (Storage::disk(self::DISK_ADDRESS)->exists($this->address_picture)) {
+        if ($this->address_picture && Storage::disk(self::DISK_ADDRESS)->exists($this->address_picture)) {
             return Storage::disk(self::DISK_ADDRESS)->url($this->address_picture);
         }
 
@@ -149,7 +149,7 @@ class Customer extends Authenticatable
      */
     public function getUrlDniAttribute()
     {
-        if (Storage::disk(self::DISK_DNI)->exists($this->dni_picture)) {
+        if ($this->dni_picture && Storage::disk(self::DISK_DNI)->exists($this->dni_picture)) {
             return Storage::disk(self::DISK_DNI)->url($this->dni_picture);
         }
 
@@ -161,7 +161,7 @@ class Customer extends Authenticatable
      */
     public function getUrlReceiptAttribute()
     {
-        if (Storage::disk(self::DISK_RECEIPT)->exists($this->receipt_picture)) {
+        if ($this->receipt_picture && Storage::disk(self::DISK_RECEIPT)->exists($this->receipt_picture)) {
             return Storage::disk(self::DISK_RECEIPT)->url($this->receipt_picture);
         }
 
@@ -173,7 +173,7 @@ class Customer extends Authenticatable
      */
     public function getUrlCardFrontAttribute()
     {
-        if (Storage::disk(self::CARD)->exists($this->card_front)) {
+        if ($this->card_front && Storage::disk(self::CARD)->exists($this->card_front)) {
             return Storage::disk(self::CARD)->url($this->card_front);
         }
 
@@ -185,7 +185,7 @@ class Customer extends Authenticatable
      */
     public function getUrlCardBackAttribute()
     {
-        if (Storage::disk(self::CARD)->exists($this->card_back)) {
+        if ($this->card_back && Storage::disk(self::CARD)->exists($this->card_back)) {
             return Storage::disk(self::CARD)->url($this->card_back);
         }
 
