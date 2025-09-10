@@ -5,60 +5,12 @@
     </div>
     <div v-show="imageLoaded">
       <div class="position-relative">
-        <!-- Wishlist and actions overlay -->
-        <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
-          <div class="d-flex flex-column gap-2">
-            <button 
-              type="button" 
-              class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" 
-              aria-label="Add to Wishlist"
-              @click="handleWishlist"
-            >
-              <i class="ci-heart fs-base animate-target"></i>
-            </button>
-            <button 
-              type="button" 
-              class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" 
-              aria-label="Quick View"
-              @click="handleQuickView"
-            >
-              <i class="ci-eye fs-base animate-target"></i>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Mobile dropdown for actions -->
-        <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
-          <button 
-            type="button" 
-            class="btn btn-icon btn-sm btn-secondary bg-body" 
-            data-bs-toggle="dropdown" 
-            aria-expanded="false" 
-            aria-label="More actions"
-          >
-            <i class="ci-more-vertical fs-lg"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width: auto">
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="handleWishlist">
-                <i class="ci-heart fs-sm opacity-75 me-2"></i>
-                Add to Wishlist
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="handleQuickView">
-                <i class="ci-eye fs-sm opacity-75 me-2"></i>
-                Quick view
-              </a>
-            </li>
-          </ul>
-        </div>
 
         <!-- Product image with link -->
         <a class="d-block" :href="productUrl">
           <div class="ratio ratio-1x1 bg-body-tertiary rounded overflow-hidden">
             <img 
-              class="object-fit-contain hover-effect-target product-image-zoom" 
+              class="object-fit-cover hover-effect-target product-image-zoom" 
               :src="productImage" 
               :alt="product.name" 
               @load="onImageLoad" 
@@ -74,32 +26,22 @@
       </div>
 
       <!-- Product info -->
-      <div class="card-body px-0 pb-2 pt-3">
+      <div class="card-body px-2 pb-2 pt-3">
         <div class="nav mb-2">
           <a class="nav-link animate-target min-w-0 text-dark-emphasis p-0" :href="productUrl">
-            <span class="text-truncate hover-effect-underline">{{ product.name }}</span>
+            <span class="text-truncate">{{ product.name }}</span>
           </a>
         </div>
         
         <!-- Price section -->
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <div class="h6 mb-0">
+        <div class="mb-2">
+          <div class="h6 mb-0 d-inline-flex align-items-center gap-2">
             <span class="text-dark-emphasis">{{ formattedPrice }}</span>
             <del v-if="product.original_price && product.original_price !== product.price" 
-                 class="fs-sm fw-normal text-body-secondary ms-1">
+                 class="fs-sm fw-normal text-body-secondary">
               {{ formattedOriginalPrice }}
             </del>
           </div>
-          
-          <!-- Add to cart button -->
-          <button 
-            type="button" 
-            class="btn btn-icon btn-outline-secondary product-card-button animate-scale"
-            aria-label="Add to cart"
-            @click="handleAddToCart"
-          >
-            <i class="ci-shopping-cart fs-base animate-target"></i>
-          </button>
         </div>
 
         <!-- Rating stars (if available) -->
@@ -181,30 +123,6 @@ export default {
       this.imageLoaded = true;
     },
     
-    handleWishlist() {
-      // Emit event or call API to add to wishlist
-      this.$emit('add-to-wishlist', this.product);
-      
-      // Show feedback toast (if available)
-      if (window.showToast) {
-        window.showToast('Producto agregado a favoritos', 'success');
-      }
-    },
-    
-    handleQuickView() {
-      // Emit event for quick view modal
-      this.$emit('quick-view', this.product);
-    },
-    
-    handleAddToCart() {
-      // Emit event to add product to cart
-      this.$emit('add-to-cart', this.product);
-      
-      // Show feedback
-      if (window.showToast) {
-        window.showToast('Producto agregado al carrito', 'success');
-      }
-    }
   }
 };
 </script>
