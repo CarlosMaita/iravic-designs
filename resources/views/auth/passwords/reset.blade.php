@@ -20,7 +20,7 @@
           <!-- Logo -->
           <header class="navbar align-items-center px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
             <a href="{{ route('ecommerce.home') }}" class="navbar-brand pt-0">
-              <h6 class="m-0 text-uppercase" style="font-family: Roboto, sans-serif; letter-spacing: 3px;">Iravic Designs</h6>
+              <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 150px; height: auto;">
             </a>
             <div class="nav">
               <a class="nav-link fs-base animate-underline p-0" href="{{ route('customer.login.form') }}">
