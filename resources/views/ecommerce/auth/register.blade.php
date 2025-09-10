@@ -67,14 +67,6 @@
       border-left: none;
       border-radius: 0 0.5rem 0.5rem 0;
     }
-    .logo-section {
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-    .logo-section img {
-      max-width: 120px;
-      height: auto;
-    }
     .login-link {
       text-align: center;
       margin-top: 1rem;
@@ -87,10 +79,8 @@
 @section('content')
     <div class="register-container">
       <!-- Logo Section -->
-      <div class="logo-section">
-        @isset($logoImg->value)
-        <img class="img-fluid" src="{{ asset('storage/img/configs/'. $logoImg->value) }}" alt="Logo">
-        @endisset
+      <div class="text-center mb-4">
+        <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 180px; height: auto;">
       </div>
 
       <!-- Registration Card -->

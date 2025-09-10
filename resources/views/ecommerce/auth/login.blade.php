@@ -76,6 +76,11 @@
 
 @section('content')
     <div class="login-container">
+      <!-- Logo Section -->
+      <div class="text-center mb-4">
+        <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 180px; height: auto;">
+      </div>
+
       <!-- Login Card -->
       <div class="card login-card">
         <div class="login-header">
