@@ -209,6 +209,121 @@
       }
     </script>
 
+    <!-- Currency Switcher Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Currency switcher functionality
+        const currencyRadios = document.querySelectorAll('input[name="currency"]');
+        if (!currencyRadios.length) return;
+        
+        // Currency data from backend
+        const currencyData = {!! \App\Helpers\CurrencyHelper::getJavascriptData() !!};
+        
+        // Current selected currency
+        let currentCurrency = 'USD';
+        
+        // Get all price elements (will be set by Vue components)
+        function getPriceElements() {
+          return document.querySelectorAll('[data-price], [data-price-usd]');
+        }
+        
+        // Format price according to currency
+        function formatPrice(amount, currency) {
+          const decimals = currencyData.decimals[currency] || 2;
+          const symbol = currencyData.symbols[currency] || '';
+          
+          if (currency === 'VES') {
+            return symbol + ' ' + amount.toLocaleString('es-VE', {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals
+            });
+          } else {
+            return symbol + amount.toLocaleString('en-US', {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals
+            });
+          }
+        }
+        
+        // Convert price between currencies
+        function convertPrice(amount, fromCurrency, toCurrency) {
+          if (fromCurrency === toCurrency) return amount;
+          
+          if (fromCurrency === 'USD' && toCurrency === 'VES') {
+            return amount * currencyData.exchangeRate;
+          } else if (fromCurrency === 'VES' && toCurrency === 'USD') {
+            return amount / currencyData.exchangeRate;
+          }
+          
+          return amount;
+        }
+        
+        // Update all prices on the page
+        function updatePrices(newCurrency) {
+          currentCurrency = newCurrency;
+          
+          // Store preference in localStorage
+          localStorage.setItem('preferred_currency', newCurrency);
+          
+          // Emit custom event for Vue components to listen to
+          window.dispatchEvent(new CustomEvent('currency-changed', {
+            detail: { 
+              currency: newCurrency,
+              exchangeRate: currencyData.exchangeRate,
+              formatPrice: formatPrice,
+              convertPrice: convertPrice
+            }
+          }));
+        }
+        
+        // Handle currency change
+        currencyRadios.forEach(radio => {
+          radio.addEventListener('change', function(e) {
+            if (e.target.checked) {
+              updatePrices(e.target.value);
+            }
+          });
+        });
+        
+        // Load saved preference
+        const savedCurrency = localStorage.getItem('preferred_currency');
+        if (savedCurrency && ['USD', 'VES'].includes(savedCurrency)) {
+          const radioButton = document.querySelector(`input[name="currency"][value="${savedCurrency}"]`);
+          if (radioButton) {
+            radioButton.checked = true;
+            updatePrices(savedCurrency);
+          }
+        }
+        
+        // Make currency utilities globally available
+        window.currencyUtils = {
+          currentCurrency: () => currentCurrency,
+          exchangeRate: currencyData.exchangeRate,
+          formatPrice: formatPrice,
+          convertPrice: convertPrice,
+          updateExchangeRate: function(newRate) {
+            currencyData.exchangeRate = newRate;
+            if (currentCurrency === 'VES') {
+              updatePrices('VES'); // Re-trigger conversion
+            }
+          }
+        };
+        
+        // Update exchange rate from API periodically
+        function updateExchangeRate() {
+          fetch('/api/currency/exchange-rate')
+            .then(response => response.json())
+            .then(data => {
+              window.currencyUtils.updateExchangeRate(data.rate);
+            })
+            .catch(error => console.log('Error updating exchange rate:', error));
+        }
+        
+        // Update rate every 5 minutes
+        setInterval(updateExchangeRate, 300000);
+      });
+    </script>
+
     @stack('scripts')
     @stack('js')
 

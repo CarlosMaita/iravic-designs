@@ -33,6 +33,18 @@
 
               </div>
             </div>
+
+            <!-- Currency Switcher -->
+            <div class="d-flex align-items-center ms-3">
+              <span class="text-muted me-2 small">Moneda:</span>
+              <div class="btn-group btn-group-sm" role="group" aria-label="Currency switcher">
+                <input type="radio" class="btn-check" name="currency" id="currency-usd" value="USD" checked>
+                <label class="btn btn-outline-secondary" for="currency-usd">USD</label>
+                
+                <input type="radio" class="btn-check" name="currency" id="currency-ves" value="VES">
+                <label class="btn btn-outline-secondary" for="currency-ves">VES</label>
+              </div>
+            </div>
           </div>
 
           

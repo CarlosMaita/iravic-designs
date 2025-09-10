@@ -151,6 +151,12 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         #
         Route::get('validate-descuento-password', 'ConfigController@validateDiscountPassword')->name('config.discount');
         # 
+        # Exchange Rate Routes
+        Route::get('tasa-cambio', 'ExchangeRateController@index')->name('admin.exchange-rate.index');
+        Route::post('tasa-cambio/actualizar-bcv', 'ExchangeRateController@updateFromBCV')->name('admin.exchange-rate.update-bcv');
+        Route::post('tasa-cambio/actualizar-manual', 'ExchangeRateController@updateManual')->name('admin.exchange-rate.update-manual');
+        Route::get('tasa-cambio/current', 'ExchangeRateController@getCurrentRate')->name('admin.exchange-rate.current');
+        #
         Route::resource('usuarios', 'UserController')->except('show');
         #
         Route::resource('permisos', 'PermissionController')->only('index');
