@@ -19,7 +19,7 @@
 
           <!-- Logo -->
           <header class="navbar align-items-center px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
-            <a href="{{ route('home') }}" class="navbar-brand pt-0">
+            <a href="{{ route('ecommerce.home') }}" class="navbar-brand pt-0">
               <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 150px; height: auto;">
             </a>
             <div class="nav">
@@ -103,7 +103,7 @@
               </p>
             </div>
             <p class="fs-xs mb-0">
-              &copy; Todos los derechos reservados. Hecho por <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="{{ route('home') }}" target="_blank" rel="noreferrer">Iravic Designs</a></span>
+              &copy; Todos los derechos reservados. Hecho por <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="{{ route('ecommerce.home') }}" target="_blank" rel="noreferrer">Iravic Designs</a></span>
             </p>
           </footer>
         </div>
