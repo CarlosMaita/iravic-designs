@@ -15,7 +15,7 @@
         <div 
           ref="featuredSwiper" 
           class="swiper featured-products-swiper"
-          :data-swiper="swiperConfig"
+          :id="ids.container"
         >
           <div class="swiper-wrapper">
             <div 
@@ -37,19 +37,21 @@
         <!-- Navigation buttons -->
         <button 
           type="button" 
+          :id="ids.prev"
           class="btn btn-icon btn-outline-primary featured-products-prev position-absolute top-50 start-0 translate-middle-y z-5 ms-n5 d-none d-xl-inline-flex"
         >
           <i class="fas fa-chevron-left"></i>
         </button>
         <button 
           type="button" 
+          :id="ids.next"
           class="btn btn-icon btn-outline-primary featured-products-next position-absolute top-50 end-0 translate-middle-y z-5 me-n5 d-none d-xl-inline-flex"
         >
           <i class="fas fa-chevron-right"></i>
         </button>
         
         <!-- Pagination (bullets) -->
-        <div class="swiper-pagination featured-products-pagination d-xl-none pt-4"></div>
+  <div class="swiper-pagination featured-products-pagination d-xl-none pt-4" :id="ids.pagination"></div>
       </div>
     </div>
   </section>
@@ -79,34 +81,14 @@ export default {
     }
   },
   computed: {
-    swiperConfig() {
-      return JSON.stringify({
-        slidesPerView: 1,
-        spaceBetween: 24,
-        loop: true,
-        pagination: {
-          el: '.featured-products-pagination',
-          clickable: true
-        },
-        navigation: {
-          nextEl: '.featured-products-next',
-          prevEl: '.featured-products-prev'
-        },
-        breakpoints: {
-          576: {
-            slidesPerView: 2
-          },
-          768: {
-            slidesPerView: 3
-          },
-          992: {
-            slidesPerView: 4
-          },
-          1200: {
-            slidesPerView: 5
-          }
-        }
-      });
+    ids() {
+      const p = 'fp-' + this._uid;
+      return {
+        container: p + '-container',
+        pagination: p + '-pagination',
+        prev: p + '-prev',
+        next: p + '-next'
+      };
     }
   },
   methods: {
@@ -118,18 +100,18 @@ export default {
       }
 
       // Initialize Swiper
-      this.swiper = new window.Swiper(this.$refs.featuredSwiper, {
+      this.swiper = new window.Swiper('#' + this.ids.container, {
         slidesPerView: 1,
         spaceBetween: 24,
-        loop: this.featuredProducts.length > 2,
-        pagination: {
-          el: '.featured-products-pagination',
+        loop: this.featuredProducts.length > 5,
+        pagination: this.featuredProducts.length > 1 ? {
+          el: '#' + this.ids.pagination,
           clickable: true
-        },
-        navigation: {
-          nextEl: '.featured-products-next',
-          prevEl: '.featured-products-prev'
-        },
+        } : undefined,
+        navigation: this.featuredProducts.length > 1 ? {
+          nextEl: '#' + this.ids.next,
+          prevEl: '#' + this.ids.prev
+        } : undefined,
         breakpoints: {
           576: {
             slidesPerView: 2
@@ -190,12 +172,15 @@ export default {
   
   watch: {
     featuredProducts: {
-      handler(newProducts) {
-        this.destroySwiper();
-        if (newProducts && newProducts.length > 0) {
-          this.$nextTick(() => {
-            this.initializeSwiper();
-          });
+      handler(newProducts, oldProducts) {
+        const needRebuild = !this.swiper || (oldProducts && oldProducts.length !== newProducts.length);
+        if (needRebuild) {
+          this.destroySwiper();
+          if (newProducts && newProducts.length > 0) {
+            this.$nextTick(() => this.initializeSwiper());
+          }
+        } else if (this.swiper) {
+          this.$nextTick(() => this.swiper.update());
         }
       },
       deep: true
