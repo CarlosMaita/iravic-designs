@@ -37,6 +37,9 @@ class ExchangeRateService
             
             // Try to find USD rate in various formats
             $patterns = [
+                // Pattern specific for BCV structure: <div class="col-sm-6 col-xs-6 centrado"><strong> rate </strong></div>
+                // More flexible pattern that handles different class orders
+                '/<div[^>]*class="[^"]*(?=.*col-sm-6)(?=.*col-xs-6)(?=.*centrado)[^"]*"[^>]*>[\s\S]*?<strong[^>]*>[\s]*(\d{1,3}(?:[,\.]\d{3})*[,\.]\d{2,8})[\s]*<\/strong>/i',
                 // Pattern for exact USD format
                 '/USD[\s\S]*?(\d{1,3}(?:[\.,]\d{3})*[\.,]\d{2,4})/i',
                 // Pattern for "Dólar" 
