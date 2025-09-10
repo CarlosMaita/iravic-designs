@@ -215,7 +215,7 @@ return [
             'customer_finance_info' => 'Información Financiera',
             'customer_personal_info' => 'Información Personal',
             'customer_selected' => 'Información Cliente Seleccionado',
-            'Complete each step until you reach the end' => 'Complete cada paso hasta llegar al final'
+            'Complete each step until you reach the end' => 'Complete cada paso hasta llegar al final',
             'customer_shipping_info' => 'Información de Envío del Cliente',
 
         ]
