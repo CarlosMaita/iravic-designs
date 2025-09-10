@@ -1,32 +1,122 @@
 <template>
-  <div class="col-6 col-md-4 mb-2 mb-sm-3 mb-md-0">
+  <div class="product-card animate-underline hover-effect-opacity bg-body rounded mb-4">
     <div v-if="!imageLoaded">
       <product-card-skeleton-ecommerce-component />
     </div>
-    <div v-show="imageLoaded" class="animate-underline hover-effect-opacity">
-      <div class="position-relative mb-3">
-        <button type="button" class="btn btn-icon btn-secondary animate-pulse fs-base bg-transparent border-0 position-absolute top-0 end-0 z-2 mt-1 mt-sm-2 me-1 me-sm-2" aria-label="Add to Wishlist">
-          <i class="ci-heart animate-target"></i>
-        </button>
-        <a class="d-flex bg-white border border-black rounded p-3" :href="productUrl">
-          <div class="ratio" style="--cz-aspect-ratio: calc(308 / 274 * 100%)">
+    <div v-show="imageLoaded">
+      <div class="position-relative">
+        <!-- Wishlist and actions overlay -->
+        <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
+          <div class="d-flex flex-column gap-2">
+            <button 
+              type="button" 
+              class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" 
+              aria-label="Add to Wishlist"
+              @click="handleWishlist"
+            >
+              <i class="ci-heart fs-base animate-target"></i>
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" 
+              aria-label="Quick View"
+              @click="handleQuickView"
+            >
+              <i class="ci-eye fs-base animate-target"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Mobile dropdown for actions -->
+        <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
+          <button 
+            type="button" 
+            class="btn btn-icon btn-sm btn-secondary bg-body" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false" 
+            aria-label="More actions"
+          >
+            <i class="ci-more-vertical fs-lg"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width: auto">
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="handleWishlist">
+                <i class="ci-heart fs-sm opacity-75 me-2"></i>
+                Add to Wishlist
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="handleQuickView">
+                <i class="ci-eye fs-sm opacity-75 me-2"></i>
+                Quick view
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Product image with link -->
+        <a class="d-block" :href="productUrl">
+          <div class="ratio ratio-1x1 bg-body-tertiary rounded overflow-hidden">
             <img 
-              class="object-fit-contain product-image-zoom" 
+              class="object-fit-contain hover-effect-target product-image-zoom" 
               :src="productImage" 
               :alt="product.name" 
               @load="onImageLoad" 
               @error="onImageLoad" 
-              style="display:block;" 
             />
           </div>
         </a>
+
+        <!-- Badge overlay for special offers -->
+        <div v-if="product.has_discount" class="position-absolute top-0 start-0 z-2 mt-2 ms-2">
+          <span class="badge bg-danger">{{ discountLabel }}</span>
+        </div>
       </div>
-      <div class="nav mb-2">
-        <a class="nav-link animate-target min-w-0 text-dark-emphasis p-0" :href="productUrl">
-          <span class="text-truncate">{{ product.name }}</span>
-        </a>
+
+      <!-- Product info -->
+      <div class="card-body px-0 pb-2 pt-3">
+        <div class="nav mb-2">
+          <a class="nav-link animate-target min-w-0 text-dark-emphasis p-0" :href="productUrl">
+            <span class="text-truncate hover-effect-underline">{{ product.name }}</span>
+          </a>
+        </div>
+        
+        <!-- Price section -->
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <div class="h6 mb-0">
+            <span class="text-dark-emphasis">{{ formattedPrice }}</span>
+            <del v-if="product.original_price && product.original_price !== product.price" 
+                 class="fs-sm fw-normal text-body-secondary ms-1">
+              {{ formattedOriginalPrice }}
+            </del>
+          </div>
+          
+          <!-- Add to cart button -->
+          <button 
+            type="button" 
+            class="btn btn-icon btn-outline-secondary product-card-button animate-scale"
+            aria-label="Add to cart"
+            @click="handleAddToCart"
+          >
+            <i class="ci-shopping-cart fs-base animate-target"></i>
+          </button>
+        </div>
+
+        <!-- Rating stars (if available) -->
+        <div v-if="product.rating" class="d-flex align-items-center gap-1 fs-xs">
+          <div class="d-flex gap-1">
+            <i v-for="star in 5" 
+               :key="star"
+               :class="[
+                 'ci-star',
+                 star <= Math.floor(product.rating) ? 'text-warning' : 'text-body-secondary'
+               ]"
+            ></i>
+          </div>
+          <span class="text-body-secondary">{{ product.rating }}</span>
+          <span v-if="product.reviews_count" class="text-body-secondary">({{ product.reviews_count }})</span>
+        </div>
       </div>
-      <div class="h6 mb-2">{{ formattedPrice }}</div>
     </div>
   </div>
 </template>
@@ -62,7 +152,7 @@ export default {
       if (this.product.images && this.product.images.length > 0) {
         return this.product.images[0].full_url_img;
       }
-      return '';
+      return '/assets/img/placeholder-product.svg'; // Cartzilla placeholder
     },
     formattedPrice() {
       if (this.product.price) {
@@ -72,23 +162,192 @@ export default {
         return this.product.regular_price_str;
       }
       return '';
+    },
+    formattedOriginalPrice() {
+      if (this.product.original_price) {
+        return `$${Number(this.product.original_price).toFixed(2)}`;
+      }
+      return '';
+    },
+    discountLabel() {
+      if (this.product.discount_percentage) {
+        return `-${this.product.discount_percentage}%`;
+      }
+      return 'Sale';
     }
   },
   methods: {
     onImageLoad() {
       this.imageLoaded = true;
+    },
+    
+    handleWishlist() {
+      // Emit event or call API to add to wishlist
+      this.$emit('add-to-wishlist', this.product);
+      
+      // Show feedback toast (if available)
+      if (window.showToast) {
+        window.showToast('Producto agregado a favoritos', 'success');
+      }
+    },
+    
+    handleQuickView() {
+      // Emit event for quick view modal
+      this.$emit('quick-view', this.product);
+    },
+    
+    handleAddToCart() {
+      // Emit event to add product to cart
+      this.$emit('add-to-cart', this.product);
+      
+      // Show feedback
+      if (window.showToast) {
+        window.showToast('Producto agregado al carrito', 'success');
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-/* Zoom effect on image hover */
+/* Product card following Cartzilla standards */
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 306px; /* Cartzilla standard width */
+  margin: 0 auto;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+/* Image hover effects following Cartzilla */
 .product-image-zoom {
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.product-image-zoom:hover {
+
+.product-card:hover .product-image-zoom {
+  transform: scale(1.05);
+}
+
+/* Hover effects for action buttons */
+.hover-effect-target {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.product-card:hover .hover-effect-target {
+  opacity: 1 !important;
+}
+
+/* Button styling following Cartzilla */
+.btn-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
   transform: scale(1.1);
-  z-index: 2;
+}
+
+/* Product card button styling */
+.product-card-button {
+  transition: all 0.3s ease;
+  border-color: transparent;
+  background: transparent;
+}
+
+.product-card:hover .product-card-button {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: white;
+}
+
+.product-card:hover .product-card-button:hover {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Animate scale effect */
+.animate-scale {
+  transition: transform 0.2s ease;
+}
+
+.animate-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Underline animation for product titles */
+.hover-effect-underline {
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+.product-card:hover .hover-effect-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 575.98px) {
+  .product-card {
+    max-width: 100%;
+  }
+  
+  .btn-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* Badge styling */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Star ratings */
+.ci-star {
+  font-size: 0.875rem;
+}
+
+/* Dropdown customization for mobile */
+.dropdown-menu {
+  --bs-dropdown-border-radius: 0.5rem;
+  --bs-dropdown-box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+/* Image container improvements */
+.ratio-1x1 {
+  --bs-aspect-ratio: 100%;
+}
+
+.object-fit-contain {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+/* Card body adjustments */
+.card-body {
+  padding: 1rem 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
 }
 </style>

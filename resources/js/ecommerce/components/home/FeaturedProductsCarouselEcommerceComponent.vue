@@ -26,6 +26,9 @@
               <featured-product-card-ecommerce-component
                 :product="product"
                 :product-detail-route="productDetailRoute"
+                @add-to-wishlist="handleAddToWishlist"
+                @quick-view="handleQuickView"
+                @add-to-cart="handleAddToCart"
               />
             </div>
           </div>
@@ -78,7 +81,7 @@ export default {
   computed: {
     swiperConfig() {
       return JSON.stringify({
-        slidesPerView: 2,
+        slidesPerView: 1,
         spaceBetween: 24,
         loop: true,
         pagination: {
@@ -91,16 +94,16 @@ export default {
         },
         breakpoints: {
           576: {
-            slidesPerView: 3
+            slidesPerView: 2
           },
           768: {
-            slidesPerView: 4
+            slidesPerView: 3
           },
           992: {
-            slidesPerView: 5
+            slidesPerView: 4
           },
           1200: {
-            slidesPerView: 6
+            slidesPerView: 5
           }
         }
       });
@@ -116,7 +119,7 @@ export default {
 
       // Initialize Swiper
       this.swiper = new window.Swiper(this.$refs.featuredSwiper, {
-        slidesPerView: 2,
+        slidesPerView: 1,
         spaceBetween: 24,
         loop: this.featuredProducts.length > 2,
         pagination: {
@@ -129,16 +132,16 @@ export default {
         },
         breakpoints: {
           576: {
-            slidesPerView: 3
+            slidesPerView: 2
           },
           768: {
-            slidesPerView: 4
+            slidesPerView: 3
           },
           992: {
-            slidesPerView: 5
+            slidesPerView: 4
           },
           1200: {
-            slidesPerView: 6
+            slidesPerView: 5
           }
         }
       });
@@ -149,6 +152,27 @@ export default {
         this.swiper.destroy(true, true);
         this.swiper = null;
       }
+    },
+
+    handleAddToWishlist(product) {
+      // Handle wishlist functionality
+      console.log('Add to wishlist:', product);
+      // Here you can implement actual wishlist API calls
+      // this.$store.dispatch('wishlist/add', product);
+    },
+
+    handleQuickView(product) {
+      // Handle quick view modal
+      console.log('Quick view:', product);
+      // Here you can open a modal or redirect to product page
+      // this.$emit('open-quick-view', product);
+    },
+
+    handleAddToCart(product) {
+      // Handle add to cart functionality
+      console.log('Add to cart:', product);
+      // Here you can implement actual cart API calls
+      // this.$store.dispatch('cart/add', product);
     }
   },
   
