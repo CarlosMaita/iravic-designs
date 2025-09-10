@@ -25,7 +25,6 @@
                                                 <th scope="col">{{ __('dashboard.customers.dni') }}</th>
                                                 <th scope="col">{{ __('dashboard.customers.telephone') }}</th>
                                                 <th scope="col">{{ __('dashboard.customers.qualification') }}</th>
-                                                <th scope="col">{{ __('dashboard.customers.zone') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

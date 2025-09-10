@@ -218,6 +218,33 @@ class ProductService
 
 ### 4. Rutas
 
+#### Separación de Responsabilidades en Rutas
+
+**REGLA OBLIGATORIA**: Los archivos de rutas deben contener únicamente definiciones de rutas. Toda lógica de negocio debe estar en controladores.
+
+❌ **Incorrecto** - Lógica en archivo de rutas:
+```php
+Route::get('debug-auth', function () {
+    $user = Auth::user();
+    if (!$user) {
+        return response()->json(['error' => 'Not authenticated']);
+    }
+    
+    return response()->json([
+        'user' => $user->name,
+        'roles' => $user->roles->pluck('name'),
+        // ... más lógica
+    ]);
+});
+```
+
+✅ **Correcto** - Delegar a controlador:
+```php
+Route::get('debug-auth', 'DebugController@authDebug');
+```
+
+#### Organización de Rutas
+
 Organizar rutas en grupos lógicos con prefijos y namespaces:
 
 ```php
@@ -233,8 +260,24 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::group(['prefix' => 'gestion-clientes', 'namespace' => 'Customers'], function () {
         Route::resource('clientes', 'CustomerController');
     });
+    
+    // Rutas de depuración (solo para desarrollo)
+    Route::get('debug-auth', 'DebugController@authDebug');
+});
+
+// API Routes - usar controladores específicos
+Route::group(['prefix' => 'api'], function () {
+    Route::get('/customer/auth-check', [\App\Http\Controllers\Api\CustomerAuthController::class, 'authCheck']);
 });
 ```
+
+#### Beneficios de esta Práctica
+
+- **Mantenibilidad**: Código organizado y fácil de localizar
+- **Testabilidad**: Los controladores pueden ser testeados unitariamente
+- **Reutilización**: La lógica en controladores puede ser reutilizada
+- **Debugging**: Mejor stack traces y debugging
+- **Responsabilidad única**: Cada archivo tiene una responsabilidad clara
 
 ### 5. Migraciones
 

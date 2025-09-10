@@ -69,19 +69,7 @@ Route::middleware(['auth:customer'])->group(function () {
 Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderController::class, 'create'])->name('api.orders.create');
 
 # Customer authentication check endpoint (needs session access)
-Route::get('/api/customer/auth-check', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'authenticated' => Auth::guard('customer')->check(),
-        'customer' => Auth::guard('customer')->check() ? (function () {
-            $u = Auth::guard('customer')->user();
-            return [
-                'id' => $u->id,
-                'name' => $u->name,
-                'email' => $u->email,
-            ];
-        })() : null
-    ]);
-});
+Route::get('/api/customer/auth-check', [\App\Http\Controllers\Api\CustomerAuthController::class, 'authCheck']);
 
 
 Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
@@ -163,12 +151,21 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         #
         Route::get('validate-descuento-password', 'ConfigController@validateDiscountPassword')->name('config.discount');
         # 
+        # Exchange Rate Routes
+        Route::get('tasa-cambio', 'ExchangeRateController@index')->name('admin.exchange-rate.index');
+        Route::post('tasa-cambio/actualizar-bcv', 'ExchangeRateController@updateFromBCV')->name('admin.exchange-rate.update-bcv');
+        Route::post('tasa-cambio/actualizar-manual', 'ExchangeRateController@updateManual')->name('admin.exchange-rate.update-manual');
+        Route::get('tasa-cambio/current', 'ExchangeRateController@getCurrentRate')->name('admin.exchange-rate.current');
+        #
         Route::resource('usuarios', 'UserController')->except('show');
         #
         Route::resource('permisos', 'PermissionController')->only('index');
         #
         Route::resource('roles', 'RoleController')->except('show');
     });
+
+    // Debug route for testing authorization
+    Route::get('debug-auth', 'DebugController@authDebug');
 
   
 });

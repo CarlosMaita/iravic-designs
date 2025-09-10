@@ -19,7 +19,6 @@
                     {data: 'dni'},
                     {data: 'telephone' , searchable: false},
                     {data: 'qualification' ,searchable: false},
-                    {data: 'zone.name' },
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
         });

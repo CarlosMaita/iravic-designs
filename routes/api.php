@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/products', 'App\Http\Controllers\Api\ProductController@index');
+
+// Currency conversion routes
+Route::prefix('currency')->group(function () {
+    Route::get('/exchange-rate', 'App\Http\Controllers\Api\CurrencyController@getExchangeRate');
+    Route::post('/convert', 'App\Http\Controllers\Api\CurrencyController@convertPrice');
+    Route::post('/both-prices', 'App\Http\Controllers\Api\CurrencyController@getBothPrices');
+});
