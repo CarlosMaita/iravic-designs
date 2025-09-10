@@ -46,8 +46,6 @@
                                     <!--  -->
                                     @include('dashboard.customers._partials.orders')
                                     <!--  -->
-                                    @include('dashboard.customers._partials.refunds')
-                                    <!--  -->
                                     @include('dashboard.customers._partials.payments')
                                     <!--  -->
                                     @include('dashboard.customers._partials.debts')
