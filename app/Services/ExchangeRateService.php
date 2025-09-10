@@ -52,8 +52,8 @@ class ExchangeRateService
                     foreach ($matches[1] as $match) {
                         $rate = $this->parseVenezuelanNumber($match);
                         
-                        // Validate rate is in reasonable range (10-100 VES per USD as of 2024)
-                        if ($rate && $rate >= 10 && $rate <= 100) {
+                        // Validate rate is in reasonable range (100-1000 VES per USD as of 2024)
+                        if ($rate && $rate >= 100 && $rate <= 1000) {
                             Log::info('Exchange rate found from BCV: ' . $rate);
                             return $rate;
                         }
@@ -79,8 +79,8 @@ class ExchangeRateService
     private function getMockRate(): ?float
     {
         // Return a slightly random rate for testing
-        $baseRate = 36.50;
-        $variation = rand(-100, 100) / 10000; // ±0.01 variation
+        $baseRate = 365.00;
+        $variation = rand(-100, 100) / 1000; // ±0.1 variation
         return round($baseRate + $variation, 4);
     }
 
