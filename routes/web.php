@@ -69,19 +69,7 @@ Route::middleware(['auth:customer'])->group(function () {
 Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderController::class, 'create'])->name('api.orders.create');
 
 # Customer authentication check endpoint (needs session access)
-Route::get('/api/customer/auth-check', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'authenticated' => Auth::guard('customer')->check(),
-        'customer' => Auth::guard('customer')->check() ? (function () {
-            $u = Auth::guard('customer')->user();
-            return [
-                'id' => $u->id,
-                'name' => $u->name,
-                'email' => $u->email,
-            ];
-        })() : null
-    ]);
-});
+Route::get('/api/customer/auth-check', [\App\Http\Controllers\Api\CustomerAuthController::class, 'authCheck']);
 
 
 Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
@@ -169,6 +157,9 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         #
         Route::resource('roles', 'RoleController')->except('show');
     });
+
+    // Debug route for testing authorization
+    Route::get('debug-auth', 'DebugController@authDebug');
 
   
 });
