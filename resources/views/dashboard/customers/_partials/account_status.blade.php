@@ -1,69 +1,56 @@
 <div class="tab-pane fade" id="account-status" role="tabpanel" aria-labelledby="account-status-tab">
     <div class="row mt-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>{{ __('dashboard.customers.balance') }}</label>
-                <input id="balance-text" class="form-control" type="text" value="{{ $customer->balance }}" readOnly>
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                La gestión financiera y de estados de cuenta se ha simplificado. 
+                El nuevo modelo de clientes se enfoca en la información de envío y contacto.
             </div>
         </div>
-        <div class="col-md-6 text-right">
-            <a href="{{ route('operaciones.download') }}?customer={{ $customer->id }}"> <i class="fa fa-file-pdf"></i> Descargar</a>
-        </div>
     </div>
-    <hr>
     <div class="row mt-3">
-        <div class="col-12">
-            <div class="table-responsive">
-                @include('dashboard.operations._datatable')
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Estado del Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Calificación</label>
+                        <input class="form-control" type="text" value="{{ $customer->qualification }}" readOnly>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado de Información de Envío</label>
+                        @if($customer->hasCompleteShippingInfo())
+                            <div class="alert alert-success mb-0">
+                                <i class="fas fa-check-circle"></i> Información completa
+                            </div>
+                        @else
+                            <div class="alert alert-warning mb-0">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                Información incompleta
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Resumen</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Total de Pedidos</label>
+                        <input class="form-control" type="text" value="{{ $customer->orders()->count() }}" readOnly>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Registro</label>
+                        <input class="form-control" type="text" value="{{ $customer->created_at ? $customer->created_at->format('d/m/Y') : 'N/A' }}" readOnly>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-{{-- 
-<div class="tab-pane fade" id="account-status" role="tabpanel" aria-labelledby="account-status-tab">
-    <div class="container-fluid mb-4 mt-3">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>{{ __('dashboard.customers.total_buyed') }}</label>
-                    <input class="form-control" type="text" value="{{ $customer->total_buyed }}" readOnly>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>{{ __('dashboard.customers.total_credit_give_for') }}</label>
-                    <input class="form-control" type="text" value="{{ $customer->total_credit }}" readOnly>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>{{ __('dashboard.customers.total_payments') }}</label>
-                    <input class="form-control" type="text" value="{{ $customer->total_payments }}" readOnly>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>{{ __('dashboard.customers.total_refund_credit') }}</label>
-                    <input class="form-control" type="text" value="{{ $customer->total_refund_credit }}" readOnly>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>{{ __('dashboard.customers.total_debts') }}</label>
-                    <input class="form-control" type="text" value="{{ $customer->total_debt }}" readOnly>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>{{ __('dashboard.customers.balance') }}</label>
-                    <input class="form-control" type="text" value="{{ $customer->balance }}" readOnly>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> 
- --}}
