@@ -1947,7 +1947,27 @@ __webpack_require__.r(__webpack_exports__);
     },
     category: {
       type: Number,
-      "default": ''
+      "default": null
+    },
+    brand: {
+      type: Number,
+      "default": null
+    },
+    gender: {
+      type: String,
+      "default": null
+    },
+    color: {
+      type: Number,
+      "default": null
+    },
+    minPrice: {
+      type: Number,
+      "default": null
+    },
+    maxPrice: {
+      type: Number,
+      "default": null
     }
   },
   mounted: function mounted() {},
@@ -1998,7 +2018,27 @@ __webpack_require__.r(__webpack_exports__);
     },
     category: {
       type: Number,
-      "default": ''
+      "default": null
+    },
+    brand: {
+      type: Number,
+      "default": null
+    },
+    gender: {
+      type: String,
+      "default": null
+    },
+    color: {
+      type: Number,
+      "default": null
+    },
+    minPrice: {
+      type: Number,
+      "default": null
+    },
+    maxPrice: {
+      type: Number,
+      "default": null
     }
   },
   data: function data() {
@@ -2016,6 +2056,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     var _this = this;
+    // Initialize from URL parameters
     if (this.search) {
       this.selectedSearch = this.search;
     }
@@ -2024,6 +2065,27 @@ __webpack_require__.r(__webpack_exports__);
         return category.id == _this.category;
       });
     }
+    if (this.brand) {
+      this.selectedBrand = this.brands.find(function (brand) {
+        return brand.id == _this.brand;
+      });
+    }
+    if (this.gender) {
+      this.selectedGender = this.gender;
+    }
+    if (this.color) {
+      this.selectedColor = this.colors.find(function (color) {
+        return color.id == _this.color;
+      });
+    }
+    if (this.minPrice && this.maxPrice) {
+      this.selectedminPrice = this.minPrice;
+      this.selectedmaxPrice = this.maxPrice;
+      this.isPriceSelected = true;
+    }
+
+    // Check if any filters are active
+    this.checkFilterActive();
     this.setFilter();
   },
   methods: {
@@ -2066,12 +2128,18 @@ __webpack_require__.r(__webpack_exports__);
         maxPrice: this.selectedmaxPrice,
         search: this.selectedSearch
       };
+
+      // Update URL with filter parameters
+      this.updateURL(filter);
+
       // Emit an event to the parent component with the selected filters
       this.$emit('filter-applied', filter);
     },
     checkFilterActive: function checkFilterActive() {
-      if (this.selectedCategory == null && this.selectedBrand == null && this.selectedGender == null && this.selectedColor == null && this.selectedminPrice == null && this.selectedmaxPrice == null) {
+      if (this.selectedCategory == null && this.selectedBrand == null && this.selectedGender == null && this.selectedColor == null && this.selectedminPrice == null && this.selectedmaxPrice == null && this.selectedSearch == null) {
         this.isFilterActive = false;
+      } else {
+        this.isFilterActive = true;
       }
     },
     removeSelection: function removeSelection(type) {
@@ -2094,6 +2162,9 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedBrand = null;
       this.selectedGender = null;
       this.selectedColor = null;
+      this.selectedSearch = null;
+      this.selectedminPrice = null;
+      this.selectedmaxPrice = null;
       this.isPriceSelected = false;
       this.isFilterActive = false;
       this.setFilter();
@@ -2101,6 +2172,44 @@ __webpack_require__.r(__webpack_exports__);
     cleanSearchParams: function cleanSearchParams(param) {
       var url = new URL(window.location.href);
       url.searchParams["delete"](param);
+      window.history.replaceState({}, '', url);
+    },
+    updateURL: function updateURL(filters) {
+      var url = new URL(window.location.href);
+
+      // Clear existing filter parameters
+      url.searchParams["delete"]('search');
+      url.searchParams["delete"]('category');
+      url.searchParams["delete"]('brand');
+      url.searchParams["delete"]('gender');
+      url.searchParams["delete"]('color');
+      url.searchParams["delete"]('min_price');
+      url.searchParams["delete"]('max_price');
+
+      // Add current filter parameters
+      if (filters.search) {
+        url.searchParams.set('search', filters.search);
+      }
+      if (filters.category) {
+        url.searchParams.set('category', filters.category);
+      }
+      if (filters.brand) {
+        url.searchParams.set('brand', filters.brand);
+      }
+      if (filters.gender) {
+        url.searchParams.set('gender', filters.gender);
+      }
+      if (filters.color) {
+        url.searchParams.set('color', filters.color);
+      }
+      if (filters.minPrice) {
+        url.searchParams.set('min_price', filters.minPrice);
+      }
+      if (filters.maxPrice) {
+        url.searchParams.set('max_price', filters.maxPrice);
+      }
+
+      // Update the URL without reloading the page
       window.history.replaceState({}, '', url);
     }
   }
@@ -3345,7 +3454,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.product.images && this.product.images.length > 0) {
         return this.product.images[0].full_url_img;
       }
-      return '';
+      return '/assets/img/placeholder-product.svg'; // Cartzilla placeholder
     },
     formattedPrice: function formattedPrice() {
       if (this.product.price) {
@@ -3355,11 +3464,45 @@ __webpack_require__.r(__webpack_exports__);
         return this.product.regular_price_str;
       }
       return '';
+    },
+    formattedOriginalPrice: function formattedOriginalPrice() {
+      if (this.product.original_price) {
+        return "$".concat(Number(this.product.original_price).toFixed(2));
+      }
+      return '';
+    },
+    discountLabel: function discountLabel() {
+      if (this.product.discount_percentage) {
+        return "-".concat(this.product.discount_percentage, "%");
+      }
+      return 'Sale';
     }
   },
   methods: {
     onImageLoad: function onImageLoad() {
       this.imageLoaded = true;
+    },
+    handleWishlist: function handleWishlist() {
+      // Emit event or call API to add to wishlist
+      this.$emit('add-to-wishlist', this.product);
+
+      // Show feedback toast (if available)
+      if (window.showToast) {
+        window.showToast('Producto agregado a favoritos', 'success');
+      }
+    },
+    handleQuickView: function handleQuickView() {
+      // Emit event for quick view modal
+      this.$emit('quick-view', this.product);
+    },
+    handleAddToCart: function handleAddToCart() {
+      // Emit event to add product to cart
+      this.$emit('add-to-cart', this.product);
+
+      // Show feedback
+      if (window.showToast) {
+        window.showToast('Producto agregado al carrito', 'success');
+      }
     }
   }
 });
@@ -3402,7 +3545,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     swiperConfig: function swiperConfig() {
       return JSON.stringify({
-        slidesPerView: 2,
+        slidesPerView: 1,
         spaceBetween: 24,
         loop: true,
         pagination: {
@@ -3415,16 +3558,16 @@ __webpack_require__.r(__webpack_exports__);
         },
         breakpoints: {
           576: {
-            slidesPerView: 3
+            slidesPerView: 2
           },
           768: {
-            slidesPerView: 4
+            slidesPerView: 3
           },
           992: {
-            slidesPerView: 5
+            slidesPerView: 4
           },
           1200: {
-            slidesPerView: 6
+            slidesPerView: 5
           }
         }
       });
@@ -3440,7 +3583,7 @@ __webpack_require__.r(__webpack_exports__);
 
       // Initialize Swiper
       this.swiper = new window.Swiper(this.$refs.featuredSwiper, {
-        slidesPerView: 2,
+        slidesPerView: 1,
         spaceBetween: 24,
         loop: this.featuredProducts.length > 2,
         pagination: {
@@ -3453,16 +3596,16 @@ __webpack_require__.r(__webpack_exports__);
         },
         breakpoints: {
           576: {
-            slidesPerView: 3
+            slidesPerView: 2
           },
           768: {
-            slidesPerView: 4
+            slidesPerView: 3
           },
           992: {
-            slidesPerView: 5
+            slidesPerView: 4
           },
           1200: {
-            slidesPerView: 6
+            slidesPerView: 5
           }
         }
       });
@@ -3472,6 +3615,24 @@ __webpack_require__.r(__webpack_exports__);
         this.swiper.destroy(true, true);
         this.swiper = null;
       }
+    },
+    handleAddToWishlist: function handleAddToWishlist(product) {
+      // Handle wishlist functionality
+      console.log('Add to wishlist:', product);
+      // Here you can implement actual wishlist API calls
+      // this.$store.dispatch('wishlist/add', product);
+    },
+    handleQuickView: function handleQuickView(product) {
+      // Handle quick view modal
+      console.log('Quick view:', product);
+      // Here you can open a modal or redirect to product page
+      // this.$emit('open-quick-view', product);
+    },
+    handleAddToCart: function handleAddToCart(product) {
+      // Handle add to cart functionality
+      console.log('Add to cart:', product);
+      // Here you can implement actual cart API calls
+      // this.$store.dispatch('cart/add', product);
     }
   },
   mounted: function mounted() {
@@ -4194,7 +4355,12 @@ var render = function render() {
       genders: _vm.genders,
       colors: _vm.colors,
       search: _vm.search,
-      category: _vm.category
+      category: _vm.category,
+      brand: _vm.brand,
+      gender: _vm.gender,
+      color: _vm.color,
+      "min-price": _vm.minPrice,
+      "max-price": _vm.maxPrice
     },
     on: {
       "filter-applied": _vm.setFilters
@@ -5642,32 +5808,84 @@ var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "col-6 col-md-4 mb-2 mb-sm-3 mb-md-0"
+    staticClass: "product-card animate-underline hover-effect-opacity bg-body rounded mb-4"
   }, [!_vm.imageLoaded ? _c("div", [_c("product-card-skeleton-ecommerce-component")], 1) : _vm._e(), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: _vm.imageLoaded,
       expression: "imageLoaded"
-    }],
-    staticClass: "animate-underline hover-effect-opacity"
+    }]
   }, [_c("div", {
-    staticClass: "position-relative mb-3"
-  }, [_vm._m(0), _vm._v(" "), _c("a", {
-    staticClass: "d-flex bg-white border border-black rounded p-3",
+    staticClass: "position-relative"
+  }, [_c("div", {
+    staticClass: "position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3"
+  }, [_c("div", {
+    staticClass: "d-flex flex-column gap-2"
+  }, [_c("button", {
+    staticClass: "btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex",
+    attrs: {
+      type: "button",
+      "aria-label": "Add to Wishlist"
+    },
+    on: {
+      click: _vm.handleWishlist
+    }
+  }, [_c("i", {
+    staticClass: "ci-heart fs-base animate-target"
+  })]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex",
+    attrs: {
+      type: "button",
+      "aria-label": "Quick View"
+    },
+    on: {
+      click: _vm.handleQuickView
+    }
+  }, [_c("i", {
+    staticClass: "ci-eye fs-base animate-target"
+  })])])]), _vm._v(" "), _c("div", {
+    staticClass: "dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2"
+  }, [_vm._m(0), _vm._v(" "), _c("ul", {
+    staticClass: "dropdown-menu dropdown-menu-end fs-xs p-2",
+    staticStyle: {
+      "min-width": "auto"
+    }
+  }, [_c("li", [_c("a", {
+    staticClass: "dropdown-item",
+    attrs: {
+      href: "#"
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.handleWishlist.apply(null, arguments);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "ci-heart fs-sm opacity-75 me-2"
+  }), _vm._v("\n              Add to Wishlist\n            ")])]), _vm._v(" "), _c("li", [_c("a", {
+    staticClass: "dropdown-item",
+    attrs: {
+      href: "#"
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.handleQuickView.apply(null, arguments);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "ci-eye fs-sm opacity-75 me-2"
+  }), _vm._v("\n              Quick view\n            ")])])])]), _vm._v(" "), _c("a", {
+    staticClass: "d-block",
     attrs: {
       href: _vm.productUrl
     }
   }, [_c("div", {
-    staticClass: "ratio",
-    staticStyle: {
-      "--cz-aspect-ratio": "calc(308 / 274 * 100%)"
-    }
+    staticClass: "ratio ratio-1x1 bg-body-tertiary rounded overflow-hidden"
   }, [_c("img", {
-    staticClass: "object-fit-contain product-image-zoom",
-    staticStyle: {
-      display: "block"
-    },
+    staticClass: "object-fit-contain hover-effect-target product-image-zoom",
     attrs: {
       src: _vm.productImage,
       alt: _vm.product.name
@@ -5676,7 +5894,13 @@ var render = function render() {
       load: _vm.onImageLoad,
       error: _vm.onImageLoad
     }
-  })])])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _vm.product.has_discount ? _c("div", {
+    staticClass: "position-absolute top-0 start-0 z-2 mt-2 ms-2"
+  }, [_c("span", {
+    staticClass: "badge bg-danger"
+  }, [_vm._v(_vm._s(_vm.discountLabel))])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "card-body px-0 pb-2 pt-3"
+  }, [_c("div", {
     staticClass: "nav mb-2"
   }, [_c("a", {
     staticClass: "nav-link animate-target min-w-0 text-dark-emphasis p-0",
@@ -5684,22 +5908,54 @@ var render = function render() {
       href: _vm.productUrl
     }
   }, [_c("span", {
-    staticClass: "text-truncate"
+    staticClass: "text-truncate hover-effect-underline"
   }, [_vm._v(_vm._s(_vm.product.name))])])]), _vm._v(" "), _c("div", {
-    staticClass: "h6 mb-2"
-  }, [_vm._v(_vm._s(_vm.formattedPrice))])])]);
+    staticClass: "d-flex align-items-center justify-content-between mb-2"
+  }, [_c("div", {
+    staticClass: "h6 mb-0"
+  }, [_c("span", {
+    staticClass: "text-dark-emphasis"
+  }, [_vm._v(_vm._s(_vm.formattedPrice))]), _vm._v(" "), _vm.product.original_price && _vm.product.original_price !== _vm.product.price ? _c("del", {
+    staticClass: "fs-sm fw-normal text-body-secondary ms-1"
+  }, [_vm._v("\n            " + _vm._s(_vm.formattedOriginalPrice) + "\n          ")]) : _vm._e()]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-icon btn-outline-secondary product-card-button animate-scale",
+    attrs: {
+      type: "button",
+      "aria-label": "Add to cart"
+    },
+    on: {
+      click: _vm.handleAddToCart
+    }
+  }, [_c("i", {
+    staticClass: "ci-shopping-cart fs-base animate-target"
+  })])]), _vm._v(" "), _vm.product.rating ? _c("div", {
+    staticClass: "d-flex align-items-center gap-1 fs-xs"
+  }, [_c("div", {
+    staticClass: "d-flex gap-1"
+  }, _vm._l(5, function (star) {
+    return _c("i", {
+      key: star,
+      "class": ["ci-star", star <= Math.floor(_vm.product.rating) ? "text-warning" : "text-body-secondary"]
+    });
+  }), 0), _vm._v(" "), _c("span", {
+    staticClass: "text-body-secondary"
+  }, [_vm._v(_vm._s(_vm.product.rating))]), _vm._v(" "), _vm.product.reviews_count ? _c("span", {
+    staticClass: "text-body-secondary"
+  }, [_vm._v("(" + _vm._s(_vm.product.reviews_count) + ")")]) : _vm._e()]) : _vm._e()])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("button", {
-    staticClass: "btn btn-icon btn-secondary animate-pulse fs-base bg-transparent border-0 position-absolute top-0 end-0 z-2 mt-1 mt-sm-2 me-1 me-sm-2",
+    staticClass: "btn btn-icon btn-sm btn-secondary bg-body",
     attrs: {
       type: "button",
-      "aria-label": "Add to Wishlist"
+      "data-bs-toggle": "dropdown",
+      "aria-expanded": "false",
+      "aria-label": "More actions"
     }
   }, [_c("i", {
-    staticClass: "ci-heart animate-target"
+    staticClass: "ci-more-vertical fs-lg"
   })]);
 }];
 render._withStripped = true;
@@ -5743,6 +5999,11 @@ var render = function render() {
       attrs: {
         product: product,
         "product-detail-route": _vm.productDetailRoute
+      },
+      on: {
+        "add-to-wishlist": _vm.handleAddToWishlist,
+        "quick-view": _vm.handleQuickView,
+        "add-to-cart": _vm.handleAddToCart
       }
     })], 1);
   }), 0)]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("div", {
@@ -10851,7 +11112,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-6aec98ba] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-6aec98ba]:hover {\n  transform: scale(1.1);\n  z-index: 2;\n}\n", ""]);
+exports.push([module.i, "\n/* Product card following Cartzilla standards */\n.product-card[data-v-6aec98ba] {\n  transition: transform 0.3s ease, box-shadow 0.3s ease;\n  max-width: 306px; /* Cartzilla standard width */\n  margin: 0 auto;\n}\n.product-card[data-v-6aec98ba]:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);\n  z-index: 2;\n}\n\n/* Image hover effects following Cartzilla */\n.product-image-zoom[data-v-6aec98ba] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-card:hover .product-image-zoom[data-v-6aec98ba] {\n  transform: scale(1.05);\n}\n\n/* Hover effects for action buttons */\n.hover-effect-target[data-v-6aec98ba] {\n  transition: opacity 0.3s ease, transform 0.3s ease;\n}\n.product-card:hover .hover-effect-target[data-v-6aec98ba] {\n  opacity: 1 !important;\n}\n\n/* Button styling following Cartzilla */\n.btn-icon[data-v-6aec98ba] {\n  width: 2.5rem;\n  height: 2.5rem;\n  padding: 0;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 50%;\n  transition: all 0.3s ease;\n}\n.btn-icon[data-v-6aec98ba]:hover {\n  transform: scale(1.1);\n}\n\n/* Product card button styling */\n.product-card-button[data-v-6aec98ba] {\n  transition: all 0.3s ease;\n  border-color: transparent;\n  background: transparent;\n}\n.product-card:hover .product-card-button[data-v-6aec98ba] {\n  background-color: var(--bs-primary);\n  border-color: var(--bs-primary);\n  color: white;\n}\n.product-card:hover .product-card-button[data-v-6aec98ba]:hover {\n  background-color: var(--bs-primary);\n  border-color: var(--bs-primary);\n  color: white;\n  transform: scale(1.1);\n}\n\n/* Animate scale effect */\n.animate-scale[data-v-6aec98ba] {\n  transition: transform 0.2s ease;\n}\n.animate-scale[data-v-6aec98ba]:hover {\n  transform: scale(1.05);\n}\n\n/* Underline animation for product titles */\n.hover-effect-underline[data-v-6aec98ba] {\n  text-decoration: none;\n  transition: text-decoration 0.3s ease;\n}\n.product-card:hover .hover-effect-underline[data-v-6aec98ba] {\n  text-decoration: underline;\n  text-decoration-thickness: 2px;\n  text-underline-offset: 2px;\n}\n\n/* Responsive adjustments */\n@media (max-width: 575.98px) {\n.product-card[data-v-6aec98ba] {\n    max-width: 100%;\n}\n.btn-icon[data-v-6aec98ba] {\n    width: 2rem;\n    height: 2rem;\n}\n}\n\n/* Badge styling */\n.badge[data-v-6aec98ba] {\n  font-size: 0.75rem;\n  font-weight: 600;\n  padding: 0.375rem 0.5rem;\n  border-radius: 0.25rem;\n}\n\n/* Star ratings */\n.ci-star[data-v-6aec98ba] {\n  font-size: 0.875rem;\n}\n\n/* Dropdown customization for mobile */\n.dropdown-menu[data-v-6aec98ba] {\n  --bs-dropdown-border-radius: 0.5rem;\n  --bs-dropdown-box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);\n}\n\n/* Image container improvements */\n.ratio-1x1[data-v-6aec98ba] {\n  --bs-aspect-ratio: 100%;\n}\n.object-fit-contain[data-v-6aec98ba] {\n  object-fit: contain;\n  width: 100%;\n  height: 100%;\n}\n\n/* Card body adjustments */\n.card-body[data-v-6aec98ba] {\n  padding: 1rem 0.5rem;\n}\n@media (min-width: 768px) {\n.card-body[data-v-6aec98ba] {\n    padding: 1rem;\n}\n}\n", ""]);
 
 // exports
 
