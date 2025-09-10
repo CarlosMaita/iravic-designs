@@ -16,8 +16,6 @@ class CustomerRequest extends FormRequest
     {
         return [
             'dni.required' => 'El campo C.I es obligatorio.',
-            'dni.min' => 'El campo C.I debe ser mayor a :min caracteres',
-            'dni.max' => 'El campo C.I debe ser menor a :max caracteres',
             'dni.regex' => 'El campo C.I debe contener solo números y puede incluir puntos y guiones.',
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El campo nombre debe tener por lo menos :min caracteres.',

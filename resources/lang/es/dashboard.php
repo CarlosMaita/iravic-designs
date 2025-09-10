@@ -125,7 +125,9 @@ return [
                 'telephone'           => 'Teléfono',
                 'total_debt'          => 'Deuda total',
                 'card_front'          => 'Tarjeta Frente',
-                'card_back'           => 'Tarjeta Dorso'
+                'card_back'           => 'Tarjeta Dorso',
+                'shipping_agency'     => 'Agencia de envío',
+                'shipping_agency_address' => 'Dirección de la agencia',
             ],
             'base_categories' => [ 
                 'name' => 'Nombre',
@@ -214,6 +216,8 @@ return [
             'customer_personal_info' => 'Información Personal',
             'customer_selected' => 'Información Cliente Seleccionado',
             'Complete each step until you reach the end' => 'Complete cada paso hasta llegar al final'
+            'customer_shipping_info' => 'Información de Envío del Cliente',
+
         ]
     ],
     'general' => [
