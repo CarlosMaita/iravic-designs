@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\Auth\CustomerLoginController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
@@ -168,6 +169,24 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         Route::resource('permisos', 'PermissionController')->only('index');
         #
         Route::resource('roles', 'RoleController')->except('show');
+    });
+
+    // Debug route for testing authorization
+    Route::get('debug-auth', function () {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Not authenticated']);
+        }
+        
+        return response()->json([
+            'user' => $user->name,
+            'roles' => $user->roles->pluck('name'),
+            'permissions' => $user->permissions(),
+            'can_view_customer' => $user->can('viewAny', App\Models\Customer::class),
+            'can_view_order' => Gate::allows('view-order'),
+            'has_view_customer_permission' => $user->permissions()->contains('view-customer'),
+            'has_view_order_permission' => $user->permissions()->contains('view-order'),
+        ]);
     });
 
   
