@@ -17,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(\App\Services\ExchangeRateService::class, function ($app) {
+            return new \App\Services\ExchangeRateService();
+        });
     }
 
     /**
@@ -33,5 +35,11 @@ class AppServiceProvider extends ServiceProvider
         $url = $request->getPathInfo() . ($request->getQueryString() ? '?' . $request->getQueryString() : '');
         View::share('menuService', $menuService);
         View::share('url', $url);
+
+        // Register exchange rate view composer for ecommerce views
+        View::composer([
+            'ecommerce.*',
+            'dashboard.config.exchange-rate.*'
+        ], \App\Http\View\Composers\ExchangeRateComposer::class);
     }
 }

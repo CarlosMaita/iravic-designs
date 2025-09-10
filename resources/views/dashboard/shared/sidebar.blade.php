@@ -138,6 +138,7 @@
             $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
             $menuService->isActive($url,"/admin/config/permisos", false, true) . " " . 
             $menuService->isActive($url,"/admin/config/general", false, true) . " " .
+            $menuService->isActive($url,"/admin/config/tasa-cambio", false, true) . " " .
             $menuService->isActive($url,"/admin/banners", false, true) . " " .
             $menuService->isActive($url,"/admin/ofertas-especiales", false, true)
         }}">
@@ -146,6 +147,14 @@
                 @can('viewany', App\Models\Config::class)
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/general")}}" href="{{ route('general.index') }}"></span>{{ __('dashboard.sidebar.general') }}</a>
+                    </li>
+                @endcan
+                {{-- Exchange Rate --}}
+                @can('viewany', App\Models\Config::class)
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/tasa-cambio")}}" href="{{ route('admin.exchange-rate.index') }}">
+                            <span class="c-sidebar-nav-icon"></span> Tasa de Cambio
+                        </a>
                     </li>
                 @endcan
                 {{-- Banner CRUD --}}

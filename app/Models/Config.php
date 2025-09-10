@@ -38,7 +38,9 @@ class Config extends Model
     public static function defaultConfig($key)
     {
         $keys = [
-            "discount_password" => '123456'
+            "discount_password" => '123456',
+            "usd_to_ves_rate" => '36.50',
+            "usd_to_ves_rate_last_update" => ''
         ];
 
         if (array_key_exists($key, $keys)) {
