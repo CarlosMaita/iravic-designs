@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\admin\customers;
 
 use App\Constants\CustomerConstants;
-use App\Constants\FrequencyCollectionConstants;
 use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\CustomerRequest;
 use App\Models\Customer;
 use App\Repositories\Eloquent\CustomerRepository;
-use App\Services\Images\ImageService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,10 +75,8 @@ class CustomerController extends Controller
     public function create()
     {
         $this->authorize('create', 'App\Models\Customer');
-        $frequencyOptions = FrequencyCollectionConstants::FREQUENCY_COLLECTION_OPTIONS;
         return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
-                ->withFrequencyOptions($frequencyOptions)
                 ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
 
@@ -97,29 +93,16 @@ class CustomerController extends Controller
             DB::beginTransaction();
             
             $attributes = array_merge(
-                array('address_picture' => ImageService::save(Customer::DISK_ADDRESS, $request->file('address_picture'))),
-                array('dni_picture'     => ImageService::save(Customer::DISK_DNI, $request->file('dni_picture'))),
-                array('receipt_picture' => ImageService::save(Customer::DISK_RECEIPT, $request->file('receipt_picture'))),
-                array('card_front'      => ImageService::save(Customer::CARD, $request->file('card_front'))),
-                array('card_back'       => ImageService::save(Customer::CARD, $request->file('card_back'))),
                 array('username'        => FormatHelper::formatDniNumber($request->dni)),
                 array('password'        => bcrypt('12345')),
                 $request->only( 
-                    'address',
-                    'cellphone',
-                    'contact_name',
-                    'contact_telephone',
-                    'contact_dni',
-                    'dni',
-                    'latitude',
-                    'longitude',
-                    'max_credit',
-                    'collection_day',
-                    'collection_frequency',
                     'name',
                     'email',
+                    'dni',
+                    'cellphone',
                     'qualification',
-                    'telephone'
+                    'shipping_agency',
+                    'shipping_agency_address'
                 )
             );
 
@@ -175,7 +158,7 @@ class CustomerController extends Controller
         }
         $this->authorize('view', $customer);
         $orders = $customer->orders()->orderBy('date', 'desc')->get();
-        $refunds = $customer->refunds()->orderBy('date', 'desc')->get();
+        $refunds = collect(); // Empty collection since refunds functionality was removed
         $showOrdersTab = isset($request->pedidos) ? true : false;
         $showRefundsTab = isset($request->devoluciones) ? true : false;
         $planningCollection = $customer->getPlanningCollection();
@@ -216,31 +199,16 @@ class CustomerController extends Controller
             $this->authorize('update', $cliente);
             DB::beginTransaction();
             
-            $attributes = array_merge(
-                array('address_picture' => $cliente->updateImage(Customer::DISK_ADDRESS, $cliente->address_picture, $request->address_picture, $request->delete_address_picture)),
-                array('dni_picture' => $cliente->updateImage(Customer::DISK_DNI, $cliente->dni_picture, $request->dni_picture, $request->delete_dni_picture)),
-                array('receipt_picture' => $cliente->updateImage(Customer::DISK_RECEIPT, $cliente->receipt_picture, $request->receipt_picture, 
-                $request->delete_receipt_picture)),
-                array('card_front'     => $cliente->updateImage(Customer::CARD, $cliente->card_front, $request->card_front, $request->delete_card_front)),
-                array('card_back'       => $cliente->updateImage(Customer::CARD, $cliente->card_back, $request->card_back, $request->delete_card_back)),
-                $request->only(
-                    'address',
-                    'cellphone',
-                    'contact_name',
-                    'contact_telephone', 
-                    'contact_dni', 
-                    'dni', 
-                    'latitude', 
-                    'longitude', 
-                    'max_credit',
-                    'collection_day',
-                    'collection_frequency', 
-                    'name', 
-                    'email', 
-                    'qualification', 
-                    'telephone'
-                )
+            $attributes = $request->only(
+                'name',
+                'email',
+                'dni',
+                'cellphone',
+                'qualification',
+                'shipping_agency',
+                'shipping_agency_address'
             );
+            
             $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();
             flash("El cliente <b>$request->name</b> ha sido actualizado con éxito")->success();

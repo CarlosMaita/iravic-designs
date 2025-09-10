@@ -18,41 +18,18 @@ class Customer extends Authenticatable
     protected $table = 'customers';
 
     protected $fillable = [
-        'address',
-        'address_picture',
-        'contact_name',
-        'contact_telephone',
-        'contact_dni',
-        'dni',
-        'dni_picture',
-        'latitude',
-        'longitude',
-        'max_credit',
         'name',
         'email',
-        'receipt_picture',
-        'card_front',
-        'card_back',
-        'qualification',
-        'telephone',
+        'dni', 
         'cellphone',
-        'solvency_date',
-        'collection_frequency',
-        'collection_day',
-        'password',
+        'qualification',
         'username',
+        'password',
         'shipping_agency',
         'shipping_agency_address',
     ];
 
     protected $appends = [
-        'date_next_visit',
-        'max_credit_str',
-        'url_address',
-        'url_dni',
-        'url_receipt',
-        'url_card_front',
-        'url_card_back',
         'whatsapp_number',
     ];
 
@@ -75,25 +52,12 @@ class Customer extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    const DISK_ADDRESS = 'customers_address';
-
-    const DISK_DNI = 'customers_dni';
-
-    const DISK_RECEIPT = 'customers_receipt';
-
-    const CARD = 'cards';
-
     # Boot
     protected static function boot()
     {
         parent::boot();
 
-        # Cuando se elimina un cliente, se eliminan sus imagenes
-        Customer::deleting(function ($model) {
-            ImageService::delete($model::DISK_DNI, $model->dni_picture);
-            ImageService::delete($model::DISK_RECEIPT, $model->receipt_picture);
-            ImageService::delete($model::DISK_ADDRESS, $model->address_picture);
-        });
+        # Clean up functionality removed since related images no longer exist
     }
 
     # Relationships
@@ -102,94 +66,11 @@ class Customer extends Authenticatable
     # Attributes
 
     /**
-     * Retorna en formato moneda, el credito maximo otorgado al cliente
-     */
-    public function getMaxCreditStrAttribute()
-    {
-        if ($this->max_credit) {
-            return FormatHelper::formatCurrency($this->max_credit);
-        }
-        return FormatHelper::formatCurrency(0);
-    }
-
-     /**
-     * Retorna en formato moneda, el credito disponible del cliente
-     */
-    public function getAvailableCreditStrAttribute()
-    {
-        // Sales functionality removed - always return available credit as max credit
-        $available_credit = $this->max_credit > 0 ? $this->max_credit : 0;
-        return FormatHelper::formatCurrency($available_credit);
-    }
-
-    /**
      * Retorna la fecha de la proxima visita - DEPRECATED (scheduling module removed)
      */
     public function getDateNextVisitAttribute()
     {
         return null;
-    }
-
-
-
-    /**
-     * Retorna url de imagen de direccion
-     */
-    public function getUrlAddressAttribute()
-    {
-        if ($this->address_picture && Storage::disk(self::DISK_ADDRESS)->exists($this->address_picture)) {
-            return Storage::disk(self::DISK_ADDRESS)->url($this->address_picture);
-        }
-
-        return url("/img/no_image.jpg");
-    }
-
-    /**
-     * Retorna url de imagen de DNI
-     */
-    public function getUrlDniAttribute()
-    {
-        if ($this->dni_picture && Storage::disk(self::DISK_DNI)->exists($this->dni_picture)) {
-            return Storage::disk(self::DISK_DNI)->url($this->dni_picture);
-        }
-
-        return url("/img/no_image.jpg");
-    }
-
-    /**
-     * Retorna URL del recibo
-     */
-    public function getUrlReceiptAttribute()
-    {
-        if ($this->receipt_picture && Storage::disk(self::DISK_RECEIPT)->exists($this->receipt_picture)) {
-            return Storage::disk(self::DISK_RECEIPT)->url($this->receipt_picture);
-        }
-
-        return url("/img/no_image.jpg");
-    }
-
-    /**
-     * Retorna URL del recibo
-     */
-    public function getUrlCardFrontAttribute()
-    {
-        if ($this->card_front && Storage::disk(self::CARD)->exists($this->card_front)) {
-            return Storage::disk(self::CARD)->url($this->card_front);
-        }
-
-        return url("/img/no_image.jpg");
-    }
-
-    /**
-     * Retorna URL del recibo
-     */
-    public function getUrlCardBackAttribute()
-    {
-        if ($this->card_back && Storage::disk(self::CARD)->exists($this->card_back)) {
-            return Storage::disk(self::CARD)->url($this->card_back);
-        }
-
-        return url("/img/no_image.jpg");
     }
 
 
@@ -221,27 +102,6 @@ class Customer extends Authenticatable
     }
 
     # Methods
-    /**
-     * Procesa imagenes, borra si tenia una anterior (e.g DNI o Recibo)
-     */
-    public function updateImage($disk, $old_image, $new_file, $delete)
-    {
-        $url = null;
-
-        if ($delete || $new_file) {
-            ImageService::delete($disk, $old_image);
-        }
-
-        if ($new_file) {
-            $url = ImageService::save($disk, $new_file);
-        } else {
-            $url = $old_image;
-        }
-
-        return $url;
-    }
-
-   
 
     /**
      * Retorna balance del cliente
