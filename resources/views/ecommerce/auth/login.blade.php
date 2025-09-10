@@ -13,148 +13,93 @@
 <meta property="og:locale" content="es_ES">
 @endsection
 
-@push('css')
-  <style>
-    .login-container {
-      max-width: 440px;
-      width: 100%;
-    }
-    .login-card {
-      border: none;
-      box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
-      border-radius: 1rem;
-    }
-    .login-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 2rem;
-      border-radius: 1rem 1rem 0 0;
-      text-align: center;
-    }
-    .login-body {
-      padding: 2rem;
-    }
-    .form-control {
-      border-radius: 0.5rem;
-      border: 1px solid #e1e5e9;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-    }
-    .form-control:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-    }
-    .btn-login {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.75rem 2rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    .btn-login:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0.5rem 1rem rgba(102, 126, 234, 0.3);
-    }
-    .input-group-text {
-      background: transparent;
-      border: 1px solid #e1e5e9;
-      border-right: none;
-      border-radius: 0.5rem 0 0 0.5rem;
-      color: #6c757d;
-    }
-    .input-group .form-control {
-      border-left: none;
-      border-radius: 0 0.5rem 0.5rem 0;
-    }
-    .form-check-input:checked {
-      background-color: #667eea;
-      border-color: #667eea;
-    }
-  </style>
-@endpush
-
 @section('content')
-    <div class="login-container">
-      <!-- Logo Section -->
-      <div class="text-center mb-4">
-        <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 180px; height: auto;">
-      </div>
+        <!-- Login form + Footer -->
+        <div class="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style="max-width: 416px">
 
-      <!-- Login Card -->
-      <div class="card login-card">
-        <div class="login-header">
-          <h1 class="h4 mb-1">Bienvenido</h1>
-          <p class="mb-0 opacity-75">Ingresa a tu cuenta de cliente</p>
-        </div>
-        <div class="login-body">
-          <form method="POST" action="{{ route('customer.login') }}">
+          <!-- Logo -->
+          <header class="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
+            <a href="{{ route('home') }}" class="navbar-brand pt-0">
+              <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 150px; height: auto;">
+            </a>
+          </header>
+
+          <h1 class="h2 mt-auto">Bienvenido</h1>
+          <div class="nav fs-sm mb-4">
+            ¿No tienes cuenta?
+            <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('customer.register.form') }}">Crear una cuenta</a>
+          </div>
+
+          <!-- Error Messages -->
+          @if(Session::has('message'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ Session::get('message') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          @endif
+
+          <!-- Form -->
+          <form class="needs-validation" method="POST" action="{{ route('customer.login') }}" novalidate>
             @csrf
             
-            <!-- Error Messages -->
-            @if(Session::has('message'))
-              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ Session::get('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            @endif
-
-            <!-- Email Field -->
-            <div class="mb-3">
-              <label for="email" class="form-label">Correo Electrónico</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="ci-user"></i>
-                </span>
-                <input class="form-control" type="email" id="email" placeholder="{{ __('tu@email.com') }}" name="email" value="{{ old('email') }}" required autofocus>
+            <div class="position-relative mb-4">
+              <input type="email" class="form-control form-control-lg" placeholder="Correo Electrónico" name="email" value="{{ old('email') }}" required>
+              <div class="invalid-tooltip bg-transparent py-0">¡Ingresa una dirección de correo válida!</div>
+            </div>
+            <div class="mb-4">
+              <div class="password-toggle">
+                <input type="password" class="form-control form-control-lg" placeholder="Contraseña" name="password" required>
+                <div class="invalid-tooltip bg-transparent py-0">¡La contraseña es incorrecta!</div>
+                <label class="password-toggle-button fs-lg" aria-label="Mostrar/ocultar contraseña">
+                  <input type="checkbox" class="btn-check">
+                </label>
               </div>
             </div>
-
-            <!-- Password Field -->
-            <div class="mb-3">
-              <label for="password" class="form-label">Contraseña</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="ci-locked"></i>
-                </span>
-                <input class="form-control" type="password" id="password" placeholder="{{ __('Password') }}" name="password" required>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <div class="form-check me-2">
+                <input type="checkbox" class="form-check-input" id="remember-30" name="remember_me" value="1">
+                <label for="remember-30" class="form-check-label">Recordar por 30 días</label>
               </div>
-            </div>
-
-            <!-- Remember Me Checkbox -->
-            <div class="form-check mb-4">
-              <input class="form-check-input" type="checkbox" value="1" id="remember_me" name="remember_me">
-              <label class="form-check-label" for="remember_me">
-                {{ __('Remember Me') }}
-              </label>
-            </div>
-
-            <!-- Login Button -->
-            <button class="btn btn-primary btn-login w-100 mb-3" type="submit">
-              <i class="ci-sign-in me-2"></i>{{ __('Login') }}
-            </button>
-
-            <!-- Forgot Password Link -->
-            <div class="text-center mb-2">
-              <a href="{{ route('password.request') }}" class="text-decoration-none">
-                {{ __('Forgot Your Password?') }}
-              </a>
-            </div>
-
-            <!-- Registration Link -->
-            <div class="text-center">
-              <p class="mb-0">¿No tienes cuenta? 
-                <a href="{{ route('customer.register.form') }}" class="text-decoration-none fw-bold">
-                  Regístrate
+              <div class="nav">
+                <a class="nav-link animate-underline p-0" href="{{ route('password.request') }}">
+                  <span class="animate-target">¿Olvidaste tu contraseña?</span>
                 </a>
-              </p>
+              </div>
             </div>
+            <button type="submit" class="btn btn-lg btn-primary w-100">Iniciar Sesión</button>
           </form>
+
+          <!-- Divider -->
+          <div class="d-flex align-items-center my-4">
+            <hr class="w-100 m-0">
+            <span class="text-body-emphasis fw-medium text-nowrap mx-4">o continuar con</span>
+            <hr class="w-100 m-0">
+          </div>
+
+          <!-- Social login -->
+          <div class="d-flex flex-column flex-sm-row gap-3 pb-4 mb-3 mb-lg-4">
+            <button type="button" class="btn btn-lg btn-outline-secondary w-100 px-2">
+              <i class="ci-google ms-1 me-1"></i>
+              Google
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-secondary w-100 px-2">
+              <i class="ci-facebook ms-1 me-1"></i>
+              Facebook
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-secondary w-100 px-2">
+              <i class="ci-apple ms-1 me-1"></i>
+              Apple
+            </button>
+          </div>
+
+          <!-- Footer -->
+          <footer class="mt-auto">
+            <div class="nav mb-4">
+              <a class="nav-link text-decoration-underline p-0" href="#">¿Necesitas ayuda?</a>
+            </div>
+            <p class="fs-xs mb-0">
+              &copy; Todos los derechos reservados. Hecho por <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="{{ route('home') }}" target="_blank" rel="noreferrer">Iravic Designs</a></span>
+            </p>
+          </footer>
         </div>
-      </div>
-    </div>
 @endsection
-
-@push('js')
-
-@endpush

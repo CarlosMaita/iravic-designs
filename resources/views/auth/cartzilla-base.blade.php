@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="light">
+<html lang="es" data-bs-theme="light" data-pwa="true">
 <head>
     <meta charset="utf-8">
+    
+    <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
     
     <!-- SEO Meta Tags -->
@@ -13,7 +15,9 @@
     
     @yield('meta-tags')
     
-    <!-- Favicon -->
+    <!-- Webmanifest + Favicon / App icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="icon" type="image/png" href="{{ asset('assets/cartzilla/app-icons/icon-32x32.png') }}" sizes="32x32">
     <link rel="apple-touch-icon" href="{{ asset('assets/cartzilla/app-icons/icon-180x180.png') }}">
 
@@ -27,20 +31,34 @@
     <link rel="preload" href="{{ asset('assets/cartzilla/icons/cartzilla-icons.woff2')}}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/cartzilla/icons/cartzilla-icons.min.css')}}">
 
-    <!-- Vendor styles -->
-    <link rel="stylesheet" href="{{ asset('assets/cartzilla/vendor/simplebar/dist/simplebar.min.css')}}">
-
     <!-- Bootstrap + Theme styles -->
-    <link rel="stylesheet" href="{{ asset('assets/cartzilla/css/theme.min.css')}}">
+    <link rel="preload" href="{{ asset('assets/cartzilla/css/theme.min.css')}}" as="style">
+    <link rel="stylesheet" href="{{ asset('assets/cartzilla/css/theme.min.css')}}" id="theme-styles">
 
     @stack('css')
 </head>
-<body class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
 
-    @yield('content') 
+<!-- Body -->
+<body>
 
-    <!-- Vendor scripts -->
-    <script src="{{ asset('assets/cartzilla/vendor/simplebar/dist/simplebar.min.js')}}"></script>
+    <!-- Page content -->
+    <main class="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style="max-width: 1920px">
+      <div class="d-lg-flex">
+
+        @yield('content') 
+
+        <!-- Cover image visible on screens > 992px wide (lg breakpoint) -->
+        <div class="d-none d-lg-block w-100 py-4 ms-auto" style="max-width: 1034px">
+          <div class="d-flex flex-column justify-content-end h-100 rounded-5 overflow-hidden">
+            <span class="position-absolute top-0 start-0 w-100 h-100 d-none-dark" style="background: linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)"></span>
+            <span class="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark" style="background: linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)"></span>
+            <div class="ratio position-relative z-2" style="--cz-aspect-ratio: calc(1030 / 1032 * 100%)">
+              <img src="{{ asset('assets/cartzilla/img/account/cover.png') }}" alt="Iravic Designs">
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <!-- Bootstrap + Theme scripts -->
     <script src="{{ asset('assets/cartzilla/js/theme.min.js')}}"></script>
