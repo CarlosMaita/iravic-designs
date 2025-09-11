@@ -35,7 +35,7 @@
             </div>
 
             <!-- Currency Switcher -->
-            <div class="d-flex align-items-center ms-3">
+            <div class="d-flex align-items-center ms-3" data-currency-switcher>
               <span class="text-muted me-2 small">Moneda:</span>
               <div class="btn-group btn-group-sm" role="group" aria-label="Currency switcher">
                 <input type="radio" class="btn-check" name="currency" id="currency-usd" value="USD" checked>
