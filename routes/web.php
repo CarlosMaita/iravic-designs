@@ -17,11 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 
-// Test route for payment cards demonstration
-Route::get('/test-payment-cards', function () {
-    return view('test-payment-cards');
-});
-
 # Sitemap Route
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
