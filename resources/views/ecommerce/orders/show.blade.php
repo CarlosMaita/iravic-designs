@@ -1,5 +1,22 @@
 @extends('ecommerce.base')
 
+@push('styles')
+<style>
+.border-left-warning {
+    border-left: 4px solid #ffc107 !important;
+}
+.border-left-success {
+    border-left: 4px solid #198754 !important;
+}
+.border-left-danger {
+    border-left: 4px solid #dc3545 !important;
+}
+.text-sm {
+    font-size: 0.875rem;
+}
+</style>
+@endpush
+
 @section('content')
 <div class="container py-5">
     <nav aria-label="breadcrumb">
@@ -99,36 +116,59 @@
             @if($order->payments->count() > 0)
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Historial de Pagos</h5>
+                        <h5 class="card-title mb-0">Pagos Reportados</h5>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Método</th>
-                                        <th>Monto</th>
-                                        <th>Estado</th>
-                                        <th>Referencia</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($order->payments as $payment)
-                                        <tr>
-                                            <td>{{ $payment->date->format('d/m/Y H:i') }}</td>
-                                            <td>{{ $payment->payment_method_label }}</td>
-                                            <td>${{ number_format($payment->amount, 2) }}</td>
-                                            <td>
+                        <div class="row">
+                            @foreach($order->payments as $payment)
+                                <div class="col-lg-6 mb-3">
+                                    <div class="card border-left-{{ $payment->status == 'pendiente' ? 'warning' : ($payment->status == 'verificado' ? 'success' : 'danger') }}">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h6 class="card-title mb-0">Pago #{{ $payment->id }}</h6>
                                                 <span class="badge bg-{{ $payment->status == 'pendiente' ? 'warning' : ($payment->status == 'verificado' ? 'success' : 'danger') }}">
                                                     {{ $payment->status_label }}
                                                 </span>
-                                            </td>
-                                            <td>{{ $payment->reference_number ?? 'N/A' }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                            </div>
+                                            
+                                            <div class="row text-sm">
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Monto:</strong></p>
+                                                    <p class="text-primary fw-bold">${{ number_format($payment->amount, 2) }}</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Método:</strong></p>
+                                                    <p class="mb-2">{{ $payment->payment_method_label }}</p>
+                                                </div>
+                                            </div>
+                                            
+                                            @if($payment->reference_number)
+                                                <div class="mb-2">
+                                                    <p class="mb-1"><strong>Referencia:</strong></p>
+                                                    <p class="text-muted">{{ $payment->reference_number }}</p>
+                                                </div>
+                                            @endif
+                                            
+                                            <div class="text-muted">
+                                                <small><i class="ci-calendar me-1"></i>{{ $payment->date->format('d/m/Y H:i') }}</small>
+                                            </div>
+                                            
+                                            @if($payment->comment)
+                                                <div class="mt-2">
+                                                    <p class="mb-1"><strong>Comentario:</strong></p>
+                                                    <p class="text-muted small">{{ $payment->comment }}</p>
+                                                </div>
+                                            @endif
+                                            
+                                            @if($payment->status == 'rechazado')
+                                                <div class="alert alert-warning mt-2 py-2">
+                                                    <small><i class="ci-info-circle me-1"></i>Este pago fue rechazado. Si considera que es un error, por favor contacte a nuestro equipo de soporte.</small>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
