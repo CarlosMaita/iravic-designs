@@ -143,9 +143,7 @@
                     </div>
                     <div class="card-body">
                         <p>Monto pendiente: <strong>${{ number_format($order->remaining_balance, 2) }}</strong></p>
-                        <button class="btn btn-primary w-100" onclick="showPaymentModal()">
-                            Registrar Pago
-                        </button>
+                        <button class="btn btn-primary w-100" onclick="showPaymentModal()">Registrar Pago</button>
                     </div>
                 </div>
             @endif
@@ -156,7 +154,7 @@
                 </div>
                 <div class="card-body">
                     @if($order->canBeCancelled())
-                        <button class="btn btn-danger w-100 mb-2" onclick="cancelOrder()">
+                        <button class="btn btn-danger w-100 mb-2" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
                             <i class="ci-close me-2"></i>Cancelar Orden
                         </button>
                     @endif
@@ -176,130 +174,124 @@
 
 @if($order->canBePaid() && $order->remaining_balance > 0)
 <!-- Payment Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Registrar Pago</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="paymentForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">Monto a Pagar</label>
-                        <input type="number" class="form-control" id="amount" name="amount" min="0.01" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="payment_method" class="form-label">Método de Pago</label>
-                        <select class="form-select" id="payment_method" name="payment_method" required>
-                            <option value="">Seleccione un método</option>
-                            <option value="pago_movil">Pago Móvil</option>
-                            <option value="transferencia">Transferencia</option>
-                            <option value="efectivo">Efectivo</option>
-                        </select>
-                    </div>
-                    <div class="mb-3" id="referenceField" style="display: none;">
-                        <label for="reference_number" class="form-label">Número de Referencia</label>
-                        <input type="text" class="form-control" id="reference_number" name="reference_number">
-                    </div>
-                    <div class="mb-3" id="dateField" style="display: none;">
-                        <label for="mobile_payment_date" class="form-label">Fecha del Pago</label>
-                        <input type="datetime-local" class="form-control" id="mobile_payment_date" name="mobile_payment_date">
-                    </div>
-                    <div class="mb-3">
-                        <label for="comment" class="form-label">Comentarios (Opcional)</label>
-                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Registrar Pago</button>
-                </div>
-            </form>
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModalLabel">Registrar Pago</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="paymentForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="amount" class="form-label">Monto a Pagar</label>
+            <input type="number" class="form-control" id="amount" name="amount" min="0.01" step="0.01" required>
+          </div>
+          <div class="mb-3">
+            <label for="payment_method" class="form-label">Método de Pago</label>
+            <select class="form-select" id="payment_method" name="payment_method" required>
+              <option value="">Seleccione un método</option>
+              <option value="pago_movil">Pago Móvil</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="efectivo">Efectivo</option>
+            </select>
+          </div>
+          <div class="mb-3" id="referenceField" style="display:none;">
+            <label for="reference_number" class="form-label">Número de Referencia</label>
+            <input type="text" class="form-control" id="reference_number" name="reference_number">
+          </div>
+          <div class="mb-3" id="dateField" style="display:none;">
+            <label for="mobile_payment_date" class="form-label">Fecha del Pago</label>
+            <input type="datetime-local" class="form-control" id="mobile_payment_date" name="mobile_payment_date">
+          </div>
+          <div class="mb-3">
+            <label for="comment" class="form-label">Comentarios (Opcional)</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+          </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Registrar Pago</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 @push('scripts')
 <script>
-// Encapsulamos el código para no contaminar el template de Vue y evitar warnings
-(function() {
-    function qs(id) { return document.getElementById(id); }
-
-    window.showPaymentModal = function showPaymentModal() {
-        var modalEl = qs('paymentModal');
-        if (modalEl && window.bootstrap) {
-            new bootstrap.Modal(modalEl).show();
-        }
-    };
-
-    var paymentMethod = qs('payment_method');
-    if (paymentMethod) {
-        paymentMethod.addEventListener('change', function() {
-            var referenceField = qs('referenceField');
-            var dateField = qs('dateField');
-            var refInput = qs('reference_number');
-            var dateInput = qs('mobile_payment_date');
-            var isMobile = this.value === 'pago_movil';
-            if (referenceField) referenceField.style.display = isMobile ? 'block' : 'none';
-            if (dateField) dateField.style.display = isMobile ? 'block' : 'none';
-            if (refInput) refInput.required = isMobile;
-            if (dateInput) dateInput.required = isMobile;
-        });
-    }
-
-    var paymentForm = qs('paymentForm');
-    if (paymentForm) {
-        paymentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var formData = new FormData(paymentForm);
-            var data = Object.fromEntries(formData.entries());
-            fetch('{{ route("customer.orders.add_payment", $order->id) }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(r => r.json())
-            .then(result => {
-                alert(result.message || 'Operación realizada');
-                if (result.success) location.reload();
-            })
-            .catch(err => {
-                console.error('Error:', err);
-                alert('Error al procesar el pago. Intente nuevamente.');
-            });
-        });
-    }
+(function(){
+  function qs(id){ return document.getElementById(id); }
+  window.showPaymentModal = function(){
+    var el = qs('paymentModal');
+    if(el && window.bootstrap){ new bootstrap.Modal(el).show(); }
+  };
+  var methodSel = qs('payment_method');
+  if(methodSel){
+    methodSel.addEventListener('change', function(){
+      var isMobile = this.value === 'pago_movil';
+      var refF = qs('referenceField'); var dateF = qs('dateField');
+      var refI = qs('reference_number'); var dateI = qs('mobile_payment_date');
+      if(refF) refF.style.display = isMobile ? 'block':'none';
+      if(dateF) dateF.style.display = isMobile ? 'block':'none';
+      if(refI) refI.required = isMobile;
+      if(dateI) dateI.required = isMobile;
+    });
+  }
+  var form = qs('paymentForm');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var data = Object.fromEntries(new FormData(form).entries());
+      fetch('{{ route('customer.orders.add_payment', $order->id) }}', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}' },
+        body: JSON.stringify(data)
+      })
+      .then(r=>r.json())
+      .then(res=>{ alert(res.message || 'Operación realizada'); if(res.success) location.reload(); })
+      .catch(err=>{ console.error(err); alert('Error al procesar el pago.'); });
+    });
+  }
 })();
 </script>
 @endpush
 @endif
 
+@if($order->canBeCancelled())
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title" id="cancelOrderModalLabel">Confirmar Cancelación</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body">
+      <p>¿Está seguro que desea cancelar la orden <strong>#{{ $order->id }}</strong>? Esta acción no se puede deshacer.</p>
+      <p class="small text-muted mb-2">Los productos volverán al inventario disponible si corresponde.</p>
+      <div id="cancelOrderFeedback" class="d-none alert" role="alert"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <button type="button" id="confirmCancelBtn" class="btn btn-danger">
+        <span class="default-text">Sí, cancelar</span>
+        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div></div>
+</div>
+
 @push('scripts')
 <script>
-// Cancelar orden (expuesto globalmente para el botón inline)
-window.cancelOrder = function cancelOrder() {
-    if (!confirm('¿Está seguro que desea cancelar esta orden? Esta acción no se puede deshacer.')) return;
-    fetch('{{ route("customer.orders.cancel", $order->id) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    })
-    .then(r => r.json())
-    .then(result => {
-        alert(result.message || 'Operación realizada');
-        if (result.success) location.reload();
-    })
-    .catch(err => {
-        console.error('Error:', err);
-        alert('Error al cancelar la orden. Intente nuevamente.');
-    });
-};
+(function(){
+  var btn = document.getElementById('confirmCancelBtn');
+  if(!btn) return; var fb = document.getElementById('cancelOrderFeedback');
+  function msg(t,m){ if(!fb) return; fb.className='alert alert-'+t; fb.textContent=m; fb.classList.remove('d-none'); }
+  function reset(){ btn.disabled=false; var sp=btn.querySelector('.spinner-border'); var tx=btn.querySelector('.default-text'); if(sp) sp.classList.add('d-none'); if(tx) tx.textContent='Sí, cancelar'; }
+  btn.addEventListener('click', function(){ if(btn.disabled) return; btn.disabled=true; var sp=btn.querySelector('.spinner-border'); var tx=btn.querySelector('.default-text'); if(sp) sp.classList.remove('d-none'); if(tx) tx.textContent='Cancelando...';
+    fetch('{{ route('customer.orders.cancel', $order->id) }}', { method:'POST', headers:{ 'Content-Type':'application/json','Accept':'application/json','X-Requested-With':'XMLHttpRequest','X-CSRF-TOKEN':'{{ csrf_token() }}' }, body: JSON.stringify({_token:'{{ csrf_token() }}'}) })
+    .then(async r=>{ const ct=r.headers.get('Content-Type')||''; let d; try{ d=ct.includes('application/json')?await r.json():{success:r.ok,message:(await r.text()).trim()}; }catch{ d={success:false,message:'Respuesta inválida.'}; } if(d.success){ msg('success', d.message||'Orden cancelada'); setTimeout(()=>location.reload(),600);} else { msg('danger', d.message||'No se pudo cancelar.'); reset(); } })
+    .catch(e=>{ console.error(e); msg('danger','Error al cancelar la orden.'); reset(); });
+  });
+})();
 </script>
 @endpush
+@endif
 @endsection
