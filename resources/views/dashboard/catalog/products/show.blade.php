@@ -437,8 +437,21 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Precio</label>
+                                            <label>Precio (USD)</label>
                                             <input class="form-control" value="{{ $product->regular_price_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Precio (VES)</label>
+                                            <input class="form-control" value="{{ $product->regular_price_ves_str }}" readOnly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tasa de Cambio</label>
+                                            <input class="form-control" value="{{ $rateInfo['formatted_rate'] }} VES por USD" readOnly>
+                                            <small class="text-muted">Última actualización: {{ $rateInfo['last_update_formatted'] }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -578,11 +591,23 @@
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <div class="form-group">
-                                                                <label>Precio</label>
+                                                                <label>Precio (USD)</label>
                                                                 <input class="form-control" value="{{ $product_combination->regular_price_str }}" readOnly>
                                                             </div>
                                                         </div>
-                                                      
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Precio (VES)</label>
+                                                                <input class="form-control" value="{{ $product_combination->regular_price_ves_str }}" readOnly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>Tasa de Cambio</label>
+                                                                <input class="form-control" value="{{ $rateInfo['formatted_rate'] }} VES por USD" readOnly>
+                                                                <small class="text-muted">Última actualización: {{ $rateInfo['last_update_formatted'] }}</small>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     {{-- stores for product NO Regular --}}
