@@ -321,6 +321,123 @@
         
         // Update rate every 5 minutes
         setInterval(updateExchangeRate, 300000);
+        
+        // Enhanced price conversion for Vue components
+        function convertVuePrices(newCurrency) {
+          // Find all elements that look like product prices
+          const priceSelectors = [
+            '.h6', // The price display class in Vue components
+            '[class*="price"]',
+            '[data-price]'
+          ];
+          
+          priceSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(element => {
+              const text = element.textContent.trim();
+              
+              // Check if this looks like a price (starts with $ or contains currency symbols)
+              if (text.match(/^\$[\d,]+\.?\d*$/) || text.match(/^Bs\.?\s*[\d.,]+$/)) {
+                // Extract the numeric value
+                let numericValue = parseFloat(text.replace(/[^\d.]/g, ''));
+                
+                if (!isNaN(numericValue)) {
+                  // Store original USD price if not already stored
+                  if (!element.dataset.originalUsd) {
+                    // If current display is in VES format, convert back to USD first
+                    if (text.includes('Bs.')) {
+                      element.dataset.originalUsd = (numericValue / currencyData.exchangeRate).toFixed(2);
+                    } else {
+                      element.dataset.originalUsd = numericValue.toFixed(2);
+                    }
+                  }
+                  
+                  const originalUsd = parseFloat(element.dataset.originalUsd);
+                  
+                  // Convert and format
+                  let convertedPrice;
+                  if (newCurrency === 'VES') {
+                    convertedPrice = originalUsd * currencyData.exchangeRate;
+                    element.textContent = 'Bs. ' + convertedPrice.toLocaleString('es-VE', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    });
+                  } else {
+                    convertedPrice = originalUsd;
+                    element.textContent = '$' + convertedPrice.toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    });
+                  }
+                }
+              }
+            });
+          });
+        }
+        
+        // Observe for dynamically added Vue content
+        function observeVueContent() {
+          const observer = new MutationObserver((mutations) => {
+            let shouldConvert = false;
+            mutations.forEach((mutation) => {
+              if (mutation.addedNodes.length > 0) {
+                mutation.addedNodes.forEach((node) => {
+                  if (node.nodeType === Node.ELEMENT_NODE) {
+                    // Check if this is likely a product container
+                    if (node.classList && (node.classList.contains('col-6') || node.classList.contains('col-md-4'))) {
+                      shouldConvert = true;
+                    }
+                    // Also check for price elements within added nodes
+                    if (node.querySelector && node.querySelector('.h6')) {
+                      shouldConvert = true;
+                    }
+                  }
+                });
+              }
+            });
+            
+            if (shouldConvert && currentCurrency === 'VES') {
+              setTimeout(() => convertVuePrices(currentCurrency), 100);
+            }
+          });
+          
+          // Start observing
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
+          });
+        }
+        
+        // Enhanced updatePrices function
+        const originalUpdatePrices = updatePrices;
+        updatePrices = function(newCurrency) {
+          currentCurrency = newCurrency;
+          
+          // Store preference in localStorage
+          localStorage.setItem('preferred_currency', newCurrency);
+          
+          // Convert Vue component prices
+          convertVuePrices(newCurrency);
+          
+          // Emit custom event for Vue components to listen to
+          window.dispatchEvent(new CustomEvent('currency-changed', {
+            detail: { 
+              currency: newCurrency,
+              exchangeRate: currencyData.exchangeRate,
+              formatPrice: formatPrice,
+              convertPrice: convertPrice
+            }
+          }));
+        };
+        
+        // Initialize observer for Vue content
+        observeVueContent();
+        
+        // Apply currency conversion on page load if VES is selected
+        setTimeout(() => {
+          if (currentCurrency === 'VES') {
+            convertVuePrices('VES');
+          }
+        }, 1000);
       });
     </script>
 
