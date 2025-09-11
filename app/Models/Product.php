@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\ProductStockChanged;
 use App\Helpers\FormatHelper;
+use App\Helpers\CurrencyHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,8 @@ class Product extends Model
         'real_code',
         'regular_price',
         'regular_price_str',
+        'regular_price_ves',
+        'regular_price_ves_str',
         'stock_total'
     ];
 
@@ -177,6 +180,22 @@ class Product extends Model
     public function getRegularPriceStrAttribute()
     {
         return  FormatHelper::formatCurrency($this->regular_price);
+    }
+
+    /**
+     * Retorna el precio del producto en VES usando la tasa de cambio actual
+     */
+    public function getRegularPriceVesAttribute()
+    {
+        return CurrencyHelper::convertToVES($this->regular_price);
+    }
+
+    /**
+     * Retorna en formato moneda VES, el precio del producto convertido usando la tasa de cambio actual
+     */
+    public function getRegularPriceVesStrAttribute()
+    {
+        return CurrencyHelper::formatPrice($this->regular_price_ves, 'VES');
     }
 
     /**

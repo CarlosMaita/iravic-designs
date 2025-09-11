@@ -14,6 +14,7 @@ use App\Repositories\Eloquent\BrandRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\StoreRepository;
+use App\Services\ExchangeRateService;
 use App\TypeSize;
 use Dompdf\Dompdf;
 use Exception;
@@ -33,12 +34,15 @@ class ProductController extends Controller
 
     public $storeRepository;
 
-    public function __construct(BrandRepository $brandRepository, CategoryRepository $categoryRepository, ProductRepository $productRepository, StoreRepository $storeRepository)
+    public $exchangeRateService;
+
+    public function __construct(BrandRepository $brandRepository, CategoryRepository $categoryRepository, ProductRepository $productRepository, StoreRepository $storeRepository, ExchangeRateService $exchangeRateService)
     {
         $this->brandRepository = $brandRepository;
         $this->categoryRepository = $categoryRepository;
         $this->productRepository = $productRepository;
         $this->storeRepository = $storeRepository;
+        $this->exchangeRateService = $exchangeRateService;
     }
 
     /**
@@ -170,6 +174,10 @@ class ProductController extends Controller
     {
         $this->authorize('view', $producto);
         $stores = Store::all();
+        
+        // Get exchange rate information
+        $rateInfo = $this->exchangeRateService->getRateInfo();
+        
         if ($request->ajax()) {
             $producto->load('brand', 'category', 'color', 'size', 'stores');
 
@@ -182,7 +190,8 @@ class ProductController extends Controller
 
         return view('dashboard.catalog.products.show')
                 ->withProduct($producto)
-                ->withStores($stores);
+                ->withStores($stores)
+                ->withRateInfo($rateInfo);
     }
 
     /**
