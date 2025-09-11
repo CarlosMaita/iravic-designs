@@ -26,8 +26,9 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'is_regular' => $this->is_regular,
+            'regular_price' => $this->regular_price,
             'regular_price_str' => $this->regular_price_str,
-            'url_detail' => route('ecommerce.product.detail', $this->slug),
+            'url_detail' => $this->slug ? route('ecommerce.product.detail', $this->slug) : '#',
             'url_thumbnail' => self::getUrlThumbnailProduct($this->images),
         ];
 
