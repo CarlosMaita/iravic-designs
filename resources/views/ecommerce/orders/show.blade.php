@@ -220,83 +220,86 @@
     </div>
 </div>
 
+@push('scripts')
 <script>
-function showPaymentModal() {
-    new bootstrap.Modal(document.getElementById('paymentModal')).show();
-}
+// Encapsulamos el código para no contaminar el template de Vue y evitar warnings
+(function() {
+    function qs(id) { return document.getElementById(id); }
 
-document.getElementById('payment_method').addEventListener('change', function() {
-    const referenceField = document.getElementById('referenceField');
-    const dateField = document.getElementById('dateField');
-    
-    if (this.value === 'pago_movil') {
-        referenceField.style.display = 'block';
-        dateField.style.display = 'block';
-        document.getElementById('reference_number').required = true;
-        document.getElementById('mobile_payment_date').required = true;
-    } else {
-        referenceField.style.display = 'none';
-        dateField.style.display = 'none';
-        document.getElementById('reference_number').required = false;
-        document.getElementById('mobile_payment_date').required = false;
+    window.showPaymentModal = function showPaymentModal() {
+        var modalEl = qs('paymentModal');
+        if (modalEl && window.bootstrap) {
+            new bootstrap.Modal(modalEl).show();
+        }
+    };
+
+    var paymentMethod = qs('payment_method');
+    if (paymentMethod) {
+        paymentMethod.addEventListener('change', function() {
+            var referenceField = qs('referenceField');
+            var dateField = qs('dateField');
+            var refInput = qs('reference_number');
+            var dateInput = qs('mobile_payment_date');
+            var isMobile = this.value === 'pago_movil';
+            if (referenceField) referenceField.style.display = isMobile ? 'block' : 'none';
+            if (dateField) dateField.style.display = isMobile ? 'block' : 'none';
+            if (refInput) refInput.required = isMobile;
+            if (dateInput) dateInput.required = isMobile;
+        });
     }
-});
 
-document.getElementById('paymentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
-    
-    fetch('{{ route("customer.orders.add_payment", $order->id) }}', {
+    var paymentForm = qs('paymentForm');
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(paymentForm);
+            var data = Object.fromEntries(formData.entries());
+            fetch('{{ route("customer.orders.add_payment", $order->id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(result => {
+                alert(result.message || 'Operación realizada');
+                if (result.success) location.reload();
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Error al procesar el pago. Intente nuevamente.');
+            });
+        });
+    }
+})();
+</script>
+@endpush
+@endif
+
+@push('scripts')
+<script>
+// Cancelar orden (expuesto globalmente para el botón inline)
+window.cancelOrder = function cancelOrder() {
+    if (!confirm('¿Está seguro que desea cancelar esta orden? Esta acción no se puede deshacer.')) return;
+    fetch('{{ route("customer.orders.cancel", $order->id) }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            alert(result.message);
-            location.reload();
-        } else {
-            alert(result.message);
         }
     })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al procesar el pago. Intente nuevamente.');
+    .then(r => r.json())
+    .then(result => {
+        alert(result.message || 'Operación realizada');
+        if (result.success) location.reload();
+    })
+    .catch(err => {
+        console.error('Error:', err);
+        alert('Error al cancelar la orden. Intente nuevamente.');
     });
-});
+};
 </script>
-@endif
-
-<script>
-function cancelOrder() {
-    if (confirm('¿Está seguro que desea cancelar esta orden? Esta acción no se puede deshacer.')) {
-        fetch('{{ route("customer.orders.cancel", $order->id) }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                alert(result.message);
-                location.reload();
-            } else {
-                alert(result.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al cancelar la orden. Intente nuevamente.');
-        });
-    }
-}
-</script>
+@endpush
 @endsection
