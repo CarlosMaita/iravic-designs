@@ -187,7 +187,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Monto a Pagar</label>
-                        <input type="number" class="form-control" id="amount" name="amount" min="0.01" max="{{ $order->remaining_balance }}" step="0.01" required>
+                        <input type="number" class="form-control" id="amount" name="amount" min="0.01" step="0.01" required>
                     </div>
                     <div class="mb-3">
                         <label for="payment_method" class="form-label">Método de Pago</label>
