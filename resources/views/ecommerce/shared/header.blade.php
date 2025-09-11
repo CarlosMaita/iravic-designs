@@ -35,16 +35,7 @@
             </div>
 
             <!-- Currency Switcher -->
-            <div class="d-flex align-items-center ms-3" data-currency-switcher>
-              <span class="text-muted me-2 small">Moneda:</span>
-              <div class="btn-group btn-group-sm" role="group" aria-label="Currency switcher">
-                <input type="radio" class="btn-check" name="currency" id="currency-usd" value="USD" checked>
-                <label class="btn btn-outline-secondary" for="currency-usd">USD</label>
-                
-                <input type="radio" class="btn-check" name="currency" id="currency-ves" value="VES">
-                <label class="btn btn-outline-secondary" for="currency-ves">VES</label>
-              </div>
-            </div>
+            <currency-switcher-component></currency-switcher-component>
           </div>
 
           
@@ -67,7 +58,8 @@
         <!-- Button group -->
         <div class="d-flex align-items-center">
 
-
+            <!-- Currency Switcher Button (Mobile) -->
+            <currency-switcher-component class="me-2"></currency-switcher-component>
 
             <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
           <button  type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar" >

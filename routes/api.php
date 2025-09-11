@@ -23,3 +23,6 @@ Route::prefix('currency')->group(function () {
     Route::post('/convert', 'App\Http\Controllers\Api\CurrencyController@convertPrice');
     Route::post('/both-prices', 'App\Http\Controllers\Api\CurrencyController@getBothPrices');
 });
+
+// Direct exchange rate endpoint for frontend components
+Route::get('/exchange-rate', 'App\Http\Controllers\Api\CurrencyController@getExchangeRate');
