@@ -26,10 +26,38 @@
                         <div class="col-md-6">
                             <h6>Información General</h6>
                             <p class="mb-1"><strong>Fecha:</strong> {{ $order->date->format('d/m/Y H:i') }}</p>
-                            <p class="mb-1"><strong>Total:</strong> ${{ number_format($order->total, 2) }}</p>
-                            <p class="mb-1"><strong>Pagado:</strong> ${{ number_format($order->total_paid, 2) }}</p>
+                            
+                            @php
+                                $prices = $order->getPricesBothCurrencies();
+                            @endphp
+                            
+                            <p class="mb-1">
+                                <strong>Total:</strong> 
+                                <span id="order-total-display">{{ $prices['usd']['formatted'] }}</span>
+                                <small class="text-muted d-none" id="order-total-ves">
+                                    ({{ $prices['ves']['formatted'] }})
+                                </small>
+                            </p>
+                            
+                            <p class="mb-1">
+                                <strong>Pagado:</strong> 
+                                <span data-usd-price="{{ $order->total_paid }}">${{ number_format($order->total_paid, 2) }}</span>
+                            </p>
+                            
                             @if($order->remaining_balance > 0)
-                                <p class="mb-1"><strong>Pendiente:</strong> ${{ number_format($order->remaining_balance, 2) }}</p>
+                                <p class="mb-1">
+                                    <strong>Pendiente:</strong> 
+                                    <span data-usd-price="{{ $order->remaining_balance }}">${{ number_format($order->remaining_balance, 2) }}</span>
+                                </p>
+                            @endif
+                            
+                            @if($order->exchange_rate)
+                                <p class="mb-1">
+                                    <small class="text-muted">
+                                        <strong>Tasa usada:</strong> {{ number_format($order->exchange_rate, 4, ',', '.') }} Bs/$
+                                        <br><em>{{ $order->isPaid() ? 'Tasa al momento del pago' : 'Tasa actual' }}</em>
+                                    </small>
+                                </p>
                             @endif
                         </div>
                         <div class="col-md-6">
@@ -280,6 +308,45 @@
 
 @push('scripts')
 <script>
+// Currency switching for order details
+(function() {
+    const exchangeRate = {{ $order->getEffectiveExchangeRate() }};
+    const orderTotal = {{ $order->total }};
+    const vesTotal = orderTotal * exchangeRate;
+    
+    function updateOrderCurrencyDisplay() {
+        const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+        const totalDisplay = document.getElementById('order-total-display');
+        const vesDisplay = document.getElementById('order-total-ves');
+        
+        if (totalDisplay && vesDisplay) {
+            if (currentCurrency === 'VES') {
+                totalDisplay.textContent = 'Bs. ' + formatNumber(vesTotal);
+                vesDisplay.textContent = '($' + formatNumber(orderTotal) + ')';
+                vesDisplay.classList.remove('d-none');
+            } else {
+                totalDisplay.textContent = '$' + formatNumber(orderTotal);
+                vesDisplay.textContent = '(Bs. ' + formatNumber(vesTotal) + ')';
+                vesDisplay.classList.remove('d-none');
+            }
+        }
+    }
+    
+    function formatNumber(number) {
+        return new Intl.NumberFormat('es-VE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(number);
+    }
+    
+    // Listen for currency changes
+    window.addEventListener('currency-changed', updateOrderCurrencyDisplay);
+    
+    // Initial load
+    document.addEventListener('DOMContentLoaded', updateOrderCurrencyDisplay);
+})();
+
+@if($order->canBeCancelled())
 (function(){
   var btn = document.getElementById('confirmCancelBtn');
   if(!btn) return; var fb = document.getElementById('cancelOrderFeedback');
@@ -291,7 +358,7 @@
     .catch(e=>{ console.error(e); msg('danger','Error al cancelar la orden.'); reset(); });
   });
 })();
+@endif
 </script>
 @endpush
-@endif
 @endsection

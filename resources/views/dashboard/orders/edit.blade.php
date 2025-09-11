@@ -31,6 +31,34 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group" id="exchange-rate-group" style="{{ $order->status == 'pagada' || old('status') == 'pagada' ? '' : 'display: none;' }}">
+                                            <label for="exchange_rate">Tasa de Cambio (VES por USD)</label>
+                                            <div class="input-group">
+                                                <input type="number" 
+                                                       name="exchange_rate" 
+                                                       id="exchange_rate" 
+                                                       class="form-control @error('exchange_rate') is-invalid @enderror"
+                                                       value="{{ old('exchange_rate', $order->exchange_rate ?: \App\Helpers\CurrencyHelper::getCurrentExchangeRate()) }}"
+                                                       step="0.0001"
+                                                       min="0"
+                                                       placeholder="Ej: 365.2500">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">Bs/$</span>
+                                                </div>
+                                            </div>
+                                            <small class="form-text text-muted">
+                                                Tasa de cambio utilizada al momento del pago. 
+                                                <span id="current-rate">Tasa actual: {{ number_format(\App\Helpers\CurrencyHelper::getCurrentExchangeRate(), 4, ',', '.') }} Bs/$</span>
+                                            </small>
+                                            @error('exchange_rate')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="shipping_agency">Agencia de Envío</label>
                                             <select name="shipping_agency" id="shipping_agency" class="form-control @error('shipping_agency') is-invalid @enderror">
@@ -46,6 +74,7 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
                                 </div>
                                 
                                 <div class="row">
@@ -81,3 +110,30 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const statusSelect = document.getElementById('status');
+    const exchangeRateGroup = document.getElementById('exchange-rate-group');
+    const exchangeRateInput = document.getElementById('exchange_rate');
+    
+    function toggleExchangeRateField() {
+        const selectedStatus = statusSelect.value;
+        if (selectedStatus === 'pagada') {
+            exchangeRateGroup.style.display = 'block';
+            exchangeRateInput.required = true;
+        } else {
+            exchangeRateGroup.style.display = 'none';
+            exchangeRateInput.required = false;
+        }
+    }
+    
+    // Initial check
+    toggleExchangeRateField();
+    
+    // Listen for status changes
+    statusSelect.addEventListener('change', toggleExchangeRateField);
+});
+</script>
+@endpush
