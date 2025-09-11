@@ -9,7 +9,7 @@
     
         <!-- Price -->
         <div class="h4 d-flex align-items-center my-4">
-        {{price_str}}
+        {{displayPrice}}
         <!-- <del class="fs-sm fw-normal text-body-tertiary ms-2">$156.00</del> -->
         </div>
 
@@ -160,20 +160,50 @@
                 // Favorites functionality
                 isFavorite: false,
                 favoriteLoading: false,
-                isAuthenticated: false
+                isAuthenticated: false,
+                currentCurrency: 'USD',
+                exchangeRate: 1
             };
+        },
+        computed: {
+            displayPrice() {
+                const priceValue = this.price || 0;
+                if (this.currentCurrency === 'VES') {
+                    const vesPrice = priceValue * this.exchangeRate;
+                    return 'Bs. ' + vesPrice.toLocaleString('es-VE', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                } else {
+                    return '$' + priceValue.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
+            }
         },
          async mounted() {
             // Set the default combination when the component is mounted
             if (this.combinations && this.combinations.length > 0 && !this.is_regular) {
                 this.selectCombination(this.combinations[0]);
             }
-
             // Set the default stock when the component is mounted
             this.currentStock = this.is_regular ? this.total_stock : 1; // por defecto 1 si es NO regular
-
             // Check authentication status and favorite status
             await this.checkAuthAndFavoriteStatus();
+            // Inicializar moneda y tasa de cambio
+            const savedCurrency = localStorage.getItem('preferred_currency');
+            if (savedCurrency && ['USD', 'VES'].includes(savedCurrency)) {
+                this.currentCurrency = savedCurrency;
+            }
+            if (window.currencyUtils) {
+                this.exchangeRate = window.currencyUtils.exchangeRate || 1;
+                this.currentCurrency = window.currencyUtils.currentCurrency ? window.currencyUtils.currentCurrency() : this.currentCurrency;
+            }
+            window.addEventListener('currency-changed', this.handleCurrencyChange);
+        },
+        beforeUnmount() {
+            window.removeEventListener('currency-changed', this.handleCurrencyChange);
         },
         watch: {
             quantity(newValue) {
@@ -329,7 +359,11 @@
                 } finally {
                     this.favoriteLoading = false;
                 }
-            }
+            },
+            handleCurrencyChange(event) {
+                this.currentCurrency = event.detail.currency;
+                this.exchangeRate = event.detail.exchangeRate;
+            },
         }
     }
 </script>
