@@ -28,7 +28,8 @@ class CustomerPolicy
 
         
 
-        return $user->permissions()->contains('view-customer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-customer');
     }
 
     /**
@@ -50,7 +51,8 @@ class CustomerPolicy
 
         
 
-        return $user->permissions()->contains('view-customer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-customer');
     }
 
     /**
@@ -71,7 +73,8 @@ class CustomerPolicy
 
         
 
-        return $user->permissions()->contains('create-customer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('create-customer');
     }
 
     /**
@@ -93,7 +96,8 @@ class CustomerPolicy
    
         
    
-        return $user->permissions()->contains('update-customer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('update-customer');
     }
 
     /**
@@ -115,7 +119,8 @@ class CustomerPolicy
 
         
 
-        return $user->permissions()->contains('delete-customer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-customer');
     }
 
     /**

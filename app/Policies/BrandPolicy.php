@@ -23,7 +23,8 @@ class BrandPolicy
             return false;
         }
         
-        return $user->permissions()->contains('view-brand');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-brand');
     }
 
     /**
@@ -40,7 +41,8 @@ class BrandPolicy
             return false;
         }
         
-        return $user->permissions()->contains('view-brand');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-brand');
     }
 
     /**
@@ -56,7 +58,8 @@ class BrandPolicy
             return false;
         }
         
-        return $user->permissions()->contains('create-brand');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('create-brand');
     }
 
     /**
@@ -73,7 +76,8 @@ class BrandPolicy
             return false;
         }
         
-        return $user->permissions()->contains('update-brand');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('update-brand');
     }
 
     /**
@@ -90,7 +94,8 @@ class BrandPolicy
             return false;
         }
         
-        return $user->permissions()->contains('delete-brand');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-brand');
     }
 
     /**

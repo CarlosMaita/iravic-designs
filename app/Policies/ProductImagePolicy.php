@@ -28,7 +28,8 @@ class ProductImagePolicy
 
         
 
-        return $user->permissions()->contains('view-products-image');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-products-image');
     }
 
     /**
@@ -50,7 +51,8 @@ class ProductImagePolicy
 
         
 
-        return $user->permissions()->contains('view-products-image');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-products-image');
     }
 
     /**
@@ -95,7 +97,8 @@ class ProductImagePolicy
 
         
 
-        return $user->permissions()->contains('delete-products-image');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-products-image');
     }
 
     /**

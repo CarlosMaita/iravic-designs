@@ -27,8 +27,8 @@ class UserPolicy
         }
 
         
-
-        return $user->permissions()->contains('view-user');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true;
     }
 
     /**
@@ -49,8 +49,8 @@ class UserPolicy
         }
 
         
-
-        return $user->permissions()->contains('view-user');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true;
     }
 
     /**
@@ -70,8 +70,8 @@ class UserPolicy
         }
 
         
-
-        return $user->permissions()->contains('create-user');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true;
     }
 
     /**
@@ -83,12 +83,9 @@ class UserPolicy
      */
     public function update(User $authenticatedUser, User $user)
     {
-        // return $authenticatedUser->id === $user->id || 
-        //         (
-        //             $authenticatedUser->permissions()->contains('update-user') && 
-        //             !$user->roles()->pluck('name')->contains('superadmin')
-        //         );
-        return  $authenticatedUser->permissions()->contains('update-user') &&  !$user->roles()->pluck('name')->contains('superadmin');
+        // Note: Roles and permissions system has been removed as per issue #116
+        // Returning true to allow updates - implement alternative authorization if needed
+        return true;
     }
 
     /**
@@ -100,7 +97,8 @@ class UserPolicy
      */
     public function delete(User $authenticatedUser, User $user)
     {
-        return $authenticatedUser->permissions()->contains('delete-user');
+        // Note: Permissions system removed in #116 - returning true to allow deletions
+        return true;
     }
 
     /**

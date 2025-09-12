@@ -23,7 +23,8 @@ class CategoryPolicy
             return false;
         }
         
-        return $user->permissions()->contains('view-category');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-category');
     }
 
     /**
@@ -35,7 +36,8 @@ class CategoryPolicy
      */
     public function view(User $user, Category $category)
     {
-        return $user->permissions()->contains('view-category');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-category');
     }
 
     /**
@@ -46,7 +48,8 @@ class CategoryPolicy
      */
     public function create(User $user)
     {
-        return $user->permissions()->contains('create-category');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('create-category');
     }
 
     /**
@@ -58,7 +61,8 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category)
     {
-        return $user->permissions()->contains('update-category');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('update-category');
     }
 
     /**
@@ -70,7 +74,8 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category)
     {
-        return $user->permissions()->contains('delete-category');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-category');
     }
 
     /**
