@@ -1,1 +1,0 @@
-<?php // Obsolete file intentionally emptied and scheduled for removal
