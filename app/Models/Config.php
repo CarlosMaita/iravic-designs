@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,39 +14,26 @@ class Config extends Model
         'updated_at'
     ];
 
-    # Methods
     /**
-     * Almacena una config en la BD. Se guarda por Key
+     * Retrieve or create a config by key.
      */
     public static function getConfig($key)
     {
-        $config = Config::where('key', $key)->first();
-
-        if (!$config) {
-            $config = Config::create([
-                'key'=>$key,
-                'value'=> Config::defaultConfig(trim($key))
-            ]);
-        }
-
-        return $config;
+        return static::firstOrCreate(
+            ['key' => $key],
+            ['value' => static::defaultConfig(trim($key))]
+        );
     }
 
     /**
-     * Se almacena contrasena predeterminada para descuentos
+     * Default config values.
      */
     public static function defaultConfig($key)
     {
-        $keys = [
+        return [
             "discount_password" => '123456',
             "usd_to_ves_rate" => '36.50',
             "usd_to_ves_rate_last_update" => ''
-        ];
-
-        if (array_key_exists($key, $keys)) {
-            return $keys[$key];
-        }
-
-        return "";
+        ][$key] ?? "";
     }
 }

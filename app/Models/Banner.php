@@ -11,8 +11,6 @@ class Banner extends Model
     use HasFactory;
 
     protected $table = 'banners';
-    #
-    private $filedisk = 'banners';
 
     protected $fillable = [
         'title',
@@ -23,7 +21,7 @@ class Banner extends Model
         'order'
     ];
 
-    public $appends = [
+    protected $appends = [
         'image_url',
     ];
 
@@ -32,14 +30,15 @@ class Banner extends Model
      *
      * @return string
      */
-    // Accesor para obtener la URL de la imagen del banner
     public function getImageUrlAttribute()
     {
-        if(Storage::disk($this->filedisk)->exists($this->image_banner)) {
-             return asset (Storage::disk($this->filedisk)->url($this->image_banner));
+        $disk = 'banners';
+        $image = $this->image_banner;
+
+        if ($image && Storage::disk($disk)->exists($image)) {
+            return asset(Storage::disk($disk)->url($image));
         }
-        // Si no existe la imagen, retornar una imagen por defecto
+
         return asset('images/default-banner.png');
     }
-
 }
