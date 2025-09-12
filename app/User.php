@@ -48,39 +48,4 @@ class User extends Authenticatable
 
     protected $attributes = [
     ];
-
-    // Relations
-    public function roles()
-    {
-        return $this->belongsToMany('App\Models\Role')->withTimestamps();
-    }
-
-    public function permissions()
-    {
-        return $this->roles->map->permissions->flatten()->pluck('name')->unique();
-    }
-
-    # Methods
-    public function assignRole($role)
-    {
-        return $this->roles()->sync($role);
-    }
-
-    /**
-     * Retorna boolean para verificar si el usuario tiene rol de administrador (Incluido superadmin)
-     */
-    public function isAdmin()
-    {
-        $roles_name = $this->roles->flatten()->pluck('name');
-        return $roles_name->contains('superadmin') || $roles_name->contains('admin');
-    }
-
-    /**
-     * Retorna boolean para verificar si el usuario tiene rol de Super Administrador
-     */
-    public function isSuperAdmin()
-    {
-        $roles_name = $this->roles->flatten()->pluck('name');
-        return $roles_name->contains('superadmin') ;
-    }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\admin;
 
-use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,9 +14,7 @@ class UserRequest extends FormRequest
             'name.required' => 'El campo nombre es obligatorio.',
             'password.required' => 'El campo contraseña es obligatorio.',
             'password.min' => 'El campo contraseña debe tener un min :min de caracteres.',
-            'password.confirmed' => 'La confirmación de contraseña no coincide.',
-            'role_id.required' => 'El campo rol es obligatorio.',
-            'role_id.exists' => 'El Rol seleccionado no existe en la Base de Datos.'
+            'password.confirmed' => 'La confirmación de contraseña no coincide.'
         ];
     }
 
@@ -39,8 +36,7 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required',
-            'role_id' => 'required|exists:roles,id'
+            'name' => 'required'
         ];
 
         if ($this->isMethod('POST')) {
@@ -63,8 +59,6 @@ class UserRequest extends FormRequest
     public function withValidator($validator)
     {
         if (!$validator->fails()) {
-            $this->merge(['role' => Role::find($this->role_id)]);
-
             if ($this->isMethod('POST')) {
                 $this->merge(['password' => Hash::make($this->password)]);
                 $this->merge(['deleted_at' => null]);
