@@ -18,11 +18,11 @@
         <div class="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style="max-width: 416px">
 
           <!-- Logo -->
-          <header class="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
+<!--           <header class="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
             <a href="{{ route('ecommerce.home') }}" class="navbar-brand pt-0">
               <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" class="img-fluid" style="max-width: 150px; height: auto;">
             </a>
-          </header>
+          </header> -->
 
           <h1 class="h2 mt-auto">Crear una cuenta</h1>
           <div class="nav fs-sm mb-3 mb-lg-4">
