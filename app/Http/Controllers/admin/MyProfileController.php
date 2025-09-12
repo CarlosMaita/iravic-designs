@@ -26,9 +26,7 @@ class MyProfileController extends Controller
      */
     public function index(Request $request)
     {
-        $customer = Customer::first();
-        $this->authorize('view', $customer);
-        if($request->ajax()){
+        $customer = Customer::first();        if($request->ajax()){
             return response()->json($customer);
         }
         

@@ -42,9 +42,7 @@ class StoreController extends Controller
     }
 
     public function create()
-    {   
-        $this->authorize('create', 'App\Models\Store');
-        $storeTypeList = StoreType::all();
+    {        $storeTypeList = StoreType::all();
         return view('dashboard.stock.stores.create', compact('storeTypeList'));
     }
 
@@ -72,9 +70,7 @@ class StoreController extends Controller
     }
 
     public function edit($id){
-        $store = $this->storeRepository->find($id);
-        $this->authorize('update', $store);
-        $storeTypeList = StoreType::all();
+        $store = $this->storeRepository->find($id);        $storeTypeList = StoreType::all();
         return view('dashboard.stock.stores.edit', compact('store', 'storeTypeList'));
     }
 
@@ -101,9 +97,7 @@ class StoreController extends Controller
 
 
     public function destroy($id){
-        $store = $this->storeRepository->find($id);
-        $this->authorize('delete', $store);
-        $this->storeRepository->delete($id);
+        $store = $this->storeRepository->find($id);        $this->storeRepository->delete($id);
         return response()
         ->json([
             'success' => true, 

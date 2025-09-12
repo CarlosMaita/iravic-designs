@@ -23,9 +23,7 @@ class ProductStockHistoryController extends Controller
      */
 
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Product');
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $history = isset($request->product) 
                         ? $this->productStockHistoryRepository->all($request->only('product', 'store_id')) 
                         : array();

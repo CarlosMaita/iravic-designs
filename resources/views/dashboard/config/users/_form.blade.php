@@ -26,18 +26,3 @@
         </div>
     </div>
 </div>
-<hr>
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <div class="form-group">
-            <label for="role">{{ __('dashboard.form.fields.users.role') }}</label>
-            <select class="form-control" id="role" name="role_id">
-                <option selected disabled>-- Seleccionar --</option>
-                @foreach ($roles as $role) 
-                    <option value="{{ $role->id }}" @if( in_array($role->id, $user->roles()->pluck('role_id')->toArray())) selected @endif>{{ $role->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-</div>

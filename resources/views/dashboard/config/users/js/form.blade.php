@@ -2,8 +2,6 @@
     $(function(){
         const FORM_USERS = $("#form-users");
 
-        $('#role').select2();
-
         /**
          * Captura evento submit de formulario de usuarios
          */

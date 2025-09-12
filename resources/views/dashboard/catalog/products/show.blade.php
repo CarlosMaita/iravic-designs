@@ -492,17 +492,14 @@
                                                                 {{-- Dropdown --}}
                                                                 <div class="dropdown-menu">
                                                                     {{-- Modificar  --}}
-                                                                    @can('update', $product)
-                                                                        <span class="dropdown-item border-bottom modify-stock" 
+                                                                                                                                            <span class="dropdown-item border-bottom modify-stock" 
                                                                         type="button" 
                                                                         data-id="{{ $product->id }}" 
                                                                         data-stock-id = "{{ $store->id }}"
                                                                         data-stock-name = "{{ $store->name }}"
                                                                         data-qty="{{ $store->pivot->stock }}">Modificar</span>
-                                                                    @endcan
-                                                                    {{-- Transferir --}}
-                                                                    @can('create', App\Models\ProductStockTransfer::class)
-                                                                        @if (Auth::user()->isAdmin())
+                                                                                                                                        {{-- Transferir --}}
+                                                                                                                                            @if (Auth::user()->isAdmin())
                                                                             <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                 type="button" 
                                                                                 id="btn_{{ $product->id }}_stock_{{ $store->id }}"
@@ -512,8 +509,7 @@
                                                                                 data-stock="{{ $store->pivot->stock }}">
                                                                             Transferir</span>
                                                                         @endif
-                                                                    @endcan
-                                                                    {{-- Historial --}}
+                                                                                                                                        {{-- Historial --}}
                                                                     <span class="dropdown-item  view-stock-history"
                                                                         type="button"  
                                                                         data-id="{{ $product->id }}"
@@ -624,17 +620,14 @@
                                                                         {{-- Dropdown --}}
                                                                         <div class="dropdown-menu">
                                                                             {{-- Modificar  --}}
-                                                                            @can('update', $product_combination)
-                                                                                <span class="dropdown-item border-bottom modify-stock" 
+                                                                                                                                                            <span class="dropdown-item border-bottom modify-stock" 
                                                                                 type="button" 
                                                                                 data-id="{{ $product_combination->id }}" 
                                                                                 data-stock-id = "{{ $store->id }}"
                                                                                 data-stock-name = "{{ $store->name }}"
                                                                                 data-qty="{{ $store->pivot->stock }}">Modificar</span>
-                                                                            @endcan
-                                                                            {{-- Transferir --}}
-                                                                            @can('create', App\Models\ProductStockTransfer::class)
-                                                                                @if (Auth::user()->isAdmin())
+                                                                                                                                                        {{-- Transferir --}}
+                                                                                                                                                            @if (Auth::user()->isAdmin())
                                                                                     <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                         type="button" 
                                                                                         id="btn_{{ $product_combination->id }}_stock_{{ $store->id }}"
@@ -644,8 +637,7 @@
                                                                                         data-stock="{{ $store->pivot->stock }}">
                                                                                     Transferir</span>
                                                                                 @endif
-                                                                            @endcan
-                                                                            {{-- Historial --}}
+                                                                                                                                                        {{-- Historial --}}
                                                                             <span class="dropdown-item  view-stock-history"
                                                                             type="button"  
                                                                             data-id="{{ $product_combination->id }}" 

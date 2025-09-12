@@ -51,10 +51,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Product');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
             $products = $this->productRepository->onlyPrincipalsQuery($criteria);
             return Datatables::of($products)
@@ -105,9 +102,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $this->authorize('create', 'App\Models\Product');
-        $brands = $this->brandRepository->all();
+    {        $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
         $sizes = Size::all();
@@ -138,9 +133,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        try {
-            $this->authorize('create', 'App\Models\Product');
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
             $this->productRepository->createByRequest($request);
             DB::commit();
             flash("El producto <b>$request->name</b> ha sido creado con éxito")->success();
@@ -171,9 +164,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Product $producto)
-    {
-        $this->authorize('view', $producto);
-        $stores = Store::all();
+    {        $stores = Store::all();
         
         // Get exchange rate information
         $rateInfo = $this->exchangeRateService->getRateInfo();
@@ -201,9 +192,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $producto)
-    {
-        $this->authorize('update', $producto);
-        $producto->load('brand', 'category', 'color', 'images', 'product_combinations.color', 'product_combinations.size', 'size', 'stores');
+    {        $producto->load('brand', 'category', 'color', 'images', 'product_combinations.color', 'product_combinations.size', 'size', 'stores');
         $brands = $this->brandRepository->all();
         $categories = $this->categoryRepository->all();
         $colors = Color::all();
@@ -236,9 +225,7 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $producto)
     {
-        try {
-            $this->authorize('update', $producto);
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
 
             $this->productRepository->updateByRequest($producto->id, $request);
             
@@ -304,9 +291,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $producto)
     {
-        try {
-            $this->authorize('delete', $producto);
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
             $producto->delete();
             DB::commit();
             

@@ -18,11 +18,9 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Category'               => 'App\Policies\CategoryPolicy',
         'App\Models\Config'                 => 'App\Policies\ConfigPolicy',
         'App\Models\Customer'               => 'App\Policies\CustomerPolicy',
-        'App\Models\Permission'             => 'App\Policies\PermissionPolicy',
         'App\Models\Product'                => 'App\Policies\ProductPolicy',
         'App\Models\ProductImage'           => 'App\Policies\ProductImagePolicy',
         'App\Models\ProductStockTransfer'   => 'App\Policies\ProductStockTransferPolicy',
-        'App\Models\Role'                   => 'App\Policies\RolePolicy',
         'App\Models\SpecialOffer'           => 'App\Policies\SpecialOfferPolicy',
         'App\Models\Store'                  => 'App\Policies\StorePolicy',
         'App\User'                          => 'App\Policies\UserPolicy'
@@ -37,16 +35,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function ($user) {
-            if($user instanceof User){
-                if (!empty(array_intersect(array('superadmin'), $user->roles->pluck('name')->toArray()))) {
-                    return true;
-                }
-            }
-        });
-
-        Gate::define('prices-per-method-payment', function ($user) {
-            return $user->permissions()->contains('prices-per-method-payment');
-        });
+        // Remove all permission-based gates since we're removing the permission system
     }
 }

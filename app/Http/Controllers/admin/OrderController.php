@@ -16,10 +16,7 @@ class OrderController extends Controller
      * Display a listing of orders.
      */
     public function index(Request $request)
-    {
-        $this->authorize('view-order');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $orders = Order::with(['customer', 'user'])
                 ->orderBy('created_at', 'desc');
 
@@ -66,10 +63,7 @@ class OrderController extends Controller
      * Show the specified order.
      */
     public function show(Order $order)
-    {
-        $this->authorize('view-order');
-        
-        $order->load(['customer', 'orderProducts.product', 'payments']);
+    {        $order->load(['customer', 'orderProducts.product', 'payments']);
         
         return view('dashboard.orders.show', compact('order'));
     }
@@ -78,10 +72,7 @@ class OrderController extends Controller
      * Show the form for editing the specified order.
      */
     public function edit(Order $order)
-    {
-        $this->authorize('update-order');
-        
-        $order->load(['customer', 'orderProducts', 'payments']);
+    {        $order->load(['customer', 'orderProducts', 'payments']);
         $statuses = Order::getStatuses();
         $shippingAgencies = Order::getShippingAgencies();
         
@@ -92,10 +83,7 @@ class OrderController extends Controller
      * Update the specified order.
      */
     public function update(Request $request, Order $order)
-    {
-        $this->authorize('update-order');
-
-        $request->validate([
+    {        $request->validate([
             'status' => 'required|in:' . implode(',', array_keys(Order::getStatuses())),
             'shipping_agency' => 'nullable|in:' . implode(',', Order::getShippingAgencies()),
             'shipping_tracking_number' => 'nullable|string|max:255',
@@ -123,10 +111,7 @@ class OrderController extends Controller
      * Update order status via AJAX.
      */
     public function updateStatus(Request $request, Order $order)
-    {
-        $this->authorize('update-order');
-
-        $request->validate([
+    {        $request->validate([
             'status' => 'required|in:' . implode(',', array_keys(Order::getStatuses()))
         ]);
 

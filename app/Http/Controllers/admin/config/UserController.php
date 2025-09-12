@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin\config;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UserRequest;
 use App\Http\Requests\admin\UserDestroyRequest;
-use App\Repositories\Eloquent\RoleRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\User;
 use DataTables;
@@ -17,11 +16,8 @@ class UserController extends Controller
 {
     public $userRepository;
 
-    public $roleRepository;
-
-    public function __construct(UserRepository $userRepository, RoleRepository $roleRepository)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -31,10 +27,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\User');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $users = $this->userRepository->allUsersQuery( Auth::user()->isSuperAdmin() ) ;
             return datatables()->eloquent($users)
                     ->addIndexColumn()
@@ -65,10 +58,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', 'App\User');
-        $roles = $this->roleRepository->allEmployees();
         return view('dashboard.config.users.create')
-                ->withRoles($roles)
                 ->withUser(new User);
     }
 
@@ -81,9 +71,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $this->authorize('create', 'App\User');
             $user = $this->userRepository->updateOrCreateByEmail($request->only('name', 'email', 'password', 'deleted_at'));
-            $user->assignRole($request->role);
             flash("El usuario <b>$request->name</b> ha sido creado con éxito")->success();
 
             return response()->json([
@@ -111,10 +99,7 @@ class UserController extends Controller
      */
     public function edit(User $usuario)
     {
-        $this->authorize('update', $usuario);
-        $roles = $this->roleRepository->allEmployees();
         return view('dashboard.config.users.edit')
-                ->withRoles($roles)
                 ->withUser($usuario);
     }
 
@@ -128,9 +113,7 @@ class UserController extends Controller
     public function update(UserRequest $request, User $usuario)
     {
         try {
-            $this->authorize('update', $usuario);
             $this->userRepository->update($usuario->id, $request->only('name', 'email', 'password'));
-            $usuario->assignRole($request->role);
             flash("El usuario <b>$request->name</b> ha sido actualizado con éxito")->success();
 
             return response()->json([
@@ -158,9 +141,7 @@ class UserController extends Controller
      */
     public function destroy(UserDestroyRequest $request, User $usuario)
     {
-        try {
-            $this->authorize('delete', $usuario);
-            $usuario->delete();
+        try {            $usuario->delete();
             
             return response()->json([
                 'success' => true,

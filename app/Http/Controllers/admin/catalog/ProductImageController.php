@@ -28,10 +28,7 @@ class ProductImageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Product');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $images = isset($request->producto) ? $this->productoImageRepository->all($request->producto) : array();
             return DataTables::of($images)
                     ->addIndexColumn()
@@ -54,10 +51,7 @@ class ProductImageController extends Controller
     
     public function store ( Request $request){
        try {
-            // si puede crear productos entonces puede subir imagenes
-            $this->authorize('create', 'App\Models\Product');
-
-            if(!isset( $request->file )){
+            // si puede crear productos entonces puede subir imagenes            if(!isset( $request->file )){
                 return response()->json([
                     'success' => false,
                     'message' => 'No hay imagen'

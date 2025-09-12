@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
-use App\Models\Permission;
-use App\Models\Role;
 use App\Models\Size;
 use App\Models\StoreType;
 use App\TypeSize;
@@ -21,14 +19,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (!Permission::first()) {
-            $this->call(PermissionsSeeder::class);
-        }
-
-        if (!Role::first()) {
-            $this->call(RolesSeeder::class);
-        }
-
         $this->call(UsersSeeder::class);
 
         if (!Color::first()) {

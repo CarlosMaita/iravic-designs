@@ -31,8 +31,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        // $this->authorize('viewany', 'App\Models\Customer'); // Temporarily disabled for testing
-
+        //
         if ($request->ajax()) {
             $customers = $this->customerRepository->allQuery();
             return DataTables::of($customers)
@@ -74,8 +73,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        // $this->authorize('create', 'App\Models\Customer'); // Temporarily disabled for testing
-        return view('dashboard.customers.create')
+        //        return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
                 ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
@@ -88,9 +86,7 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
-        try {
-            $this->authorize('create', 'App\Models\Customer');
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
             
             $attributes = array_merge(
                 array('username'        => FormatHelper::formatDniNumber($request->dni)),
@@ -156,8 +152,7 @@ class CustomerController extends Controller
         if($request->ajax()){
             return response()->json($customer);
         }
-        // $this->authorize('view', $customer); // Temporarily disabled for testing
-        $orders = $customer->orders()->orderBy('date', 'desc')->get();
+        //        $orders = $customer->orders()->orderBy('date', 'desc')->get();
         $refunds = collect(); // Empty collection since refunds functionality was removed
         $showOrdersTab = isset($request->pedidos) ? true : false;
         $showRefundsTab = isset($request->devoluciones) ? true : false;
@@ -179,9 +174,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Customer $cliente)
-    {
-        $this->authorize('update', $cliente);
-        return view('dashboard.customers.edit')
+    {        return view('dashboard.customers.edit')
                 ->withCustomer($cliente)
                 ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
@@ -195,9 +188,7 @@ class CustomerController extends Controller
      */
     public function update(CustomerRequest $request, Customer $cliente)
     {
-        try {
-            $this->authorize('update', $cliente);
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
             
             $attributes = $request->only(
                 'name',
@@ -241,9 +232,7 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $cliente)
     {
-        try {
-            $this->authorize('delete', $cliente);
-              #validar existencia de ordenes antes de eliminar
+        try {              #validar existencia de ordenes antes de eliminar
               if ($cliente->existsOrders()){
                   return response()->json([
                       'success' => false,
