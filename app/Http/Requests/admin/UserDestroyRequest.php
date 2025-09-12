@@ -33,10 +33,11 @@ class UserDestroyRequest extends FormRequest
     {
         $user = $this->route('usuario');
 
-        if (!empty($user) && $user->roles()->pluck('name')->contains('superadmin')) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add('superadmin', 'No puede eliminar usuarios con el perfil Superadmin.');
-            });
-        }
+        // Note: Superadmin role check disabled - roles system removed in #116
+        // if (!empty($user) && $user->roles()->pluck('name')->contains('superadmin')) {
+        //     $validator->after(function ($validator) {
+        //         $validator->errors()->add('superadmin', 'No puede eliminar usuarios con el perfil Superadmin.');
+        //     });
+        // }
     }
 }

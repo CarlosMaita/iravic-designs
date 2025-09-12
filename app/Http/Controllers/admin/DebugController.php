@@ -24,12 +24,12 @@ class DebugController extends Controller
         
         return response()->json([
             'user' => $user->name,
-            'roles' => $user->roles->pluck('name'),
-            'permissions' => $user->permissions(),
+            // 'roles' => $user->roles->pluck('name'), // Disabled: roles system removed in #116
+            // 'permissions' => $user->permissions(), // Disabled: permissions system removed in #116
             'can_view_customer' => $user->can('viewAny', Customer::class),
             'can_view_order' => Gate::allows('view-order'),
-            'has_view_customer_permission' => $user->permissions()->contains('view-customer'),
-            'has_view_order_permission' => $user->permissions()->contains('view-order'),
+            // 'has_view_customer_permission' => $user->permissions()->contains('view-customer'), // Disabled: permissions system removed in #116
+            // 'has_view_order_permission' => $user->permissions()->contains('view-order'), // Disabled: permissions system removed in #116
         ]);
     }
 }

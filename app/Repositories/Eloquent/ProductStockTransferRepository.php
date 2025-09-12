@@ -26,7 +26,6 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
      */
     public function all($criteria = null): Collection
     {
-        $roles_name = Auth::user()->roles->flatten()->pluck('name');
         $query = $this->model->with(['product', 'creator', 'responsable']);
         return $query->orderBy('created_at', 'DESC')->get();
     }
@@ -38,7 +37,6 @@ class ProductStockTransferRepository extends BaseRepository implements ProductSt
      */
     public function allQuery()
     {
-        $roles_name = Auth::user()->roles->flatten()->pluck('name');
         $query = $this->model->with('creator', 'responsable')->with(['product' => fn($q) => $q->withTrashed()]);
         return $query->orderBy('products_stock_transfer.created_at', 'DESC');
     }

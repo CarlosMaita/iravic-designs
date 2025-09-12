@@ -28,7 +28,8 @@ class StorePolicy
 
         
 
-        return $user->permissions()->contains('view-store');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-store');
     }
 
     /**
@@ -50,7 +51,8 @@ class StorePolicy
 
         
 
-        return $user->permissions()->contains('view-store');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-store');
     }
 
     /**
@@ -71,7 +73,8 @@ class StorePolicy
 
         
 
-        return $user->permissions()->contains('create-store');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('create-store');
     }
 
     /**
@@ -93,7 +96,8 @@ class StorePolicy
 
         
 
-        return $user->permissions()->contains('update-store');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('update-store');
     }
 
     /**
@@ -115,6 +119,7 @@ class StorePolicy
 
         
 
-        return $user->permissions()->contains('delete-store');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-store');
     }
 }
