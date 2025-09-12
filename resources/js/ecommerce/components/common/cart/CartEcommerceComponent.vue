@@ -55,9 +55,13 @@
 
     <!-- Footer -->
     <div class="offcanvas-header flex-column align-items-start">
-      <div class="d-flex align-items-center justify-content-between w-100 mb-3 mb-md-4">
-        <span class="text-light-emphasis">Subtotal:</span>
+      <div class="d-flex align-items-center justify-content-between w-100 mb-2">
+        <span class="text-light-emphasis">Subtotal USD:</span>
         <span class="h6 mb-0">$ {{ total_cart }}</span>
+      </div>
+      <div class="d-flex align-items-center justify-content-between w-100 mb-3 mb-md-4">
+        <span class="text-light-emphasis">Subtotal Bs:</span>
+        <span class="h6 mb-0">Bs. {{ total_cart_ves }}</span>
       </div>
       <div class="d-flex w-100 gap-3">
           <!-- <a class="btn btn-lg btn-secondary w-100" href="#!">Ver carrito</a>  -->
@@ -331,6 +335,16 @@
         computed: {
             total_cart() {
                 return parseFloat(this.cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2));
+            },
+            total_cart_ves() {
+                // Get exchange rate from window.currencyData or fallback
+                const exchangeRate = window.currencyData ? window.currencyData.exchangeRate : 1;
+                const vesTotal = this.total_cart * exchangeRate;
+                // Format with Venezuelan number formatting (comma as decimal separator, dot as thousands separator)
+                return new Intl.NumberFormat('es-VE', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(vesTotal);
             },
             cart_count() {
                 let count = this.cart.items.reduce((count, item) => count + item.quantity, 0);
