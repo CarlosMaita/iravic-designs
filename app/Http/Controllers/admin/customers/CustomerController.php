@@ -36,22 +36,31 @@ class CustomerController extends Controller
             $customers = $this->customerRepository->allQuery();
             return DataTables::of($customers)
                     ->addIndexColumn()
-                    ->addColumn('action', function($row){
+                    ->addColumn('action', function($row) {
+                        $id = $row->id;
+                        $actions = [
+                            [
+                                'url' => route('clientes.show', $id),
+                                'class' => 'btn-primary',
+                                'icon' => 'fas fa-eye',
+                                'title' => 'Ver'
+                            ],
+                            [
+                                'url' => route('clientes.edit', $id),
+                                'class' => 'btn-success',
+                                'icon' => 'fas fa-edit',
+                                'title' => 'Editar'
+                            ]
+                        ];
+
                         $btn = '';
-
-                        // if (Auth::user()->can('view', $row)) {
-                            $btn .= '<a href="'. route('clientes.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        // }
-                        
-                        // if (Auth::user()->can('update', $row)) {
-                            $btn .= '<a href="'. route('clientes.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        // }
-
-                        // if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-customer mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        // }
+                        foreach ($actions as $action) {
+                            $btn .= '<a href="' . $action['url'] . '" class="btn btn-sm ' . $action['class'] . ' btn-action-icon mb-2" title="' . $action['title'] . '" data-toggle="tooltip"><i class="' . $action['icon'] . '"></i></a>';
+                        }
+                        $btn .= '<button data-id="' . $id . '" class="btn btn-sm btn-danger btn-action-icon delete-customer mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
 
                         return $btn;
+                    })
                     })
                     ->rawColumns(['action'])
                     ->toJson();
