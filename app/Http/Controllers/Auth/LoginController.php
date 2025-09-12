@@ -70,7 +70,7 @@ class LoginController extends Controller
         if ($user) {
             // Verifica si existe un rol asignado
             $role_user = $user->roles;
-            if (count($role_user) > 0 ){
+            if ($role_user && count($role_user) > 0 ){
                 if (Auth::attempt($credentials, $remember)) {
                     return redirect($this->redirectTo);
                 }
