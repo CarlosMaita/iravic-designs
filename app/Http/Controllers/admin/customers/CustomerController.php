@@ -73,7 +73,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //        return view('dashboard.customers.create')
+               return view('dashboard.customers.create')
                 ->withCustomer(new Customer())
                 ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
