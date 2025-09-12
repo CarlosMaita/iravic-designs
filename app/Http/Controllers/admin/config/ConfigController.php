@@ -21,9 +21,7 @@ class ConfigController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $this->authorize('viewany', 'App\Models\Config');
-        $discount_password = Config::getConfig('discount_password');
+    {        $discount_password = Config::getConfig('discount_password');
         $name_project = env('APP_NAME');
         $logo_img     = Config::getConfig('logo_img');
 
@@ -40,10 +38,7 @@ class ConfigController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $this->authorize('create', 'App\Models\Config');
-
-        foreach ($request->except(["_token", "imagen", "logo_img"]) as $key => $value) {
+    {        foreach ($request->except(["_token", "imagen", "logo_img"]) as $key => $value) {
             $config = Config::getConfig($key);
             $config->value = !empty($value) ? $value : '';
             $config->save();

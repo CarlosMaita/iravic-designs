@@ -17,7 +17,6 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('view-order'); // Using order permission for payments
 
         if ($request->ajax()) {
             $payments = Payment::with(['order', 'customer'])
@@ -78,7 +77,6 @@ class PaymentController extends Controller
      */
     public function show(Payment $payment)
     {
-        $this->authorize('view-order');
         
         $payment->load(['order', 'customer']);
         
@@ -90,7 +88,6 @@ class PaymentController extends Controller
      */
     public function verify(Payment $payment)
     {
-        $this->authorize('update-order');
 
         if ($payment->verify()) {
             return response()->json([
@@ -111,7 +108,6 @@ class PaymentController extends Controller
      */
     public function reject(Payment $payment)
     {
-        $this->authorize('update-order');
 
         if ($payment->reject()) {
             return response()->json([
@@ -132,7 +128,6 @@ class PaymentController extends Controller
      */
     public function updateStatus(Request $request, Payment $payment)
     {
-        $this->authorize('update-order');
 
         $request->validate([
             'status' => 'required|in:' . implode(',', array_keys(Payment::getStatuses())),
@@ -180,7 +175,6 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create-order'); // Using order permission for payments
 
         $request->validate([
             'order_id' => 'required|exists:orders,id',

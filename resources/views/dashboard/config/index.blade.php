@@ -42,10 +42,8 @@
                             </div>
                             {{--  --}}
                             <a href="{{ route('usuarios.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
-                            @can('create', App\Models\Config::class)
-                                <button class="btn btn-success" type="submit">{{ __('dashboard.form.save') }}</button>
-                            @endcan
-                          </form>
+                                                            <button class="btn btn-success" type="submit">{{ __('dashboard.form.save') }}</button>
+                                                      </form>
                         </div>
                     </div>
                 </div>

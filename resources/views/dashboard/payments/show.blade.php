@@ -72,8 +72,7 @@
                             </div>
                             @endif
                             
-                            @can('update-order')
-                            @if($payment->status === 'pendiente')
+                                                        @if($payment->status === 'pendiente')
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
@@ -87,8 +86,7 @@
                                 </div>
                             </div>
                             @endif
-                            @endcan
-                        </div>
+                                                    </div>
                     </div>
                 </div>
             </div>

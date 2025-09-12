@@ -8,13 +8,11 @@
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> {{ __('dashboard.catalog.categories.index') }}</div>
                         <div class="card-body">
-                            @can('create', App\Models\Category::class)
-                                <div class="row"> 
+                                                            <div class="row"> 
                                     <a href="{{ route('categorias.create') }}" class="btn btn-primary m-2 ml-auto">{{ __('dashboard.general.new_a') }}</a>
                                 </div>
                                 <br>
-                            @endcan
-                            {{-- Datatable --}}
+                                                        {{-- Datatable --}}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">

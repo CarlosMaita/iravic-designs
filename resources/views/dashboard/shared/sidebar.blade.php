@@ -10,201 +10,116 @@
         <a class="c-sidebar-nav-link" href="{{ route('admin.home') }}"><i class="cil-compass c-sidebar-nav-icon"></i> {{ __('dashboard.breadcrumb.home') }}</a>
     </li>
 
-    
-
     {{-- Catalog links --}}
-    @if (
-        Auth::check() && (
-            Auth::user()->can('viewany', App\Models\Brand::class) || 
-            Auth::user()->can('viewany', App\Models\Category::class) || 
-            Auth::user()->can('viewany', App\Models\Product::class) || 
-            Auth::user()->can('viewany', App\Models\ProductStockTransfer::class) || 
-            Auth::user()->can('viewany', App\Models\Color::class)
-        )
-    )
-        <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
-            $menuService->isActive($url,"/admin/catalogo/marcas", false, true) . " " . 
-            $menuService->isActive($url,"/admin/catalogo/productos", false, true)
-        }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.catalog') }}</a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                {{-- Categorias --}}
-                @can('viewany', App\Models\Category::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/categorias")}}" href="{{ route('categorias.index') }}"></span>{{ __('dashboard.sidebar.categories') }}</a>
-                    </li>
-                @endcan
-                {{-- Marcas --}}
-                @can('viewany', App\Models\Brand::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/marcas")}}" href="{{ route('marcas.index') }}"></span>{{ __('dashboard.sidebar.brands') }}</a>
-                    </li>
-                @endcan
-                {{-- Productos --}}
-                @can('viewany', App\Models\Product::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/productos")}}" href="{{ route('productos.index') }}"></span>{{ __('dashboard.sidebar.products') }}</a>
-                    </li>
-                @endcan
-                {{-- Transferencias Stock --}}
-                @can('viewany', App\Models\ProductStockTransfer::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/stocks-transferencias")}}" href="{{ route('stock-transferencias.index') }}"></span>{{ __('dashboard.sidebar.products_transfers') }}</a>
-                    </li>
-                @endcan
-                {{-- Colors --}}
-                @can('viewany', App\Models\Color::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/colors")}}" href="{{ route('colors.index') }}"></span>{{ __('dashboard.sidebar.colors') }}</a>
-                    </li>
-                @endcan
-            </ul>
-        </li>
-    @endif
+    <li class="c-sidebar-nav-dropdown {{
+        $menuService->isActive($url,"/admin/catalogo/categorias", false, true) . " " .
+        $menuService->isActive($url,"/admin/catalogo/marcas", false, true) . " " . 
+        $menuService->isActive($url,"/admin/catalogo/productos", false, true)
+    }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.catalog') }}</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            {{-- Categorias --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/categorias")}}" href="{{ route('categorias.index') }}"></span>{{ __('dashboard.sidebar.categories') }}</a>
+            </li>
+            {{-- Marcas --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/marcas")}}" href="{{ route('marcas.index') }}"></span>{{ __('dashboard.sidebar.brands') }}</a>
+            </li>
+            {{-- Productos --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/productos")}}" href="{{ route('productos.index') }}"></span>{{ __('dashboard.sidebar.products') }}</a>
+            </li>
+            {{-- Transferencias Stock --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/stocks-transferencias")}}" href="{{ route('stock-transferencias.index') }}"></span>{{ __('dashboard.sidebar.products_transfers') }}</a>
+            </li>
+            {{-- Colors --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/catalogo/colors")}}" href="{{ route('colors.index') }}"></span>{{ __('dashboard.sidebar.colors') }}</a>
+            </li>
+        </ul>
+    </li>
 
     {{-- Stock Management links --}}
-    @if (
-        Auth::check() && Auth::user()->can('viewany', App\Models\Store::class)
-    )
     <li class="c-sidebar-nav-dropdown {{
         $menuService->isActive($url,"/admin/almacenamiento/depositos", false, true) 
     }}">
         <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-spreadsheet c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.stock') }}</a>
         <ul class="c-sidebar-nav-dropdown-items">
             {{-- Depositos --}}
-            @can('viewany', App\Models\Store::class)
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/almacenamiento/depositos")}}" href="{{ route('depositos.index') }}"></span>{{ __('dashboard.sidebar.stores') }}</a>
             </li>
-            @endcan
         </ul>
     </li>
-    @endif
-
 
     {{-- Customer Management links --}}
-    @if (
-        Auth::check() && Auth::user()->can('viewany', App\Models\Customer::class) )
-        <li class="c-sidebar-nav-dropdown {{ $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                {{-- customers --}}
-                @can('viewany', App\Models\Customer::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/clientes")}}" href="{{ route('clientes.index') }}"></span>{{ __('dashboard.sidebar.customers') }}</a>
-                    </li>
-                @endcan
-            </ul>
-        </li>
-    @endif
+    <li class="c-sidebar-nav-dropdown {{ $menuService->isActive($url,"/admin/gestion-clientes/clientes", false, true) }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-contact c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.customers-management') }}</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            {{-- customers --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/gestion-clientes/clientes")}}" href="{{ route('clientes.index') }}"></span>{{ __('dashboard.sidebar.customers') }}</a>
+            </li>
+        </ul>
+    </li>
 
     {{-- Orders Management links --}}
-    @if (Auth::check() && Auth::user()->can('view-order'))
-        <li class="c-sidebar-nav-dropdown {{ 
-            $menuService->isActive($url,"/admin/ordenes", false, true) . " " .
-            $menuService->isActive($url,"/admin/pagos", false, true)
-        }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cart c-sidebar-nav-icon"></i>Órdenes</a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                {{-- Orders --}}
-                @can('view-order')
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/ordenes")}}" href="{{ route('admin.orders.index') }}"><span class="c-sidebar-nav-icon"></span>Órdenes</a>
-                    </li>
-                @endcan
-                {{-- Payments --}}
-                @can('view-order')
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/pagos")}}" href="{{ route('admin.payments.index') }}"><span class="c-sidebar-nav-icon"></span>Pagos</a>
-                    </li>
-                @endcan
-            </ul>
-        </li>
-    @endif
+    <li class="c-sidebar-nav-dropdown {{ 
+        $menuService->isActive($url,"/admin/ordenes", false, true) . " " .
+        $menuService->isActive($url,"/admin/pagos", false, true)
+    }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cart c-sidebar-nav-icon"></i>Órdenes</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            {{-- Orders --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/ordenes")}}" href="{{ route('admin.orders.index') }}"><span class="c-sidebar-nav-icon"></span>Órdenes</a>
+            </li>
+            {{-- Payments --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/pagos")}}" href="{{ route('admin.payments.index') }}"><span class="c-sidebar-nav-icon"></span>Pagos</a>
+            </li>
+        </ul>
+    </li>
 
     {{-- Configuration links --}}
-    @if (
-        Auth::check() && (
-            Auth::user()->can('viewany', App\Models\Config::class) || 
-            Auth::user()->can('viewany', App\Models\Permission::class) || 
-            Auth::user()->can('viewany', App\Models\Role::class) || 
-            Auth::user()->can('viewany', App\User::class) ||
-            Auth::user()->can('viewany', App\Models\Banner::class)
-        )
-    )
-        <li class="c-sidebar-nav-dropdown {{
-            $menuService->isActive($url,"/admin/config/usuarios", false, true) . " " .
-            $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
-            $menuService->isActive($url,"/admin/config/permisos", false, true) . " " . 
-            $menuService->isActive($url,"/admin/config/general", false, true) . " " .
-            $menuService->isActive($url,"/admin/config/tasa-cambio", false, true) . " " .
-            $menuService->isActive($url,"/admin/banners", false, true) . " " .
-            $menuService->isActive($url,"/admin/ofertas-especiales", false, true)
-        }}">
-            <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cog c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.settings') }}</a>
-            <ul class="c-sidebar-nav-dropdown-items">
-                @can('viewany', App\Models\Config::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/general")}}" href="{{ route('general.index') }}"></span>{{ __('dashboard.sidebar.general') }}</a>
-                    </li>
-                @endcan
-                {{-- Exchange Rate --}}
-                @can('viewany', App\Models\Config::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/tasa-cambio")}}" href="{{ route('admin.exchange-rate.index') }}">
-                            <span class="c-sidebar-nav-icon"></span> Tasa de Cambio
-                        </a>
-                    </li>
-                @endcan
-                {{-- Banner CRUD --}}
-                @can('viewany', App\Models\Banner::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/banners')}}" href="{{ route('banners.index') }}">
-                            <span class="c-sidebar-nav-icon"></span> Banners
-                        </a>
-                    </li>
-                @endcan
-                {{-- Special Offers CRUD --}}
-                @can('viewany', App\Models\SpecialOffer::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/ofertas-especiales')}}" href="{{ route('special-offers.index') }}">
-                            <span class="c-sidebar-nav-icon"></span> Ofertas Especiales
-                        </a>
-                    </li>
-                @endcan
-                {{--  --}}
-                @if (Auth::check() && (Auth::user()->can('viewany', App\Models\Role::class) || Auth::user()->can('viewany', App\Models\Permission::class)))
-                    <li class="c-sidebar-nav-dropdown {{
-                                $menuService->isActive($url,"/admin/config/roles", false, true) . " " . 
-                                $menuService->isActive($url,"/admin/config/permisos", false, true)
-                            }}">
-                        <a class="c-sidebar-nav-dropdown-toggle" href="#">{{ __('dashboard.sidebar.privileges') }}</a>
-                        <ul class="c-sidebar-nav-dropdown-items">
-                            @can('viewany', App\Models\Role::class)
-                                <li class="c-sidebar-nav-item">
-                                    <a class="c-sidebar-nav-link" href="{{ route('roles.index') }}"><span class="c-sidebar-nav-icon"></span>{{ __('dashboard.sidebar.roles') }}</a>
-                                </li>
-                            @endcan
-                            {{--  --}}
-                            @can('viewany', App\Models\Permission::class)
-                                <li class="c-sidebar-nav-item">
-                                    <a class="c-sidebar-nav-link" href="{{ route('permisos.index') }}"><span class="c-sidebar-nav-icon"></span>{{ __('dashboard.sidebar.permissions') }}</a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </li>
-                @endif
-                {{--  --}}
-                @can('viewany', App\User::class)
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/usuarios")}}" href="{{ route('usuarios.index') }}"></span>{{ __('dashboard.sidebar.users') }}</a>
-                    </li>
-                @endcan
-            </ul>
-        </li>
-    @endif
-
+    <li class="c-sidebar-nav-dropdown {{
+        $menuService->isActive($url,"/admin/config/usuarios", false, true) . " " .
+        $menuService->isActive($url,"/admin/config/general", false, true) . " " .
+        $menuService->isActive($url,"/admin/config/tasa-cambio", false, true) . " " .
+        $menuService->isActive($url,"/admin/banners", false, true) . " " .
+        $menuService->isActive($url,"/admin/ofertas-especiales", false, true)
+    }}">
+        <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cog c-sidebar-nav-icon"></i>{{ __('dashboard.sidebar.settings') }}</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/general")}}" href="{{ route('general.index') }}"></span>{{ __('dashboard.sidebar.general') }}</a>
+            </li>
+            {{-- Exchange Rate --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/tasa-cambio")}}" href="{{ route('admin.exchange-rate.index') }}">
+                    <span class="c-sidebar-nav-icon"></span> Tasa de Cambio
+                </a>
+            </li>
+            {{-- Banner CRUD --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/banners')}}" href="{{ route('banners.index') }}">
+                    <span class="c-sidebar-nav-icon"></span> Banners
+                </a>
+            </li>
+            {{-- Special Offers CRUD --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/ofertas-especiales')}}" href="{{ route('special-offers.index') }}">
+                    <span class="c-sidebar-nav-icon"></span> Ofertas Especiales
+                </a>
+            </li>
+            {{-- Users --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/usuarios")}}" href="{{ route('usuarios.index') }}"></span>{{ __('dashboard.sidebar.users') }}</a>
+            </li>
+        </ul>
+    </li>
 
 </ul>
 <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>

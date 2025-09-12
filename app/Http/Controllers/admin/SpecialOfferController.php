@@ -17,10 +17,7 @@ class SpecialOfferController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $this->authorize('viewany', 'App\Models\SpecialOffer');
-        
-        $specialOffers = SpecialOffer::with('product')
+    {        $specialOffers = SpecialOffer::with('product')
                                    ->ordered()
                                    ->paginate(15);
         
@@ -31,10 +28,7 @@ class SpecialOfferController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $this->authorize('create', 'App\Models\SpecialOffer');
-        
-        $products = Product::orderBy('name')->get();
+    {        $products = Product::orderBy('name')->get();
         
         return view('admin.special-offers.create', compact('products'));
     }
@@ -43,10 +37,7 @@ class SpecialOfferController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $this->authorize('create', 'App\Models\SpecialOffer');
-        
-        $request->validate([
+    {        $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
@@ -80,10 +71,7 @@ class SpecialOfferController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(SpecialOffer $specialOffer)
-    {
-        $this->authorize('update', $specialOffer);
-        
-        $products = Product::orderBy('name')->get();
+    {        $products = Product::orderBy('name')->get();
         
         return view('admin.special-offers.edit', compact('specialOffer', 'products'));
     }
@@ -92,10 +80,7 @@ class SpecialOfferController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, SpecialOffer $specialOffer)
-    {
-        $this->authorize('update', $specialOffer);
-        
-        $request->validate([
+    {        $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
@@ -134,11 +119,7 @@ class SpecialOfferController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(SpecialOffer $specialOffer)
-    {
-        $this->authorize('delete', $specialOffer);
-        
-        // Delete associated image
-        if ($specialOffer->image) {
+    {        if ($specialOffer->image) {
             ImageService::delete($this->filedisk, $specialOffer->image);
         }
         

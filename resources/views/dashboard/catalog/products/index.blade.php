@@ -31,12 +31,10 @@
                                                 Subir Inventario
                                             </button>
                                         </div>
-                                        @can('create', App\Models\Product::class)
-                                        <div>
+                                                                                <div>
                                             <a href="{{ route('productos.create') }}" class="btn btn-primary ml-auto">{{ __('dashboard.general.new_o') }}</a>
                                         </div>
-                                        @endcan
-                                    </div>
+                                                                            </div>
                                 </div>
                             </div>
                             <br>

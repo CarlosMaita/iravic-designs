@@ -27,10 +27,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Category');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $categories = $this->categoryRepository->allQuery();
 
             return datatables()->eloquent($categories)
@@ -61,9 +58,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $this->authorize('create', 'App\Models\Category');
-        return view('dashboard.catalog.categories.create')
+    {        return view('dashboard.catalog.categories.create')
                 ->withCategory(new Category())
                 ->with( 'base_categories', BaseCategory::all());
     }
@@ -76,10 +71,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        try {
-            $this->authorize('create', 'App\Models\Category');
-    
-            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner', 'slug']);
+        try {            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner', 'slug']);
 
             // Si no se envía slug, se genera automáticamente (el modelo también lo hace)
             if (empty($categoryData['slug'])) {
@@ -118,9 +110,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Category $categoria)
-    {
-        $this->authorize('update', $categoria);
-        return view('dashboard.catalog.categories.edit', [
+    {        return view('dashboard.catalog.categories.edit', [
             'category' => $categoria,
             'base_categories' => BaseCategory::all()
         ]);
@@ -135,10 +125,7 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $categoria)
     {
-        try {
-            $this->authorize('update', $categoria);
-    
-            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner', 'slug']);
+        try {            $categoryData = $request->only(['name', 'base_category_id', 'bg_banner', 'slug']);
     
             // Handle image upload for image_banner
             if ($request->hasFile('image_banner')) {
@@ -175,9 +162,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $categoria)
     {
-        try {
-            $this->authorize('delete', $categoria);
-            $categoria->delete();
+        try {            $categoria->delete();
             
             return response()->json([
                 'success' => true,

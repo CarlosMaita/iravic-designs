@@ -19,10 +19,7 @@ class ExchangeRateController extends Controller
      * Display the exchange rate management page
      */
     public function index()
-    {
-        $this->authorize('viewany', 'App\Models\Config');
-        
-        $rateInfo = $this->exchangeRateService->getRateInfo();
+    {        $rateInfo = $this->exchangeRateService->getRateInfo();
         
         return view('dashboard.config.exchange-rate.index', compact('rateInfo'));
     }
@@ -31,10 +28,7 @@ class ExchangeRateController extends Controller
      * Update exchange rate from BCV
      */
     public function updateFromBCV()
-    {
-        $this->authorize('create', 'App\Models\Config');
-
-        $result = $this->exchangeRateService->updateFromBCV();
+    {        $result = $this->exchangeRateService->updateFromBCV();
 
         if ($result['success']) {
             if ($result['updated'] ?? true) {
@@ -53,10 +47,7 @@ class ExchangeRateController extends Controller
      * Update exchange rate manually
      */
     public function updateManual(Request $request)
-    {
-        $this->authorize('create', 'App\Models\Config');
-
-        $request->validate([
+    {        $request->validate([
             'exchange_rate' => 'required|numeric|min:0.01|max:999999.9999'
         ], [
             'exchange_rate.required' => 'La tasa de cambio es requerida',

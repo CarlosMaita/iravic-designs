@@ -54,10 +54,8 @@
                             </div>
                             {{--  --}}
                             <a href="{{ route('clientes.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
-                            @can('update', $customer)
-                            <a href="{{ route('clientes.edit', [$customer->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
-                            @endcan
-                        </div>
+                                                        <a href="{{ route('clientes.edit', [$customer->id]) }}" class="btn btn-success">{{ __('dashboard.form.edit') }}</a>
+                                                    </div>
                     </div>
                 </div>
             </div>

@@ -27,10 +27,7 @@ class ProductStockTransferController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\ProductStockTransfer');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $transfers = $this->productStockTransferRepository->allQuery();
 
             return datatables()->eloquent($transfers)
@@ -57,9 +54,7 @@ class ProductStockTransferController extends Controller
 
     public function store(ProductStockTransferRequest $request)
     {
-        try {
-            $this->authorize('create', 'App\Models\ProductStockTransfer');
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
             $product_stock_transfer = $this->productStockTransferRepository->create($request->only('product_id', 'user_creator_id', 'qty', 'stock_origin', 'stock_destination'));
             DB::commit();
 
@@ -93,9 +88,7 @@ class ProductStockTransferController extends Controller
      */
     public function update(ProductStockTransfer $stock_transferencia)
     {
-        try {
-            $this->authorize('update', $stock_transferencia);
-            DB::beginTransaction();
+        try {            DB::beginTransaction();
             $attributes = array(
                 'is_accepted' => 1,
                 'user_responsable_id' => Auth::user()->id
@@ -135,9 +128,7 @@ class ProductStockTransferController extends Controller
      */
     public function destroy(ProductStockTransfer $stock_transferencia)
     {
-        try {
-            $this->authorize('delete', $stock_transferencia);
-            $stock_transferencia->delete();
+        try {            $stock_transferencia->delete();
             
             return response()->json([
                 'success' => true,

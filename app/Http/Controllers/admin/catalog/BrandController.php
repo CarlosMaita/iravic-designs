@@ -26,10 +26,7 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Brand');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $brands = $this->brandRepository->allQuery();
 
             return datatables()->eloquent($brands)
@@ -60,9 +57,7 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $this->authorize('create', 'App\Models\Brand');
-        return view('dashboard.catalog.brands.create')
+    {        return view('dashboard.catalog.brands.create')
                 ->withBrand(new Brand());
     }
 
@@ -74,9 +69,7 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        try {
-            $this->authorize('create', 'App\Models\Brand');
-            $this->brandRepository->create($request->only('name'));
+        try {            $this->brandRepository->create($request->only('name'));
             flash("La marca <b>$request->name</b> ha sido creada con éxito")->success();
 
             return response()->json([
@@ -103,9 +96,7 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Brand $marca)
-    {
-        $this->authorize('update', $marca);
-        return view('dashboard.catalog.brands.edit')
+    {        return view('dashboard.catalog.brands.edit')
                 ->withBrand($marca);
     }
 
@@ -118,9 +109,7 @@ class BrandController extends Controller
      */
     public function update(BrandRequest $request, Brand $marca)
     {
-        try {
-            $this->authorize('update', $marca);
-            $this->brandRepository->update($marca->id, $request->only('name'));
+        try {            $this->brandRepository->update($marca->id, $request->only('name'));
             flash("La marca <b>$request->name</b> ha sido actualizada con éxito")->success();
 
             return response()->json([
@@ -148,9 +137,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $marca)
     {
-        try {
-            $this->authorize('delete', $marca);
-            $marca->delete();
+        try {            $marca->delete();
             
             return response()->json([
                 'success' => true,

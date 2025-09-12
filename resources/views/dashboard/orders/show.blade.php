@@ -9,12 +9,10 @@
                         <div class="card-header">
                             <i class="fa fa-shopping-cart"></i> Orden #{{ $order->id }}
                             <div class="card-header-actions">
-                                @can('update-order')
-                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-success">
+                                                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
-                                @endcan
-                            </div>
+                                                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -122,10 +120,8 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    @can('update-order')
-                                                        <a href="{{ route('admin.payments.show', $payment->id) }}" class="btn btn-sm btn-primary">Ver</a>
-                                                    @endcan
-                                                </td>
+                                                                                                            <a href="{{ route('admin.payments.show', $payment->id) }}" class="btn btn-sm btn-primary">Ver</a>
+                                                                                                    </td>
                                             </tr>
                                         @empty
                                             <tr>

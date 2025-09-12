@@ -30,10 +30,7 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewany', 'App\Models\Role');
-
-        if ($request->ajax()) {
+    {        if ($request->ajax()) {
             $roles = $this->roleRepository->all('superadmin');
             return Datatables::of($roles)
                     ->addIndexColumn()
@@ -63,9 +60,7 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $this->authorize('create', 'App\Models\Role');
-        $permissions = $this->permissionsRepository->all();
+    {        $permissions = $this->permissionsRepository->all();
 
         return view('dashboard.config.roles.create')
                 ->withPermissions($permissions)
@@ -80,9 +75,7 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        try {
-            $this->authorize('create', 'App\Models\Role');
-            $role = $this->roleRepository->create($request->only('name', 'description', 'is_employee'));
+        try {            $role = $this->roleRepository->create($request->only('name', 'description', 'is_employee'));
             $role->permissions()->sync($request->permissions);
             flash("El rol <b>$request->name</b> ha sido creado con éxito")->success();
 
@@ -110,9 +103,7 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Role $role)
-    {
-        $this->authorize('update', $role);
-        $permissions = $this->permissionsRepository->all();
+    {        $permissions = $this->permissionsRepository->all();
         return view('dashboard.config.roles.edit')
                 ->withPermissions($permissions)
                 ->withRole($role);
@@ -127,9 +118,7 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, Role $role)
     {
-        try {
-            $this->authorize('update', $role);
-            $this->roleRepository->update($role->id, $request->only('name', 'description', 'is_employee'));
+        try {            $this->roleRepository->update($role->id, $request->only('name', 'description', 'is_employee'));
             $role->permissions()->sync($request->permissions);
             flash("El rol <b>$request->name</b> ha sido actualizado con éxito")->success();
 
@@ -158,9 +147,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        try {
-            $this->authorize('delete', $role);
-            $role->delete();
+        try {            $role->delete();
             
             return response()->json([
                 'success' => true,

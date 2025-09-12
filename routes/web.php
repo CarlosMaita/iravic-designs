@@ -73,7 +73,7 @@ Route::get('/api/customer/auth-check', [\App\Http\Controllers\Api\CustomerAuthCo
 
 
 Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['auth'], 'prefix' => 'admin'], function () {
-    Route::get('/', 'HomeController@index')->name('admin.home')->middleware('redirect.home.role');
+    Route::get('/', 'HomeController@index')->name('admin.home');
     #
     Route::get('mi-perfil', 'MyProfileController@index')->name('my-profile.index');
     #
@@ -158,10 +158,6 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         Route::get('tasa-cambio/current', 'ExchangeRateController@getCurrentRate')->name('admin.exchange-rate.current');
         #
         Route::resource('usuarios', 'UserController')->except('show');
-        #
-        Route::resource('permisos', 'PermissionController')->only('index');
-        #
-        Route::resource('roles', 'RoleController')->except('show');
     });
 
     // Debug route for testing authorization

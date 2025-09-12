@@ -59,15 +59,13 @@
                                                 Banco Central de Venezuela (BCV). También puedes forzar una actualización manual.
                                             </p>
                                             
-                                            @can('create', App\Models\Config::class)
-                                                <form method="POST" action="{{ route('admin.exchange-rate.update-bcv') }}" style="display: inline;">
+                                                                                            <form method="POST" action="{{ route('admin.exchange-rate.update-bcv') }}" style="display: inline;">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success">
                                                         <i class="fa fa-sync"></i> Actualizar desde BCV
                                                     </button>
                                                 </form>
-                                            @endcan
-                                        </div>
+                                                                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -87,8 +85,7 @@
                                                 Usa el formato decimal con punto (ej: 36.5678).
                                             </p>
 
-                                            @can('create', App\Models\Config::class)
-                                                <form method="POST" action="{{ route('admin.exchange-rate.update-manual') }}">
+                                                                                            <form method="POST" action="{{ route('admin.exchange-rate.update-manual') }}">
                                                     @csrf
                                                     <div class="form-group row">
                                                         <label for="exchange_rate" class="col-md-3 col-form-label">
@@ -118,8 +115,7 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                            @endcan
-                                        </div>
+                                                                                    </div>
                                     </div>
                                 </div>
                             </div>
