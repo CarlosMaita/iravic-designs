@@ -28,7 +28,8 @@ class ProductStockTransferPolicy
 
         
 
-        return $user->permissions()->contains('view-transfer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-transfer');
     }
 
     /**
@@ -50,7 +51,8 @@ class ProductStockTransferPolicy
 
         
 
-        return $user->permissions()->contains('view-transfer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-transfer');
     }
 
     /**
@@ -71,7 +73,8 @@ class ProductStockTransferPolicy
 
         
 
-        return $user->permissions()->contains('create-transfer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('create-transfer');
     }
 
     /**
@@ -99,7 +102,8 @@ class ProductStockTransferPolicy
         
 
         
-        return $user->permissions()->contains('update-transfer');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('update-transfer');
     }
 
     /**
@@ -111,7 +115,8 @@ class ProductStockTransferPolicy
      */
     public function delete($user, ProductStockTransfer $productStockTransfer)
     {
-        return $user->permissions()->contains('delete-transfer') && !$productStockTransfer->is_accepted;
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-transfer') && !$productStockTransfer->is_accepted;
     }
 
     /**

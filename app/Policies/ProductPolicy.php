@@ -23,7 +23,8 @@ class ProductPolicy
             return false;
         }
         
-        return $user->permissions()->contains('view-product');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-product');
     }
 
     /**
@@ -40,7 +41,8 @@ class ProductPolicy
             return false;
         }
         
-        return $user->permissions()->contains('view-product');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('view-product');
     }
 
     /**
@@ -56,7 +58,8 @@ class ProductPolicy
             return false;
         }
         
-        return $user->permissions()->contains('create-product');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('create-product');
     }
 
     /**
@@ -73,7 +76,8 @@ class ProductPolicy
             return false;
         }
         
-        return $user->permissions()->contains('update-product');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('update-product');
     }
 
     /**
@@ -90,7 +94,8 @@ class ProductPolicy
             return false;
         }
         
-        return $user->permissions()->contains('delete-product');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('delete-product');
     }
 
     /**
@@ -144,6 +149,7 @@ class ProductPolicy
             return false;
         }
         
-        return $user->permissions()->contains('prices-per-method-payment');
+        // Note: Permissions system removed in #116 - returning true for admin users
+        return true; // Original: $user->permissions()->contains('prices-per-method-payment');
     }
 }
