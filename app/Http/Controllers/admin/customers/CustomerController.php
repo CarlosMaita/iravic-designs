@@ -31,41 +31,15 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        //
         if ($request->ajax()) {
-            $customers = $this->customerRepository->allQuery();
-            return DataTables::of($customers)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row) {
-                        $id = $row->id;
-                        $actions = [
-                            [
-                                'url' => route('clientes.show', $id),
-                                'class' => 'btn-primary',
-                                'icon' => 'fas fa-eye',
-                                'title' => 'Ver'
-                            ],
-                            [
-                                'url' => route('clientes.edit', $id),
-                                'class' => 'btn-success',
-                                'icon' => 'fas fa-edit',
-                                'title' => 'Editar'
-                            ]
-                        ];
-
-                        $btn = '';
-                        foreach ($actions as $action) {
-                            $btn .= '<a href="' . $action['url'] . '" class="btn btn-sm ' . $action['class'] . ' btn-action-icon mb-2" title="' . $action['title'] . '" data-toggle="tooltip"><i class="' . $action['icon'] . '"></i></a>';
-                        }
-                        $btn .= '<button data-id="' . $id . '" class="btn btn-sm btn-danger btn-action-icon delete-customer mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-
-                        return $btn;
-                    })
-                    })
-                    ->rawColumns(['action'])
-                    ->toJson();
+            return DataTables::of($this->customerRepository->allQuery())
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return $this->buildActionButtons($row->id);
+                })
+                ->rawColumns(['action'])
+                ->toJson();
         }
-
         return view('dashboard.customers.index');
     }
 
@@ -82,9 +56,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-               return view('dashboard.customers.create')
-                ->withCustomer(new Customer())
-                ->withQualifications(CustomerConstants::QUALIFICATIONS);
+        return view('dashboard.customers.create')
+            ->withCustomer(new Customer())
+            ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
 
     /**
@@ -95,57 +69,38 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
-        try {            DB::beginTransaction();
-            
-            $attributes = array_merge(
-                array('username'        => FormatHelper::formatDniNumber($request->dni)),
-                array('password'        => bcrypt('12345')),
-                $request->only( 
-                    'name',
-                    'email',
-                    'dni',
-                    'cellphone',
-                    'qualification',
-                    'shipping_agency',
-                    'shipping_agency_address'
-                )
-            );
+        DB::beginTransaction();
+        try {
+            $attributes = array_merge([
+                'username' => FormatHelper::formatDniNumber($request->dni),
+                'password' => bcrypt('12345'),
+            ], $request->only(
+                'name',
+                'email',
+                'dni',
+                'cellphone',
+                'qualification',
+                'shipping_agency',
+                'shipping_agency_address'
+            ));
 
             $customer = $this->customerRepository->create($attributes);
-            
             DB::commit();
 
-            if (isset($request->from_orders)) {
-                flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
-                return response()->json([
-                        'success' => true,
-                        'data' => [
-                            'customer' => $customer,
-                            'redirect' => route('ventas.create'), 
-                            'from_orders' => true 
-                        ]
-                ]);
-            }
-            
-            flash("El cliente <b>$request->name</b> ha sido creado con éxito")->success();
+            flash("El cliente <b>{$request->name}</b> ha sido creado con éxito")->success();
+            $redirect = isset($request->from_orders) ? route('ventas.create') : route('clientes.index');
             return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'customer' => $customer,
-                        'redirect' => route('clientes.index')
-                    ]
-            ]);
-        } catch (Exception $e) {
-            DB::rollback();
-            Log::debug('Error ocurred after trying to create a customer');
-            Log::debug($e->getMessage());
-            return response()->json([
-                'message' => __('dashboard.general.operation_error'),
-                'error' => [
-                    'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
+                'success' => true,
+                'data' => [
+                    'customer' => $customer,
+                    'redirect' => $redirect,
+                    'from_orders' => isset($request->from_orders)
                 ]
             ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Customer create failed', ['error' => $e->getMessage()]);
+            return $this->jsonError($e);
         }
     }
 
@@ -157,23 +112,19 @@ class CustomerController extends Controller
      */
     public function show(Request $request, Customer $cliente)
     {
-        $customer = $cliente;
-        if($request->ajax()){
-            return response()->json($customer);
+        if ($request->ajax()) {
+            return response()->json($cliente);
         }
-        //        $orders = $customer->orders()->orderBy('date', 'desc')->get();
-        $refunds = collect(); // Empty collection since refunds functionality was removed
-        $showOrdersTab = isset($request->pedidos) ? true : false;
-        $showRefundsTab = isset($request->devoluciones) ? true : false;
-        $planningCollection = $customer->getPlanningCollection();
-
+        $orders = collect(); // Feature removed / placeholder
+        $refunds = collect();
+        $planningCollection = $cliente->getPlanningCollection();
         return view('dashboard.customers.show')
-                ->withCustomer($customer)
-                ->withOrders($orders)
-                ->withRefunds($refunds)
-                ->withShowOrdersTab($showOrdersTab)
-                ->withShowRefundsTab($showRefundsTab)
-                ->withPlanningCollection($planningCollection);
+            ->withCustomer($cliente)
+            ->withOrders($orders)
+            ->withRefunds($refunds)
+            ->withShowOrdersTab(isset($request->pedidos))
+            ->withShowRefundsTab(isset($request->devoluciones))
+            ->withPlanningCollection($planningCollection);
     }
 
     /**
@@ -183,9 +134,10 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Customer $cliente)
-    {        return view('dashboard.customers.edit')
-                ->withCustomer($cliente)
-                ->withQualifications(CustomerConstants::QUALIFICATIONS);
+    {
+        return view('dashboard.customers.edit')
+            ->withCustomer($cliente)
+            ->withQualifications(CustomerConstants::QUALIFICATIONS);
     }
 
     /**
@@ -197,8 +149,8 @@ class CustomerController extends Controller
      */
     public function update(CustomerRequest $request, Customer $cliente)
     {
-        try {            DB::beginTransaction();
-            
+        DB::beginTransaction();
+        try {
             $attributes = $request->only(
                 'name',
                 'email',
@@ -208,28 +160,19 @@ class CustomerController extends Controller
                 'shipping_agency',
                 'shipping_agency_address'
             );
-            
             $this->customerRepository->update($cliente->id, $attributes);
             DB::commit();
-            flash("El cliente <b>$request->name</b> ha sido actualizado con éxito")->success();
-
+            flash("El cliente <b>{$request->name}</b> ha sido actualizado con éxito")->success();
             return response()->json([
-                'success' => 'true',
+                'success' => true,
                 'data' => [
                     'redirect' => route('clientes.edit', $cliente->id)
                 ]
             ]);
         } catch (Exception $e) {
-            DB::rollback();
-            Log::debug('Error ocurred after trying to update a customer: ' . $cliente->id);
-            Log::debug($e->getMessage());
-            return response()->json([
-                'message' => __('dashboard.general.operation_error'),
-                'error' => [
-                    'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
-                ]
-            ]);
+            DB::rollBack();
+            Log::error('Customer update failed', ['id' => $cliente->id, 'error' => $e->getMessage()]);
+            return $this->jsonError($e);
         }
     }
 
@@ -241,30 +184,60 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $cliente)
     {
-        try {              #validar existencia de ordenes antes de eliminar
-              if ($cliente->existsOrders()){
-                  return response()->json([
-                      'success' => false,
-                      'message' => "El cliente no ha podido ser eliminada existe ordenes asociadas"
-                  ]); 
-              }
-            DB::beginTransaction();
-            $cliente->delete();
-            DB::commit();
-            
+        if ($cliente->existsOrders()) {
             return response()->json([
-                'success' => true,
-                'message' => "El cliente ha sido eliminado con éxito"
-            ]);
-        } catch (Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'message' => __('dashboard.general.operation_error'),
-                'error' => [
-                    'e' => $e->getMessage(),
-                    'trace' => $e->getMessage()
-                ]
+                'success' => false,
+                'message' => 'El cliente no ha podido ser eliminado: existen órdenes asociadas'
             ]);
         }
+        DB::beginTransaction();
+        try {
+            $cliente->delete();
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'El cliente ha sido eliminado con éxito'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Customer delete failed', ['id' => $cliente->id, 'error' => $e->getMessage()]);
+            return $this->jsonError($e);
+        }
+    }
+
+    // ----------------- Helpers internos -----------------
+    private function buildActionButtons(int $id): string
+    {
+        $actions = [
+            [
+                'url' => route('clientes.show', $id),
+                'class' => 'btn-primary',
+                'icon' => 'fas fa-eye',
+                'title' => 'Ver'
+            ],
+            [
+                'url' => route('clientes.edit', $id),
+                'class' => 'btn-success',
+                'icon' => 'fas fa-edit',
+                'title' => 'Editar'
+            ],
+        ];
+        $html = '';
+        foreach ($actions as $action) {
+            $html .= '<a href="' . $action['url'] . '" class="btn btn-sm ' . $action['class'] . ' btn-action-icon mb-2" title="' . $action['title'] . '" data-toggle="tooltip"><i class="' . $action['icon'] . '"></i></a>';
+        }
+        $html .= '<button data-id="' . $id . '" class="btn btn-sm btn-danger btn-action-icon delete-customer mb-2" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+        return $html;
+    }
+
+    private function jsonError(Exception $e)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => __('dashboard.general.operation_error'),
+            'error' => [
+                'e' => $e->getMessage(),
+            ]
+        ], 500);
     }
 }
