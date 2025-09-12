@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Policies\BrandPolicy;
-use App\User;
+use App\Models\User;
 use App\Models\Customer;
 use App\Models\Brand;
 

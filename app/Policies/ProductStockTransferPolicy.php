@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\ProductStockTransfer;
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProductStockTransferPolicy

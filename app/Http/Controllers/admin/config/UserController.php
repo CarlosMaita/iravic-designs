@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UserRequest;
 use App\Http\Requests\admin\UserDestroyRequest;
 use App\Repositories\Eloquent\UserRepository;
-use App\User;
+use App\Models\User;
 use DataTables;
 use Exception;
 use Illuminate\Http\Request;
