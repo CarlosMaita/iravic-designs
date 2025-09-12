@@ -19,6 +19,7 @@ class Order extends Model
         'subtotal',
         'discount',
         'status',
+        'exchange_rate',
         'shipping_name',
         'shipping_dni',
         'shipping_phone',
@@ -153,5 +154,66 @@ class Order extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the exchange rate to use for this order
+     * - Use stored rate if order is paid/shipped/completed
+     * - Use current rate if order is not yet paid
+     *
+     * @return float
+     */
+    public function getEffectiveExchangeRate(): float
+    {
+        if ($this->isPaid() && $this->exchange_rate) {
+            return $this->exchange_rate;
+        }
+        
+        return app(\App\Services\ExchangeRateService::class)->getCurrentRate();
+    }
+
+    /**
+     * Check if order is paid or beyond
+     *
+     * @return bool
+     */
+    public function isPaid(): bool
+    {
+        return in_array($this->status, [self::STATUS_PAID, self::STATUS_SHIPPED, self::STATUS_COMPLETED]);
+    }
+
+    /**
+     * Get the total in VES using the effective exchange rate
+     *
+     * @return float
+     */
+    public function getTotalInVES(): float
+    {
+        return $this->total * $this->getEffectiveExchangeRate();
+    }
+
+    /**
+     * Get both USD and VES amounts for display
+     *
+     * @return array
+     */
+    public function getPricesBothCurrencies(): array
+    {
+        $vesAmount = $this->getTotalInVES();
+        
+        return [
+            'usd' => [
+                'amount' => $this->total,
+                'formatted' => '$' . number_format($this->total, 2),
+                'currency' => 'USD'
+            ],
+            'ves' => [
+                'amount' => $vesAmount,
+                'formatted' => 'Bs. ' . number_format($vesAmount, 2, ',', '.'),
+                'currency' => 'VES'
+            ],
+            'exchange_rate' => $this->getEffectiveExchangeRate(),
+            'rate_source' => $this->isPaid() && $this->exchange_rate ? 'stored' : 'current'
+        ];
     }
 }

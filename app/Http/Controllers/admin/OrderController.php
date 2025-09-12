@@ -99,13 +99,21 @@ class OrderController extends Controller
             'status' => 'required|in:' . implode(',', array_keys(Order::getStatuses())),
             'shipping_agency' => 'nullable|in:' . implode(',', Order::getShippingAgencies()),
             'shipping_tracking_number' => 'nullable|string|max:255',
+            'exchange_rate' => 'nullable|numeric|min:0|required_if:status,pagada',
         ]);
 
-        $order->update($request->only([
+        $updateData = $request->only([
             'status',
             'shipping_agency', 
             'shipping_tracking_number'
-        ]));
+        ]);
+
+        // Only set exchange_rate if the order is being marked as paid
+        if ($request->status === 'pagada' && $request->filled('exchange_rate')) {
+            $updateData['exchange_rate'] = $request->exchange_rate;
+        }
+
+        $order->update($updateData);
 
         return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'Orden actualizada exitosamente.');

@@ -34,17 +34,8 @@
               </div>
             </div>
 
-            <!-- Currency Switcher -->
-            <div class="d-flex align-items-center ms-3" data-currency-switcher>
-              <span class="text-muted me-2 small">Moneda:</span>
-              <div class="btn-group btn-group-sm" role="group" aria-label="Currency switcher">
-                <input type="radio" class="btn-check" name="currency" id="currency-usd" value="USD" checked>
-                <label class="btn btn-outline-secondary" for="currency-usd">USD</label>
-                
-                <input type="radio" class="btn-check" name="currency" id="currency-ves" value="VES">
-                <label class="btn btn-outline-secondary" for="currency-ves">VES</label>
-              </div>
-            </div>
+            <!-- Currency Switcher Component (for when Vue is working) -->
+            <currency-switcher-component class="d-none"></currency-switcher-component>
           </div>
 
           
@@ -67,7 +58,33 @@
         <!-- Button group -->
         <div class="d-flex align-items-center">
 
+            <!-- Currency Switcher Button (Mobile) - Pure HTML/JS fallback -->
+            <div class="me-2">
+                <!-- Mobile Currency Button -->
+                <button 
+                    type="button" 
+                    class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake d-lg-none"
+                    id="mobile-currency-btn"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#mobile-currency-modal"
+                    title="Cambiar moneda"
+                >
+                    <i class="ci-dollar-sign animate-target"></i>
+                    <span class="visually-hidden">Cambiar moneda</span>
+                </button>
 
+                <!-- Desktop Currency Switcher -->
+                <div class="d-none d-lg-flex align-items-center" data-currency-switcher>
+                    <span class="text-muted me-2 small">Moneda:</span>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Currency switcher">
+                        <input type="radio" class="btn-check" name="currency" id="currency-usd" value="USD" checked>
+                        <label class="btn btn-outline-secondary" for="currency-usd">USD</label>
+                        
+                        <input type="radio" class="btn-check" name="currency" id="currency-ves" value="VES">
+                        <label class="btn btn-outline-secondary" for="currency-ves">VES</label>
+                    </div>
+                </div>
+            </div>
 
             <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
           <button  type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar" >
@@ -285,3 +302,165 @@
         </nav>
       </div>
     </header>
+
+    <!-- Mobile Currency Modal -->
+    <div class="modal fade" id="mobile-currency-modal" tabindex="-1" aria-labelledby="currencyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="currencyModalLabel">
+                        <i class="ci-dollar-sign me-2"></i>
+                        Seleccionar Moneda
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">
+                        Elige la moneda para mostrar los precios:
+                    </p>
+                    <div class="d-grid gap-2">
+                        <button 
+                            type="button" 
+                            class="btn btn-lg btn-outline-primary currency-option" 
+                            data-currency="USD"
+                            id="mobile-usd-btn"
+                        >
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="text-start">
+                                    <strong>USD - Dólar Americano</strong>
+                                    <div class="small text-muted">Moneda base del catálogo</div>
+                                </div>
+                                <div class="fs-4">$</div>
+                            </div>
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            class="btn btn-lg btn-outline-primary currency-option" 
+                            data-currency="VES"
+                            id="mobile-ves-btn"
+                        >
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="text-start">
+                                    <strong>VES - Bolívar Venezolano</strong>
+                                    <div class="small text-muted" id="exchange-rate-display">
+                                        Tasa: <span id="rate-value">{{ \App\Helpers\CurrencyHelper::getCurrentExchangeRate() }}</span> Bs/$
+                                    </div>
+                                </div>
+                                <div class="fs-4">Bs.</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Currency switcher functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+        const exchangeRate = window.currencyData ? window.currencyData.exchangeRate : {{ \App\Helpers\CurrencyHelper::getCurrentExchangeRate() }};
+        
+        // Update UI based on stored currency
+        updateCurrencyUI(currentCurrency);
+        
+        // Desktop currency switcher
+        const usdRadio = document.getElementById('currency-usd');
+        const vesRadio = document.getElementById('currency-ves');
+        
+        if (usdRadio && vesRadio) {
+            if (currentCurrency === 'VES') {
+                vesRadio.checked = true;
+                usdRadio.checked = false;
+            } else {
+                usdRadio.checked = true;
+                vesRadio.checked = false;
+            }
+            
+            usdRadio.addEventListener('change', function() {
+                if (this.checked) changeCurrency('USD');
+            });
+            
+            vesRadio.addEventListener('change', function() {
+                if (this.checked) changeCurrency('VES');
+            });
+        }
+        
+        // Mobile currency buttons
+        const currencyOptions = document.querySelectorAll('.currency-option');
+        currencyOptions.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const currency = this.getAttribute('data-currency');
+                changeCurrency(currency);
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('mobile-currency-modal'));
+                if (modal) modal.hide();
+            });
+        });
+        
+        function changeCurrency(currency) {
+            localStorage.setItem('selectedCurrency', currency);
+            updateCurrencyUI(currency);
+            updatePrices(currency);
+            
+            // Update desktop radio buttons
+            if (currency === 'USD') {
+                if (usdRadio) usdRadio.checked = true;
+                if (vesRadio) vesRadio.checked = false;
+            } else {
+                if (vesRadio) vesRadio.checked = true;
+                if (usdRadio) usdRadio.checked = false;
+            }
+        }
+        
+        function updateCurrencyUI(currency) {
+            // Update mobile button styles
+            const usdBtn = document.getElementById('mobile-usd-btn');
+            const vesBtn = document.getElementById('mobile-ves-btn');
+            
+            if (usdBtn && vesBtn) {
+                if (currency === 'USD') {
+                    usdBtn.className = 'btn btn-lg btn-primary currency-option';
+                    vesBtn.className = 'btn btn-lg btn-outline-primary currency-option';
+                } else {
+                    usdBtn.className = 'btn btn-lg btn-outline-primary currency-option';
+                    vesBtn.className = 'btn btn-lg btn-primary currency-option';
+                }
+            }
+            
+            // Update mobile currency button title
+            const mobileBtn = document.getElementById('mobile-currency-btn');
+            if (mobileBtn) {
+                mobileBtn.title = 'Moneda: ' + currency;
+            }
+        }
+        
+        function updatePrices(currency) {
+            const priceElements = document.querySelectorAll('[data-usd-price]');
+            
+            priceElements.forEach(function(element) {
+                const usdPrice = parseFloat(element.getAttribute('data-usd-price'));
+                if (!isNaN(usdPrice)) {
+                    if (currency === 'VES' && exchangeRate) {
+                        const vesPrice = usdPrice * exchangeRate;
+                        element.textContent = 'Bs. ' + formatNumber(vesPrice);
+                    } else {
+                        element.textContent = '$' + formatNumber(usdPrice);
+                    }
+                }
+            });
+        }
+        
+        function formatNumber(number) {
+            return new Intl.NumberFormat('es-VE', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(number);
+        }
+        
+        // Initial price update
+        updatePrices(currentCurrency);
+    });
+    </script>

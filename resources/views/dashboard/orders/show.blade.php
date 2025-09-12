@@ -32,7 +32,20 @@
                                         </span>
                                     </p>
                                     <p><strong>Fecha:</strong> {{ $order->date->format('d/m/Y H:i') }}</p>
-                                    <p><strong>Total:</strong> ${{ number_format($order->total, 2) }}</p>
+                                    
+                                    @php
+                                        $prices = $order->getPricesBothCurrencies();
+                                    @endphp
+                                    
+                                    <p><strong>Total:</strong> {{ $prices['usd']['formatted'] }}</p>
+                                    <p class="text-muted"><em>Equivalente:</em> {{ $prices['ves']['formatted'] }}</p>
+                                    
+                                    @if($order->exchange_rate)
+                                        <p><strong>Tasa de cambio:</strong> {{ number_format($order->exchange_rate, 4, ',', '.') }} Bs/$</p>
+                                        <p class="text-muted small">
+                                            <em>{{ $order->isPaid() ? 'Tasa registrada al momento del pago' : 'Tasa actual del sistema' }}</em>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                             

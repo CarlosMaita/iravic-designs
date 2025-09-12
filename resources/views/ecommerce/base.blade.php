@@ -47,6 +47,9 @@
     <script>
       // Expose csrfToken early for scripts that need it before app.js mounts
       window.Laravel = Object.assign({}, window.Laravel, { csrfToken: '{{ csrf_token() }}' });
+      
+      // Expose currency data globally for components
+      window.currencyData = {!! \App\Helpers\CurrencyHelper::getJavascriptData() !!};
     </script>
     <script src="{{ asset('js/ecommerce/app.js') }}" defer></script>
     <script>
