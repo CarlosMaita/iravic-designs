@@ -147,20 +147,7 @@
                                 <div class="info-label">Última Actualización</div>
                                 <div class="info-value">{{ $customer->updated_at->format('d/m/Y H:i') }}</div>
                             </div>
-
-                            @if($customer->collection_frequency)
-                            <div class="info-item">
-                                <div class="info-label">Frecuencia de Cobro</div>
-                                <div class="info-value">{{ $customer->collection_frequency }}</div>
-                            </div>
-                            @endif
-
-                            @if($customer->collection_day)
-                            <div class="info-item">
-                                <div class="info-label">Día de Cobro</div>
-                                <div class="info-value">{{ $customer->collection_day }}</div>
-                            </div>
-                            @endif
+                            
                         </div>
                     </div>
 

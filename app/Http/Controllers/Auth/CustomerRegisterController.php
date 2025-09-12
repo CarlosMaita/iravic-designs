@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Constants\FrequencyCollectionConstants;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -70,7 +69,6 @@ class CustomerRegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'qualification' => 'Bueno', // Default qualification
-            'collection_frequency' => FrequencyCollectionConstants::CADA_SEMANA, // Default collection frequency
         ]);
     }
 

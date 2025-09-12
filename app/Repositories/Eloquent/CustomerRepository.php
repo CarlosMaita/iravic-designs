@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Constants\DaysConstants;
-use App\Constants\FrequencyCollectionConstants;
 use App\Models\Customer;
 use Illuminate\Support\Collection;
 use App\Repositories\CustomerRepositoryInterface;
@@ -75,13 +73,4 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         return $this->model->whereRaw('1 = 0');
     }
 
-    public function updateVisits( $collection_frequency, $collection_day, $customer_id ){
-        // No-op since visits/scheduling module is removed
-    }
-
-    public static function setNextDateVisit( $date, $collection_frequency, $collection_day ): Carbon
-    {
-        // Kept for backwards compatibility but no longer used since scheduling module is removed
-        return $date;
-    }
 }

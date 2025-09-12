@@ -54,24 +54,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label>{{ __('dashboard.form.fields.customers.max_credit') }}</label>
                     <input class="form-control" type="text" value="{{ $customer->max_credit }}" readOnly>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                    <label>Día de cobro</label>
-                    <input class="form-control" type="text" value="{{ $customer->collection_day ?? '-' }}" readOnly>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                    <label>Frecuencia de Cobro</label>
-                    <input class="form-control" type="text" value="{{ $customer->collection_frequency ?? '-' }}" readOnly>
-                </div>
-            </div>
+            
         </div>
 
         <div class="row">
