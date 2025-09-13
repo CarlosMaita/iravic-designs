@@ -62,7 +62,7 @@
     <nav class="container" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Catalogo de la tienda</li>
+            <li class="breadcrumb-item active" aria-current="page">Catalogo</li>
         </ol>
     </nav>
   <!-- End Breadcrumb -->
