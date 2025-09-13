@@ -20,7 +20,7 @@
         $keywords[] = strtolower($search);
     }
     
-    $pageTitle = 'Catálogo' . $titleSuffix;
+    $pageTitle = 'Catalogo de la tienda' . $titleSuffix;
     $metaDescription = 'Descubre nuestro catálogo de productos de moda infantil' . $descriptionSuffix . '. Ropa cómoda y estilosa para niños y niñas.';
     $metaKeywords = implode(', ', array_unique($keywords));
 @endphp
@@ -62,7 +62,7 @@
     <nav class="container" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Catalogo</li>
+            <li class="breadcrumb-item active" aria-current="page">Catalogo de la tienda</li>
         </ol>
     </nav>
   <!-- End Breadcrumb -->
