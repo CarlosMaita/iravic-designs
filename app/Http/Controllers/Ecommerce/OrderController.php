@@ -136,6 +136,7 @@ class OrderController extends Controller
 
         $customer = Auth::guard('customer')->user();
         $orders = $customer->orders()
+            ->notArchived()
             ->with(['orderProducts.product', 'payments'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
