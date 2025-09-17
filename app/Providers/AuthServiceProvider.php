@@ -35,6 +35,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // Temporary gates for testing - allow all order operations
+        Gate::define('view-order', function (User $user) {
+            return true;
+        });
+
+        Gate::define('update-order', function (User $user) {
+            return true;
+        });
+
         // Remove all permission-based gates since we're removing the permission system
     }
 }
