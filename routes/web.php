@@ -128,11 +128,14 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
 
     # Orders Routes
     Route::get('ordenes', 'OrderController@index')->name('admin.orders.index');
+    Route::get('ordenes/archivadas', 'OrderController@archived')->name('admin.orders.archived');
     Route::get('ordenes/{order}', 'OrderController@show')->name('admin.orders.show');
     Route::get('ordenes/{order}/edit', 'OrderController@edit')->name('admin.orders.edit');
     Route::put('ordenes/{order}', 'OrderController@update')->name('admin.orders.update');
     Route::patch('ordenes/{order}/status', 'OrderController@updateStatus')->name('admin.orders.update_status');
     Route::post('ordenes/{order}/cancel', 'OrderController@cancel')->name('admin.orders.cancel');
+    Route::post('ordenes/{order}/archive', 'OrderController@archive')->name('admin.orders.archive');
+    Route::post('ordenes/{order}/unarchive', 'OrderController@unarchive')->name('admin.orders.unarchive');
 
     # Payments Routes
     Route::get('pagos', 'PaymentController@index')->name('admin.payments.index');

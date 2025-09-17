@@ -18,6 +18,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {        if ($request->ajax()) {
             $orders = Order::with(['customer', 'user'])
+                ->notArchived()
                 ->orderBy('created_at', 'desc');
 
             return DataTables::of($orders)
@@ -50,6 +51,9 @@ class OrderController extends Controller
                     if (Auth::user()->can('update-order')) {
                         $btn .= '<a href="'. route('admin.orders.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar"><i class="fas fa-edit"></i></a>';
                     }
+                    if (Auth::user()->can('update-order')) {
+                        $btn .= '<button type="button" class="btn btn-sm btn-warning btn-action-icon mb-2" onclick="archiveOrder(' . $row->id . ')" title="Archivar"><i class="fas fa-archive"></i></button>';
+                    }
                     return $btn;
                 })
                 ->rawColumns(['status_badge', 'action'])
@@ -72,7 +76,13 @@ class OrderController extends Controller
      * Show the form for editing the specified order.
      */
     public function edit(Order $order)
-    {        $order->load(['customer', 'orderProducts', 'payments']);
+    {        
+        if ($order->archived) {
+            return redirect()->route('admin.orders.show', $order->id)
+                ->with('error', 'No se pueden editar órdenes archivadas. Solo puedes verlas.');
+        }
+        
+        $order->load(['customer', 'orderProducts', 'payments']);
         $statuses = Order::getStatuses();
         $shippingAgencies = Order::getShippingAgencies();
         
@@ -83,7 +93,13 @@ class OrderController extends Controller
      * Update the specified order.
      */
     public function update(Request $request, Order $order)
-    {        $request->validate([
+    {        
+        if ($order->archived) {
+            return redirect()->route('admin.orders.show', $order->id)
+                ->with('error', 'No se pueden actualizar órdenes archivadas.');
+        }
+        
+        $request->validate([
             'status' => 'required|in:' . implode(',', array_keys(Order::getStatuses())),
             'shipping_agency' => 'nullable|in:' . implode(',', Order::getShippingAgencies()),
             'shipping_tracking_number' => 'nullable|string|max:255',
@@ -158,5 +174,108 @@ class OrderController extends Controller
             'success' => false,
             'message' => 'No tiene permisos para cancelar esta orden.'
         ], 403);
+    }
+
+    /**
+     * Display archived orders.
+     */
+    public function archived(Request $request)
+    {
+        if ($request->ajax()) {
+            $orders = Order::with(['customer', 'user'])
+                ->archived()
+                ->orderBy('created_at', 'desc');
+
+            return DataTables::of($orders)
+                ->addIndexColumn()
+                ->addColumn('customer_name', function($row) {
+                    return $row->customer ? $row->customer->name : 'N/A';
+                })
+                ->addColumn('status_badge', function($row) {
+                    $statusColors = [
+                        'creada' => 'secondary',
+                        'pagada' => 'info', 
+                        'enviada' => 'warning',
+                        'completada' => 'success',
+                        'cancelada' => 'danger'
+                    ];
+                    $color = $statusColors[$row->status] ?? 'secondary';
+                    return '<span class="badge badge-' . $color . '">' . $row->status_label . '</span>';
+                })
+                ->addColumn('total_formatted', function($row) {
+                    return '$' . number_format($row->total, 2);
+                })
+                ->addColumn('date_formatted', function($row) {
+                    return $row->date->format('d/m/Y H:i');
+                })
+                ->addColumn('action', function($row) {
+                    $btn = '';
+                    if (Auth::user()->can('view-order')) {
+                        $btn .= '<a href="'. route('admin.orders.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
+                    }
+                    if (Auth::user()->can('update-order')) {
+                        $btn .= '<button type="button" class="btn btn-sm btn-info btn-action-icon mb-2" onclick="unarchiveOrder(' . $row->id . ')" title="Desarchivar"><i class="fas fa-box-open"></i></button>';
+                    }
+                    return $btn;
+                })
+                ->rawColumns(['status_badge', 'action'])
+                ->toJson();
+        }
+
+        return view('dashboard.orders.archived');
+    }
+
+    /**
+     * Archive an order.
+     */
+    public function archive(Order $order)
+    {
+        if (!Auth::user()->can('update-order')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos para archivar esta orden.'
+            ], 403);
+        }
+
+        if ($order->archived) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La orden ya está archivada.'
+            ], 400);
+        }
+
+        $order->archive();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Orden archivada exitosamente.'
+        ]);
+    }
+
+    /**
+     * Unarchive an order.
+     */
+    public function unarchive(Order $order)
+    {
+        if (!Auth::user()->can('update-order')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos para desarchivar esta orden.'
+            ], 403);
+        }
+
+        if (!$order->archived) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La orden no está archivada.'
+            ], 400);
+        }
+
+        $order->unarchive();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Orden desarchivada exitosamente.'
+        ]);
     }
 }

@@ -19,6 +19,7 @@ class Order extends Model
         'subtotal',
         'discount',
         'status',
+        'archived',
         'exchange_rate',
         'shipping_name',
         'shipping_dni',
@@ -34,6 +35,7 @@ class Order extends Model
 
     protected $casts = [
         'date' => 'datetime',
+        'archived' => 'boolean',
     ];
 
     // Order status constants
@@ -115,6 +117,16 @@ class Order extends Model
         return $query->where('customer_id', $customerId);
     }
 
+    public function scopeNotArchived($query)
+    {
+        return $query->where('archived', false);
+    }
+
+    public function scopeArchived($query)
+    {
+        return $query->where('archived', true);
+    }
+
     // Methods
     public function canBePaid()
     {
@@ -154,6 +166,34 @@ class Order extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Archive the order
+     */
+    public function archive()
+    {
+        $this->archived = true;
+        $this->save();
+        return true;
+    }
+
+    /**
+     * Unarchive the order
+     */
+    public function unarchive()
+    {
+        $this->archived = false;
+        $this->save();
+        return true;
+    }
+
+    /**
+     * Check if order can be edited (not archived)
+     */
+    public function canBeEdited()
+    {
+        return !$this->archived;
     }
 
     /**

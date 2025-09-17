@@ -7,10 +7,10 @@
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-shopping-cart"></i> Órdenes
+                            <i class="fa fa-archive"></i> Órdenes Archivadas
                             <div class="card-header-actions">
-                                <a href="{{ route('admin.orders.archived') }}" class="btn btn-sm btn-secondary">
-                                    <i class="fas fa-archive"></i> Órdenes Archivadas
+                                <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-shopping-cart"></i> Órdenes Activas
                                 </a>
                             </div>
                         </div>
@@ -19,7 +19,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <table id="datatable_orders" class="table" width="100%">
+                                        <table id="datatable_archived_orders" class="table" width="100%">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
@@ -44,5 +44,5 @@
 
 @push('js')
     @include('plugins.sweetalert')
-    @include('dashboard.orders.js.index')
+    @include('dashboard.orders.js.archived')
 @endpush

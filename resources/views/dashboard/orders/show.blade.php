@@ -8,11 +8,22 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-shopping-cart"></i> Orden #{{ $order->id }}
+                            @if($order->archived)
+                                <span class="badge badge-warning ml-2">
+                                    <i class="fas fa-archive"></i> Archivada
+                                </span>
+                            @endif
                             <div class="card-header-actions">
-                                                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-success">
+                                @if(!$order->archived)
+                                    <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
-                                                            </div>
+                                @else
+                                    <span class="text-muted small">
+                                        <i class="fas fa-info-circle"></i> Las órdenes archivadas no se pueden editar
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">

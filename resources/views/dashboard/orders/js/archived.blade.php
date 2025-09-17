@@ -1,10 +1,10 @@
 <script>
     $(function () {
-        const URL_RESOURCE = "{{ route('admin.orders.index') }}";
-        const DATATABLE_RESOURCE = $("#datatable_orders");
+        const URL_RESOURCE = "{{ route('admin.orders.archived') }}";
+        const DATATABLE_RESOURCE = $("#datatable_archived_orders");
 
         /**
-        * Inicializa la datatable de órdenes
+        * Inicializa la datatable de órdenes archivadas
         */
         DATATABLE_RESOURCE.DataTable({
                 fixedHeader: true,
@@ -27,22 +27,22 @@
     });
 
     /**
-     * Archive order function
+     * Unarchive order function
      */
-    function archiveOrder(orderId) {
+    function unarchiveOrder(orderId) {
         Swal.fire({
             title: '¿Estás seguro?',
-            text: "¿Deseas archivar esta orden?",
-            icon: 'warning',
+            text: "¿Deseas desarchivar esta orden?",
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, archivar',
+            confirmButtonText: 'Sí, desarchivar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: `/admin/ordenes/${orderId}/archive`,
+                    url: `/admin/ordenes/${orderId}/unarchive`,
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -50,11 +50,11 @@
                     success: function(response) {
                         if (response.success) {
                             Swal.fire(
-                                '¡Archivada!',
+                                '¡Desarchivada!',
                                 response.message,
                                 'success'
                             );
-                            $('#datatable_orders').DataTable().ajax.reload();
+                            $('#datatable_archived_orders').DataTable().ajax.reload();
                         } else {
                             Swal.fire(
                                 'Error',
@@ -67,7 +67,7 @@
                         const response = xhr.responseJSON;
                         Swal.fire(
                             'Error',
-                            response ? response.message : 'Error al archivar la orden',
+                            response ? response.message : 'Error al desarchivar la orden',
                             'error'
                         );
                     }
