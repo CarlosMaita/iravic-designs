@@ -30,49 +30,47 @@
      * Archive order function
      */
     function archiveOrder(orderId) {
-        Swal.fire({
+        swal({
             title: '¿Estás seguro?',
             text: "¿Deseas archivar esta orden?",
-            icon: 'warning',
+            type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, archivar',
             cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: `/admin/ordenes/${orderId}/archive`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire(
-                                '¡Archivada!',
-                                response.message,
-                                'success'
-                            );
-                            $('#datatable_orders').DataTable().ajax.reload();
-                        } else {
-                            Swal.fire(
-                                'Error',
-                                response.message,
-                                'error'
-                            );
-                        }
-                    },
-                    error: function(xhr) {
-                        const response = xhr.responseJSON;
-                        Swal.fire(
+        }).then(function () {
+            $.ajax({
+                url: `/admin/ordenes/${orderId}/archive`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        swal(
+                            '¡Archivada!',
+                            response.message,
+                            'success'
+                        );
+                        $('#datatable_orders').DataTable().ajax.reload();
+                    } else {
+                        swal(
                             'Error',
-                            response ? response.message : 'Error al archivar la orden',
+                            response.message,
                             'error'
                         );
                     }
-                });
-            }
-        });
+                },
+                error: function(xhr) {
+                    const response = xhr.responseJSON;
+                    swal(
+                        'Error',
+                        response ? response.message : 'Error al archivar la orden',
+                        'error'
+                    );
+                }
+            });
+        }).catch(swal.noop);
     }
 </script>

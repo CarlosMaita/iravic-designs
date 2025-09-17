@@ -30,49 +30,47 @@
      * Unarchive order function
      */
     function unarchiveOrder(orderId) {
-        Swal.fire({
+        swal({
             title: '¿Estás seguro?',
             text: "¿Deseas desarchivar esta orden?",
-            icon: 'question',
+            type: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, desarchivar',
             cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: `/admin/ordenes/${orderId}/unarchive`,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire(
-                                '¡Desarchivada!',
-                                response.message,
-                                'success'
-                            );
-                            $('#datatable_archived_orders').DataTable().ajax.reload();
-                        } else {
-                            Swal.fire(
-                                'Error',
-                                response.message,
-                                'error'
-                            );
-                        }
-                    },
-                    error: function(xhr) {
-                        const response = xhr.responseJSON;
-                        Swal.fire(
+        }).then(function () {
+            $.ajax({
+                url: `/admin/ordenes/${orderId}/unarchive`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        swal(
+                            '¡Desarchivada!',
+                            response.message,
+                            'success'
+                        );
+                        $('#datatable_archived_orders').DataTable().ajax.reload();
+                    } else {
+                        swal(
                             'Error',
-                            response ? response.message : 'Error al desarchivar la orden',
+                            response.message,
                             'error'
                         );
                     }
-                });
-            }
-        });
+                },
+                error: function(xhr) {
+                    const response = xhr.responseJSON;
+                    swal(
+                        'Error',
+                        response ? response.message : 'Error al desarchivar la orden',
+                        'error'
+                    );
+                }
+            });
+        }).catch(swal.noop);
     }
 </script>
