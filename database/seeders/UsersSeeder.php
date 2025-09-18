@@ -17,12 +17,16 @@ class UsersSeeder extends Seeder
     public function run()
     {
         /*  insert users   */
-        $user = User::create([ 
-            'name' => 'admin',
-            'email' => 'carlosmaita2009@gmail.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('Venezuela'), // password
-            'remember_token' => Str::random(10)
-        ]);
+        $user = User::firstOrCreate(
+            [
+                'email' => 'carlosmaita2009@gmail.com'
+            ],
+            [ 
+                'name' => 'admin',
+                'email_verified_at' => now(),
+                'password' => bcrypt('Venezuela'), // password
+                'remember_token' => Str::random(10)
+            ]
+        );
     }
 }
