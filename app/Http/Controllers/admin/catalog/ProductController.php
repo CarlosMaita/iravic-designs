@@ -58,16 +58,17 @@ class ProductController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '<div style="display:flex">';
+                        $user = Auth::user();
 
-                        if (Auth::user()->can('view', $row)) {
+                        if ($user && $user->can('view', $row)) {
                             $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
                         }
 
-                        if (Auth::user()->can('view', $row)) {
+                        if ($user && $user->can('view', $row)) {
                             $btn .= '<a href="'. route('productos.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         }
 
-                        if (Auth::user()->can('update', $row)) {
+                        if ($user && $user->can('update', $row)) {
                             $btn .= '<a href="'. route('productos.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         }
 
