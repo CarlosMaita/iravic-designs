@@ -692,7 +692,7 @@
                             {{--  --}}
                             <a href="{{ route('productos.index') }}" class="btn btn-primary ml-3">{{ __('dashboard.form.back to list') }}</a>
                             
-                            @if (Auth::user()->can('update', $product)) 
+                            @if (Auth::check() && Auth::user()->can('update', $product)) 
                                 <a
                                 href="{{ route('productos.edit', [$product->id]) }}"
                                 class="btn btn-success">{{

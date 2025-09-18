@@ -26,7 +26,7 @@
                                     url-products-combinations="{{ route('productos.delete_combinations') }}"
                                     url-resource= "{{ route('producto-imagen.store') }}"
                                     url-delete-resource= "{{ route('producto-imagen.dropzone.destroy') }}"
-                                    :can-prices-per-method-payment="{{ auth()->user()->can('prices-per-method-payment') ? 'true' : 'false' }}"
+                                    :can-prices-per-method-payment="{{ (auth()->check() && auth()->user()->can('prices-per-method-payment')) ? 'true' : 'false' }}"
                                 ></product-form>
                                 {{--  --}}
                                 <a href="{{ route('productos.index') }}" class="btn btn-primary">{{ __('dashboard.form.back to list') }}</a>
