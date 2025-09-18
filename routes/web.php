@@ -41,6 +41,12 @@ Route::post('customer/logout',   [CustomerLoginController::class, 'logout'])->na
 Route::get('registrarse',        [\App\Http\Controllers\Auth\CustomerRegisterController::class, 'showRegistrationForm'])->name('customer.register.form');
 Route::post('customer/register', [\App\Http\Controllers\Auth\CustomerRegisterController::class, 'register'])->name('customer.register');
 
+# Google Authentication Routes
+Route::get('auth/google',         [\App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('customer.google.redirect');
+Route::get('auth/google/callback', [\App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback'])->name('customer.google.callback');
+Route::get('google/register',     [\App\Http\Controllers\Auth\GoogleController::class, 'showGoogleRegistrationForm'])->name('customer.google.register.form');
+Route::post('google/register',    [\App\Http\Controllers\Auth\GoogleController::class, 'completeGoogleRegistration'])->name('customer.google.register.complete');
+
 # Customer Protected Routes
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('/e/dashboard', [\App\Http\Controllers\Ecommerce\CustomerDashboardController::class, 'index'])->name('customer.dashboard');

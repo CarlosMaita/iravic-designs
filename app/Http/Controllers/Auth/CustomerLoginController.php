@@ -7,6 +7,7 @@ use App\Models\Config;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CustomerLoginController extends Controller
 {
@@ -44,9 +45,22 @@ class CustomerLoginController extends Controller
      */
     protected function attemptLogin(Request $request)
     {
-        return $this->guard('customer')->attempt(
-            $this->credentials($request), $request->boolean('remember')
-        );
+        $credentials = $this->credentials($request);
+        
+        // Check if customer exists with this email
+        $customer = \App\Models\Customer::where('email', $credentials['email'])->first();
+        
+        if (!$customer) {
+            // Customer doesn't exist - suggest Google registration if their email looks like a Google account
+            if (str_ends_with($credentials['email'], '@gmail.com')) {
+                Session::flash('message', 'No encontramos una cuenta con este correo. Si tienes una cuenta de Google, puedes registrarte usando el botón "Continuar con Google".');
+            } else {
+                Session::flash('message', 'No encontramos una cuenta con este correo electrónico. Por favor, regístrate primero.');
+            }
+            return false;
+        }
+        
+        return $this->guard('customer')->attempt($credentials, $request->boolean('remember'));
     }
 
 

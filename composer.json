@@ -15,6 +15,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laracasts/flash": "^3.2",
         "laravel/framework": "^9.0",
+        "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
         "laraveles/spanish": "^1.5",
