@@ -55,6 +55,9 @@ Vue.component('featured-products-carousel-ecommerce-component', require('../ecom
 Vue.component('featured-product-card-ecommerce-component', require('../ecommerce/components/home/FeaturedProductCardEcommerceComponent.vue').default);
 Vue.component('special-offers-carousel-ecommerce-component', require('../ecommerce/components/home/SpecialOffersCarouselEcommerceComponent.vue').default);
 
+// Orders ecommerce components
+Vue.component('payment-register-ecommerce-component', require('../ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

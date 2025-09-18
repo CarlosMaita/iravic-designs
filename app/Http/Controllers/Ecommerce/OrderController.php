@@ -8,6 +8,7 @@ use App\Models\OrderProduct;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Services\ExchangeRateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -189,18 +190,38 @@ class OrderController extends Controller
 
         $request->validate([
             'amount' => 'required|numeric|min:0.01',
+            'currency' => 'required|in:' . implode(',', array_keys(Payment::getCurrencies())),
             'payment_method' => 'required|in:' . implode(',', array_keys(Payment::getPaymentMethods())),
-            'reference_number' => 'required_if:payment_method,pago_movil|nullable|string|min:6|max:50',
+            'reference_number' => 'required_if:payment_method,pago_movil,transferencia|nullable|string|min:6|max:50',
             'mobile_payment_date' => 'required_if:payment_method,pago_movil|nullable|date',
+            'date' => 'required|date',
             'comment' => 'nullable|string|max:500',
         ]);
 
         try {
+            $currency = $request->input('currency');
+            /** @var ExchangeRateService $rateService */
+            $rateService = app(ExchangeRateService::class);
+            $currentRate = $rateService->getCurrentRate();
+
+            $usdAmount = (float) $request->amount;
+            $localAmount = null;
+            $exchangeRate = 1.0; // default for USD
+
+            if ($currency === Payment::CURRENCY_VES) {
+                $localAmount = (float) $request->amount;
+                $exchangeRate = max(0.0001, (float) $currentRate);
+                $usdAmount = $exchangeRate > 0 ? round($localAmount / $exchangeRate, 2) : 0.0;
+            }
+
             $payment = Payment::create([
                 'order_id' => $order->id,
                 'customer_id' => $customer->id,
-                'date' => Carbon::now(),
-                'amount' => $request->amount,
+                'date' => Carbon::parse($request->date),
+                'amount' => $usdAmount,
+                'currency' => $currency,
+                'exchange_rate' => $exchangeRate,
+                'local_amount' => $localAmount,
                 'status' => Payment::STATUS_PENDING,
                 'payment_method' => $request->payment_method,
                 'reference_number' => $request->reference_number,

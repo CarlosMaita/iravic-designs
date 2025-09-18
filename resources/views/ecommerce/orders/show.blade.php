@@ -210,8 +210,12 @@
                         <h5 class="card-title mb-0">Realizar Pago</h5>
                     </div>
                     <div class="card-body">
-                        <p>Monto pendiente: <strong>${{ number_format($order->remaining_balance, 2) }}</strong></p>
-                        <button class="btn btn-primary w-100" onclick="showPaymentModal()">Registrar Pago</button>
+                                                <payment-register-ecommerce-component
+                                                    :order-id="{{ $order->id }}"
+                                                    :remaining="{{ $order->remaining_balance }}"
+                                                    :exchange-rate="{{ $order->getEffectiveExchangeRate() }}"
+                                                    endpoint="{{ route('customer.orders.add_payment', $order->id) }}">
+                                                </payment-register-ecommerce-component>
                     </div>
                 </div>
             @endif
@@ -240,91 +244,6 @@
     </div>
 </div>
 
-@if($order->canBePaid() && $order->remaining_balance > 0)
-<!-- Payment Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="paymentModalLabel">Registrar Pago</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form id="paymentForm">
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="amount" class="form-label">Monto a Pagar</label>
-            <input type="number" class="form-control" id="amount" name="amount" min="0.01" step="0.01" required>
-          </div>
-          <div class="mb-3">
-            <label for="payment_method" class="form-label">Método de Pago</label>
-            <select class="form-select" id="payment_method" name="payment_method" required>
-              <option value="">Seleccione un método</option>
-              <option value="pago_movil">Pago Móvil</option>
-              <option value="transferencia">Transferencia</option>
-              <option value="efectivo">Efectivo</option>
-            </select>
-          </div>
-          <div class="mb-3" id="referenceField" style="display:none;">
-            <label for="reference_number" class="form-label">Número de Referencia</label>
-            <input type="text" class="form-control" id="reference_number" name="reference_number">
-          </div>
-          <div class="mb-3" id="dateField" style="display:none;">
-            <label for="mobile_payment_date" class="form-label">Fecha del Pago</label>
-            <input type="datetime-local" class="form-control" id="mobile_payment_date" name="mobile_payment_date">
-          </div>
-          <div class="mb-3">
-            <label for="comment" class="form-label">Comentarios (Opcional)</label>
-            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Registrar Pago</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-@push('scripts')
-<script>
-(function(){
-  function qs(id){ return document.getElementById(id); }
-  window.showPaymentModal = function(){
-    var el = qs('paymentModal');
-    if(el && window.bootstrap){ new bootstrap.Modal(el).show(); }
-  };
-  var methodSel = qs('payment_method');
-  if(methodSel){
-    methodSel.addEventListener('change', function(){
-      var isMobile = this.value === 'pago_movil';
-      var refF = qs('referenceField'); var dateF = qs('dateField');
-      var refI = qs('reference_number'); var dateI = qs('mobile_payment_date');
-      if(refF) refF.style.display = isMobile ? 'block':'none';
-      if(dateF) dateF.style.display = isMobile ? 'block':'none';
-      if(refI) refI.required = isMobile;
-      if(dateI) dateI.required = isMobile;
-    });
-  }
-  var form = qs('paymentForm');
-  if(form){
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      var data = Object.fromEntries(new FormData(form).entries());
-      fetch('{{ route('customer.orders.add_payment', $order->id) }}', {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}' },
-        body: JSON.stringify(data)
-      })
-      .then(r=>r.json())
-      .then(res=>{ alert(res.message || 'Operación realizada'); if(res.success) location.reload(); })
-      .catch(err=>{ console.error(err); alert('Error al procesar el pago.'); });
-    });
-  }
-})();
-</script>
-@endpush
-@endif
 
 @if($order->canBeCancelled())
 <!-- Cancel Modal -->

@@ -462,6 +462,23 @@
     @stack('scripts')
     @stack('js')
 
+    <script>
+      // Bridge to show toasts from ad-hoc Vue widgets
+      document.addEventListener('DOMContentLoaded', function(){
+        window.addEventListener('app:toast', function(ev){
+          try {
+            var payload = ev && ev.detail ? ev.detail : null;
+            var root = document.getElementById('app');
+            if (payload && root && root.__vue__ && root.__vue__.$refs && root.__vue__.$refs.toastEcommerceComponent){
+              root.__vue__.$refs.toastEcommerceComponent.showToast(payload);
+            }
+          } catch (e) {
+            // no-op
+          }
+        });
+      });
+    </script>
+
   </body>
 </html>
 

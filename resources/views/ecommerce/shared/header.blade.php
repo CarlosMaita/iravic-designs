@@ -360,9 +360,10 @@
     </div>
     @endif
 
-    <script>
-    // Currency switcher functionality
-    document.addEventListener('DOMContentLoaded', function() {
+  @push('scripts')
+  <script>
+  // Currency switcher functionality
+  document.addEventListener('DOMContentLoaded', function() {
         const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
         const exchangeRate = window.currencyData ? window.currencyData.exchangeRate : {{ \App\Helpers\CurrencyHelper::getCurrentExchangeRate() }};
         
@@ -393,7 +394,7 @@
         
         // Mobile currency buttons
         const currencyOptions = document.querySelectorAll('.currency-option');
-        currencyOptions.forEach(function(button) {
+    currencyOptions.forEach(function(button) {
             button.addEventListener('click', function() {
                 const currency = this.getAttribute('data-currency');
                 changeCurrency(currency);
@@ -468,3 +469,4 @@
         updatePrices(currentCurrency);
     });
     </script>
+  @endpush
