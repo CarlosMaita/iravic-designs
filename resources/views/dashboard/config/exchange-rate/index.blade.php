@@ -16,6 +16,7 @@
                                     <form method="POST" action="{{ route('admin.exchange-rate.toggle-module') }}" class="d-inline">
                                         @csrf
                                         <div class="form-check form-switch">
+                                            <input type="hidden" name="enabled" value="0">
                                             <input 
                                                 class="form-check-input" 
                                                 type="checkbox" 
