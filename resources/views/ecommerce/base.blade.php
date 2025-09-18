@@ -222,6 +222,21 @@
         // Currency data from backend
         const currencyData = {!! \App\Helpers\CurrencyHelper::getJavascriptData() !!};
         
+        // Check if currency module is enabled
+        if (!currencyData.enabled) {
+          // Hide currency switcher elements and force USD
+          currencyRadios.forEach(radio => {
+            const container = radio.closest('[data-currency-switcher]');
+            if (container) {
+              container.style.display = 'none';
+            }
+          });
+          
+          // Force USD currency and clear any VES preference
+          localStorage.setItem('preferred_currency', 'USD');
+          return; // Exit early if module disabled
+        }
+        
         // Current selected currency
         let currentCurrency = 'USD';
         

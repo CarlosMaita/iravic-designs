@@ -59,6 +59,7 @@
         <div class="d-flex align-items-center">
 
             <!-- Currency Switcher Button (Mobile) - Pure HTML/JS fallback -->
+            @if(\App\Models\Config::isCurrencyModuleEnabled())
             <div class="me-2">
                 <!-- Mobile Currency Button -->
                 <button 
@@ -85,6 +86,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
           <button  type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar" >
@@ -304,6 +306,7 @@
     </header>
 
     <!-- Mobile Currency Modal -->
+    @if(\App\Models\Config::isCurrencyModuleEnabled())
     <div class="modal fade" id="mobile-currency-modal" tabindex="-1" aria-labelledby="currencyModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -355,6 +358,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <script>
     // Currency switcher functionality

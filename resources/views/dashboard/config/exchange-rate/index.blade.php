@@ -7,7 +7,32 @@
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-dollar-sign"></i> Gestión de Tasa de Cambio USD/VES
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fa fa-dollar-sign"></i> Gestión de Tasa de Cambio USD/VES
+                                </div>
+                                <div>
+                                    <!-- Currency Module Toggle Switch -->
+                                    <form method="POST" action="{{ route('admin.exchange-rate.toggle-module') }}" class="d-inline">
+                                        @csrf
+                                        <div class="form-check form-switch">
+                                            <input type="hidden" name="enabled" value="0">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="checkbox" 
+                                                id="currencyModuleSwitch"
+                                                name="enabled"
+                                                value="1"
+                                                {{ $currencyModuleEnabled->value ? 'checked' : '' }}
+                                                onchange="this.form.submit()"
+                                            >
+                                            <label class="form-check-label" for="currencyModuleSwitch">
+                                                <strong>{{ $currencyModuleEnabled->value ? 'Módulo Habilitado' : 'Módulo Deshabilitado' }}</strong>
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <!-- Información actual de la tasa -->
@@ -128,8 +153,15 @@
                                         <ul class="mb-0">
                                             <li>La tasa de cambio se actualiza automáticamente cada hora desde el BCV</li>
                                             <li>Los precios de productos se muestran en USD por defecto</li>
-                                            <li>Los clientes pueden cambiar la visualización a VES multiplicando por esta tasa</li>
+                                            @if($currencyModuleEnabled->value)
+                                                <li>Los clientes pueden cambiar la visualización a VES multiplicando por esta tasa</li>
+                                            @else
+                                                <li><strong>El módulo de cambio de moneda está DESHABILITADO - Los clientes solo verán precios en USD</strong></li>
+                                            @endif
                                             <li>Se conservan todos los decimales para máxima precisión</li>
+                                            @if(!$currencyModuleEnabled->value)
+                                                <li><strong>Para habilitar el cambio de moneda, activa el switch en la parte superior</strong></li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\config;
 
 use App\Http\Controllers\Controller;
+use App\Models\Config;
 use App\Services\ExchangeRateService;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,9 @@ class ExchangeRateController extends Controller
      */
     public function index()
     {        $rateInfo = $this->exchangeRateService->getRateInfo();
+        $currencyModuleEnabled = Config::getConfig('currency_module_enabled');
         
-        return view('dashboard.config.exchange-rate.index', compact('rateInfo'));
+        return view('dashboard.config.exchange-rate.index', compact('rateInfo', 'currencyModuleEnabled'));
     }
 
     /**
@@ -76,5 +78,24 @@ class ExchangeRateController extends Controller
             'rate' => $this->exchangeRateService->getCurrentRate(),
             'info' => $this->exchangeRateService->getRateInfo()
         ]);
+    }
+
+    /**
+     * Toggle currency module enabled/disabled
+     */
+    public function toggleCurrencyModule(Request $request)
+    {
+        $request->validate([
+            'enabled' => 'required|boolean'
+        ]);
+
+        $config = Config::getConfig('currency_module_enabled');
+        $config->value = $request->input('enabled') ? '1' : '0';
+        $config->save();
+
+        $status = $request->input('enabled') ? 'habilitado' : 'deshabilitado';
+        flash("Módulo de cambio de moneda {$status} exitosamente.")->success();
+
+        return redirect()->back();
     }
 }

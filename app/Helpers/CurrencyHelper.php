@@ -106,6 +106,7 @@ class CurrencyHelper
         
         return json_encode([
             'exchangeRate' => $rate,
+            'enabled' => \App\Models\Config::isCurrencyModuleEnabled(),
             'symbols' => [
                 'USD' => '$',
                 'VES' => 'Bs.'
