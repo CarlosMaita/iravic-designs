@@ -14,7 +14,13 @@
                 ajax: {
                     url: URL_RESOURCE,
                     data: function (d) {
-                        d.status = $('#status_filter').val();
+                        const val = $('#status_filter').val();
+                        if (val) {
+                            d.status = val;
+                        } else {
+                            // Ensure no stale filter is sent
+                            if (d.status) delete d.status;
+                        }
                     }
                 },
                 pageLength: 10,
@@ -32,9 +38,9 @@
                 ]
         });
 
-        // Filter by status
+        // Filter by status, reset to first page
         $('#status_filter').on('change', function() {
-            dataTable.ajax.reload();
+            dataTable.page(0).draw('page');
         });
     });
 

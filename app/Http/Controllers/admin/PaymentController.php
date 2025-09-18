@@ -22,8 +22,8 @@ class PaymentController extends Controller
             $payments = Payment::with(['order', 'customer'])
                 ->orderBy('created_at', 'desc');
 
-            // Filter by status if provided
-            if ($request->has('status') && $request->status !== '') {
+            // Filter by status if provided (non-empty)
+            if ($request->filled('status')) {
                 $payments->where('status', $request->status);
             }
 
