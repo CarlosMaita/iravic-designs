@@ -158,6 +158,7 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         Route::get('tasa-cambio', 'ExchangeRateController@index')->name('admin.exchange-rate.index');
         Route::post('tasa-cambio/actualizar-bcv', 'ExchangeRateController@updateFromBCV')->name('admin.exchange-rate.update-bcv');
         Route::post('tasa-cambio/actualizar-manual', 'ExchangeRateController@updateManual')->name('admin.exchange-rate.update-manual');
+        Route::post('tasa-cambio/toggle-module', 'ExchangeRateController@toggleCurrencyModule')->name('admin.exchange-rate.toggle-module');
         Route::get('tasa-cambio/current', 'ExchangeRateController@getCurrentRate')->name('admin.exchange-rate.current');
         #
         Route::resource('usuarios', 'UserController')->except('show');

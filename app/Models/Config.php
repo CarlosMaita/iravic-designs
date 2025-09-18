@@ -26,6 +26,15 @@ class Config extends Model
     }
 
     /**
+     * Check if currency module is enabled.
+     */
+    public static function isCurrencyModuleEnabled()
+    {
+        $config = static::getConfig('currency_module_enabled');
+        return (bool) $config->value;
+    }
+
+    /**
      * Default config values.
      */
     public static function defaultConfig($key)
@@ -33,7 +42,8 @@ class Config extends Model
         return [
             "discount_password" => '123456',
             "usd_to_ves_rate" => '36.50',
-            "usd_to_ves_rate_last_update" => ''
+            "usd_to_ves_rate_last_update" => '',
+            "currency_module_enabled" => '1'
         ][$key] ?? "";
     }
 }

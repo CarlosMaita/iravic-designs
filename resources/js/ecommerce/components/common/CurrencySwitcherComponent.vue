@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isCurrencyModuleEnabled">
         <!-- Mobile Currency Button -->
         <button 
             type="button" 
@@ -121,10 +121,15 @@ export default {
         return {
             currentCurrency: 'USD',
             showCurrencyModal: false,
-            exchangeRate: null
+            exchangeRate: null,
+            isCurrencyModuleEnabled: true // Will be updated from window.currencyData
         }
     },
+    computed: {
+        // Add any computed properties if needed
+    },
     mounted() {
+        this.loadCurrencyModuleStatus();
         this.loadStoredCurrency();
         this.loadExchangeRate();
         this.updatePricesOnLoad();
@@ -136,7 +141,26 @@ export default {
         window.removeEventListener('currency-changed', this.handleCurrencyChange);
     },
     methods: {
+        loadCurrencyModuleStatus() {
+            // Load from window.currencyData if available
+            if (window.currencyData && typeof window.currencyData.enabled !== 'undefined') {
+                this.isCurrencyModuleEnabled = window.currencyData.enabled;
+            }
+            
+            // If module is disabled, force USD currency
+            if (!this.isCurrencyModuleEnabled) {
+                this.currentCurrency = 'USD';
+                localStorage.setItem('selectedCurrency', 'USD');
+            }
+        },
+        
         loadStoredCurrency() {
+            // Don't load stored currency if module is disabled
+            if (!this.isCurrencyModuleEnabled) {
+                this.currentCurrency = 'USD';
+                return;
+            }
+            
             const stored = localStorage.getItem('selectedCurrency');
             if (stored && ['USD', 'VES'].includes(stored)) {
                 this.currentCurrency = stored;
@@ -163,6 +187,11 @@ export default {
         },
         
         changeCurrency(currency) {
+            // Prevent changing to VES if module is disabled
+            if (!this.isCurrencyModuleEnabled && currency === 'VES') {
+                return;
+            }
+            
             if (currency !== this.currentCurrency) {
                 this.currentCurrency = currency;
                 this.saveCurrency();
