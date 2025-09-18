@@ -51,32 +51,19 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        if ($request->ajax()) {
+    {
+        if ($request->ajax()) {
             $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
             $products = $this->productRepository->onlyPrincipalsQuery($criteria);
             return Datatables::of($products)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '<div style="display:flex">';
-                        $user = Auth::user();
-
-                        if ($user && $user->can('view', $row)) {
-                            $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
-                        }
-
-                        if ($user && $user->can('view', $row)) {
-                            $btn .= '<a href="'. route('productos.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
-                        }
-
-                        if ($user && $user->can('update', $row)) {
-                            $btn .= '<a href="'. route('productos.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        }
-
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-resource" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
+                        $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
+                        $btn .= '<a href="'. route('productos.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
+                        $btn .= '<a href="'. route('productos.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
+                        $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-resource" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         $btn .= '</div>';
-
                         return $btn;
                     })
                     ->rawColumns(['action'])
