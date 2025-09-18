@@ -28,21 +28,18 @@ class ProductImageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        if ($request->ajax()) {
+    {
+        if ($request->ajax()) {
             $images = isset($request->producto) ? $this->productoImageRepository->all($request->producto) : array();
             return DataTables::of($images)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $btn = '';
-
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-image" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
-
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '';
+                    $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-image" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         abort(404);
@@ -50,37 +47,33 @@ class ProductImageController extends Controller
 
     
     public function store ( Request $request){
-       try {
-            // si puede crear productos entonces puede subir imagenes            if(!isset( $request->file )){
+        try {
+            // si puede crear productos entonces puede subir imagenes
+            if(!isset($request->file)){
                 return response()->json([
                     'success' => false,
                     'message' => 'No hay imagen'
                 ]);
             }
             $filenames = $this->saveImages(null, $request);
-
             return response()->json([
                 'success' => true,
                 'data' => $filenames
             ]);
-       } catch (Exception $e) {
-        
-        if( $e instanceof NotReadableException ) {
+        } catch (Exception $e) {
+            if ($e instanceof NotReadableException) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('dashboard.catalog.products.product_image.image_not_accepted'),
+                    'error' => $e->getMessage(),
+                ], 404);
+            }
             return response()->json([
                 'success' => false,
-                'message' => __('dashboard.catalog.products.product_image.image_not_accepted'),
+                'message' => __('dashboard.general.operation_error'),
                 'error' => $e->getMessage(),
-            ] , 404);
+            ], 404);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => __('dashboard.general.operation_error'),
-            'error' => $e->getMessage(),
-        ], 404);
-      
-       }
-        
     }
 
     private function saveImages($product = null, $request): array
