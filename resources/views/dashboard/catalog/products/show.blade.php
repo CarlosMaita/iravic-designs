@@ -499,7 +499,7 @@
                                                                         data-stock-name = "{{ $store->name }}"
                                                                         data-qty="{{ $store->pivot->stock }}">Modificar</span>
                                                                                                                                         {{-- Transferir --}}
-                                                                                                                                            @if (Auth::user()->isAdmin())
+                                                                                                                                            @if (Auth::check())
                                                                             <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                 type="button" 
                                                                                 id="btn_{{ $product->id }}_stock_{{ $store->id }}"
@@ -627,7 +627,7 @@
                                                                                 data-stock-name = "{{ $store->name }}"
                                                                                 data-qty="{{ $store->pivot->stock }}">Modificar</span>
                                                                                                                                                         {{-- Transferir --}}
-                                                                                                                                                            @if (Auth::user()->isAdmin())
+                                                                                                                                                            @if (Auth::check())
                                                                                     <span class="dropdown-item border-bottom view-transfer-stock"
                                                                                         type="button" 
                                                                                         id="btn_{{ $product_combination->id }}_stock_{{ $store->id }}"
