@@ -55,10 +55,8 @@ class PaymentController extends Controller
                 })
                 ->addColumn('action', function($row) {
                     $btn = '';
-                    if (Auth::user()->can('view-order')) {
-                        $btn .= '<a href="'. route('admin.payments.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
-                    }
-                    if (Auth::user()->can('update-order') && $row->status === 'pendiente') {
+                    $btn .= '<a href="'. route('admin.payments.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
+                    if ($row->status === 'pendiente') {
                         $btn .= '<button onclick="verifyPayment(' . $row->id . ')" class="btn btn-sm btn-success btn-action-icon mb-2" title="Verificar"><i class="fas fa-check"></i></button>';
                         $btn .= '<button onclick="rejectPayment(' . $row->id . ')" class="btn btn-sm btn-danger btn-action-icon mb-2" title="Rechazar"><i class="fas fa-times"></i></button>';
                     }

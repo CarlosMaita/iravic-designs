@@ -16,7 +16,8 @@ class OrderController extends Controller
      * Display a listing of orders.
      */
     public function index(Request $request)
-    {        if ($request->ajax()) {
+    {
+        if ($request->ajax()) {
             $orders = Order::with(['customer', 'user'])
                 ->notArchived()
                 ->orderBy('created_at', 'desc');
@@ -45,15 +46,9 @@ class OrderController extends Controller
                 })
                 ->addColumn('action', function($row) {
                     $btn = '';
-                    if (Auth::user()->can('view-order')) {
-                        $btn .= '<a href="'. route('admin.orders.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
-                    }
-                    if (Auth::user()->can('update-order')) {
-                        $btn .= '<a href="'. route('admin.orders.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar"><i class="fas fa-edit"></i></a>';
-                    }
-                    if (Auth::user()->can('update-order')) {
-                        $btn .= '<button type="button" class="btn btn-sm btn-warning btn-action-icon mb-2" onclick="archiveOrder(' . $row->id . ')" title="Archivar"><i class="fas fa-archive"></i></button>';
-                    }
+                    $btn .= '<a href="'. route('admin.orders.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
+                    $btn .= '<a href="'. route('admin.orders.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon mb-2" title="Editar"><i class="fas fa-edit"></i></a>';
+                    $btn .= '<button type="button" class="btn btn-sm btn-warning btn-action-icon mb-2" onclick="archiveOrder(' . $row->id . ')" title="Archivar"><i class="fas fa-archive"></i></button>';
                     return $btn;
                 })
                 ->rawColumns(['status_badge', 'action'])
@@ -145,35 +140,26 @@ class OrderController extends Controller
      */
     public function cancel(Order $order)
     {
-        // Allow customers to cancel their own orders or admins to cancel any order
-        if (Auth::user()->can('update-order') || 
-            (Auth::user()->customer && Auth::user()->customer->id === $order->customer_id)) {
-            
-            if ($order->status !== Order::STATUS_CREATED) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Solo se pueden cancelar órdenes en estado "Creada".'
-                ], 400);
-            }
-
-            if ($order->cancel()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Orden cancelada exitosamente.',
-                    'status' => $order->status_label
-                ]);
-            }
-
+        // Permitir que cualquier usuario cancele la orden (sin verificación de permisos)
+        if ($order->status !== Order::STATUS_CREATED) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se pudo cancelar la orden.'
+                'message' => 'Solo se pueden cancelar órdenes en estado "Creada".'
             ], 400);
+        }
+
+        if ($order->cancel()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Orden cancelada exitosamente.',
+                'status' => $order->status_label
+            ]);
         }
 
         return response()->json([
             'success' => false,
-            'message' => 'No tiene permisos para cancelar esta orden.'
-        ], 403);
+            'message' => 'No se pudo cancelar la orden.'
+        ], 400);
     }
 
     /**
@@ -210,12 +196,8 @@ class OrderController extends Controller
                 })
                 ->addColumn('action', function($row) {
                     $btn = '';
-                    if (Auth::user()->can('view-order')) {
-                        $btn .= '<a href="'. route('admin.orders.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
-                    }
-                    if (Auth::user()->can('update-order')) {
-                        $btn .= '<button type="button" class="btn btn-sm btn-info btn-action-icon mb-2" onclick="unarchiveOrder(' . $row->id . ')" title="Desarchivar"><i class="fas fa-box-open"></i></button>';
-                    }
+                    $btn .= '<a href="'. route('admin.orders.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
+                    $btn .= '<button type="button" class="btn btn-sm btn-info btn-action-icon mb-2" onclick="unarchiveOrder(' . $row->id . ')" title="Desarchivar"><i class="fas fa-box-open"></i></button>';
                     return $btn;
                 })
                 ->rawColumns(['status_badge', 'action'])
@@ -230,12 +212,7 @@ class OrderController extends Controller
      */
     public function archive(Order $order)
     {
-        if (!Auth::user()->can('update-order')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No tiene permisos para archivar esta orden.'
-            ], 403);
-        }
+
 
         if ($order->archived) {
             return response()->json([
@@ -257,12 +234,7 @@ class OrderController extends Controller
      */
     public function unarchive(Order $order)
     {
-        if (!Auth::user()->can('update-order')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No tiene permisos para desarchivar esta orden.'
-            ], 403);
-        }
+
 
         if (!$order->archived) {
             return response()->json([

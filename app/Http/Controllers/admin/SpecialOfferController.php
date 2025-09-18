@@ -28,7 +28,8 @@ class SpecialOfferController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {        $products = Product::orderBy('name')->get();
+    {        
+        $products = Product::orderBy('name')->get();
         
         return view('admin.special-offers.create', compact('products'));
     }
@@ -71,7 +72,8 @@ class SpecialOfferController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(SpecialOffer $specialOffer)
-    {        $products = Product::orderBy('name')->get();
+    {        
+        $products = Product::orderBy('name')->get();
         
         return view('admin.special-offers.edit', compact('specialOffer', 'products'));
     }

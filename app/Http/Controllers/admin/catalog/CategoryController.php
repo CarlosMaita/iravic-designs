@@ -27,22 +27,16 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        if ($request->ajax()) {
+    {
+        if ($request->ajax()) {
             $categories = $this->categoryRepository->allQuery();
 
             return datatables()->eloquent($categories)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
-
-                        if (Auth::user()->can('update', $row)) {
-                            $btn .= '<a href="'. route('categorias.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        }
-
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-category" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
-
+                        $btn .= '<a href="'. route('categorias.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
+                        $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-category" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         return $btn;
                     })
                     ->rawColumns(['action'])

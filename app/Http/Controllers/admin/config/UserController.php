@@ -27,21 +27,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        if ($request->ajax()) {
+    {
+        if ($request->ajax()) {
             $users = $this->userRepository->allUsersQuery( Auth::user()->isSuperAdmin() ) ;
             return datatables()->eloquent($users)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         $btn = '';
-
-                        if (Auth::user()->can('update', $row)) {
-                            $btn .= '<a href="'. route('usuarios.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon edit_user" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
-                        }
-
-                        if (Auth::user()->can('delete', $row)) {
-                            $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-user" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
-                        }
-
+                        $btn .= '<a href="'. route('usuarios.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon edit_user" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
+                        $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-user" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
