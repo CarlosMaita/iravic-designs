@@ -24,6 +24,8 @@ class Customer extends Authenticatable
         'password',
         'shipping_agency',
         'shipping_agency_address',
+        'google_verified',
+        'google_id',
     ];
 
     protected $appends = [
