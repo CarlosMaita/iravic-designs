@@ -1,0 +1,308 @@
+name: 🚀 Solicitud de Nueva Funcionalidad
+description: Plantilla para proponer el desarrollo de una nueva funcionalidad en Iravic Designs
+title: "[FEATURE] "
+labels: ["enhancement", "nueva-funcionalidad"]
+projects: ["CarlosMaita/iravic-designs"]
+assignees:
+  - CarlosMaita
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🚀 Solicitud de Nueva Funcionalidad
+        
+        Gracias por contribuir al desarrollo de Iravic Designs. Esta plantilla te ayudará a estructurar de manera clara y completa tu propuesta de nueva funcionalidad.
+        
+        **Antes de continuar, por favor:**
+        - Revisa si ya existe un issue similar
+        - Consulta la [documentación del proyecto](https://github.com/CarlosMaita/iravic-designs#readme)
+        - Revisa los [estándares de codificación](https://github.com/CarlosMaita/iravic-designs/blob/main/CODING_STANDARDS.md)
+
+  - type: input
+    id: feature-name
+    attributes:
+      label: 📝 Nombre de la Funcionalidad
+      description: Proporciona un nombre claro y descriptivo para la funcionalidad
+      placeholder: "Ej: Sistema de cupones de descuento"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📋 Descripción Detallada
+      description: Describe en detalle qué funcionalidad quieres que se desarrolle
+      placeholder: |
+        Proporciona una descripción completa de la funcionalidad:
+        - ¿Qué problema resuelve?
+        - ¿Cómo debería funcionar?
+        - ¿Quién la utilizaría?
+        
+        Ejemplo:
+        Implementar un sistema de cupones de descuento que permita a los administradores crear códigos promocionales con diferentes tipos de descuentos (porcentaje, monto fijo) y restricciones (fecha de vencimiento, uso mínimo, categorías específicas).
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: 🎯 Objetivos y Metas
+      description: Define los objetivos específicos que debe cumplir esta funcionalidad
+      placeholder: |
+        Lista los objetivos principales que debe alcanzar esta funcionalidad:
+        
+        - [ ] Objetivo 1: Permitir crear cupones con descuentos porcentuales
+        - [ ] Objetivo 2: Implementar validación de fechas de vencimiento
+        - [ ] Objetivo 3: Crear interfaz de administración para gestionar cupones
+        - [ ] Objetivo 4: Integrar sistema de cupones con el proceso de compra
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ Prioridad
+      description: ¿Qué prioridad consideras que debería tener esta funcionalidad?
+      options:
+        - 🔴 Alta - Crítica para el funcionamiento
+        - 🟡 Media - Importante pero no urgente
+        - 🟢 Baja - Mejora deseable
+        - 📋 Por definir - Requiere análisis adicional
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: 🏗️ Módulo del Sistema
+      description: ¿A qué módulo principal del sistema pertenece esta funcionalidad?
+      options:
+        - 🛍️ E-commerce / Catálogo de Productos
+        - 👥 Gestión de Clientes
+        - 📦 Control de Inventario
+        - 💳 Pagos y Facturación
+        - 📊 Reportes y Analytics
+        - 👨‍💼 Panel de Administración
+        - 🔐 Autenticación y Roles
+        - 🚚 Logística y Envíos
+        - 🎨 Frontend / UI/UX
+        - 🔌 API / Integraciones
+        - 📱 Aplicación Móvil
+        - 🔧 Configuración del Sistema
+        - 🆕 Nuevo Módulo
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: 👤 Historias de Usuario
+      description: Define las historias de usuario que describe cómo diferentes tipos de usuarios interactuarán con esta funcionalidad
+      placeholder: |
+        Describe las historias de usuario siguiendo el formato: "Como [tipo de usuario], quiero [acción] para [beneficio]"
+        
+        **Administrador:**
+        - Como administrador, quiero crear cupones de descuento para poder ofrecer promociones a los clientes
+        - Como administrador, quiero establecer límites de uso para controlar el impacto en las ventas
+        
+        **Cliente:**
+        - Como cliente, quiero aplicar un cupón de descuento durante el checkout para obtener un precio reducido
+        - Como cliente, quiero ver claramente el descuento aplicado en mi carrito de compras
+        
+        **Vendedor:**
+        - Como vendedor, quiero consultar los cupones activos para informar a los clientes sobre promociones disponibles
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-requirements
+    attributes:
+      label: ⚙️ Requisitos Técnicos
+      description: Especifica los requisitos técnicos y consideraciones de implementación
+      placeholder: |
+        **Backend (Laravel):**
+        - Modelos: Coupon, CouponUsage
+        - Migraciones: crear tablas de cupones y uso
+        - API endpoints: CRUD de cupones, validación, aplicación
+        - Validaciones: fecha, límites de uso, categorías aplicables
+        
+        **Frontend (Vue.js + Cartzilla):**
+        - Componente de administración de cupones
+        - Integración en el checkout para aplicar cupones
+        - Visualización de descuentos en el carrito
+        
+        **Base de Datos:**
+        - Tabla `coupons`: id, code, type, value, min_amount, max_uses, expires_at
+        - Tabla `coupon_usages`: id, coupon_id, user_id, order_id, used_at
+        
+        **Integraciones:**
+        - Sistema de pagos existente
+        - Cálculo de impuestos
+        - Generación de reportes
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: ✅ Criterios de Aceptación
+      description: Define los criterios específicos que deben cumplirse para considerar completada la funcionalidad
+      placeholder: |
+        Lista los criterios específicos que deben cumplirse:
+        
+        **Funcionalidad Principal:**
+        - [ ] Los administradores pueden crear cupones desde el panel de administración
+        - [ ] Los cupones se validan correctamente (fecha, límites, restricciones)
+        - [ ] Los descuentos se aplican correctamente en el cálculo del total
+        - [ ] Se registra el uso de cupones para auditoria
+        
+        **Interfaz de Usuario:**
+        - [ ] Formulario intuitivo para crear/editar cupones
+        - [ ] Campo de entrada de cupón en el checkout
+        - [ ] Visualización clara del descuento aplicado
+        - [ ] Mensajes de error informativos para cupones inválidos
+        
+        **Rendimiento y Seguridad:**
+        - [ ] Validación del lado del servidor para prevenir fraude
+        - [ ] Optimización de consultas de base de datos
+        - [ ] Logging de actividades críticas
+        
+        **Testing:**
+        - [ ] Tests unitarios para lógica de validación
+        - [ ] Tests de integración para flujo completo
+        - [ ] Tests de interfaz para componentes principales
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: impact-analysis
+    attributes:
+      label: 📊 Análisis de Impacto
+      description: Marca las áreas del sistema que podrían verse afectadas por esta funcionalidad
+      options:
+        - label: 🗄️ Base de datos (nuevas tablas, migraciones)
+          required: false
+        - label: 🔌 API existente (modificaciones en endpoints)
+          required: false
+        - label: 🎨 Interfaz de usuario (nuevos componentes, modificaciones)
+          required: false
+        - label: 🔐 Autenticación y permisos (nuevos roles, permisos)
+          required: false
+        - label: 📱 Aplicación móvil (si aplica)
+          required: false
+        - label: 🧪 Tests existentes (actualizaciones necesarias)
+          required: false
+        - label: 📚 Documentación (actualizaciones requeridas)
+          required: false
+        - label: 🚀 Proceso de despliegue (nuevas configuraciones)
+          required: false
+        - label: 🔄 Integraciones externas (APIs de terceros)
+          required: false
+        - label: 📊 Reportes y analytics (nuevas métricas)
+          required: false
+
+  - type: textarea
+    id: mockups-references
+    attributes:
+      label: 🎨 Mockups y Referencias
+      description: Proporciona referencias visuales, mockups o ejemplos de implementaciones similares
+      placeholder: |
+        **Referencias de Diseño:**
+        - Incluye enlaces a mockups, wireframes o capturas de pantalla
+        - Referencias de otros sistemas similares
+        - Especificaciones de diseño siguiendo los estándares de Cartzilla
+        
+        **Ejemplos:**
+        - [Mockup del formulario de creación de cupones](enlace-a-imagen)
+        - [Referencia de WooCommerce para cupones](enlace-ejemplo)
+        - [Especificación de componentes Cartzilla utilizados](enlace-docs)
+        
+        **Componentes UI Sugeridos:**
+        - Card components para listado de cupones
+        - Form components para creación/edición
+        - Modal components para confirmaciones
+        - Alert components para validaciones
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 🔗 Dependencias y Prerrequisitos
+      description: Lista otras funcionalidades, issues o dependencias necesarias
+      placeholder: |
+        **Issues Relacionados:**
+        - #123 - Mejoras en el sistema de pagos
+        - #456 - Refactorización del carrito de compras
+        
+        **Dependencias Técnicas:**
+        - Actualización de Laravel a versión X.X
+        - Instalación de paquete específico
+        - Configuración de servicio externo
+        
+        **Prerrequisitos Funcionales:**
+        - Sistema de usuarios funcionando
+        - Módulo de productos implementado
+        - Sistema de órdenes operativo
+
+  - type: dropdown
+    id: estimated-complexity
+    attributes:
+      label: 🧮 Complejidad Estimada
+      description: ¿Cuál consideras que es la complejidad de implementación?
+      options:
+        - 🟢 Baja - Implementación directa (1-3 días)
+        - 🟡 Media - Requiere planificación (1-2 semanas)
+        - 🟠 Alta - Implementación compleja (2-4 semanas)
+        - 🔴 Muy Alta - Proyecto mayor (1+ mes)
+        - ❓ Incierta - Requiere investigación técnica
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: 📝 Notas Adicionales
+      description: Cualquier información adicional relevante para el desarrollo
+      placeholder: |
+        **Consideraciones Adicionales:**
+        - Aspectos de SEO a considerar
+        - Requisitos de accesibilidad
+        - Compatibilidad con versiones anteriores
+        - Consideraciones de rendimiento
+        - Requisitos de localización/internacionalización
+        
+        **Contexto del Negocio:**
+        - Justificación comercial
+        - Impacto esperado en ventas/usuarios
+        - Timeline de lanzamiento deseado
+        - Recursos disponibles para desarrollo
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: ✔️ Confirmación
+      description: Confirma que has completado la información necesaria
+      options:
+        - label: He revisado que no existe un issue similar
+          required: true
+        - label: He consultado la documentación del proyecto
+          required: true
+        - label: He proporcionado toda la información requerida
+          required: true
+        - label: Estoy disponible para aclarar dudas durante el desarrollo
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📚 Recursos Útiles
+        
+        - [Documentación del Proyecto](https://github.com/CarlosMaita/iravic-designs#readme)
+        - [Estándares de Codificación](https://github.com/CarlosMaita/iravic-designs/blob/main/CODING_STANDARDS.md)
+        - [Guía de Implementación](https://github.com/CarlosMaita/iravic-designs/blob/main/IMPLEMENTATION_GUIDE.md)
+        - [Documentación de Cartzilla](https://cartzilla.createx.studio/docs/)
+        - [Laravel Documentation](https://laravel.com/docs)
+        - [Vue.js Documentation](https://vuejs.org/v2/guide/)
+        
+        **¡Gracias por contribuir al desarrollo de Iravic Designs! 🚀**
