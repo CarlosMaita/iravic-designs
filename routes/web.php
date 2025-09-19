@@ -145,10 +145,13 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
 
     # Payments Routes
     Route::get('pagos', 'PaymentController@index')->name('admin.payments.index');
+    Route::get('pagos/archivados', 'PaymentController@archived')->name('admin.payments.archived');
     Route::get('pagos/{payment}', 'PaymentController@show')->name('admin.payments.show');
     Route::post('pagos', 'PaymentController@store')->name('admin.payments.store');
     Route::post('pagos/{payment}/verify', 'PaymentController@verify')->name('admin.payments.verify');
     Route::post('pagos/{payment}/reject', 'PaymentController@reject')->name('admin.payments.reject');
+    Route::post('pagos/{payment}/archive', 'PaymentController@archive')->name('admin.payments.archive');
+    Route::post('pagos/{payment}/unarchive', 'PaymentController@unarchive')->name('admin.payments.unarchive');
     Route::patch('pagos/{payment}/status', 'PaymentController@updateStatus')->name('admin.payments.update_status');
 
 

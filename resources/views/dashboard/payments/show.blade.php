@@ -8,6 +8,9 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-credit-card"></i> Pago #{{ $payment->id }}
+                            @if($payment->archived)
+                                <span class="badge badge-secondary ml-2">ARCHIVADO</span>
+                            @endif
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -72,7 +75,13 @@
                             </div>
                             @endif
                             
-                                                        @if($payment->status === 'pendiente')
+            @if($payment->archived)
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Este pago está archivado y no puede ser modificado.
+            </div>
+            @endif
+            
+            @if($payment->status === 'pendiente' && !$payment->archived)
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">

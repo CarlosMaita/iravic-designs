@@ -20,6 +20,7 @@ class PaymentController extends Controller
 
         if ($request->ajax()) {
             $payments = Payment::with(['order', 'customer'])
+                ->notArchived()
                 ->orderBy('created_at', 'desc');
 
             // Filter by status if provided (non-empty)
@@ -59,6 +60,9 @@ class PaymentController extends Controller
                     if ($row->status === 'pendiente') {
                         $btn .= '<button onclick="verifyPayment(' . $row->id . ')" class="btn btn-sm btn-success btn-action-icon mb-2" title="Verificar"><i class="fas fa-check"></i></button>';
                         $btn .= '<button onclick="rejectPayment(' . $row->id . ')" class="btn btn-sm btn-danger btn-action-icon mb-2" title="Rechazar"><i class="fas fa-times"></i></button>';
+                    } else {
+                        // Add archive button for verified or rejected payments
+                        $btn .= '<button type="button" class="btn btn-sm btn-warning btn-action-icon mb-2" onclick="archivePayment(' . $row->id . ')" title="Archivar"><i class="fas fa-archive"></i></button>';
                     }
                     return $btn;
                 })
@@ -119,6 +123,95 @@ class PaymentController extends Controller
             'success' => false,
             'message' => 'No se pudo rechazar el pago.'
         ]);
+    }
+
+    /**
+     * Archive a payment.
+     */
+    public function archive(Payment $payment)
+    {
+        if ($payment->archived) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El pago ya está archivado.'
+            ], 400);
+        }
+
+        $payment->archive();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pago archivado exitosamente.'
+        ]);
+    }
+
+    /**
+     * Unarchive a payment.
+     */
+    public function unarchive(Payment $payment)
+    {
+        if (!$payment->archived) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El pago no está archivado.'
+            ], 400);
+        }
+
+        $payment->unarchive();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pago desarchivado exitosamente.'
+        ]);
+    }
+
+    /**
+     * Display archived payments.
+     */
+    public function archived(Request $request)
+    {
+        if ($request->ajax()) {
+            $payments = Payment::with(['order', 'customer'])
+                ->archived()
+                ->orderBy('created_at', 'desc');
+
+            return DataTables::of($payments)
+                ->addIndexColumn()
+                ->addColumn('customer_name', function($row) {
+                    return $row->customer ? $row->customer->name : 'N/A';
+                })
+                ->addColumn('order_number', function($row) {
+                    return $row->order ? '#' . $row->order->id : 'N/A';
+                })
+                ->addColumn('status_badge', function($row) {
+                    $statusColors = [
+                        'pendiente' => 'warning',
+                        'verificado' => 'success', 
+                        'rechazado' => 'danger'
+                    ];
+                    $color = $statusColors[$row->status] ?? 'secondary';
+                    return '<span class="badge badge-' . $color . '">' . $row->status_label . '</span>';
+                })
+                ->addColumn('amount_formatted', function($row) {
+                    return '$' . number_format($row->amount, 2);
+                })
+                ->addColumn('date_formatted', function($row) {
+                    return $row->date->format('d/m/Y H:i');
+                })
+                ->addColumn('reference_formatted', function($row) {
+                    return $row->reference_digits ? $row->reference_digits . '...' : 'N/A';
+                })
+                ->addColumn('action', function($row) {
+                    $btn = '';
+                    $btn .= '<a href="'. route('admin.payments.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon mb-2" title="Ver"><i class="fas fa-eye"></i></a>';
+                    $btn .= '<button type="button" class="btn btn-sm btn-info btn-action-icon mb-2" onclick="unarchivePayment(' . $row->id . ')" title="Desarchivar"><i class="fas fa-box-open"></i></button>';
+                    return $btn;
+                })
+                ->rawColumns(['status_badge', 'action'])
+                ->toJson();
+        }
+
+        return view('dashboard.payments.archived');
     }
 
     /**
