@@ -1,0 +1,270 @@
+name: 📚 Solicitud de Documentación
+description: Plantilla para solicitar mejoras o creación de documentación
+title: "[DOCS] "
+labels: ["documentation", "enhancement"]
+assignees:
+  - CarlosMaita
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 📚 Solicitud de Documentación
+        
+        Ayúdanos a mejorar la documentación de Iravic Designs. Una buena documentación es esencial para el crecimiento y mantenimiento del proyecto.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: 📝 Tipo de Documentación
+      description: ¿Qué tipo de documentación necesitas?
+      options:
+        - 📖 Nueva documentación - Crear documentación desde cero
+        - 🔄 Actualización - Mejorar documentación existente
+        - 🔧 Documentación técnica - APIs, configuración, desarrollo
+        - 👤 Documentación de usuario - Guías de uso, tutoriales
+        - 🎨 Documentación de diseño - UI/UX, componentes, estilos
+        - 📋 Documentación de procesos - Workflows, procedimientos
+    validations:
+      required: true
+
+  - type: input
+    id: doc-title
+    attributes:
+      label: 📄 Título de la Documentación
+      description: Proporciona un título claro para la documentación solicitada
+      placeholder: "Ej: Guía de configuración de sistema de pagos"
+    validations:
+      required: true
+
+  - type: textarea
+    id: doc-description
+    attributes:
+      label: 📋 Descripción Detallada
+      description: Describe qué documentación necesitas y por qué es importante
+      placeholder: |
+        Explica detalladamente:
+        - ¿Qué información debe cubrir la documentación?
+        - ¿Quién es la audiencia objetivo?
+        - ¿Por qué es necesaria esta documentación?
+        - ¿Qué problemas resolvería?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target-audience
+    attributes:
+      label: 👥 Audiencia Objetivo
+      description: ¿Quién utilizará principalmente esta documentación?
+      options:
+        - 👨‍💻 Desarrolladores - Equipo de desarrollo
+        - 👨‍💼 Administradores - Usuarios del panel de administración
+        - 🛍️ Usuarios finales - Clientes del e-commerce
+        - 🏢 Stakeholders - Gerencia y tomadores de decisiones
+        - 🆕 Nuevos contribuidores - Personas que se unen al proyecto
+        - 📊 Analistas - Personal de análisis y reportes
+        - 🔧 DevOps - Personal de infraestructura y despliegue
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ Prioridad
+      description: ¿Qué prioridad tiene esta documentación?
+      options:
+        - 🔴 Alta - Crítica para el proyecto
+        - 🟡 Media - Importante pero no urgente
+        - 🟢 Baja - Mejora deseable
+        - 📋 Por definir - Requiere evaluación
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module-related
+    attributes:
+      label: 🏗️ Módulo Relacionado
+      description: ¿A qué módulo del sistema se relaciona esta documentación?
+      options:
+        - 🛍️ E-commerce / Catálogo de Productos
+        - 👥 Gestión de Clientes
+        - 📦 Control de Inventario
+        - 💳 Pagos y Facturación
+        - 📊 Reportes y Analytics
+        - 👨‍💼 Panel de Administración
+        - 🔐 Autenticación y Roles
+        - 🚚 Logística y Envíos
+        - 🎨 Frontend / UI/UX
+        - 🔌 API / Integraciones
+        - 📱 Aplicación Móvil
+        - 🔧 Configuración del Sistema
+        - 📚 Documentación General
+        - 🏗️ Arquitectura del Sistema
+    validations:
+      required: true
+
+  - type: textarea
+    id: content-outline
+    attributes:
+      label: 📝 Esquema de Contenido
+      description: Proporciona un esquema o estructura sugerida para la documentación
+      placeholder: |
+        Sugiere una estructura para la documentación:
+        
+        ## 1. Introducción
+        - Descripción general
+        - Prerrequisitos
+        
+        ## 2. Configuración Inicial
+        - Pasos de instalación
+        - Configuración básica
+        
+        ## 3. Uso Básico
+        - Ejemplos prácticos
+        - Casos de uso comunes
+        
+        ## 4. Configuración Avanzada
+        - Opciones avanzadas
+        - Personalización
+        
+        ## 5. Resolución de Problemas
+        - Problemas comunes
+        - Soluciones
+    validations:
+      required: true
+
+  - type: textarea
+    id: existing-resources
+    attributes:
+      label: 📖 Recursos Existentes
+      description: Lista cualquier documentación relacionada que ya exista
+      placeholder: |
+        **Documentación Relacionada:**
+        - [Enlace a documentación relacionada 1](url)
+        - [Enlace a documentación relacionada 2](url)
+        
+        **Código de Referencia:**
+        - Archivos: app/Http/Controllers/...
+        - Componentes: resources/js/components/...
+        
+        **Issues Relacionados:**
+        - #123 - Issue relacionado con esta documentación
+
+  - type: textarea
+    id: examples-references
+    attributes:
+      label: 📊 Ejemplos y Referencias
+      description: Proporciona ejemplos o referencias de documentación similar
+      placeholder: |
+        **Ejemplos de Buena Documentación:**
+        - [Laravel Documentation](https://laravel.com/docs)
+        - [Vue.js Guide](https://vuejs.org/guide/)
+        - Otro proyecto con documentación similar
+        
+        **Casos de Uso Específicos:**
+        - Ejemplo 1: Configuración para desarrollo
+        - Ejemplo 2: Configuración para producción
+        - Ejemplo 3: Caso de uso específico
+
+  - type: checkboxes
+    id: doc-requirements
+    attributes:
+      label: 📋 Requisitos de Documentación
+      description: Marca los elementos que debe incluir la documentación
+      options:
+        - label: 📝 Texto explicativo claro y conciso
+          required: false
+        - label: 💻 Ejemplos de código con comentarios
+          required: false
+        - label: 📸 Capturas de pantalla o diagramas
+          required: false
+        - label: 🔗 Enlaces a recursos adicionales
+          required: false
+        - label: ⚠️ Advertencias y consideraciones importantes
+          required: false
+        - label: 🔧 Guía de resolución de problemas
+          required: false
+        - label: 📱 Consideraciones para diferentes dispositivos
+          required: false
+        - label: 🌐 Información de localización/idiomas
+          required: false
+        - label: 🚀 Ejemplos de configuración para diferentes entornos
+          required: false
+        - label: 🧪 Información sobre testing y validación
+          required: false
+
+  - type: dropdown
+    id: format-preference
+    attributes:
+      label: 📄 Formato Preferido
+      description: ¿En qué formato debería estar la documentación?
+      options:
+        - 📝 Markdown - Archivo .md en el repositorio
+        - 📚 Wiki - Página wiki de GitHub
+        - 📖 README - Actualización del README.md
+        - 🌐 Documentación web - Sitio de documentación
+        - 📋 Comentarios en código - Documentación inline
+        - 📄 PDF - Documento descargable
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Contexto Adicional
+      description: Cualquier información adicional relevante
+      placeholder: |
+        **Información Adicional:**
+        - ¿Has intentado encontrar esta información en otro lugar?
+        - ¿Hay alguna fecha límite para esta documentación?
+        - ¿Hay consideraciones especiales a tener en cuenta?
+        - ¿Quién más podría beneficiarse de esta documentación?
+
+  - type: checkboxes
+    id: contribution-offer
+    attributes:
+      label: 🤝 Oferta de Contribución
+      description: ¿Estarías dispuesto a contribuir con esta documentación?
+      options:
+        - label: ✍️ Puedo escribir un borrador inicial
+          required: false
+        - label: 🔍 Puedo revisar y proporcionar feedback
+          required: false
+        - label: 📸 Puedo proporcionar capturas de pantalla
+          required: false
+        - label: 💻 Puedo proporcionar ejemplos de código
+          required: false
+        - label: 🧪 Puedo ayudar con testing de la documentación
+          required: false
+        - label: 🌐 Puedo ayudar con traducción a otros idiomas
+          required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: ✔️ Confirmación
+      description: Confirma que has proporcionado la información necesaria
+      options:
+        - label: He verificado que esta documentación no existe ya
+          required: true
+        - label: He proporcionado suficiente contexto y detalles
+          required: true
+        - label: He especificado claramente la audiencia objetivo
+          required: true
+        - label: Entiendo que podría necesitar participar en el proceso de creación
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📚 Recursos de Documentación Existentes
+        
+        - [README Principal](https://github.com/CarlosMaita/iravic-designs#readme)
+        - [Estándares de Codificación](https://github.com/CarlosMaita/iravic-designs/blob/main/CODING_STANDARDS.md)
+        - [Guía de Implementación](https://github.com/CarlosMaita/iravic-designs/blob/main/IMPLEMENTATION_GUIDE.md)
+        - [Documentación de Laravel](https://laravel.com/docs)
+        - [Documentación de Vue.js](https://vuejs.org/v2/guide/)
+        - [Documentación de Cartzilla](https://cartzilla.createx.studio/docs/)
+        
+        **¡Gracias por ayudar a mejorar la documentación de Iravic Designs! 📖**
