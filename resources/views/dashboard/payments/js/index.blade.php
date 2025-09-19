@@ -107,4 +107,37 @@
             });
         }).catch(swal.noop);
     }
+
+    function archivePayment(paymentId) {
+        swal({
+            title: '¿Archivar Pago?',
+            text: "El pago se moverá a la sección de archivados",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, archivar',
+            cancelButtonText: 'Cancelar'
+        }).then(function () {
+            $.ajax({
+                url: `/admin/pagos/${paymentId}/archive`,
+                method: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    if (response.success) {
+                        $('#datatable_payments').DataTable().ajax.reload();
+                        new Noty({
+                            text: response.message,
+                            type: 'success'
+                        }).show();
+                    }
+                },
+                error: function(xhr) {
+                    const response = xhr.responseJSON;
+                    new Noty({
+                        text: response ? response.message : 'Error al archivar el pago',
+                        type: 'error'
+                    }).show();
+                }
+            });
+        }).catch(swal.noop);
+    }
 </script>

@@ -7,31 +7,19 @@
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-credit-card"></i> Pagos
+                            <i class="fa fa-archive"></i> Pagos Archivados
                             <div class="card-header-actions">
-                                <a href="{{ route('admin.payments.archived') }}" class="btn btn-sm btn-secondary">
-                                    <i class="fas fa-archive"></i> Pagos Archivados
+                                <a href="{{ route('admin.payments.index') }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-arrow-left"></i> Volver a Pagos
                                 </a>
                             </div>
                         </div>
                         <div class="card-body">
-                            {{-- Filters --}}
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <select id="status_filter" class="form-control">
-                                        <option value="">Todos los estados</option>
-                                        @foreach($statuses as $key => $label)
-                                            <option value="{{ $key }}">{{ $label }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            
                             {{-- Datatable --}}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <table id="datatable_payments" class="table" width="100%">
+                                        <table id="datatable_archived_payments" class="table" width="100%">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
@@ -58,5 +46,5 @@
 
 @push('js')
     @include('plugins.sweetalert')
-    @include('dashboard.payments.js.index')
+    @include('dashboard.payments.js.archived')
 @endpush

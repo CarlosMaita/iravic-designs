@@ -20,6 +20,7 @@ class Payment extends Model
         'exchange_rate',
         'local_amount',
         'status',
+        'archived',
         'payment_method',
         'reference_number',
         'mobile_payment_date',
@@ -34,6 +35,7 @@ class Payment extends Model
         'mobile_payment_date' => 'datetime',
         'exchange_rate' => 'decimal:4',
         'local_amount' => 'decimal:2',
+        'archived' => 'boolean',
     ];
 
     // Payment status constants
@@ -169,6 +171,16 @@ class Payment extends Model
         return $query->where('status', self::STATUS_REJECTED);
     }
 
+    public function scopeNotArchived($query)
+    {
+        return $query->where('archived', false);
+    }
+
+    public function scopeArchived($query)
+    {
+        return $query->where('archived', true);
+    }
+
     // Methods
     public function canBeVerified()
     {
@@ -204,5 +216,33 @@ class Payment extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Archive the payment
+     */
+    public function archive()
+    {
+        $this->archived = true;
+        $this->save();
+        return true;
+    }
+
+    /**
+     * Unarchive the payment
+     */
+    public function unarchive()
+    {
+        $this->archived = false;
+        $this->save();
+        return true;
+    }
+
+    /**
+     * Check if payment can be edited (not archived)
+     */
+    public function canBeEdited()
+    {
+        return !$this->archived;
     }
 }
