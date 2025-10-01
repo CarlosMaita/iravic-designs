@@ -1,4 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /e/
 
 Sitemap: https://iravicdesigns.store/sitemap.xml

@@ -17,6 +17,14 @@
 
     
     @yield('meta-tags')
+
+    {{-- Canonical URL for all public pages (strip query params and force canonical host) --}}
+    @php
+      $canonicalHost = 'iravicdesigns.store';
+      $scheme = 'https';
+      $canonicalUrl = $scheme . '://' . $canonicalHost . request()->getPathInfo();
+    @endphp
+    <link rel="canonical" href="{{ $canonicalUrl }}">
     
     <!-- Webmanifest + Favicon / App icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">

@@ -9,6 +9,7 @@
     <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
     <meta name="author" content="Iravic">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <meta name="robots" content="noindex, nofollow">
     <title>{!! config('app.name')  !!}</title>
     <link rel="manifest" href="{{ asset('assets/favicon/manifest.json') }}">
     <meta name="msapplication-TileColor" content="#ffffff">

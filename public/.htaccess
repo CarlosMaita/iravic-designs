@@ -5,6 +5,15 @@
 
     RewriteEngine On
 
+    # Force canonical host and HTTPS
+    # Redirect any host that is not iravicdesigns.store to https://iravicdesigns.store
+    RewriteCond %{HTTP_HOST} !^iravicdesigns\.store$ [NC]
+    RewriteRule ^(.*)$ https://iravicdesigns.store/$1 [L,R=301]
+
+    # Enforce HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

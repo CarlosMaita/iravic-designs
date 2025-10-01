@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
     <meta name="description" content="Panel de Cliente - {{ config('app.name') }}">
     <meta name="author" content="Iravic">
+    <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Dashboard') - {{ config('app.name') }}</title>
     
     <!-- Favicon -->

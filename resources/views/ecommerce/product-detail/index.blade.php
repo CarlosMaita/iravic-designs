@@ -41,8 +41,7 @@
 <meta property="product:brand" content="{{ $productDetail->brand }}">
 @endif
 
-{{-- Canonical URL --}}
-<link rel="canonical" href="{{ url()->current() }}">
+{{-- Canonical handled globally in ecommerce.base layout --}}
 
 {{-- Structured Data for Product --}}
 <script type="application/ld+json">
