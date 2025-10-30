@@ -59,11 +59,9 @@
   {{--  Carousel --}}
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
 
-  {{-- Featured Products Section - Inside Vue App Scope --}}
-  <featured-products-carousel-ecommerce-component
-    :featured-products='@json($featuredProducts ?? [])'
-    product-detail-route='{{ route('ecommerce.product.detail', ':slug') }}'
-  />
+
+  {{-- Productos Destacados (Diseño Figma) --}}
+  @include('ecommerce.home.partials.featured-products-figma', ['featuredProducts' => $featuredProducts])
 
   <special-offers-carousel-ecommerce-component
     :offers='@json($specialOffers)'
