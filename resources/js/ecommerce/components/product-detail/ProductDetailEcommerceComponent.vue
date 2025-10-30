@@ -50,9 +50,16 @@ export default {
     setTimeout(() => {
       this.loadedProduct = this.product;
       this.loading = false;
-      if (this.product && this.product.is_regular) {
-        this.$refs.productDetailImages.setImages(this.product.images);
-      }
+      // Esperar a que el child con ref `productDetailImages` esté montado
+      this.$nextTick(() => {
+        try {
+          if (this.product && this.product.is_regular && this.$refs.productDetailImages) {
+            this.$refs.productDetailImages.setImages(this.product.images || []);
+          }
+        } catch (e) {
+          // no-op: evita romper la UI si aún no existe el ref
+        }
+      });
     }, 1000);
   },
   methods: {
@@ -65,7 +72,16 @@ export default {
       }, 1200);
     },
     selectCombination(combination) {
-      this.$refs.productDetailImages.setImages(combination.images);
+      if (this.$refs.productDetailImages) {
+        this.$refs.productDetailImages.setImages(combination.images || []);
+      } else {
+        // Si por alguna razón el ref no existe aún, difiere la carga
+        this.$nextTick(() => {
+          if (this.$refs.productDetailImages) {
+            this.$refs.productDetailImages.setImages(combination.images || []);
+          }
+        });
+      }
     }
   }
 }

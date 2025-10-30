@@ -57,9 +57,9 @@
                 const SwiperInstance = window.Swiper || Swiper; // Fallback por si acaso
 
                 // Inicializa el slider principal y conecta las miniaturas
-                this.mainSwiper = new SwiperInstance(this.$refs.mainSwiper, {
+                                this.mainSwiper = new SwiperInstance(this.$refs.mainSwiper, {
                     spaceBetween: 24,
-                    loop: true,
+                                        loop: (this.images && this.images.length > 1),
                     navigation: {
                     prevEl: this.$refs.mainSwiper.querySelector('.btn-prev'),
                     nextEl: this.$refs.mainSwiper.querySelector('.btn-next')
@@ -70,6 +70,15 @@
                 });
                 }
         },
+                watch: {
+                    images(newVal){
+                        if (this.mainSwiper) {
+                            // activar/desactivar loop según cantidad de imágenes
+                            this.mainSwiper.params.loop = Array.isArray(newVal) && newVal.length > 1;
+                            this.mainSwiper.update();
+                        }
+                    }
+                },
         mounted() {
             this.initializeSwipers(); // Inicializa el Swiper, aunque esté vacío al principio
         }
