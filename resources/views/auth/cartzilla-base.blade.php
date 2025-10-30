@@ -47,16 +47,21 @@
 
         @yield('content') 
 
-        <!-- Cover image visible on screens > 992px wide (lg breakpoint) -->
-        <div class="d-none d-lg-block w-100 py-4 ms-auto" style="max-width: 1034px">
-          <div class="d-flex flex-column justify-content-end h-100 rounded-5 overflow-hidden">
-            <span class="position-absolute top-0 start-0 w-100 h-100 d-none-dark" style="background: linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)"></span>
-            <span class="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark" style="background: linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)"></span>
-            <div class="ratio position-relative z-2" style="--cz-aspect-ratio: calc(1030 / 1032 * 100%)">
-              <img src="{{ asset('assets/cartzilla/img/account/cover.png') }}" alt="Iravic Designs">
+        <!-- Right cover area -->
+        @hasSection('cover')
+          @yield('cover')
+        @else
+          <!-- Default cover image visible on screens > 992px wide (lg breakpoint) -->
+          <div class="d-none d-lg-block w-100 py-4 ms-auto" style="max-width: 1034px">
+            <div class="d-flex flex-column justify-content-end h-100 rounded-5 overflow-hidden">
+              <span class="position-absolute top-0 start-0 w-100 h-100 d-none-dark" style="background: linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)"></span>
+              <span class="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark" style="background: linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)"></span>
+              <div class="ratio position-relative z-2" style="--cz-aspect-ratio: calc(1030 / 1032 * 100%)">
+                <img src="{{ asset('assets/cartzilla/img/account/cover.png') }}" alt="Iravic Designs">
+              </div>
             </div>
           </div>
-        </div>
+        @endif
       </div>
     </main>
 

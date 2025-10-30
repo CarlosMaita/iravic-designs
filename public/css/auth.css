@@ -5,20 +5,14 @@
   letter-spacing: .2px;
 }
 
-/* Input with leading icon */
-.input-with-icon {
-  position: relative;
+/* Figma-like input style */
+.auth-input.form-control {
+  background-color: #f3f3f5;
+  border: 0.8px solid #d1d5db; /* neutral-300 */
+  border-radius: 8px;
 }
-.input-with-icon > i {
-  position: absolute;
-  left: .875rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--cz-body-color, #6c757d);
-  pointer-events: none;
-}
-.input-with-icon > input.form-control {
-  padding-left: 2.5rem;
+.auth-input.form-control:focus {
+  background-color: #f3f3f5;
 }
 
 /* Google button tweaks */
@@ -44,3 +38,6 @@
 [data-bs-theme="dark"] .input-with-icon > i {
   color: #98a2b3;
 }
+
+/* Cover */
+.auth-cover img { object-fit: cover; }

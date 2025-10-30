@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\PopulateProductSlugs::class,
         \App\Console\Commands\UpdateExchangeRate::class,
+        \App\Console\Commands\MakeWebp::class,
     ];
 
     /**
