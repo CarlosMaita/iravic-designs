@@ -35,7 +35,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function onlyPrincipalsQuery($criteria = null)
     {
-        $query = $this->model->doesntHave('product_parent')->with(['brand', 'category', 'stores', 'product_combinations.stores']);
+        $query = $this->model->doesntHave('product_parent')->with([
+            'brand', 
+            'category', 
+            'stores', 
+            'product_combinations.stores',
+            'specialOffers' => function($q){ $q->active()->current(); }
+        ]);
 
         if (isset($criteria['brand']) && is_array($criteria['brand'])) {
             $query->whereInBrand($criteria['brand']);
@@ -77,7 +83,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      */
     public function onlyPrincipals($criteria = null): Collection
     {
-        $query = $this->model->doesntHave('product_parent')->with(['brand', 'category']);
+    $query = $this->model->doesntHave('product_parent')->with(['brand', 'category', 'specialOffers' => function($q){ $q->active()->current(); }]);
 
         if (isset($criteria['brand']) && is_array($criteria['brand'])) {
             $query->whereInBrand($criteria['brand']);

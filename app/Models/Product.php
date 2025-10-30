@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\SpecialOffer;
 
 class Product extends Model
 {
@@ -49,7 +50,8 @@ class Product extends Model
         'regular_price_str',
         'regular_price_ves',
         'regular_price_ves_str',
-        'stock_total'
+        'stock_total',
+        'is_on_offer'
     ];
 
     # Boot
@@ -99,6 +101,22 @@ class Product extends Model
     public function product_parent()
     {
         return $this->belongsTo('App\Models\Product', 'product_id', 'id');
+    }
+
+    /**
+     * Special offers relationship (all offers linked to this product)
+     */
+    public function specialOffers()
+    {
+        return $this->hasMany(SpecialOffer::class, 'product_id');
+    }
+
+    /**
+     * Current active special offer (if any)
+     */
+    public function currentSpecialOffer()
+    {
+        return $this->hasOne(SpecialOffer::class, 'product_id')->active()->current();
     }
 
     # Sales relationships removed
@@ -208,6 +226,18 @@ class Product extends Model
         } catch (\Exception $e) {
             // Fallback if stores table doesn't exist or there's a database error
             return 0;
+        }
+    }
+
+    /**
+     * Whether the product is currently on a special offer (active and within date range)
+     */
+    public function getIsOnOfferAttribute(): bool
+    {
+        try {
+            return $this->currentSpecialOffer()->exists();
+        } catch (\Throwable $e) {
+            return false;
         }
     }
 

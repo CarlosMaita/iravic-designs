@@ -57,6 +57,13 @@ class ProductController extends Controller
             $products = $this->productRepository->onlyPrincipalsQuery($criteria);
             return Datatables::of($products)
                     ->addIndexColumn()
+                    ->editColumn('name', function($row){
+                        $badge = '';
+                        if (property_exists($row, 'is_on_offer') ? $row->is_on_offer : ($row->specialOffers && $row->specialOffers->count() > 0)) {
+                            $badge = ' <span class="badge badge-danger ml-1">En oferta</span>';
+                        }
+                        return e($row->name) . $badge;
+                    })
                     ->addColumn('action', function($row){
                         $btn = '<div style="display:flex">';
                         $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
@@ -66,7 +73,7 @@ class ProductController extends Controller
                         $btn .= '</div>';
                         return $btn;
                     })
-                    ->rawColumns(['action'])
+                    ->rawColumns(['action', 'name'])
                     ->toJson();
         }
 
