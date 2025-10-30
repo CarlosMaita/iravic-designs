@@ -1,0 +1,46 @@
+/* Scoped styles for customer auth pages (no build step required) */
+
+.auth-brand .brand-text {
+  font-size: 1.0625rem;
+  letter-spacing: .2px;
+}
+
+/* Input with leading icon */
+.input-with-icon {
+  position: relative;
+}
+.input-with-icon > i {
+  position: absolute;
+  left: .875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cz-body-color, #6c757d);
+  pointer-events: none;
+}
+.input-with-icon > input.form-control {
+  padding-left: 2.5rem;
+}
+
+/* Google button tweaks */
+.auth-google-btn {
+  --btn-border: #e5e7eb;
+  border-color: var(--btn-border);
+  background-color: #fff;
+}
+.auth-google-btn:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+/* Typography and spacing */
+.display-6 {
+  letter-spacing: -0.02em;
+}
+
+/* Dark mode adjustments if theme switcher toggles */
+[data-bs-theme="dark"] .auth-google-btn {
+  background-color: transparent;
+}
+[data-bs-theme="dark"] .input-with-icon > i {
+  color: #98a2b3;
+}
