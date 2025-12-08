@@ -10,10 +10,10 @@
              <product-detail-images-ecommerce-component  ref="productDetailImages" ></product-detail-images-ecommerce-component>
 
             <!-- Product details and options -->
-            <product-detail-description-ecommerce-component ref="productDetailDescription" 
+            <product-detail-description-ecommerce-component ref="productDetailDescription"
                 :id="loadedProduct.id"
                 :name="loadedProduct.name"
-                :description="loadedProduct.description" 
+                :description="loadedProduct.description"
                 :price="loadedProduct.price"
                 :price_str="loadedProduct.price_str"
                 :is_regular="loadedProduct.is_regular ? true : false"
@@ -52,17 +52,34 @@ export default {
       this.loading = false;
       // Esperar a que el child con ref `productDetailImages` esté montado
       this.$nextTick(() => {
-        try {
-          if (this.product && this.product.is_regular && this.$refs.productDetailImages) {
-            this.$refs.productDetailImages.setImages(this.product.images || []);
-          }
-        } catch (e) {
-          // no-op: evita romper la UI si aún no existe el ref
+        if (this.product && this.product.is_regular) {
+          this.setGalleryImages(this.product.images);
         }
       });
     }, 1000);
   },
   methods: {
+    setGalleryImages(images) {
+      const hasImages = Array.isArray(images) && images.length > 0;
+      const fallbackImages = (this.product && Array.isArray(this.product.images)) ? this.product.images : [];
+      const finalImages = hasImages ? images : fallbackImages;
+
+      const applyImages = () => {
+        try {
+          if (this.$refs.productDetailImages) {
+            this.$refs.productDetailImages.setImages(finalImages || []);
+          }
+        } catch (e) {
+          // no-op: evita romper la UI si aún no existe el ref
+        }
+      };
+
+      if (this.$refs.productDetailImages) {
+        applyImages();
+      } else {
+        this.$nextTick(applyImages);
+      }
+    },
     fetchProductDetail() {
       // Simula una petición asíncrona, reemplaza con tu lógica real
       setTimeout(() => {
@@ -72,16 +89,8 @@ export default {
       }, 1200);
     },
     selectCombination(combination) {
-      if (this.$refs.productDetailImages) {
-        this.$refs.productDetailImages.setImages(combination.images || []);
-      } else {
-        // Si por alguna razón el ref no existe aún, difiere la carga
-        this.$nextTick(() => {
-          if (this.$refs.productDetailImages) {
-            this.$refs.productDetailImages.setImages(combination.images || []);
-          }
-        });
-      }
+      const images = combination && combination.images ? combination.images : [];
+      this.setGalleryImages(images);
     }
   }
 }
