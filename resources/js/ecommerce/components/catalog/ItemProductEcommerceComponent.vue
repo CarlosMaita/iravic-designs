@@ -6,11 +6,11 @@
         </div>
         <div v-show="imageLoaded" class="animate-underline hover-effect-opacity">
             <div class="position-relative mb-3">
-            <button 
-                v-if="isAuthenticated" 
-                type="button" 
+            <button
+                v-if="isAuthenticated"
+                type="button"
                 @click="toggleFavorite"
-                :class="['btn btn-icon btn-secondary animate-pulse fs-base bg-transparent border-0 position-absolute top-0 end-0 z-2 mt-1 mt-sm-2 me-1 me-sm-2', {'text-danger': isFavorite}]" 
+                :class="['btn btn-icon btn-secondary animate-pulse fs-base bg-transparent border-0 position-absolute top-0 end-0 z-2 mt-1 mt-sm-2 me-1 me-sm-2', {'text-danger': isFavorite}]"
                 :aria-label="isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'"
                 :disabled="favoriteLoading">
                 <i :class="['animate-target', favoriteLoading ? 'ci-refresh spinner-border-sm' : (isFavorite ? 'ci-heart-filled' : 'ci-heart')]"></i>
@@ -45,10 +45,10 @@
                 <div class="hover-effect-target d-flex gap-2 position-absolute top-0 start-0 opacity-0">
                     <!-- Colors  -->
                     <div v-for="(combination, index) in product.combinations" :key="index" >
-                        <input @input="selectCombinancion(combination)" 
-                            :value="combination.id" type="radio" class="btn-check" 
-                            :name="`colors-${product.id}`" 
-                            :id="`colors-${ product.id }-${ combination.id}`" 
+                        <input @input="selectCombinancion(combination)"
+                            :value="combination.id" type="radio" class="btn-check"
+                            :name="`colors-${product.id}`"
+                            :id="`colors-${ product.id }-${ combination.id}`"
                             :checked="combination.id === currentCombination.id" />
                         <label :for="`colors-${ product.id }-${ combination.id}`" class="btn btn-color fs-base" :style="`color: ${combination.color_code}`">
                         <span class="visually-hidden">{{ combination.text_color }}</span>
@@ -79,27 +79,16 @@ export default {
       imageLoaded: false,
       isFavorite: false,
       favoriteLoading: false,
-      isAuthenticated: false,
-      currentCurrency: 'USD',
-      exchangeRate: 36.5
+      isAuthenticated: false
     };
   },
   computed: {
     displayPrice() {
       const priceValue = this.product.regular_price || 0;
-      
-      if (this.currentCurrency === 'VES') {
-        const vesPrice = priceValue * this.exchangeRate;
-        return 'Bs. ' + vesPrice.toLocaleString('es-VE', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      } else {
-        return '$' + priceValue.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      }
+      return '$' + priceValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
     }
   },
   async mounted() {
@@ -110,38 +99,20 @@ export default {
 
     // Check authentication status and favorite status
     await this.checkAuthAndFavoriteStatus();
-    
+
     // If there's no image to load, set imageLoaded to true immediately
     const imageUrl = this.currentCombination ? this.currentCombination.url_thumbnail : this.product.url_thumbnail;
     if (!imageUrl) {
       this.imageLoaded = true;
     }
 
-    // Initialize currency from localStorage or global state
-    const savedCurrency = localStorage.getItem('preferred_currency');
-    if (savedCurrency && ['USD', 'VES'].includes(savedCurrency)) {
-      this.currentCurrency = savedCurrency;
-    }
-
-    // Get exchange rate from global currency utils if available
-    if (window.currencyUtils) {
-      this.exchangeRate = window.currencyUtils.exchangeRate;
-      this.currentCurrency = window.currencyUtils.currentCurrency();
-    }
-
-    // Listen for currency changes
-    window.addEventListener('currency-changed', this.handleCurrencyChange);
-  },
-  beforeUnmount() {
-    // Clean up event listener
-    window.removeEventListener('currency-changed', this.handleCurrencyChange);
   },
   methods: {
     // Add any methods you need here
     selectCombinancion(combination) {
       this.currentCombination = combination;
       this.imageLoaded = false;
-      
+
       // If the new combination has no image, set imageLoaded to true immediately
       if (!combination.url_thumbnail) {
         this.imageLoaded = true;
@@ -150,7 +121,7 @@ export default {
     onImageLoad() {
       this.imageLoaded = true;
     },
-    
+
     async checkAuthAndFavoriteStatus() {
       try {
         const response = await fetch('/api/customer/auth-check', {
@@ -200,8 +171,8 @@ export default {
             })(),
             'X-Requested-With': 'XMLHttpRequest'
           },
-          body: JSON.stringify({ 
-            product_id: this.product.id 
+          body: JSON.stringify({
+            product_id: this.product.id
           }),
           credentials: 'same-origin'
         });
@@ -221,12 +192,6 @@ export default {
       } finally {
         this.favoriteLoading = false;
       }
-    },
-
-    handleCurrencyChange(event) {
-      // Update currency and exchange rate from the event
-      this.currentCurrency = event.detail.currency;
-      this.exchangeRate = event.detail.exchangeRate;
     }
   }
 };

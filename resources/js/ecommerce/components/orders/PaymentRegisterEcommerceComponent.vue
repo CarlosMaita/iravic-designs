@@ -13,11 +13,8 @@
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label">Moneda</label>
-              <select class="form-select" v-model="form.currency" required>
-                <option value="USD">USD</option>
-                <option value="VES">Bs (VES)</option>
-              </select>
-              <small class="text-muted">Tasa actual: {{ exchangeRateFormatted }} Bs/$</small>
+              <div class="form-control-plaintext fw-semibold">USD ($)</div>
+              <small class="text-muted">Los pagos se registran en dólares americanos.</small>
             </div>
 
             <div class="mb-3">
@@ -94,7 +91,7 @@ export default {
   },
   computed: {
     amountLabel() {
-      return this.form.currency === 'VES' ? 'Monto a Pagar (Bs)' : 'Monto a Pagar (USD)';
+      return 'Monto a Pagar (USD)';
     },
     needsReference() {
       return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'transferencia';

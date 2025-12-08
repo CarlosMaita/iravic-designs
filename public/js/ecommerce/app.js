@@ -2401,32 +2401,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       imageLoaded: false,
       isFavorite: false,
       favoriteLoading: false,
-      isAuthenticated: false,
-      currentCurrency: 'USD',
-      exchangeRate: 36.5
+      isAuthenticated: false
     };
   },
   computed: {
     displayPrice: function displayPrice() {
       var priceValue = this.product.regular_price || 0;
-      if (this.currentCurrency === 'VES') {
-        var vesPrice = priceValue * this.exchangeRate;
-        return 'Bs. ' + vesPrice.toLocaleString('es-VE', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      } else {
-        return '$' + priceValue.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      }
+      return '$' + priceValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
     }
   },
   mounted: function mounted() {
     var _this = this;
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var imageUrl, savedCurrency;
+      var imageUrl;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -2444,31 +2434,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             if (!imageUrl) {
               _this.imageLoaded = true;
             }
-
-            // Initialize currency from localStorage or global state
-            savedCurrency = localStorage.getItem('preferred_currency');
-            if (savedCurrency && ['USD', 'VES'].includes(savedCurrency)) {
-              _this.currentCurrency = savedCurrency;
-            }
-
-            // Get exchange rate from global currency utils if available
-            if (window.currencyUtils) {
-              _this.exchangeRate = window.currencyUtils.exchangeRate;
-              _this.currentCurrency = window.currencyUtils.currentCurrency();
-            }
-
-            // Listen for currency changes
-            window.addEventListener('currency-changed', _this.handleCurrencyChange);
-          case 9:
+          case 5:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }))();
-  },
-  beforeUnmount: function beforeUnmount() {
-    // Clean up event listener
-    window.removeEventListener('currency-changed', this.handleCurrencyChange);
   },
   methods: {
     // Add any methods you need here
@@ -2610,11 +2581,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee4, null, [[4, 14, 18, 21]]);
       }))();
-    },
-    handleCurrencyChange: function handleCurrencyChange(event) {
-      // Update currency and exchange rate from the event
-      this.currentCurrency = event.detail.currency;
-      this.exchangeRate = event.detail.exchangeRate;
     }
   }
 });
@@ -4137,7 +4103,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   },
   computed: {
     amountLabel: function amountLabel() {
-      return this.form.currency === 'VES' ? 'Monto a Pagar (Bs)' : 'Monto a Pagar (USD)';
+      return 'Monto a Pagar (USD)';
     },
     needsReference: function needsReference() {
       return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'transferencia';
@@ -4231,349 +4197,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       } catch (e2) {
         alert(message);
       }
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js ***!
-  \*****************************************************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {},
-  props: {
-    id: {
-      type: Number,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      "default": '',
-      required: true
-    },
-    price: {
-      type: Number,
-      required: true
-    },
-    price_str: {
-      type: String,
-      required: true
-    },
-    is_regular: {
-      type: Boolean,
-      required: true
-    },
-    url_detail: {
-      type: String,
-      required: true
-    },
-    url_thumbnail: {
-      type: String,
-      required: true
-    },
-    total_stock: {
-      type: Number,
-      required: true
-    },
-    combinations: {
-      type: Array,
-      Required: false
-    }
-  },
-  data: function data() {
-    return {
-      quantity: 1,
-      combinationSelected: null,
-      sizeSelected: '',
-      currentStock: 0,
-      // Favorites functionality
-      isFavorite: false,
-      favoriteLoading: false,
-      isAuthenticated: false,
-      currentCurrency: 'USD',
-      exchangeRate: 1
-    };
-  },
-  computed: {
-    displayPrice: function displayPrice() {
-      var priceValue = this.price || 0;
-      if (this.currentCurrency === 'VES') {
-        var vesPrice = priceValue * this.exchangeRate;
-        return 'Bs. ' + vesPrice.toLocaleString('es-VE', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      } else {
-        return '$' + priceValue.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      }
-    }
-  },
-  mounted: function mounted() {
-    var _this = this;
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var savedCurrency;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            // Set the default combination when the component is mounted
-            if (_this.combinations && _this.combinations.length > 0 && !_this.is_regular) {
-              _this.selectCombination(_this.combinations[0]);
-            }
-            // Set the default stock when the component is mounted
-            _this.currentStock = _this.is_regular ? _this.total_stock : 1; // por defecto 1 si es NO regular
-            // Check authentication status and favorite status
-            _context.next = 4;
-            return _this.checkAuthAndFavoriteStatus();
-          case 4:
-            // Inicializar moneda y tasa de cambio
-            savedCurrency = localStorage.getItem('preferred_currency');
-            if (savedCurrency && ['USD', 'VES'].includes(savedCurrency)) {
-              _this.currentCurrency = savedCurrency;
-            }
-            if (window.currencyUtils) {
-              _this.exchangeRate = window.currencyUtils.exchangeRate || 1;
-              _this.currentCurrency = window.currencyUtils.currentCurrency ? window.currencyUtils.currentCurrency() : _this.currentCurrency;
-            }
-            window.addEventListener('currency-changed', _this.handleCurrencyChange);
-          case 8:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }))();
-  },
-  beforeUnmount: function beforeUnmount() {
-    window.removeEventListener('currency-changed', this.handleCurrencyChange);
-  },
-  watch: {
-    quantity: function quantity(newValue) {
-      if (newValue < 1) {
-        this.quantity = 1;
-      }
-      if (newValue > this.currentStock) {
-        this.quantity = this.currentStock;
-      }
-    },
-    sizeSelected: function sizeSelected(size) {
-      if (size) {
-        this.currentStock = size.stock_total;
-      }
-    }
-  },
-  methods: {
-    selectCombination: function selectCombination(combination) {
-      this.combinationSelected = combination;
-      this.sizeSelected = '',
-      // reset size selection
-      this.currentStock = 1; // reset stock to 1 when a combination is selected
-      // emit event to parent component
-      this.$emit('combination-selected', combination);
-    },
-    addItemCart: function addItemCart() {
-      // chequear que la talla fue seleccionada en caso de ser producto no regular 
-      if (!this.is_regular && !this.sizeSelected) {
-        this.$root.$refs.toastEcommerceComponent.showToast({
-          title: 'Error',
-          message: 'Por favor selecciona una talla',
-          type: 'error'
-        });
-        return;
-      }
-      var itemId = !this.is_regular ? this.combinationSelected.id : this.id;
-      var sizeId = !this.is_regular ? this.sizeSelected.size_id : null;
-      var encryptedId = btoa("".concat(itemId, "-").concat(sizeId));
-      var item = {
-        id: encryptedId,
-        // Identificadores necesarios para crear la orden
-        product_id: this.is_regular ? this.id : this.sizeSelected && this.sizeSelected.product_id || null,
-        color_id: this.is_regular ? null : this.combinationSelected && this.combinationSelected.color_id || null,
-        size_id: this.is_regular ? null : this.sizeSelected && this.sizeSelected.size_id || null,
-        // Datos de presentación
-        name: this.name,
-        price: this.price,
-        price_str: this.price_str,
-        color: !this.is_regular ? this.combinationSelected && this.combinationSelected.text_color : null,
-        size: !this.is_regular ? this.sizeSelected && this.sizeSelected.size_name ? this.sizeSelected.size_name.toUpperCase() : null : null,
-        image: !this.is_regular ? this.combinationSelected.url_thumbnail : this.url_thumbnail,
-        url: this.url_detail,
-        quantity: this.quantity
-      };
-
-      // Logic to add item to cart
-      this.$root.$refs.cartEcommerceComponent.addItem(item);
-
-      // alert success
-      this.$root.$refs.toastEcommerceComponent.showToast({
-        title: 'Éxito',
-        message: 'Producto agregado al carrito',
-        type: 'success'
-      });
-    },
-    askWhatsApp: function askWhatsApp() {
-      var message = "Hola, estoy interesado en el producto: \n                \n".concat(this.name, ". Precio: ").concat(this.price_str, ".");
-      var phoneNumber = '+584144519511'; // Reemplaza con el número de WhatsApp
-      var url = "https://wa.me/".concat(phoneNumber, "?text=").concat(encodeURIComponent(message));
-      window.open(url, '_blank');
-    },
-    checkAuthAndFavoriteStatus: function checkAuthAndFavoriteStatus() {
-      var _this2 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var response, data;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.prev = 0;
-              _context2.next = 3;
-              return fetch('/api/customer/auth-check', {
-                credentials: 'same-origin'
-              });
-            case 3:
-              response = _context2.sent;
-              _context2.next = 6;
-              return response.json();
-            case 6:
-              data = _context2.sent;
-              _this2.isAuthenticated = data.authenticated;
-
-              // If authenticated, check if this product is in favorites
-              if (!_this2.isAuthenticated) {
-                _context2.next = 11;
-                break;
-              }
-              _context2.next = 11;
-              return _this2.checkFavoriteStatus();
-            case 11:
-              _context2.next = 17;
-              break;
-            case 13:
-              _context2.prev = 13;
-              _context2.t0 = _context2["catch"](0);
-              console.error('Error checking auth status:', _context2.t0);
-              _this2.isAuthenticated = false;
-            case 17:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2, null, [[0, 13]]);
-      }))();
-    },
-    checkFavoriteStatus: function checkFavoriteStatus() {
-      var _this3 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              try {
-                // For now, we'll set it to false and update when we actually toggle
-                _this3.isFavorite = false;
-              } catch (error) {
-                console.error('Error checking favorite status:', error);
-              }
-            case 1:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3);
-      }))();
-    },
-    toggleFavorite: function toggleFavorite() {
-      var _this4 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var response, data;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
-            case 0:
-              if (_this4.isAuthenticated) {
-                _context4.next = 3;
-                break;
-              }
-              // Redirect to login
-              window.location.href = '/ingresar';
-              return _context4.abrupt("return");
-            case 3:
-              _this4.favoriteLoading = true;
-              _context4.prev = 4;
-              _context4.next = 7;
-              return fetch('/api/favorites/toggle', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-TOKEN': function () {
-                    var el = document.querySelector('meta[name="csrf-token"]');
-                    var content = el && el.getAttribute('content');
-                    return content || window.Laravel && window.Laravel.csrfToken || '';
-                  }(),
-                  'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                  product_id: _this4.id
-                }),
-                credentials: 'same-origin'
-              });
-            case 7:
-              response = _context4.sent;
-              _context4.next = 10;
-              return response.json();
-            case 10:
-              data = _context4.sent;
-              if (data.success) {
-                _this4.isFavorite = data.is_favorite;
-                // Show success message using the existing toast component
-                _this4.$root.$refs.toastEcommerceComponent.showToast({
-                  title: data.is_favorite ? 'Agregado a favoritos' : 'Removido de favoritos',
-                  message: data.message,
-                  type: 'success'
-                });
-              } else {
-                _this4.$root.$refs.toastEcommerceComponent.showToast({
-                  title: 'Error',
-                  message: data.message || 'Error al actualizar favoritos',
-                  type: 'error'
-                });
-              }
-              _context4.next = 18;
-              break;
-            case 14:
-              _context4.prev = 14;
-              _context4.t0 = _context4["catch"](4);
-              console.error('Error toggling favorite:', _context4.t0);
-              _this4.$root.$refs.toastEcommerceComponent.showToast({
-                title: 'Error',
-                message: 'Error de conexión. Inténtalo de nuevo.',
-                type: 'error'
-              });
-            case 18:
-              _context4.prev = 18;
-              _this4.favoriteLoading = false;
-              return _context4.finish(18);
-            case 21:
-            case "end":
-              return _context4.stop();
-          }
-        }, _callee4, null, [[4, 14, 18, 21]]);
-      }))();
-    },
-    handleCurrencyChange: function handleCurrencyChange(event) {
-      this.currentCurrency = event.detail.currency;
-      this.exchangeRate = event.detail.exchangeRate;
     }
   }
 });
@@ -6780,43 +6403,7 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "modal-body"
-  }, [_c("div", {
-    staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Moneda")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.form.currency,
-      expression: "form.currency"
-    }],
-    staticClass: "form-select",
-    attrs: {
-      required: ""
-    },
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.form, "currency", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "USD"
-    }
-  }, [_vm._v("USD")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "VES"
-    }
-  }, [_vm._v("Bs (VES)")])]), _vm._v(" "), _c("small", {
-    staticClass: "text-muted"
-  }, [_vm._v("Tasa actual: " + _vm._s(_vm.exchangeRateFormatted) + " Bs/$")])]), _vm._v(" "), _c("div", {
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
@@ -7034,254 +6621,18 @@ var render = function render() {
     }
   })])])])])])]);
 };
-var staticRenderFns = [];
-render._withStripped = true;
-
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826 ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function render() {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "col-md-6"
-  }, [_c("div", {
-    staticClass: "ps-md-4 ps-xl-5"
-  }, [_c("h1", {
-    staticClass: "h3"
-  }, [_vm._v(_vm._s(_vm.name.charAt(0).toUpperCase() + _vm.name.slice(1).toLowerCase()))]), _vm._v(" "), _c("p", {
-    staticClass: "fs-sm mb-0"
-  }, [_vm._v(_vm._s(_vm.description))]), _vm._v(" "), _c("div", {
-    staticClass: "h4 d-flex align-items-center my-4"
-  }, [_vm._v("\n    " + _vm._s(_vm.displayPrice) + "\n    ")]), _vm._v(" "), !_vm.is_regular ? _c("div", [_vm.combinationSelected ? _c("div", {
-    staticClass: "mb-4"
-  }, [_c("label", {
-    staticClass: "form-label fw-semibold pb-1 mb-2"
-  }, [_vm._v("Color: "), _c("span", {
-    staticClass: "text-body fw-normal",
-    attrs: {
-      id: "colorOption"
-    }
-  }, [_vm._v(_vm._s(_vm.combinationSelected.text_color))])]), _vm._v(" "), _c("div", {
-    staticClass: "d-flex flex-wrap gap-2",
-    attrs: {
-      "data-binded-label": "#colorOption"
-    }
-  }, _vm._l(_vm.combinations, function (combination, index) {
-    return _c("div", {
-      key: index,
-      attrs: {
-        checked: combination.id === _vm.combinationSelected.id
-      }
-    }, [_c("input", {
-      staticClass: "btn-check",
-      attrs: {
-        type: "radio",
-        name: "colors",
-        id: "combination-".concat(combination.id)
-      },
-      domProps: {
-        value: combination.id
-      },
-      on: {
-        input: function input($event) {
-          return _vm.selectCombination(combination);
-        }
-      }
-    }), _vm._v(" "), _c("label", {
-      staticClass: "btn btn-image p-0",
-      attrs: {
-        "for": "combination-".concat(combination.id),
-        "data-label": combination.text_color
-      }
-    }, [_c("img", {
-      attrs: {
-        src: combination.url_thumbnail,
-        width: "56",
-        alt: combination.text_color
-      }
-    }), _vm._v(" "), _c("span", {
-      staticClass: "visually-hidden"
-    }, [_vm._v(_vm._s(combination.text_color))])])]);
-  }), 0)]) : _vm._e(), _vm._v(" "), _vm.combinationSelected ? _c("div", {
-    staticClass: "mb-3"
-  }, [_vm._m(0), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.sizeSelected,
-      expression: "sizeSelected"
-    }],
-    staticClass: "form-select form-select-lg",
-    attrs: {
-      "data-select": '{\n                "classNames": {\n                "containerInner": ["form-select", "form-select-lg"]\n                }\n            }',
-      "aria-label": "Material select"
-    },
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.sizeSelected = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v("Elige una talla")]), _vm._v(" "), _vm._l(_vm.combinationSelected.sizes, function (size) {
-    return _c("option", {
-      key: size.size_id,
-      domProps: {
-        value: size
-      }
-    }, [_vm._v(_vm._s(size.size_name.toUpperCase()))]);
-  })], 2)]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.currentStock > 0 ? _c("div", {
-    staticClass: "d-flex gap-3 pb-3 pb-lg-4"
-  }, [_c("div", {
-    staticClass: "count-input flex-shrink-0"
-  }, [_c("button", {
-    staticClass: "btn btn-icon btn-lg",
-    attrs: {
-      type: "button",
-      "data-decrement": "",
-      "aria-label": "Decrement quantity"
-    },
-    on: {
-      click: function click($event) {
-        _vm.quantity--;
-      }
-    }
-  }, [_c("i", {
-    staticClass: "ci-minus"
-  })]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.quantity,
-      expression: "quantity"
-    }],
-    staticClass: "form-control form-control-lg",
-    attrs: {
-      type: "number",
-      min: "1",
-      value: "1",
-      readonly: ""
-    },
-    domProps: {
-      value: _vm.quantity
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.quantity = $event.target.value;
-      }
-    }
-  }), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-icon btn-lg",
-    attrs: {
-      type: "button",
-      "data-increment": "",
-      "aria-label": "Increment quantity"
-    },
-    on: {
-      click: function click($event) {
-        _vm.quantity++;
-      }
-    }
-  }, [_c("i", {
-    staticClass: "ci-plus"
-  })])]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-lg btn-dark w-100",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.addItemCart();
-      }
-    }
-  }, [_vm._v("Agregar al carrito")]), _vm._v(" "), _vm.isAuthenticated ? _c("button", {
-    "class": ["btn btn-icon btn-lg", _vm.isFavorite ? "btn-danger" : "btn-outline-secondary"],
-    attrs: {
-      type: "button",
-      disabled: _vm.favoriteLoading,
-      title: _vm.isFavorite ? "Remover de favoritos" : "Agregar a favoritos"
-    },
-    on: {
-      click: _vm.toggleFavorite
-    }
-  }, [_c("i", {
-    "class": _vm.favoriteLoading ? "ci-refresh spinner-border-sm" : _vm.isFavorite ? "ci-heart-filled" : "ci-heart"
-  })]) : _vm._e()]) : _c("div", {
-    staticClass: "d-flex gap-3 pb-3 pb-lg-4 mb-3"
-  }, [_vm._m(1), _vm._v(" "), _vm.isAuthenticated ? _c("button", {
-    "class": ["btn btn-icon btn-lg", _vm.isFavorite ? "btn-danger" : "btn-outline-secondary"],
-    attrs: {
-      type: "button",
-      disabled: _vm.favoriteLoading,
-      title: _vm.isFavorite ? "Remover de favoritos" : "Agregar a favoritos"
-    },
-    on: {
-      click: _vm.toggleFavorite
-    }
-  }, [_c("i", {
-    "class": _vm.favoriteLoading ? "ci-refresh spinner-border-sm" : _vm.isFavorite ? "ci-heart-filled" : "ci-heart"
-  })]) : _vm._e()]), _vm._v(" "), _c("div", {
-    staticClass: "d-flex gap-3 pb-3 pb-lg-4 mb-3>"
-  }, [_c("button", {
-    staticClass: "btn btn-lg btn-warning w-100 gap-3",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.askWhatsApp();
-      }
-    }
-  }, [_c("i", {
-    staticClass: "ci-whatsapp fs-lg me-2"
-  }), _vm._v(" "), _c("span", {}, [_vm._v("Solicitar por WhatsApp")])])]), _vm._v(" "), _c("div", {
-    staticClass: "text-muted",
-    staticStyle: {
-      "font-size": "0.85rem"
-    }
-  }, [_vm._v("\n        Nota: Si el producto no está disponible, puede solicitarlo por WhatsApp para su confección. El tiempo de confección se le indicará al momento de preguntar.\n    ")])])]);
-};
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "d-flex align-items-center justify-content-between mb-1"
+    staticClass: "mb-3"
   }, [_c("label", {
-    staticClass: "form-label fw-semibold mb-0"
-  }, [_vm._v("Talla")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
-    staticClass: "btn btn-lg btn-dark w-100 gap-3",
-    attrs: {
-      type: "button",
-      disabled: ""
-    }
-  }, [_c("i", {
-    staticClass: "ci-frown fs-3"
-  }), _vm._v("\n            Producto agotado\n        ")]);
+    staticClass: "form-label"
+  }, [_vm._v("Moneda")]), _vm._v(" "), _c("div", {
+    staticClass: "form-control-plaintext fw-semibold"
+  }, [_vm._v("USD ($)")]), _vm._v(" "), _c("small", {
+    staticClass: "text-muted"
+  }, [_vm._v("Los pagos se registran en dólares americanos.")])]);
 }];
 render._withStripped = true;
 
@@ -11843,7 +11194,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\r\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-4f19b6b7] {\r\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-4f19b6b7]:hover {\r\n  transform: scale(1.1);\r\n  z-index: 2;\n}\r\n", ""]);
+exports.push([module.i, "\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-4f19b6b7] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-4f19b6b7]:hover {\n  transform: scale(1.1);\n  z-index: 2;\n}\n", ""]);
 
 // exports
 
@@ -57416,20 +56767,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ProductDetailDescriptionEcommerceComponent_vue_vue_type_template_id_58a14826__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826 */ "./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826");
-/* harmony import */ var _ProductDetailDescriptionEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js */ "./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ProductDetailDescriptionEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ProductDetailDescriptionEcommerceComponent_vue_vue_type_template_id_58a14826__WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ProductDetailDescriptionEcommerceComponent_vue_vue_type_template_id_58a14826__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
   false,
   null,
   null,
@@ -57437,42 +56785,8 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   
 )
 
-/* hot reload */
-if (false) { var api; }
 component.options.__file = "resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js":
-/*!*********************************************************************************************************************************!*\
-  !*** ./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js ***!
-  \*********************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductDetailDescriptionEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductDetailDescriptionEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826":
-/*!***************************************************************************************************************************************!*\
-  !*** ./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826 ***!
-  \***************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductDetailDescriptionEcommerceComponent_vue_vue_type_template_id_58a14826__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826 */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailDescriptionEcommerceComponent.vue?vue&type=template&id=58a14826");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductDetailDescriptionEcommerceComponent_vue_vue_type_template_id_58a14826__WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductDetailDescriptionEcommerceComponent_vue_vue_type_template_id_58a14826__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
 
 /***/ }),
 

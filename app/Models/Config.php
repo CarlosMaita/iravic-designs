@@ -30,6 +30,10 @@ class Config extends Model
      */
     public static function isCurrencyModuleEnabled()
     {
+        if (!config('app.enable_multi_currency')) {
+            return false;
+        }
+
         $config = static::getConfig('currency_module_enabled');
         return (bool) $config->value;
     }

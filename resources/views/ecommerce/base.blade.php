@@ -15,7 +15,7 @@
   <!-- CSRF Token for AJAX / SPA requests -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    
+
     @yield('meta-tags')
 
     {{-- Canonical URL for all public pages (strip query params and force canonical host) --}}
@@ -25,13 +25,13 @@
       $canonicalUrl = $scheme . '://' . $canonicalHost . request()->getPathInfo();
     @endphp
     <link rel="canonical" href="{{ $canonicalUrl }}">
-    
+
     <!-- Webmanifest + Favicon / App icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    
+
     @if (app()->environment('production'))
-    
+
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){
@@ -44,7 +44,7 @@
     @else
     {{--  Si no es produccion que el buscador no la siga --}}
     <meta name="robots" content="nofollow">
-    
+
     @endif
 
     {{-- <link rel="manifest" href="/manifest.json"> --}}
@@ -55,7 +55,7 @@
     <script>
       // Expose csrfToken early for scripts that need it before app.js mounts
       window.Laravel = Object.assign({}, window.Laravel, { csrfToken: '{{ csrf_token() }}' });
-      
+
       // Expose currency data globally for components
       window.currencyData = {!! \App\Helpers\CurrencyHelper::getJavascriptData() !!};
     </script>
@@ -92,7 +92,7 @@
         });
       });
     </script>
-    
+
     <!-- Theme switcher (color modes) -->
     <script src="{{ asset('assets/cartzilla/js/theme-switcher.js')}}"></script>
 
@@ -159,7 +159,7 @@
 
     {{-- App Vue --}}
     <div id="app">
-      
+
     <!-- shopping cart -->
     @include('ecommerce.shared.shopping-cart')
 
@@ -172,23 +172,23 @@
     <!-- Page content -->
     <main class="content-wrapper"  >
 
-      @yield('breadcrumb')  
-     
+      @yield('breadcrumb')
+
       @yield('content')
-     
+
     </main>
 
     @include('ecommerce.shared.footer')
 
     {{-- Toast Ecommerce component --}}
-    <toast-ecommerce-component 
+    <toast-ecommerce-component
       ref="toastEcommerceComponent">
     </toast-ecommerce-component>
 
     {{-- include filter --}}
     @yield('bottom-filter-buttom')
 
-    
+
     {{-- Back to top button --}}
     @include( 'ecommerce.shared.back-to-top-button')
 
@@ -220,251 +220,59 @@
       }
     </script>
 
-    <!-- Currency Switcher Script -->
+    <!-- Currency utility shim: lock experience to USD pricing -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Currency switcher functionality
-        const currencyRadios = document.querySelectorAll('input[name="currency"]');
-        if (!currencyRadios.length) return;
-        
-        // Currency data from backend
-        const currencyData = {!! \App\Helpers\CurrencyHelper::getJavascriptData() !!};
-        
-        // Check if currency module is enabled
-        if (!currencyData.enabled) {
-          // Hide currency switcher elements and force USD
-          currencyRadios.forEach(radio => {
-            const container = radio.closest('[data-currency-switcher]');
-            if (container) {
-              container.style.display = 'none';
-            }
+      (function() {
+        const DEFAULT_CURRENCY = 'USD';
+        const exchangeRate = window.currencyData ? window.currencyData.exchangeRate : 1;
+
+        try {
+          localStorage.setItem('preferred_currency', DEFAULT_CURRENCY);
+          localStorage.setItem('selectedCurrency', DEFAULT_CURRENCY);
+        } catch (error) {}
+
+        const formatUsd = (amount) => {
+          const value = Number(amount || 0);
+          return '$' + value.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
           });
-          
-          // Force USD currency and clear any VES preference
-          localStorage.setItem('preferred_currency', 'USD');
-          return; // Exit early if module disabled
-        }
-        
-        // Current selected currency
-        let currentCurrency = 'USD';
-        
-        // Get all price elements (will be set by Vue components)
-        function getPriceElements() {
-          return document.querySelectorAll('[data-price], [data-price-usd]');
-        }
-        
-        // Format price according to currency
-        function formatPrice(amount, currency) {
-          const decimals = currencyData.decimals[currency] || 2;
-          const symbol = currencyData.symbols[currency] || '';
-          
-          if (currency === 'VES') {
-            return symbol + ' ' + amount.toLocaleString('es-VE', {
-              minimumFractionDigits: decimals,
-              maximumFractionDigits: decimals
-            });
-          } else {
-            return symbol + amount.toLocaleString('en-US', {
-              minimumFractionDigits: decimals,
-              maximumFractionDigits: decimals
-            });
-          }
-        }
-        
-        // Convert price between currencies
-        function convertPrice(amount, fromCurrency, toCurrency) {
-          if (fromCurrency === toCurrency) return amount;
-          
-          if (fromCurrency === 'USD' && toCurrency === 'VES') {
-            return amount * currencyData.exchangeRate;
-          } else if (fromCurrency === 'VES' && toCurrency === 'USD') {
-            return amount / currencyData.exchangeRate;
-          }
-          
-          return amount;
-        }
-        
-        // Update all prices on the page
-        function updatePrices(newCurrency) {
-          currentCurrency = newCurrency;
-          
-          // Store preference in localStorage
-          localStorage.setItem('preferred_currency', newCurrency);
-          
-          // Emit custom event for Vue components to listen to
-          window.dispatchEvent(new CustomEvent('currency-changed', {
-            detail: { 
-              currency: newCurrency,
-              exchangeRate: currencyData.exchangeRate,
-              formatPrice: formatPrice,
-              convertPrice: convertPrice
-            }
-          }));
-        }
-        
-        // Handle currency change
-        currencyRadios.forEach(radio => {
-          radio.addEventListener('change', function(e) {
-            if (e.target.checked) {
-              updatePrices(e.target.value);
-            }
-          });
-        });
-        
-        // Load saved preference
-        const savedCurrency = localStorage.getItem('preferred_currency');
-        if (savedCurrency && ['USD', 'VES'].includes(savedCurrency)) {
-          const radioButton = document.querySelector(`input[name="currency"][value="${savedCurrency}"]`);
-          if (radioButton) {
-            radioButton.checked = true;
-            updatePrices(savedCurrency);
-          }
-        }
-        
-        // Make currency utilities globally available
+        };
+
+        const passthrough = (amount) => Number(amount || 0);
+
         window.currencyUtils = {
-          currentCurrency: () => currentCurrency,
-          exchangeRate: currencyData.exchangeRate,
-          formatPrice: formatPrice,
-          convertPrice: convertPrice,
-          updateExchangeRate: function(newRate) {
-            currencyData.exchangeRate = newRate;
-            if (currentCurrency === 'VES') {
-              updatePrices('VES'); // Re-trigger conversion
-            }
-          }
+          currentCurrency: () => DEFAULT_CURRENCY,
+          exchangeRate,
+          formatPrice: formatUsd,
+          convertPrice: passthrough,
+          updateExchangeRate: function() {}
         };
-        
-        // Update exchange rate from API periodically
-        function updateExchangeRate() {
-          fetch('/api/currency/exchange-rate')
-            .then(response => response.json())
-            .then(data => {
-              window.currencyUtils.updateExchangeRate(data.rate);
-            })
-            .catch(error => console.log('Error updating exchange rate:', error));
-        }
-        
-        // Update rate every 5 minutes
-        setInterval(updateExchangeRate, 300000);
-        
-        // Enhanced price conversion for Vue components
-        function convertVuePrices(newCurrency) {
-          // Find all elements that look like product prices
-          const priceSelectors = [
-            '.h6', // The price display class in Vue components
-            '[class*="price"]',
-            '[data-price]'
-          ];
-          
-          priceSelectors.forEach(selector => {
-            document.querySelectorAll(selector).forEach(element => {
-              const text = element.textContent.trim();
-              
-              // Check if this looks like a price (starts with $ or contains currency symbols)
-              if (text.match(/^\$[\d,]+\.?\d*$/) || text.match(/^Bs\.?\s*[\d.,]+$/)) {
-                // Extract the numeric value
-                let numericValue = parseFloat(text.replace(/[^\d.]/g, ''));
-                
-                if (!isNaN(numericValue)) {
-                  // Store original USD price if not already stored
-                  if (!element.dataset.originalUsd) {
-                    // If current display is in VES format, convert back to USD first
-                    if (text.includes('Bs.')) {
-                      element.dataset.originalUsd = (numericValue / currencyData.exchangeRate).toFixed(2);
-                    } else {
-                      element.dataset.originalUsd = numericValue.toFixed(2);
-                    }
-                  }
-                  
-                  const originalUsd = parseFloat(element.dataset.originalUsd);
-                  
-                  // Convert and format
-                  let convertedPrice;
-                  if (newCurrency === 'VES') {
-                    convertedPrice = originalUsd * currencyData.exchangeRate;
-                    element.textContent = 'Bs. ' + convertedPrice.toLocaleString('es-VE', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    });
-                  } else {
-                    convertedPrice = originalUsd;
-                    element.textContent = '$' + convertedPrice.toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    });
-                  }
-                }
-              }
-            });
-          });
-        }
-        
-        // Observe for dynamically added Vue content
-        function observeVueContent() {
-          const observer = new MutationObserver((mutations) => {
-            let shouldConvert = false;
-            mutations.forEach((mutation) => {
-              if (mutation.addedNodes.length > 0) {
-                mutation.addedNodes.forEach((node) => {
-                  if (node.nodeType === Node.ELEMENT_NODE) {
-                    // Check if this is likely a product container
-                    if (node.classList && (node.classList.contains('col-6') || node.classList.contains('col-md-4'))) {
-                      shouldConvert = true;
-                    }
-                    // Also check for price elements within added nodes
-                    if (node.querySelector && node.querySelector('.h6')) {
-                      shouldConvert = true;
-                    }
-                  }
-                });
-              }
-            });
-            
-            if (shouldConvert && currentCurrency === 'VES') {
-              setTimeout(() => convertVuePrices(currentCurrency), 100);
+
+        window.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('option[value="VES"]').forEach(function(option) {
+            const select = option.parentElement && option.parentElement.tagName === 'SELECT'
+              ? option.parentElement
+              : option.closest('select');
+            option.remove();
+            if (select && select.value !== DEFAULT_CURRENCY) {
+              select.value = DEFAULT_CURRENCY;
+              try {
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+              } catch (error) {}
             }
           });
-          
-          // Start observing
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true
-          });
-        }
-        
-        // Enhanced updatePrices function
-        const originalUpdatePrices = updatePrices;
-        updatePrices = function(newCurrency) {
-          currentCurrency = newCurrency;
-          
-          // Store preference in localStorage
-          localStorage.setItem('preferred_currency', newCurrency);
-          
-          // Convert Vue component prices
-          convertVuePrices(newCurrency);
-          
-          // Emit custom event for Vue components to listen to
+
           window.dispatchEvent(new CustomEvent('currency-changed', {
-            detail: { 
-              currency: newCurrency,
-              exchangeRate: currencyData.exchangeRate,
-              formatPrice: formatPrice,
-              convertPrice: convertPrice
+            detail: {
+              currency: DEFAULT_CURRENCY,
+              exchangeRate,
+              formatPrice: formatUsd,
+              convertPrice: passthrough
             }
           }));
-        };
-        
-        // Initialize observer for Vue content
-        observeVueContent();
-        
-        // Apply currency conversion on page load if VES is selected
-        setTimeout(() => {
-          if (currentCurrency === 'VES') {
-            convertVuePrices('VES');
-          }
-        }, 1000);
-      });
+        });
+      })();
     </script>
 
     @stack('scripts')

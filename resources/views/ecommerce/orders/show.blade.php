@@ -43,36 +43,28 @@
                         <div class="col-md-6">
                             <h6>Información General</h6>
                             <p class="mb-1"><strong>Fecha:</strong> {{ $order->date->format('d/m/Y H:i') }}</p>
-                            
-                            @php
-                                $prices = $order->getPricesBothCurrencies();
-                            @endphp
-                            
+
                             <p class="mb-1">
-                                <strong>Total:</strong> 
-                                <span id="order-total-display">{{ $prices['usd']['formatted'] }}</span>
-                                <small class="text-muted d-none" id="order-total-ves">
-                                    ({{ $prices['ves']['formatted'] }})
-                                </small>
+                                <strong>Total:</strong>
+                                <span>${{ number_format($order->total, 2) }}</span>
                             </p>
-                            
+
                             <p class="mb-1">
-                                <strong>Pagado:</strong> 
-                                <span data-usd-price="{{ $order->total_paid }}">${{ number_format($order->total_paid, 2) }}</span>
+                                <strong>Pagado:</strong>
+                                <span>${{ number_format($order->total_paid, 2) }}</span>
                             </p>
-                            
+
                             @if($order->remaining_balance > 0)
                                 <p class="mb-1">
-                                    <strong>Pendiente:</strong> 
-                                    <span data-usd-price="{{ $order->remaining_balance }}">${{ number_format($order->remaining_balance, 2) }}</span>
+                                    <strong>Pendiente:</strong>
+                                    <span>${{ number_format($order->remaining_balance, 2) }}</span>
                                 </p>
                             @endif
-                            
+
                             @if($order->exchange_rate)
                                 <p class="mb-1">
                                     <small class="text-muted">
-                                        <strong>Tasa usada:</strong> {{ number_format($order->exchange_rate, 4, ',', '.') }} Bs/$
-                                        <br><em>{{ $order->isPaid() ? 'Tasa al momento del pago' : 'Tasa actual' }}</em>
+                                        <strong>Tasa usada (referencial):</strong> {{ number_format($order->exchange_rate, 4, ',', '.') }} Bs/$
                                     </small>
                                 </p>
                             @endif
@@ -158,7 +150,7 @@
                                                     {{ $payment->status_label }}
                                                 </span>
                                             </div>
-                                            
+
                                             <div class="row text-sm">
                                                 <div class="col-6">
                                                     <p class="mb-1"><strong>Monto:</strong></p>
@@ -169,25 +161,25 @@
                                                     <p class="mb-2">{{ $payment->payment_method_label }}</p>
                                                 </div>
                                             </div>
-                                            
+
                                             @if($payment->reference_number)
                                                 <div class="mb-2">
                                                     <p class="mb-1"><strong>Referencia:</strong></p>
                                                     <p class="text-muted">{{ $payment->reference_number }}</p>
                                                 </div>
                                             @endif
-                                            
+
                                             <div class="text-muted">
                                                 <small><i class="ci-calendar me-1"></i>{{ $payment->date->format('d/m/Y H:i') }}</small>
                                             </div>
-                                            
+
                                             @if($payment->comment)
                                                 <div class="mt-2">
                                                     <p class="mb-1"><strong>Comentario:</strong></p>
                                                     <p class="text-muted small">{{ $payment->comment }}</p>
                                                 </div>
                                             @endif
-                                            
+
                                             @if($payment->status == 'rechazado')
                                                 <div class="alert alert-warning mt-2 py-2">
                                                     <small><i class="ci-info-circle me-1"></i>Este pago fue rechazado. Si considera que es un error, por favor contacte a nuestro equipo de soporte.</small>
@@ -266,59 +258,21 @@
 </div>
 @endif
 
+@if($order->canBeCancelled())
 @push('scripts')
 <script>
-// Currency switching for order details
-(function() {
-    const exchangeRate = {{ $order->getEffectiveExchangeRate() }};
-    const orderTotal = {{ $order->total }};
-    const vesTotal = orderTotal * exchangeRate;
-    
-    function updateOrderCurrencyDisplay() {
-        const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
-        const totalDisplay = document.getElementById('order-total-display');
-        const vesDisplay = document.getElementById('order-total-ves');
-        
-        if (totalDisplay && vesDisplay) {
-            if (currentCurrency === 'VES') {
-                totalDisplay.textContent = 'Bs. ' + formatNumber(vesTotal);
-                vesDisplay.textContent = '($' + formatNumber(orderTotal) + ')';
-                vesDisplay.classList.remove('d-none');
-            } else {
-                totalDisplay.textContent = '$' + formatNumber(orderTotal);
-                vesDisplay.textContent = '(Bs. ' + formatNumber(vesTotal) + ')';
-                vesDisplay.classList.remove('d-none');
-            }
-        }
-    }
-    
-    function formatNumber(number) {
-        return new Intl.NumberFormat('es-VE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(number);
-    }
-    
-    // Listen for currency changes
-    window.addEventListener('currency-changed', updateOrderCurrencyDisplay);
-    
-    // Initial load
-    document.addEventListener('DOMContentLoaded', updateOrderCurrencyDisplay);
-})();
-
-@if($order->canBeCancelled())
 (function(){
-  var btn = document.getElementById('confirmCancelBtn');
-  if(!btn) return; var fb = document.getElementById('cancelOrderFeedback');
-  function msg(t,m){ if(!fb) return; fb.className='alert alert-'+t; fb.textContent=m; fb.classList.remove('d-none'); }
-  function reset(){ btn.disabled=false; var sp=btn.querySelector('.spinner-border'); var tx=btn.querySelector('.default-text'); if(sp) sp.classList.add('d-none'); if(tx) tx.textContent='Sí, cancelar'; }
-  btn.addEventListener('click', function(){ if(btn.disabled) return; btn.disabled=true; var sp=btn.querySelector('.spinner-border'); var tx=btn.querySelector('.default-text'); if(sp) sp.classList.remove('d-none'); if(tx) tx.textContent='Cancelando...';
-    fetch('{{ route('customer.orders.cancel', $order->id) }}', { method:'POST', headers:{ 'Content-Type':'application/json','Accept':'application/json','X-Requested-With':'XMLHttpRequest','X-CSRF-TOKEN':'{{ csrf_token() }}' }, body: JSON.stringify({_token:'{{ csrf_token() }}'}) })
-    .then(async r=>{ const ct=r.headers.get('Content-Type')||''; let d; try{ d=ct.includes('application/json')?await r.json():{success:r.ok,message:(await r.text()).trim()}; }catch{ d={success:false,message:'Respuesta inválida.'}; } if(d.success){ msg('success', d.message||'Orden cancelada'); setTimeout(()=>location.reload(),600);} else { msg('danger', d.message||'No se pudo cancelar.'); reset(); } })
-    .catch(e=>{ console.error(e); msg('danger','Error al cancelar la orden.'); reset(); });
-  });
+    var btn = document.getElementById('confirmCancelBtn');
+    if(!btn) return; var fb = document.getElementById('cancelOrderFeedback');
+    function msg(t,m){ if(!fb) return; fb.className='alert alert-'+t; fb.textContent=m; fb.classList.remove('d-none'); }
+    function reset(){ btn.disabled=false; var sp=btn.querySelector('.spinner-border'); var tx=btn.querySelector('.default-text'); if(sp) sp.classList.add('d-none'); if(tx) tx.textContent='Sí, cancelar'; }
+    btn.addEventListener('click', function(){ if(btn.disabled) return; btn.disabled=true; var sp=btn.querySelector('.spinner-border'); var tx=btn.querySelector('.default-text'); if(sp) sp.classList.remove('d-none'); if(tx) tx.textContent='Cancelando...';
+        fetch('{{ route('customer.orders.cancel', $order->id) }}', { method:'POST', headers:{ 'Content-Type':'application/json','Accept':'application/json','X-Requested-With':'XMLHttpRequest','X-CSRF-TOKEN':'{{ csrf_token() }}' }, body: JSON.stringify({_token:'{{ csrf_token() }}'}) })
+        .then(async r=>{ const ct=r.headers.get('Content-Type')||''; let d; try{ d=ct.includes('application/json')?await r.json():{success:r.ok,message:(await r.text()).trim()}; }catch{ d={success:false,message:'Respuesta inválida.'}; } if(d.success){ msg('success', d.message||'Orden cancelada'); setTimeout(()=>location.reload(),600);} else { msg('danger', d.message||'No se pudo cancelar.'); reset(); } })
+        .catch(e=>{ console.error(e); msg('danger','Error al cancelar la orden.'); reset(); });
+    });
 })();
-@endif
 </script>
 @endpush
+@endif
 @endsection

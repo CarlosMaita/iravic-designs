@@ -110,6 +110,19 @@ return [
 
     'faker_locale' => 'en_US',
 
+        /*
+        |--------------------------------------------------------------------------
+        | Feature Flags
+        |--------------------------------------------------------------------------
+        |
+        | Allow disabling legacy multi-currency behavior without touching the DB.
+        | Defaults to false so storefront prices stay in USD only unless explicitly
+        | re-enabled through the environment file.
+        |
+        */
+
+        'enable_multi_currency' => env('ENABLE_MULTI_CURRENCY', false),
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
