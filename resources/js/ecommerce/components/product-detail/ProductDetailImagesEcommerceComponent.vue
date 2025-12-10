@@ -45,9 +45,26 @@
         data() {
             return {
               images : [],
+              mainSwiper: null,
             };
         },
         methods: {
+            waitForSwiper(callback) {
+                // Swiper is loaded via global script at the bottom of the page; wait until it exists
+                if (typeof window !== 'undefined' && window.Swiper) {
+                    callback();
+                    return;
+                }
+
+                const listener = () => {
+                    if (window.Swiper) {
+                        window.removeEventListener('load', listener);
+                        callback();
+                    }
+                };
+
+                window.addEventListener('load', listener);
+            },
             setImages(images){
                 this.images = images;
             },
@@ -80,7 +97,9 @@
                     }
                 },
         mounted() {
-            this.initializeSwipers(); // Inicializa el Swiper, aunque esté vacío al principio
+            this.waitForSwiper(() => {
+                this.initializeSwipers(); // Inicializa el Swiper, aunque esté vacío al principio
+            });
         }
     }
 </script>

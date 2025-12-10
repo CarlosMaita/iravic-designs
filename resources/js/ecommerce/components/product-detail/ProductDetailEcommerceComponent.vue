@@ -7,7 +7,7 @@
           </template>
           <template v-else>
             <!-- Product images(carrousel) -->
-             <product-detail-images-ecommerce-component  ref="productDetailImages" ></product-detail-images-ecommerce-component>
+            <product-detail-images-ecommerce-component  ref="productDetailImages" ></product-detail-images-ecommerce-component>
 
             <!-- Product details and options -->
             <product-detail-description-ecommerce-component ref="productDetailDescription"
