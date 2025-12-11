@@ -1,0 +1,82 @@
+name: Laravel CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: mbstring, xml, ctype, json, bcmath, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Copy .env
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Create SQLite Database
+        run: touch database/database.sqlite
+
+      - name: Run PHPUnit Tests
+        run: vendor/bin/phpunit --testdox --stop-on-failure
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "Tests completed" >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    name: Deploy to Production
+    needs: tests
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy Laravel Project via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd ~/public_html/ecommerce-iravic
+            sudo git pull origin main
+            sudo composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            sudo php artisan package:discover --ansi
+            sudo php artisan config:clear
+            sudo php artisan cache:clear
+            sudo php artisan route:clear
+            sudo php artisan view:clear
+            sudo php artisan migrate --force
+            sudo php artisan optimize
