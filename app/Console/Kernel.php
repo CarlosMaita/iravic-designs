@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\PopulateProductSlugs::class,
         \App\Console\Commands\UpdateExchangeRate::class,
         \App\Console\Commands\MakeWebp::class,
+        \App\Console\Commands\SendReviewRequestEmails::class,
     ];
 
     /**
@@ -31,6 +32,11 @@ class Kernel extends ConsoleKernel
                  ->hourly()
                  ->withoutOverlapping()
                  ->runInBackground();
+        
+        // Send review request emails daily
+        $schedule->command('notifications:send-review-requests')
+                 ->daily()
+                 ->at('10:00');
     }
 
     /**

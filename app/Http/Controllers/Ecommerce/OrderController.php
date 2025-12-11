@@ -109,6 +109,9 @@ class OrderController extends Controller
 
             DB::commit();
 
+            // Send notifications
+            app(\App\Services\NotificationService::class)->sendOrderCreatedNotification($order);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Orden creada exitosamente.',
@@ -228,6 +231,9 @@ class OrderController extends Controller
                 'mobile_payment_date' => $request->mobile_payment_date ? Carbon::parse($request->mobile_payment_date) : null,
                 'comment' => $request->comment,
             ]);
+
+            // Send notification to admin
+            app(\App\Services\NotificationService::class)->sendPaymentSubmittedNotification($payment);
 
             return response()->json([
                 'success' => true,

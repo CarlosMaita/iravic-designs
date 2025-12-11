@@ -69,6 +69,12 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::post('/api/favorites/toggle', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'toggle'])->name('api.favorites.toggle');
     Route::post('/api/favorites', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'store'])->name('api.favorites.store');
     Route::delete('/api/favorites', [\App\Http\Controllers\Ecommerce\FavoriteController::class, 'destroy'])->name('api.favorites.destroy');
+    
+    # Notification Routes
+    Route::get('/api/notifications', [\App\Http\Controllers\Ecommerce\NotificationController::class, 'index'])->name('api.notifications.index');
+    Route::get('/api/notifications/unread-count', [\App\Http\Controllers\Ecommerce\NotificationController::class, 'unreadCount'])->name('api.notifications.unread-count');
+    Route::post('/api/notifications/{id}/read', [\App\Http\Controllers\Ecommerce\NotificationController::class, 'markAsRead'])->name('api.notifications.mark-read');
+    Route::post('/api/notifications/read-all', [\App\Http\Controllers\Ecommerce\NotificationController::class, 'markAllAsRead'])->name('api.notifications.mark-all-read');
 });
 
 # Order Creation Routes (public API for cart)

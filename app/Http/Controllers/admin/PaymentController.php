@@ -92,6 +92,9 @@ class PaymentController extends Controller
     {
 
         if ($payment->verify()) {
+            // Send notification to customer
+            app(\App\Services\NotificationService::class)->sendPaymentConfirmedNotification($payment);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Pago verificado exitosamente.',
