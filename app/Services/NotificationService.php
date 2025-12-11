@@ -57,7 +57,9 @@ class NotificationService
 
         // Send email to admin
         $adminEmail = Config::getAdminNotificationEmail();
-        Mail::to($adminEmail)->send(new AdminNewOrderNotification($order));
+        if (!empty($adminEmail) && filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
+            Mail::to($adminEmail)->send(new AdminNewOrderNotification($order));
+        }
     }
 
     /**
@@ -78,7 +80,9 @@ class NotificationService
 
         // Send email to admin
         $adminEmail = Config::getAdminNotificationEmail();
-        Mail::to($adminEmail)->send(new AdminPaymentReceivedNotification($payment));
+        if (!empty($adminEmail) && filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
+            Mail::to($adminEmail)->send(new AdminPaymentReceivedNotification($payment));
+        }
     }
 
     /**

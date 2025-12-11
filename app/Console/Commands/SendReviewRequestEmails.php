@@ -44,9 +44,10 @@ class SendReviewRequestEmails extends Command
         $count = 0;
         foreach ($orders as $order) {
             // Check if review request was already sent
+            $expectedUrl = route('customer.orders.show', $order->id);
             $alreadySent = $order->customer->notifications()
                 ->where('type', \App\Models\Notification::TYPE_REVIEW_REQUEST)
-                ->where('action_url', 'like', '%/e/ordenes/' . $order->id)
+                ->where('action_url', $expectedUrl)
                 ->exists();
 
             if (!$alreadySent) {
