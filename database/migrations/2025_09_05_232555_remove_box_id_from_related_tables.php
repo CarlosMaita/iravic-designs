@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class RemoveBoxIdFromRelatedTables extends Migration
@@ -13,6 +14,11 @@ class RemoveBoxIdFromRelatedTables extends Migration
      */
     public function up()
     {
+        // Skip for SQLite (used in testing) as it doesn't support dropping foreign keys
+        if (DB::getDriverName() === 'sqlite') {
+            return;
+        }
+        
         // Remove box_id foreign key constraints and columns from orders table
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['box_id']);
@@ -51,6 +57,11 @@ class RemoveBoxIdFromRelatedTables extends Migration
      */
     public function down()
     {
+        // Skip for SQLite (used in testing)
+        if (DB::getDriverName() === 'sqlite') {
+            return;
+        }
+        
         // Add back box_id columns and foreign key constraints
         Schema::table('orders', function (Blueprint $table) {
             $table->unsignedBigInteger('box_id')->nullable();

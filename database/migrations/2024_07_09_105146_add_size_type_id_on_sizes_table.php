@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddSizeTypeIdOnSizesTable extends Migration
@@ -14,8 +15,12 @@ class AddSizeTypeIdOnSizesTable extends Migration
     public function up()
     {
         Schema::table('sizes', function (Blueprint $table) {
-            $table->foreignId('type_size_id')->nullable()->constrained('type_sizes')
-                ->onUpdate('cascade');
+            if (DB::getDriverName() === 'sqlite') {
+                $table->unsignedBigInteger('type_size_id')->nullable();
+            } else {
+                $table->foreignId('type_size_id')->nullable()->constrained('type_sizes')
+                    ->onUpdate('cascade');
+            }
         });
     }
 
@@ -27,7 +32,10 @@ class AddSizeTypeIdOnSizesTable extends Migration
     public function down()
     {
         Schema::table('sizes', function (Blueprint $table) {
-            $table->dropForeign(['type_size_id']);
+            // Skip for SQLite (used in testing) as it doesn't support dropping foreign keys
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['type_size_id']);
+            }
             $table->dropColumn('type_size_id');
         });
     }
