@@ -55,10 +55,6 @@
 
         <!-- Button group -->
         <div class="d-flex align-items-center">
-          <div class="me-3 d-flex align-items-center text-muted text-uppercase small">
-            <i class="ci-dollar-sign me-2"></i>
-            <span>Precios en USD</span>
-          </div>
             <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
           <button  type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar" >
             <i class="ci-search animate-target"></i>
