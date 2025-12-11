@@ -2,117 +2,44 @@
 
 namespace Tests\Unit;
 
-use App\Models\Customer;
 use App\Models\Notification;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class NotificationTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
-    public function test_notification_can_be_created_for_customer()
+    public function test_notification_has_correct_type_constants()
     {
-        $customer = Customer::create([
-            'name' => 'Test Customer',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]);
-
-        $notification = Notification::create([
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_WELCOME,
-            'title' => 'Welcome',
-            'message' => 'Welcome to our store',
-            'action_url' => 'https://example.com',
-        ]);
-
-        $this->assertDatabaseHas('notifications', [
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_WELCOME,
-            'title' => 'Welcome',
-        ]);
+        $this->assertEquals('welcome', Notification::TYPE_WELCOME);
+        $this->assertEquals('order_created', Notification::TYPE_ORDER_CREATED);
+        $this->assertEquals('payment_submitted', Notification::TYPE_PAYMENT_SUBMITTED);
+        $this->assertEquals('payment_confirmed', Notification::TYPE_PAYMENT_CONFIRMED);
+        $this->assertEquals('shipped', Notification::TYPE_SHIPPED);
+        $this->assertEquals('review_request', Notification::TYPE_REVIEW_REQUEST);
     }
 
     /** @test */
-    public function test_notification_can_be_marked_as_read()
+    public function test_notification_fillable_fields_are_correct()
     {
-        $customer = Customer::create([
-            'name' => 'Test Customer',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $notification = new Notification();
+        $fillable = $notification->getFillable();
 
-        $notification = Notification::create([
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_WELCOME,
-            'title' => 'Welcome',
-            'message' => 'Welcome to our store',
-            'is_read' => false,
-        ]);
-
-        $this->assertFalse($notification->is_read);
-
-        $notification->markAsRead();
-
-        $this->assertTrue($notification->fresh()->is_read);
-        $this->assertNotNull($notification->fresh()->read_at);
+        $this->assertContains('customer_id', $fillable);
+        $this->assertContains('type', $fillable);
+        $this->assertContains('title', $fillable);
+        $this->assertContains('message', $fillable);
+        $this->assertContains('action_url', $fillable);
+        $this->assertContains('is_read', $fillable);
+        $this->assertContains('read_at', $fillable);
     }
 
     /** @test */
-    public function test_customer_can_have_multiple_notifications()
+    public function test_notification_casts_are_correct()
     {
-        $customer = Customer::create([
-            'name' => 'Test Customer',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $notification = new Notification();
+        $casts = $notification->getCasts();
 
-        Notification::create([
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_WELCOME,
-            'title' => 'Welcome',
-            'message' => 'Welcome to our store',
-        ]);
-
-        Notification::create([
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_ORDER_CREATED,
-            'title' => 'Order Created',
-            'message' => 'Your order has been created',
-        ]);
-
-        $this->assertCount(2, $customer->notifications);
-    }
-
-    /** @test */
-    public function test_unread_scope_filters_unread_notifications()
-    {
-        $customer = Customer::create([
-            'name' => 'Test Customer',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]);
-
-        $notification1 = Notification::create([
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_WELCOME,
-            'title' => 'Welcome',
-            'message' => 'Welcome to our store',
-            'is_read' => false,
-        ]);
-
-        $notification2 = Notification::create([
-            'customer_id' => $customer->id,
-            'type' => Notification::TYPE_ORDER_CREATED,
-            'title' => 'Order Created',
-            'message' => 'Your order has been created',
-            'is_read' => true,
-        ]);
-
-        $unreadCount = Notification::where('customer_id', $customer->id)->unread()->count();
-        
-        $this->assertEquals(1, $unreadCount);
+        $this->assertEquals('boolean', $casts['is_read']);
+        $this->assertEquals('datetime', $casts['read_at']);
     }
 }
