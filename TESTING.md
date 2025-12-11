@@ -16,7 +16,11 @@ This document explains how to run tests for the E-commerce Iravic application.
 composer install
 ```
 
-### 2. Setup Environment
+### 2. Setup Environment (Optional)
+
+The tests are configured to run with SQLite in-memory database and a test APP_KEY is already set in `phpunit.xml`. You can run tests immediately after installing dependencies.
+
+If you want to set up a local .env file for other purposes:
 
 ```bash
 # Copy environment file
@@ -24,9 +28,6 @@ cp .env.example .env
 
 # Generate application key
 php artisan key:generate
-
-# Create SQLite database for testing (optional, tests use in-memory DB)
-touch database/database.sqlite
 ```
 
 ### 3. Run All Tests
@@ -81,8 +82,11 @@ Tests are configured in `phpunit.xml`:
 
 - Uses SQLite in-memory database (`:memory:`)
 - Sets `APP_ENV=testing`
+- Includes a test `APP_KEY` for encryption (no need to generate one)
 - Disables unnecessary services for faster testing
 - Clears caches between tests
+
+**Note**: The `phpunit.xml` file includes a pre-configured APP_KEY for testing purposes. This is safe for testing and allows tests to run without requiring a local .env file.
 
 ## CI/CD Integration
 
