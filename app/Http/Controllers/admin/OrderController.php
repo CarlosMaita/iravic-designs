@@ -112,7 +112,13 @@ class OrderController extends Controller
             $updateData['exchange_rate'] = $request->exchange_rate;
         }
 
+        $oldStatus = $order->status;
         $order->update($updateData);
+
+        // Send shipping notification if status changed to 'enviada'
+        if ($oldStatus !== Order::STATUS_SHIPPED && $request->status === Order::STATUS_SHIPPED) {
+            app(\App\Services\NotificationService::class)->sendShippingNotification($order);
+        }
 
         return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'Orden actualizada exitosamente.');

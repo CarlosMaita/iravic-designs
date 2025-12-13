@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class RemoveZonesModule extends Migration
@@ -13,11 +14,14 @@ class RemoveZonesModule extends Migration
      */
     public function up()
     {
-        // First, remove the foreign key constraint from customers table
-        Schema::table('customers', function (Blueprint $table) {
-            $table->dropForeign(['zone_id']);
-            $table->dropColumn('zone_id');
-        });
+        // Skip for SQLite (used in testing) as it doesn't support dropping foreign keys
+        if (DB::getDriverName() !== 'sqlite') {
+            // First, remove the foreign key constraint from customers table
+            Schema::table('customers', function (Blueprint $table) {
+                $table->dropForeign(['zone_id']);
+                $table->dropColumn('zone_id');
+            });
+        }
 
         // Then drop the zones table
         Schema::dropIfExists('zones');
@@ -42,13 +46,16 @@ class RemoveZonesModule extends Migration
             $table->softDeletes();
         });
 
-        // Re-add zone_id column to customers table
-        Schema::table('customers', function (Blueprint $table) {
-            $table->unsignedBigInteger('zone_id')->nullable();
-            $table->foreign('zone_id')
-                ->references('id')
-                ->on('zones')
-                ->onDelete('cascade');
-        });
+        // Skip for SQLite (used in testing) as it doesn't support foreign keys in this context
+        if (DB::getDriverName() !== 'sqlite') {
+            // Re-add zone_id column to customers table
+            Schema::table('customers', function (Blueprint $table) {
+                $table->unsignedBigInteger('zone_id')->nullable();
+                $table->foreign('zone_id')
+                    ->references('id')
+                    ->on('zones')
+                    ->onDelete('cascade');
+            });
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class RemoveZoneConstraintFromCustomersTable extends Migration
@@ -13,6 +14,11 @@ class RemoveZoneConstraintFromCustomersTable extends Migration
      */
     public function up()
     {
+        // Skip for SQLite (used in testing) as it doesn't support dropping foreign keys
+        if (DB::getDriverName() === 'sqlite') {
+            return;
+        }
+        
         // Check if zone_id column exists before trying to drop foreign key and column
         if (Schema::hasColumn('customers', 'zone_id')) {
             Schema::table('customers', function (Blueprint $table) {

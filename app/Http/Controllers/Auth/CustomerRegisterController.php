@@ -64,12 +64,17 @@ class CustomerRegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return Customer::create([
+        $customer = Customer::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'qualification' => 'Bueno', // Default qualification
         ]);
+
+        // Send welcome notification
+        app(\App\Services\NotificationService::class)->sendWelcomeNotification($customer);
+
+        return $customer;
     }
 
     /**

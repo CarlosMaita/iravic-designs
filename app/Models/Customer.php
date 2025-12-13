@@ -67,6 +67,11 @@ class Customer extends Authenticatable
         return $this->hasMany(\App\Models\CustomerFavorite::class);
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     // Attributes
     public function getWhatsappNumberAttribute()
     {

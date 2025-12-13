@@ -47,7 +47,17 @@ class Config extends Model
             "discount_password" => '123456',
             "usd_to_ves_rate" => '36.50',
             "usd_to_ves_rate_last_update" => '',
-            "currency_module_enabled" => '1'
+            "currency_module_enabled" => '1',
+            "admin_notification_email" => env('MAIL_FROM_ADDRESS', 'admin@example.com')
         ][$key] ?? "";
+    }
+
+    /**
+     * Get admin notification email.
+     */
+    public static function getAdminNotificationEmail()
+    {
+        $config = static::getConfig('admin_notification_email');
+        return $config->value ?: env('MAIL_FROM_ADDRESS', 'admin@example.com');
     }
 }
