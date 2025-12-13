@@ -60,9 +60,8 @@ class ProductController extends Controller
                     ->addColumn('image', function($row){
                         $firstImage = $row->images->first();
                         if ($firstImage && !empty($firstImage->url)) {
-                            $imageUrl = e($firstImage->url);
                             $imageName = e($row->name);
-                            return '<img src="' . asset($imageUrl) . '" alt="' . $imageName . '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
+                            return '<img src="' . e($firstImage->url_img) . '" alt="' . $imageName . '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
                         }
                         return '<div style="width: 50px; height: 50px; background-color: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image text-muted"></i></div>';
                     })
