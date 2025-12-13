@@ -255,6 +255,7 @@
                 },
                 pageLength: 10,
                 columns: [
+                    {data: 'image', name: 'image', orderable: false, searchable: false},
                     {data: 'name'},
                     {data: 'code'},
                     {data: 'gender'},

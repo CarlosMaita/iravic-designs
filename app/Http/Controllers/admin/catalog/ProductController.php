@@ -54,9 +54,16 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             $criteria = $request->only('brand', 'category', 'color', 'gender', 'size', 'price_from', 'price_to');
-            $products = $this->productRepository->onlyPrincipalsQuery($criteria);
+            $products = $this->productRepository->onlyPrincipalsQuery($criteria)->with('images');
             return Datatables::of($products)
                     ->addIndexColumn()
+                    ->addColumn('image', function($row){
+                        $firstImage = $row->images->first();
+                        if ($firstImage) {
+                            return '<img src="' . asset($firstImage->url) . '" alt="' . e($row->name) . '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">';
+                        }
+                        return '<div style="width: 50px; height: 50px; background-color: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image text-muted"></i></div>';
+                    })
                     ->editColumn('name', function($row){
                         $badge = '';
                         if (property_exists($row, 'is_on_offer') ? $row->is_on_offer : ($row->specialOffers && $row->specialOffers->count() > 0)) {
@@ -67,13 +74,16 @@ class ProductController extends Controller
                     ->addColumn('action', function($row){
                         $btn = '<div style="display:flex">';
                         $btn .= '<button data-id="' . $row->id . '" class="btn btn-sm btn-info btn-action-icon btn-show-stock" title="Ver Stock" data-toggle="tooltip"><i class="fas fa-cubes"></i></button>';
+                        if ($row->slug) {
+                            $btn .= '<a href="'. route('ecommerce.product.detail', $row->slug) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver en Ecommerce" data-toggle="tooltip" target="_blank"><i class="fas fa-external-link-alt"></i></a>';
+                        }
                         $btn .= '<a href="'. route('productos.show', $row->id) . '" class="btn btn-sm btn-primary btn-action-icon" title="Ver" data-toggle="tooltip"><i class="fas fa-eye"></i></a>';
                         $btn .= '<a href="'. route('productos.edit', $row->id) . '" class="btn btn-sm btn-success btn-action-icon" title="Editar" data-toggle="tooltip"><i class="fas fa-edit"></i></a>';
                         $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger  btn-action-icon delete-resource" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                         $btn .= '</div>';
                         return $btn;
                     })
-                    ->rawColumns(['action', 'name'])
+                    ->rawColumns(['action', 'name', 'image'])
                     ->toJson();
         }
 

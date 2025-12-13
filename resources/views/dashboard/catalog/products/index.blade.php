@@ -47,6 +47,7 @@
                                         <table id="datatable_products" class="table" width="100%">
                                         <thead>
                                             <tr>
+                                                <th scope="col">Imagen</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.general.name') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.products.code') }}</th>
                                                 <th scope="col">{{ __('dashboard.form.fields.products.gender') }}</th>
