@@ -1,133 +1,64 @@
-@extends('auth.cartzilla-base')
+@extends('layouts.minimalist-auth')
 
-@push('css')
-  <style>
-    .login-container {
-      max-width: 440px;
-      width: 100%;
-    }
-    .login-card {
-      border: none;
-      box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
-      border-radius: 1rem;
-    }
-    .login-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 2rem;
-      border-radius: 1rem 1rem 0 0;
-      text-align: center;
-    }
-    .login-body {
-      padding: 2rem;
-    }
-    .form-control {
-      border-radius: 0.5rem;
-      border: 1px solid #e1e5e9;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-    }
-    .form-control:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-    }
-    .btn-login {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.75rem 2rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    .btn-login:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0.5rem 1rem rgba(102, 126, 234, 0.3);
-    }
-    .input-group-text {
-      background: transparent;
-      border: 1px solid #e1e5e9;
-      border-right: none;
-      border-radius: 0.5rem 0 0 0.5rem;
-      color: #6c757d;
-    }
-    .input-group .form-control {
-      border-left: none;
-      border-radius: 0 0.5rem 0.5rem 0;
-    }
-    .form-check-input:checked {
-      background-color: #667eea;
-      border-color: #667eea;
-    }
-  </style>
-@endpush
+@section('title', __('auth.login'))
 
 @section('content')
-    <div class="login-container">
-      <!-- Login Card -->
-      <div class="card login-card">
-        <div class="login-header">
-          <h1 class="h4 mb-1">{{ __('auth.login') }}</h1>
-          <p class="mb-0 opacity-75">Panel de Administración</p>
-        </div>
-        <div class="login-body">
-          <form method="POST" action="{{ route('login') }}">
-            @csrf
-            
-            <!-- Error Messages -->
-            @if(Session::has('message'))
-              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ Session::get('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            @endif
+  <!-- Brand -->
+  <div class="text-center mb-4">
+    <h1 class="h4 fw-bold mb-1">{{ config('app.name') }}</h1>
+    <p class="text-muted mb-0">Panel de Administración</p>
+  </div>
 
-            <!-- Email Field -->
-            <div class="mb-3">
-              <label for="email" class="form-label">{{ __('E-Mail Address') }}</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="ci-user"></i>
-                </span>
-                <input class="form-control" type="email" id="email" placeholder="{{ __('E-Mail Address') }}" name="email" value="{{ old('email') }}" required autofocus>
-              </div>
-            </div>
+  <!-- Heading -->
+  <h2 class="h5 text-center mb-4">{{ __('auth.login') }}</h2>
 
-            <!-- Password Field -->
-            <div class="mb-3">
-              <label for="password" class="form-label">{{ __('Password') }}</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="ci-locked"></i>
-                </span>
-                <input class="form-control" type="password" id="password" placeholder="{{ __('Password') }}" name="password" required>
-              </div>
-            </div>
-
-            <!-- Remember Me Checkbox -->
-            <div class="form-check mb-4">
-              <input class="form-check-input" type="checkbox" value="1" id="remember_me" name="remember_me">
-              <label class="form-check-label" for="remember_me">
-                {{ __('Remember Me') }}
-              </label>
-            </div>
-
-            <!-- Login Button -->
-            <button class="btn btn-primary btn-login w-100 mb-3" type="submit">
-              <i class="ci-sign-in me-2"></i>{{ __('Login') }}
-            </button>
-
-            <!-- Forgot Password Link -->
-            <div class="text-center">
-              <a href="{{ route('password.request') }}" class="text-decoration-none">
-                {{ __('Forgot Your Password?') }}
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
+  <!-- Error Messages -->
+  @if(Session::has('message'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ Session::get('message') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+  @endif
+
+  <!-- Form -->
+  <form method="POST" action="{{ route('login') }}">
+    @csrf
+
+    <!-- Email Field -->
+    <div class="mb-3">
+      <label for="email" class="form-label">{{ __('E-Mail Address') }}</label>
+      <input class="form-control" type="email" id="email" placeholder="{{ __('E-Mail Address') }}" name="email" value="{{ old('email') }}" required autofocus>
+    </div>
+
+    <!-- Password Field -->
+    <div class="mb-3">
+      <label for="password" class="form-label">{{ __('Password') }}</label>
+      <input class="form-control" type="password" id="password" placeholder="{{ __('Password') }}" name="password" required>
+    </div>
+
+    <!-- Remember Me Checkbox -->
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" value="1" id="remember_me" name="remember_me">
+      <label class="form-check-label" for="remember_me">
+        {{ __('Remember Me') }}
+      </label>
+    </div>
+
+    <!-- Login Button -->
+    <button class="btn btn-primary w-100 mb-3" type="submit">
+      {{ __('Login') }}
+    </button>
+
+    <!-- Forgot Password Link -->
+    <div class="text-center">
+      <a href="{{ route('password.request') }}" class="text-decoration-none small">
+        {{ __('Forgot Your Password?') }}
+      </a>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <p class="text-center small text-muted mt-4 mb-0">
+    &copy; {{ date('Y') }} {{ config('app.name') }}
+  </p>
 @endsection
-
-@push('js')
-
-@endpush
