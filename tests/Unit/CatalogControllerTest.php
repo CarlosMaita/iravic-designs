@@ -28,14 +28,18 @@ class CatalogControllerTest extends TestCase
         $this->assertIsArray($genders);
         
         // Assert it has sequential keys (important for JSON encoding as JS array)
-        $this->assertEquals(array_keys($genders), range(0, count($genders) - 1));
+        // Handle empty array case: range(0, -1) returns [0, -1] instead of []
+        $expectedKeys = count($genders) > 0 ? range(0, count($genders) - 1) : [];
+        $this->assertEquals($expectedKeys, array_keys($genders));
         
         // Assert JSON encoding produces an array, not an object
         $jsonEncoded = json_encode($genders);
         $this->assertStringStartsWith('[', $jsonEncoded);
         $this->assertStringEndsWith(']', $jsonEncoded);
         
-        // Verify it doesn't encode as an object
-        $this->assertStringNotContainsString('{', $jsonEncoded);
+        // Verify it doesn't encode as an object (empty array is still [] not {})
+        if (count($genders) > 0) {
+            $this->assertStringNotContainsString('{', $jsonEncoded);
+        }
     }
 }

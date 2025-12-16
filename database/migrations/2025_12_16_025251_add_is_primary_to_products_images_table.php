@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSuggestedCollectionToVisitsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSuggestedCollectionToVisitsTable extends Migration
      */
     public function up()
     {
-        Schema::table('visits', function (Blueprint $table) {
-            $table->double('suggested_collection')->nullable();
+        Schema::table('products_images', function (Blueprint $table) {
+            $table->boolean('is_primary')->default(false)->after('combination_index');
         });
     }
 
@@ -25,8 +25,8 @@ class AddSuggestedCollectionToVisitsTable extends Migration
      */
     public function down()
     {
-        Schema::table('visits', function (Blueprint $table) {
-            $table->dropColumn('suggested_collection');
+        Schema::table('products_images', function (Blueprint $table) {
+            $table->dropColumn('is_primary');
         });
     }
-}
+};

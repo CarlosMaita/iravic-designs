@@ -680,6 +680,8 @@
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Foto</th>
+                                                                <th scope="col">Principal</th>
+                                                                <th scope="col">Acciones</th>
                                                             </tr>
                                                         </thead>
                                                     </table>

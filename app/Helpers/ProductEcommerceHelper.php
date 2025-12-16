@@ -75,6 +75,7 @@ class ProductEcommerceHelper
     private static function getImagesCombination($combination_index, $images): array
     {
         $images = $images->where('combination_index', $combination_index)
+                      ->sortByDesc('is_primary') // Primary image first
                       ->map(fn($image) =>  $image->url_img)
                       ->toArray();
 
@@ -83,7 +84,8 @@ class ProductEcommerceHelper
 
      private static function getImagesProduct($images): array
     {
-        $images = $images->map(fn($image) =>  $image->url_img)
+        $images = $images->sortByDesc('is_primary') // Primary image first
+                    ->map(fn($image) =>  $image->url_img)
                     ->toArray();
 
         return [...$images];
@@ -91,6 +93,14 @@ class ProductEcommerceHelper
 
     private static function getUrlThumbnailProduct($images)
     {
+        // First try to get the primary image
+        $primaryImage = $images->where('is_primary', true)->first();
+        
+        if ($primaryImage) {
+            return $primaryImage->url_img;
+        }
+        
+        // Fallback to the first image
         $image = $images->first();
         return $image?->url_img;
     }

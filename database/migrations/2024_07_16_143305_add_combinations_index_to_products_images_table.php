@@ -27,9 +27,14 @@ class AddCombinationsIndexToProductsImagesTable extends Migration
      */
     public function down()
     {
+        // SQLite doesn't support multiple dropColumn in a single call
         Schema::table('products_images', function (Blueprint $table) {
             $table->dropColumn('combination_index');
+        });
+        Schema::table('products_images', function (Blueprint $table) {
             $table->dropColumn('temp_code');
+        });
+        Schema::table('products_images', function (Blueprint $table) {
             $table->dropColumn('url_original');
         });
     }

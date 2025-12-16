@@ -27,9 +27,14 @@ class AddPasswordToCustomersTable extends Migration
      */
     public function down()
     {
+        // SQLite doesn't support multiple dropColumn in a single call
         Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn('password');
+        });
+        Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn('email_verified_at');
+        });
+        Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn('remember_token');
         });
     }

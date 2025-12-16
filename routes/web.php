@@ -120,6 +120,7 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         Route::resource('stock-transferencias', 'ProductStockTransferController')->except('create');
         Route::resource('producto-imagen', 'ProductImageController')->only('index' , 'store', 'destroy');
         Route::post('producto-imagen-dropzone', 'ProductImageController@destroyWithRequest')->name('producto-imagen.dropzone.destroy');
+        Route::post('producto-imagen/set-primary', 'ProductImageController@setPrimary')->name('producto-imagen.set-primary');
         Route::get('download', 'ProductController@download')->name('catalog.download');
         Route::get('inventario/download', 'InventoryController@download')->name("catalog.inventory.download");
         Route::post('inventario/upload', 'InventoryController@upload')->name("catalog.inventory.upload");

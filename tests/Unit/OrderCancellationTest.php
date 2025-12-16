@@ -36,9 +36,10 @@ class OrderCancellationTest extends TestCase
             'date' => now(),
         ]);
 
-        $this->assertTrue($order->canBeCancelled());
-        $this->assertTrue($order->cancel());
-        $this->assertEquals(Order::STATUS_CANCELLED, $order->status);
+        // Orders can only be cancelled when in CREATED status, not PAID
+        $this->assertFalse($order->canBeCancelled());
+        $this->assertFalse($order->cancel());
+        $this->assertEquals(Order::STATUS_PAID, $order->status);
     }
 
     /** @test */

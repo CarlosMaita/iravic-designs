@@ -15,7 +15,7 @@ class AddImagenAndBgColorToCategoriesTable extends Migration
     {
         Schema::table('categories', function (Blueprint $table) {
             $table->string('image_banner')->nullable()->after('name');
-            $table->string('bg_banner¡')->default('#ffffff')->after('image_banner');
+            $table->string('bg_banner')->default('#ffffff')->after('image_banner');
         });
     }
 
@@ -26,8 +26,11 @@ class AddImagenAndBgColorToCategoriesTable extends Migration
      */
     public function down()
     {
+        // SQLite doesn't support multiple dropColumn in a single call
         Schema::table('categories', function (Blueprint $table) {
             $table->dropColumn('image_banner');
+        });
+        Schema::table('categories', function (Blueprint $table) {
             $table->dropColumn('bg_banner');
         });
     }
