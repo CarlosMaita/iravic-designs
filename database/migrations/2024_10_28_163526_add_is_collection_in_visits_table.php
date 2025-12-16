@@ -26,8 +26,11 @@ class AddIsCollectionInVisitsTable extends Migration
      */
     public function down()
     {
+        // SQLite doesn't support multiple dropColumn in a single call
         Schema::table('visits', function (Blueprint $table) {
             $table->dropColumn('is_collection');
+        });
+        Schema::table('visits', function (Blueprint $table) {
             $table->dropColumn('is_paid');
         });
     }

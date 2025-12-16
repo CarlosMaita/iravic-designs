@@ -26,8 +26,11 @@ class AddPrice2Price3OnProductsTable extends Migration
      */
     public function down()
     {
+        // SQLite doesn't support multiple dropColumn in a single call
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('price_card_credit');
+        });
+        Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('price_credit');
         });
     }
