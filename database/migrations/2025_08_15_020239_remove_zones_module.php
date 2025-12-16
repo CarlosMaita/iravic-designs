@@ -14,17 +14,24 @@ class RemoveZonesModule extends Migration
      */
     public function up()
     {
+        // Skip entirely - zone_id column is no longer created in initial migrations
+        // This migration is kept for historical reference only
+        
+        // Drop the zones table (in case it was created in older migrations)
+        Schema::dropIfExists('zones');
+        
+        // Original code below (now disabled):
         // Skip for SQLite (used in testing) as it doesn't support dropping foreign keys
-        if (DB::getDriverName() !== 'sqlite') {
-            // First, remove the foreign key constraint from customers table
-            Schema::table('customers', function (Blueprint $table) {
-                $table->dropForeign(['zone_id']);
-                $table->dropColumn('zone_id');
-            });
-        }
+        // if (DB::getDriverName() !== 'sqlite') {
+        //     // First, remove the foreign key constraint from customers table
+        //     Schema::table('customers', function (Blueprint $table) {
+        //         $table->dropForeign(['zone_id']);
+        //         $table->dropColumn('zone_id');
+        //     });
+        // }
 
         // Then drop the zones table
-        Schema::dropIfExists('zones');
+        // Schema::dropIfExists('zones');
     }
 
     /**

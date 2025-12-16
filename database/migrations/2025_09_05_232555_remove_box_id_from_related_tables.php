@@ -14,40 +14,45 @@ class RemoveBoxIdFromRelatedTables extends Migration
      */
     public function up()
     {
+        // Skip entirely - box_id columns are no longer created in initial migrations
+        // This migration is kept for historical reference only
+        return;
+        
+        // Original code below (now disabled):
         // Skip for SQLite (used in testing) as it doesn't support dropping foreign keys
-        if (DB::getDriverName() === 'sqlite') {
-            return;
-        }
+        // if (DB::getDriverName() === 'sqlite') {
+        //     return;
+        // }
         
         // Remove box_id foreign key constraints and columns from orders table
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['box_id']);
-            $table->dropColumn('box_id');
-        });
+        // Schema::table('orders', function (Blueprint $table) {
+        //     $table->dropForeign(['box_id']);
+        //     $table->dropColumn('box_id');
+        // });
 
         // Remove box_id foreign key constraints and columns from refunds table
-        Schema::table('refunds', function (Blueprint $table) {
-            $table->dropForeign(['box_id']);
-            $table->dropColumn('box_id');
-        });
+        // Schema::table('refunds', function (Blueprint $table) {
+        //     $table->dropForeign(['box_id']);
+        //     $table->dropColumn('box_id');
+        // });
 
         // Remove box_id foreign key constraints and columns from payments table
-        Schema::table('payments', function (Blueprint $table) {
-            $table->dropForeign(['box_id']);
-            $table->dropColumn('box_id');
-        });
+        // Schema::table('payments', function (Blueprint $table) {
+        //     $table->dropForeign(['box_id']);
+        //     $table->dropColumn('box_id');
+        // });
 
         // Remove box_id foreign key constraints and columns from spendings table
-        Schema::table('spendings', function (Blueprint $table) {
-            $table->dropForeign(['box_id']);
-            $table->dropColumn('box_id');
-        });
+        // Schema::table('spendings', function (Blueprint $table) {
+        //     $table->dropForeign(['box_id']);
+        //     $table->dropColumn('box_id');
+        // });
 
         // Remove box_id foreign key constraints and columns from debts table
-        Schema::table('debts', function (Blueprint $table) {
-            $table->dropForeign(['box_id']);
-            $table->dropColumn('box_id');
-        });
+        // Schema::table('debts', function (Blueprint $table) {
+        //     $table->dropForeign(['box_id']);
+        //     $table->dropColumn('box_id');
+        // });
     }
 
     /**
