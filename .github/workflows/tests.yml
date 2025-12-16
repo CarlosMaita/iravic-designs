@@ -41,11 +41,21 @@ jobs:
       - name: Create SQLite Database
         run: touch database/database.sqlite
 
+      - name: Run Migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+
       - name: Run PHPUnit Tests
         run: vendor/bin/phpunit --testdox --stop-on-failure
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
+
+      - name: Output Laravel logs
+        if: failure()
+        run: cat storage/logs/laravel.log || true
 
       - name: Test Summary
         if: always()
