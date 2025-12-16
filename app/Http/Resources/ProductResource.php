@@ -73,22 +73,42 @@ class ProductResource extends JsonResource
 
      private static function getUrlThumbnailCombination($combination_index, $images)
     {
+        // First try to get the primary image for this combination
+        $primaryImage = $images->where('combination_index', $combination_index)
+                              ->where('is_primary', true)
+                              ->first();
+        
+        if ($primaryImage) {
+            return $primaryImage->url_img;
+        }
+        
+        // Fallback to the first image of the combination
         $image = $images->where('combination_index', $combination_index)->first();
         return $image?->url_img;
     }
 
     private static function getUrlThumbnailProduct($images)
     {
+        // First try to get the primary image
+        $primaryImage = $images->where('is_primary', true)->first();
+        
+        if ($primaryImage) {
+            return $primaryImage->url_img;
+        }
+        
+        // Fallback to the first image
         $image = $images->first();
         return $image?->url_img;
     }
 
     private static function getImagesCombination($combination_index, $images): array
     {
-        return $images->where('combination_index', $combination_index)->map(function ($image) {
-            return [
-                'url' => $image->url_img,
-            ];
-        })->toArray();
+        return $images->where('combination_index', $combination_index)
+            ->sortByDesc('is_primary') // Primary image first
+            ->map(function ($image) {
+                return [
+                    'url' => $image->url_img,
+                ];
+            })->toArray();
     }
 }

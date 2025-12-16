@@ -33,12 +33,17 @@ class ProductImageController extends Controller
             $images = isset($request->producto) ? $this->productoImageRepository->all($request->producto) : array();
             return DataTables::of($images)
                 ->addIndexColumn()
+                ->addColumn('is_primary', function($row){
+                    return $row->is_primary 
+                        ? '<span class="badge badge-success">Principal</span>' 
+                        : '<button data-id="'. $row->id . '" class="btn btn-sm btn-primary btn-action-icon set-primary-image" title="Establecer como principal" data-toggle="tooltip"><i class="fas fa-star"></i></button>';
+                })
                 ->addColumn('action', function($row){
                     $btn = '';
                     $btn .= '<button data-id="'. $row->id . '" class="btn btn-sm btn-danger btn-action-icon delete-image" title="Eliminar" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'is_primary'])
                 ->make(true);
         }
 
@@ -174,6 +179,49 @@ class ProductImageController extends Controller
         
     }
 
+    /**
+     * Set an image as primary
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setPrimary(Request $request)
+    {
+        try {
+            $imageId = $request->input('image_id');
+            
+            if (!$imageId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ID de imagen no proporcionado'
+                ]);
+            }
+
+            $productImage = ProductImage::find($imageId);
+            
+            if (!$productImage) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('dashboard.catalog.products.product_image.image_not_found')
+                ]);
+            }
+
+            // Set this image as primary (the model observer will unset others)
+            $productImage->is_primary = true;
+            $productImage->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Imagen establecida como principal'
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     
     
-}

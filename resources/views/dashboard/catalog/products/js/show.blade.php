@@ -17,6 +17,43 @@
         initDatatableHistory();
 
         /**
+         * Captura evento para establecer imagen como principal
+         */
+        DATATABLE_IMAGES.on('click', '.set-primary-image', function(e) {
+            e.preventDefault();
+            var image_id = $(this).data('id');
+
+            $.ajax({
+                url: "{{ route('producto-imagen.set-primary') }}",
+                type: 'POST',
+                data: {
+                    image_id: image_id,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        new Noty({
+                            text: response.message,
+                            type: 'success'
+                        }).show();
+                        DATATABLE_IMAGES.DataTable().ajax.reload();
+                    } else {
+                        new Noty({
+                            text: response.message || "{{ __('dashboard.general.operation_error') }}",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    new Noty({
+                        text: "{{ __('dashboard.general.operation_error') }}",
+                        type: 'error'
+                    }).show();
+                }
+            });
+        });
+
+        /**
          * Captura evento submit de formulario de transferencia de stock
          */
         form_transfer.on('submit', function(e) {
@@ -270,6 +307,18 @@
                             return (img);
                         }
                     },
+                    {
+                        data: 'is_primary',
+                        name: 'is_primary',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
         }

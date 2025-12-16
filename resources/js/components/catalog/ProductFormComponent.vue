@@ -126,7 +126,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">Foto</th>
-                                <th></th>
+                                <th scope="col">Principal</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                     </table>
@@ -213,6 +214,12 @@
                                 <div class="img-container" v-for="(image, index_image) in images.filter( image => image.combination_index == combination.combination_index)" :key="`imagen-${index_image}`">
                                     <span class="btn-img-remove" type="button" @click="removeImage($event, image.id)">
                                         <i class="fas fa-times"></i> 
+                                    </span>
+                                    <span v-if="image.is_primary" class="badge-primary-img">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span v-else class="btn-img-primary" type="button" @click="setPrimaryImage($event, image.id)" title="Establecer como principal">
+                                        <i class="far fa-star"></i> 
                                     </span>
                                     <img :src="image.url_img" class="img-thumbnail" :data-combination-id="`${image.combination_index}`">
                                 </div>
@@ -919,6 +926,42 @@
                
             },
 
+            setPrimaryImage(e, image_id) {
+                const vm = this;
+                let url = '/admin/catalogo/producto-imagen/set-primary';
+
+                axios({
+                    url: url,
+                    method: 'post',
+                    headers: { 
+                        "X-CSRF-TOKEN": document
+                            .querySelector('input[name="_token"]')
+                            .getAttribute("value"),
+                    },
+                    data: {
+                        image_id
+                    }
+                }).then(response => {
+                    if (response.data.success) {
+                        // Actualizar el estado de las imágenes
+                        vm.images = vm.images.map(img => ({
+                            ...img,
+                            is_primary: img.id === image_id
+                        }));
+                        
+                        new Noty({
+                            text: response.data.message,
+                            type: 'success'
+                        }).show();
+                    }
+                }).catch(error => {
+                    new Noty({
+                        text: 'Error al establecer imagen principal',
+                        type: 'error'
+                    }).show();
+                });
+            },
+
         }, 
         
     }
@@ -944,6 +987,38 @@
         position: absolute;
         top: 0px;
         right: 5px;
+        cursor: pointer;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        z-index: 10;
+    }
+    
+    .btn-img-primary{
+        position: absolute;
+        top: 0px;
+        left: 5px;
+        cursor: pointer;
+        background: rgba(255, 193, 7, 0.9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        z-index: 10;
+    }
+    
+    .badge-primary-img{
+        position: absolute;
+        top: 0px;
+        left: 5px;
+        background: rgba(40, 167, 69, 0.9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        z-index: 10;
     }
 
     .img-thumbnail{

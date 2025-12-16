@@ -16,7 +16,8 @@ class ProductImage extends Model
         'color_id' ,
         'combination_index',
         'temp_code',
-        'url_original'
+        'url_original',
+        'is_primary'
     ];
 
     public $appends = [
@@ -34,6 +35,16 @@ class ProductImage extends Model
         # Se elimina la imagen del disco (Storage) cuando se elimina su registro de la BD
         ProductImage::deleting(function ($model) {
             ImageService::delete($model->filedisk, $model->url);
+        });
+
+        # Ensure only one image is primary per product
+        ProductImage::saving(function ($model) {
+            if ($model->is_primary && $model->product_id) {
+                // Unset is_primary for all other images of the same product
+                ProductImage::where('product_id', $model->product_id)
+                    ->where('id', '!=', $model->id)
+                    ->update(['is_primary' => false]);
+            }
         });
     }
 
