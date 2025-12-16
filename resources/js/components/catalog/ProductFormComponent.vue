@@ -956,7 +956,7 @@
                     }
                 }).catch(error => {
                     new Noty({
-                        text: 'Error al establecer imagen principal',
+                        text: error.response?.data?.message || 'Error al establecer imagen principal',
                         type: 'error'
                     }).show();
                 });

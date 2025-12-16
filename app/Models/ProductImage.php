@@ -38,6 +38,8 @@ class ProductImage extends Model
         });
 
         # Ensure only one image is primary per product
+        # Note: This works for typical admin operations. For high-concurrency scenarios,
+        # consider adding a unique index or database-level constraint.
         ProductImage::saving(function ($model) {
             if ($model->is_primary && $model->product_id) {
                 // Unset is_primary for all other images of the same product
