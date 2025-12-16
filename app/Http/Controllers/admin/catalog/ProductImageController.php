@@ -216,9 +216,12 @@ class ProductImageController extends Controller
             ]);
 
         } catch (Exception $e) {
+            // Log the actual error for debugging
+            \Log::error('Error setting primary image: ' . $e->getMessage());
+            
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error al establecer la imagen principal'
             ]);
         }
     }

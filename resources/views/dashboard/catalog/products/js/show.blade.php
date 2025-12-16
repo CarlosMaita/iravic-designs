@@ -45,8 +45,15 @@
                     }
                 },
                 error: function (e) {
+                    var errorMessage = "{{ __('dashboard.general.operation_error') }}";
+                    
+                    // Try to get specific error message from server
+                    if (e.responseJSON && e.responseJSON.message) {
+                        errorMessage = e.responseJSON.message;
+                    }
+                    
                     new Noty({
-                        text: "{{ __('dashboard.general.operation_error') }}",
+                        text: errorMessage,
                         type: 'error'
                     }).show();
                 }
