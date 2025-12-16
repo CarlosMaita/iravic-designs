@@ -13,35 +13,34 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            // Remove unused fields according to requirements
-            
-            // Remove C.I. picture
-            $table->dropColumn('dni_picture');
-            
-            // Remove telephone field 
-            $table->dropColumn('telephone');
-            
-            // Remove financial information fields
-            $table->dropColumn('max_credit');
-            $table->dropColumn('receipt_picture');
-            $table->dropColumn('card_front');
-            $table->dropColumn('card_back');
-            $table->dropColumn('collection_day');
-            $table->dropColumn('collection_frequency');
-            $table->dropColumn('days_to_notify_debt');
-            
-            // Remove contact person information
-            $table->dropColumn('contact_name');
-            $table->dropColumn('contact_telephone');
-            $table->dropColumn('contact_dni');
-            
-            // Remove address and location information
-            $table->dropColumn('address');
-            $table->dropColumn('latitude');
-            $table->dropColumn('longitude');
-            $table->dropColumn('address_picture');
-        });
+        // SQLite doesn't support multiple dropColumn in a single call
+        // Split into separate calls
+        $columnsToRemove = [
+            'dni_picture',
+            'telephone',
+            'max_credit',
+            'receipt_picture',
+            'card_front',
+            'card_back',
+            'collection_day',
+            'collection_frequency',
+            'days_to_notify_debt',
+            'contact_name',
+            'contact_telephone',
+            'contact_dni',
+            'address',
+            'latitude',
+            'longitude',
+            'address_picture'
+        ];
+        
+        foreach ($columnsToRemove as $column) {
+            if (Schema::hasColumn('customers', $column)) {
+                Schema::table('customers', function (Blueprint $table) use ($column) {
+                    $table->dropColumn($column);
+                });
+            }
+        }
     }
 
     /**

@@ -13,9 +13,12 @@ class RemovePricesOnProductsTable extends Migration
      */
     public function up()
     {
-         Schema::table('products', function (Blueprint $table) {
-             $table->dropColumn('price_card_credit');
-             $table->dropColumn('price_credit');
+        // SQLite doesn't support multiple dropColumn in a single call
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('price_card_credit');
+        });
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('price_credit');
         });
     }
 
