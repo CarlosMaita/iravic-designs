@@ -16,9 +16,8 @@
 @section('content')
   <!-- Brand / Back home -->
   <div class="text-center mb-4">
-    <a href="{{ route('ecommerce.home') }}" class="d-inline-flex align-items-center gap-2 text-decoration-none text-dark">
-      <img src="{{ asset('img/logo-black.png') }}" alt="Iravic Designs" style="max-width: 40px; height: auto;">
-      <span class="fs-5 fw-semibold">Iravic</span>
+    <a href="{{ route('ecommerce.home') }}" class="d-inline-flex align-items-center text-decoration-none text-dark">
+      <h6 class="m-0 text-uppercase" style="font-family: Roboto, sans-serif; letter-spacing: 3px;">Iravic Designs</h6>
     </a>
   </div>
 
