@@ -145,7 +145,7 @@ class Order extends Model
 
     public function canBeCancelled()
     {
-        return in_array($this->status, [self::STATUS_CREATED, self::STATUS_PAID]);
+        return $this->status === self::STATUS_CREATED;
     }
 
     public function cancel()
