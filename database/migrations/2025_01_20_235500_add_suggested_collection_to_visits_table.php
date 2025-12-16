@@ -14,7 +14,7 @@ class AddSuggestedCollectionToVisitsTable extends Migration
     public function up()
     {
         Schema::table('visits', function (Blueprint $table) {
-            $table->double('suggested_collection')->nullable()->after('completed_date');
+            $table->double('suggested_collection')->nullable();
         });
     }
 
