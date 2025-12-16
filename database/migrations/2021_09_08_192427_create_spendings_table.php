@@ -15,7 +15,8 @@ class CreateSpendingsTable extends Migration
     {
         Schema::create('spendings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('box_id')->nullable();
+            // Note: box_id column removed as boxes module is deprecated
+            // $table->unsignedBigInteger('box_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->datetime('date');
             $table->string('amount')->default(0);
@@ -23,10 +24,11 @@ class CreateSpendingsTable extends Migration
             $table->text('picture')->nullable();
             $table->timestamps();
             
-            $table->foreign('box_id')
-                ->references('id')
-                ->on('boxes')
-                ->onDelete('cascade');
+            // Foreign key to boxes table removed as boxes module is deprecated
+            // $table->foreign('box_id')
+            //     ->references('id')
+            //     ->on('boxes')
+            //     ->onDelete('cascade');
             
             $table->foreign('user_id')
                 ->references('id')

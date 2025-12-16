@@ -15,7 +15,9 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('box_id')->nullable();
+            // Note: box_id column removed as boxes module is deprecated
+            // Keeping column definition commented for historical reference
+            // $table->unsignedBigInteger('box_id')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->datetime('date');
@@ -26,10 +28,11 @@ class CreateOrdersTable extends Migration
             $table->tinyInteger('payed_credit')->default(0)->nullable();
             $table->timestamps();
 
-            $table->foreign('box_id')
-                ->references('id')
-                ->on('boxes')
-                ->onDelete('cascade');
+            // Foreign key to boxes table removed as boxes module is deprecated
+            // $table->foreign('box_id')
+            //     ->references('id')
+            //     ->on('boxes')
+            //     ->onDelete('cascade');
                 
             $table->foreign('customer_id')
                 ->references('id')
