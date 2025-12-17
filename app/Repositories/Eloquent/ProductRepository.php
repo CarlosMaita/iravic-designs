@@ -232,21 +232,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             ->where('combination_index', $key)
                             ->get();
                         
-                        // Mark the first image as primary for this combination
-                        $firstImage = $productImages->first();
-                        
-                        ProductImage::where('temp_code', $request->temp_code)
-                            ->where('combination_index', $key)
-                            ->update([
+                        // Update each image individually to set primary flag
+                        foreach ($productImages as $index => $image) {
+                            $image->update([
                                 'product_id' => $product->id,
                                 'color_id' => $request->colors[$key][0],
                                 'temp_code' => null,
-                                'is_primary' => false
+                                'is_primary' => ($index === 0) // First image is primary
                             ]);
-                        
-                        // Set the first image as primary
-                        if ($firstImage) {
-                            ProductImage::where('id', $firstImage->id)->update(['is_primary' => true]);
                         }
                     }
 
@@ -411,25 +404,20 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         ->where('combination_index', $key)
                         ->get();
                     
-                    // Mark the first image as primary for this combination if no primary exists
-                    $firstImage = $productImages->first();
+                    // Check if a primary image already exists for this combination
                     $hasPrimary = ProductImage::where('product_id', $product->id)
                         ->where('combination_index', $key)
                         ->where('is_primary', true)
                         ->exists();
                     
-                    ProductImage::where('temp_code', $request->temp_code)
-                    ->where('combination_index', $key)
-                    ->update([
-                        'product_id' => $product->id,
-                        'color_id' =>  $request->colors_existing[$key][$request->product_combinations[$key][0] ],
-                        'temp_code' => null,
-                        'is_primary' => false
-                    ]);
-                    
-                    // Set the first image as primary if no primary image exists
-                    if ($firstImage && !$hasPrimary) {
-                        ProductImage::where('id', $firstImage->id)->update(['is_primary' => true]);
+                    // Update each image individually to set primary flag
+                    foreach ($productImages as $index => $image) {
+                        $image->update([
+                            'product_id' => $product->id,
+                            'color_id' => $request->colors_existing[$key][$request->product_combinations[$key][0]],
+                            'temp_code' => null,
+                            'is_primary' => (!$hasPrimary && $index === 0) // First image is primary if no primary exists
+                        ]);
                     }
                     }
 
@@ -484,25 +472,20 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             ->where('combination_index', $key)
                             ->get();
                         
-                        // Mark the first image as primary for this combination if no primary exists
-                        $firstImage = $productImages->first();
+                        // Check if a primary image already exists for this combination
                         $hasPrimary = ProductImage::where('product_id', $product->id)
                             ->where('combination_index', $key)
                             ->where('is_primary', true)
                             ->exists();
                         
-                        ProductImage::where('temp_code', $request->temp_code)
-                            ->where('combination_index', $key)
-                            ->update([
+                        // Update each image individually to set primary flag
+                        foreach ($productImages as $index => $image) {
+                            $image->update([
                                 'product_id' => $product->id,
                                 'color_id' => $request->colors[$key][($key_new_combination + $total_existing)],
                                 'temp_code' => null,
-                                'is_primary' => false
+                                'is_primary' => (!$hasPrimary && $index === 0) // First image is primary if no primary exists
                             ]);
-                        
-                        // Set the first image as primary if no primary image exists
-                        if ($firstImage && !$hasPrimary) {
-                            ProductImage::where('id', $firstImage->id)->update(['is_primary' => true]);
                         }
                     }
 
