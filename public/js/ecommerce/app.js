@@ -4109,11 +4109,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     amountLabel: function amountLabel() {
       return 'Monto a Pagar (USD)';
     },
+    isPagoMovil: function isPagoMovil() {
+      return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'pago-movil';
+    },
     needsReference: function needsReference() {
-      return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'pago-movil' || this.form.payment_method === 'transferencia';
+      return this.isPagoMovil || this.form.payment_method === 'transferencia';
     },
     needsMobileDate: function needsMobileDate() {
-      return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'pago-movil';
+      return this.isPagoMovil;
     },
     exchangeRateFormatted: function exchangeRateFormatted() {
       try {
