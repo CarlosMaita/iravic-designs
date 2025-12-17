@@ -186,6 +186,7 @@ class PaymentMethodControllerTest extends TestCase
             'name' => 'Test Customer',
             'email' => 'test@test.com',
             'password' => bcrypt('password'),
+            'qualification' => 'Bueno',
         ]);
 
         $order = Order::create([

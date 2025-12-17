@@ -25,6 +25,7 @@ class CustomerPaymentReportingTest extends TestCase
             'name' => 'Test Customer',
             'email' => 'customer@test.com',
             'password' => bcrypt('password'),
+            'qualification' => 'Bueno',
         ]);
 
         // Create an order
@@ -216,6 +217,7 @@ class CustomerPaymentReportingTest extends TestCase
             'name' => 'Other Customer',
             'email' => 'other@test.com',
             'password' => bcrypt('password'),
+            'qualification' => 'Bueno',
         ]);
 
         $this->actingAs($otherCustomer, 'customer');
