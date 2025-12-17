@@ -68,7 +68,8 @@
     {{-- Orders Management links --}}
     <li class="c-sidebar-nav-dropdown {{ 
         $menuService->isActive($url,"/admin/ordenes", false, true) . " " .
-        $menuService->isActive($url,"/admin/pagos", false, true)
+        $menuService->isActive($url,"/admin/pagos", false, true) . " " .
+        $menuService->isActive($url,"/admin/metodos-pago", false, true)
     }}">
         <a class="c-sidebar-nav-dropdown-toggle" href="#"><i class="cil-cart c-sidebar-nav-icon"></i>Órdenes</a>
         <ul class="c-sidebar-nav-dropdown-items">
@@ -79,6 +80,10 @@
             {{-- Payments --}}
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/pagos")}}" href="{{ route('admin.payments.index') }}"><span class="c-sidebar-nav-icon"></span>Pagos</a>
+            </li>
+            {{-- Payment Methods --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/metodos-pago")}}" href="{{ route('admin.payment-methods.index') }}"><span class="c-sidebar-nav-icon"></span>Métodos de Pago</a>
             </li>
         </ul>
     </li>

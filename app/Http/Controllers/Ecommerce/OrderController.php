@@ -191,10 +191,20 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => 'No autorizado.'], 403);
         }
 
+        // Get active payment method codes
+        $activePaymentMethods = \App\Models\PaymentMethod::active()->pluck('code')->toArray();
+        
+        if (empty($activePaymentMethods)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'No hay métodos de pago disponibles en este momento.'
+            ], 400);
+        }
+
         $request->validate([
             'amount' => 'required|numeric|min:0.01',
             'currency' => 'required|in:' . implode(',', array_keys(Payment::getCurrencies())),
-            'payment_method' => 'required|in:' . implode(',', array_keys(Payment::getPaymentMethods())),
+            'payment_method' => 'required|in:' . implode(',', $activePaymentMethods),
             'reference_number' => 'required_if:payment_method,pago_movil,transferencia|nullable|string|min:6|max:50',
             'mobile_payment_date' => 'required_if:payment_method,pago_movil|nullable|date',
             'date' => 'required|date',

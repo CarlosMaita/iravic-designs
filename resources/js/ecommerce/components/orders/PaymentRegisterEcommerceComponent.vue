@@ -11,46 +11,66 @@
             <button type="button" class="btn-close" @click="close" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Moneda</label>
-              <div class="form-control-plaintext fw-semibold">USD ($)</div>
-              <small class="text-muted">Los pagos se registran en dólares americanos.</small>
+            <!-- USD Amount Display (read-only) -->
+            <div class="alert alert-info mb-3">
+              <h6 class="mb-2"><i class="fas fa-dollar-sign"></i> Monto a Pagar</h6>
+              <p class="mb-1 h5">${{ remaining.toFixed(2) }} USD</p>
+              <small class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                Este es el monto pendiente en dólares americanos. Si realiza el pago en bolívares, 
+                debe utilizar la tasa de cambio oficial del Banco Central de Venezuela (BCV).
+              </small>
+            </div>
+
+            <!-- Exchange Rate Info (for VES payments) -->
+            <div class="alert alert-warning mb-3">
+              <h6 class="mb-2"><i class="fas fa-exchange-alt"></i> Tasa de Cambio Referencial</h6>
+              <p class="mb-1"><strong>{{ exchangeRateFormatted }} Bs/$</strong></p>
+              <p class="mb-1"><small>Equivalente aproximado: <strong>Bs. {{ (remaining * exchangeRate).toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</strong></small></p>
+              <small class="text-muted">
+                <i class="fas fa-info-circle"></i>
+                Para pagos en bolívares, consulte la tasa oficial del BCV en 
+                <a href="https://www.bcv.org.ve/" target="_blank" rel="noopener noreferrer" class="alert-link">www.bcv.org.ve</a>.
+                <br>
+                <strong>Cálculo:</strong> Monto a pagar en Bs = ${{ remaining.toFixed(2) }} × Tasa BCV en Bs/$
+              </small>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">{{ amountLabel }}</label>
-              <input type="number" class="form-control" v-model.number="form.amount" min="0.01" step="0.01" required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Método de Pago</label>
-              <select class="form-select" v-model="form.payment_method" required>
+              <label class="form-label">Método de Pago <span class="text-danger">*</span></label>
+              <select class="form-select" v-model="form.payment_method" required @change="onPaymentMethodChange">
                 <option disabled value="">Seleccione un método</option>
-                <option value="pago_movil">Pago Móvil</option>
-                <option value="transferencia">Transferencia</option>
-                <option value="efectivo">Efectivo</option>
-                <option value="tarjeta">Tarjeta</option>
+                <option v-for="method in paymentMethods" :key="method.code" :value="method.code">
+                  {{ method.name }}
+                </option>
               </select>
             </div>
 
+            <!-- Display payment method instructions -->
+            <div v-if="selectedMethodInstructions" class="alert alert-light mb-3">
+              <h6 class="mb-2"><i class="fas fa-info-circle"></i> Instrucciones de Pago</h6>
+              <p class="mb-0" style="white-space: pre-line;">{{ selectedMethodInstructions }}</p>
+            </div>
+
             <div class="mb-3" v-show="needsReference">
-              <label class="form-label">Número de Referencia</label>
-              <input type="text" class="form-control" v-model="form.reference_number" :required="needsReference">
+              <label class="form-label">Número de Referencia <span v-if="needsReference" class="text-danger">*</span></label>
+              <input type="text" class="form-control" v-model="form.reference_number" :required="needsReference" placeholder="Ej: 1234567890">
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Fecha del Pago</label>
+              <label class="form-label">Fecha del Pago <span class="text-danger">*</span></label>
               <input type="datetime-local" class="form-control" v-model="form.date" required>
             </div>
 
             <div class="mb-3" v-show="needsMobileDate">
-              <label class="form-label">Fecha (Pago Móvil)</label>
+              <label class="form-label">Fecha del Pago Móvil <span v-if="needsMobileDate" class="text-danger">*</span></label>
               <input type="datetime-local" class="form-control" v-model="form.mobile_payment_date" :required="needsMobileDate">
+              <small class="form-text text-muted">Fecha que aparece en el comprobante del pago móvil</small>
             </div>
 
             <div class="mb-3">
               <label class="form-label">Comentarios (Opcional)</label>
-              <textarea class="form-control" rows="3" v-model="form.comment"></textarea>
+              <textarea class="form-control" rows="3" v-model="form.comment" placeholder="Detalles adicionales sobre el pago"></textarea>
             </div>
           </div>
           <div class="modal-footer">
@@ -78,6 +98,7 @@ export default {
   data() {
     return {
       submitting: false,
+      paymentMethods: [],
       form: {
         currency: 'USD',
         amount: '',
@@ -103,9 +124,36 @@ export default {
       try {
         return this.exchangeRate.toLocaleString('es-VE', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
       } catch (e) { return this.exchangeRate; }
+    },
+    selectedMethodInstructions() {
+      const method = this.paymentMethods.find(m => m.code === this.form.payment_method);
+      return method ? method.instructions : '';
     }
   },
+  mounted() {
+    this.fetchPaymentMethods();
+  },
   methods: {
+    async fetchPaymentMethods() {
+      try {
+        const response = await fetch('/api/payment-methods/active');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        this.paymentMethods = data;
+      } catch (error) {
+        console.error('Error fetching payment methods:', error);
+        this.toast('error', 'No se pudieron cargar los métodos de pago. Por favor, recargue la página.');
+      }
+    },
+    onPaymentMethodChange() {
+      // Reset fields when payment method changes
+      this.form.reference_number = '';
+      this.form.mobile_payment_date = '';
+    },
     open() {
       this.$nextTick(() => {
         this.ensureModal();
@@ -125,6 +173,10 @@ export default {
     },
     submit() {
       if (this.submitting) return;
+      
+      // Set amount to remaining balance
+      this.form.amount = this.remaining;
+      
       this.submitting = true;
       const payload = { ...this.form };
       fetch(this.resolveEndpoint(), {
@@ -170,4 +222,12 @@ export default {
 </script>
 
 <style scoped>
+.alert-info {
+  background-color: #e7f3ff;
+  border-color: #b3d9ff;
+}
+.alert-warning {
+  background-color: #fff4e5;
+  border-color: #ffd699;
+}
 </style>

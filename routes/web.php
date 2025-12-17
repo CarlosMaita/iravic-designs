@@ -80,6 +80,13 @@ Route::middleware(['auth:customer'])->group(function () {
 # Order Creation Routes (public API for cart)
 Route::post('/api/orders/create', [\App\Http\Controllers\Ecommerce\OrderController::class, 'create'])->name('api.orders.create');
 
+# Payment Methods API (public - needed for payment modal)
+Route::get('/api/payment-methods/active', function() {
+    return response()->json(
+        \App\Models\PaymentMethod::active()->ordered()->get(['id', 'name', 'code', 'instructions'])
+    );
+})->name('api.payment-methods.active');
+
 # Customer authentication check endpoint (needs session access)
 Route::get('/api/customer/auth-check', [\App\Http\Controllers\Api\CustomerAuthController::class, 'authCheck']);
 
@@ -160,6 +167,19 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
     Route::post('pagos/{payment}/archive', 'PaymentController@archive')->name('admin.payments.archive');
     Route::post('pagos/{payment}/unarchive', 'PaymentController@unarchive')->name('admin.payments.unarchive');
     Route::patch('pagos/{payment}/status', 'PaymentController@updateStatus')->name('admin.payments.update_status');
+
+    # Payment Methods Routes
+    Route::resource('metodos-pago', 'PaymentMethodController')->except(['show'])->parameters([
+        'metodos-pago' => 'paymentMethod'
+    ])->names([
+        'index' => 'admin.payment-methods.index',
+        'create' => 'admin.payment-methods.create',
+        'store' => 'admin.payment-methods.store',
+        'edit' => 'admin.payment-methods.edit',
+        'update' => 'admin.payment-methods.update',
+        'destroy' => 'admin.payment-methods.destroy',
+    ]);
+    Route::post('metodos-pago/{paymentMethod}/toggle-active', 'PaymentMethodController@toggleActive')->name('admin.payment-methods.toggle-active');
 
 
 
