@@ -32,6 +32,7 @@ class ProductModelTest extends TestCase
         $this->assertContains('gender', $fillable);
         $this->assertContains('is_regular', $fillable);
         $this->assertContains('is_featured', $fillable);
+        $this->assertContains('slug', $fillable);
     }
 
     /**

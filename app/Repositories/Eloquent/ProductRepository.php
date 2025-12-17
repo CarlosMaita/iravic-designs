@@ -231,13 +231,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         $productImages = ProductImage::where('temp_code', $request->temp_code)
                             ->where('combination_index', $key)
                             ->get();
-                        ProductImage::where('temp_code', $request->temp_code)
-                            ->where('combination_index', $key)
-                            ->update([
+                        
+                        // Update each image individually to set primary flag
+                        foreach ($productImages as $index => $image) {
+                            $image->update([
                                 'product_id' => $product->id,
                                 'color_id' => $request->colors[$key][0],
-                                'temp_code' => null
+                                'temp_code' => null,
+                                'is_primary' => ($index === 0) // First image is primary
                             ]);
+                        }
                     }
 
                 }
@@ -400,13 +403,22 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     $productImages = ProductImage::where('temp_code', $request->temp_code)
                         ->where('combination_index', $key)
                         ->get();
-                    ProductImage::where('temp_code', $request->temp_code)
-                    ->where('combination_index', $key)
-                    ->update([
-                        'product_id' => $product->id,
-                        'color_id' =>  $request->colors_existing[$key][$request->product_combinations[$key][0] ],
-                        'temp_code' => null
-                    ]);
+                    
+                    // Check if a primary image already exists for this combination
+                    $hasPrimary = ProductImage::where('product_id', $product->id)
+                        ->where('combination_index', $key)
+                        ->where('is_primary', true)
+                        ->exists();
+                    
+                    // Update each image individually to set primary flag
+                    foreach ($productImages as $index => $image) {
+                        $image->update([
+                            'product_id' => $product->id,
+                            'color_id' => $request->colors_existing[$key][$request->product_combinations[$key][0]],
+                            'temp_code' => null,
+                            'is_primary' => (!$hasPrimary && $index === 0) // First image is primary if no primary exists
+                        ]);
+                    }
                     }
 
                 }
@@ -459,13 +471,22 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         $productImages = ProductImage::where('temp_code', $request->temp_code)
                             ->where('combination_index', $key)
                             ->get();
-                        ProductImage::where('temp_code', $request->temp_code)
+                        
+                        // Check if a primary image already exists for this combination
+                        $hasPrimary = ProductImage::where('product_id', $product->id)
                             ->where('combination_index', $key)
-                            ->update([
+                            ->where('is_primary', true)
+                            ->exists();
+                        
+                        // Update each image individually to set primary flag
+                        foreach ($productImages as $index => $image) {
+                            $image->update([
                                 'product_id' => $product->id,
                                 'color_id' => $request->colors[$key][($key_new_combination + $total_existing)],
-                                'temp_code' => null
+                                'temp_code' => null,
+                                'is_primary' => (!$hasPrimary && $index === 0) // First image is primary if no primary exists
                             ]);
+                        }
                     }
 
                 }
@@ -518,12 +539,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function saveImages($product, $files): void
     {
         $filesname = array();
+        $isFirst = true;
 
         foreach ($files as $file) {
             $url = ImageService::save($this->filedisk, $file);
 
             if ($url) {
-                array_push($filesname, array('url' => $url));
+                // Mark the first image as primary only if the product has no existing primary image
+                $isPrimary = $isFirst && !$product->images()->where('is_primary', true)->exists();
+                array_push($filesname, array('url' => $url, 'is_primary' => $isPrimary));
+                $isFirst = false;
             }
         }
 
