@@ -10,7 +10,13 @@ use Tests\TestCase;
 
 /**
  * Test Google authentication functionality.
- * These tests verify Google OAuth registration and login flows.
+ * 
+ * This test suite covers the following scenarios:
+ * - Duplicate email prevention when an active customer already exists
+ * - Restoration and login of soft-deleted customers attempting to re-register
+ * - Successful new customer creation via Google OAuth
+ * - Session validation requirements for Google registration
+ * - Input validation for name and password fields
  */
 class GoogleAuthenticationTest extends TestCase
 {

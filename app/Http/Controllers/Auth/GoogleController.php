@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Session;
 class GoogleController extends Controller
 {
     /**
+     * SQL error code for integrity constraint violation
+     */
+    private const SQL_INTEGRITY_CONSTRAINT_VIOLATION = '23000';
+
+    /**
      * Redirect to Google OAuth
      */
     public function redirectToGoogle()
@@ -153,8 +158,8 @@ class GoogleController extends Controller
             
             return redirect()->route('customer.dashboard')->with('success', '¡Bienvenido! Tu cuenta ha sido creada exitosamente.');
         } catch (\Illuminate\Database\QueryException $e) {
-            // Handle duplicate key error gracefully
-            if ($e->getCode() == 23000) {
+            // Handle duplicate key error gracefully (unique constraint violation)
+            if ($e->getCode() == self::SQL_INTEGRITY_CONSTRAINT_VIOLATION) {
                 // Clear Google session data
                 Session::forget('google_user');
                 return redirect()->route('customer.login.form')->with('error', 'Ya existe una cuenta con este correo electrónico. Por favor, inicia sesión normalmente.');
