@@ -139,32 +139,6 @@ body:
       required: true
 
   - type: textarea
-    id: current-behavior
-    attributes:
-      label: ❌ Comportamiento Actual
-      description: Describe cómo se ve o comporta actualmente
-      placeholder: |
-        Ejemplo:
-        - El botón está alineado a la izquierda en móvil
-        - El espaciado es inconsistente
-        - El color del texto no tiene suficiente contraste
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected-behavior
-    attributes:
-      label: ✅ Comportamiento Esperado
-      description: Describe cómo debería verse o comportarse después del ajuste
-      placeholder: |
-        Ejemplo:
-        - El botón debe estar centrado en todas las resoluciones
-        - El espaciado debe ser de 16px arriba y abajo
-        - El color del texto debe cumplir con WCAG AA (contraste mínimo 4.5:1)
-    validations:
-      required: true
-
-  - type: textarea
     id: specific-location
     attributes:
       label: 🗺️ Ubicación Específica
