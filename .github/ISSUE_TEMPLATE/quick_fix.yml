@@ -2,6 +2,7 @@ name: 🔧 Ajuste Rápido
 description: Plantilla para solicitar ajustes rápidos y reparaciones menores en Iravic Designs
 title: "[QUICK-FIX] "
 labels: ["quick-fix", "ajuste-rápido"]
+projects: ["CarlosMaita/iravic-designs"]
 assignees:
   - CarlosMaita
 body:
