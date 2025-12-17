@@ -120,17 +120,37 @@
             </div>
             <!--  -->
             <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
-                <div class="dropzone" id="myDropzone"></div>
-                <div v-if="product.id" class="mt-4">
-                    <table id="datatable_images" class="table" width="100%">
-                        <thead>
-                            <tr>
-                                <th scope="col">Foto</th>
-                                <th scope="col">Principal</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="mt-3">
+                    <v-dropzone 
+                        ref="dropzone-regular"
+                        id="dropzone-regular"
+                        :options="dropzoneOptionsRegular"
+                        @vdropzone-sending-multiple="sendingEventRegular"
+                        @vdropzone-removed-file="removedFileEventRegular"
+                        @vdropzone-error="errorEvent"
+                        @vdropzone-success-multiple="successEventRegular"
+                        v-once
+                    ></v-dropzone>
+                </div>
+                <div v-if="regularProductImages.length > 0" class="mt-4">
+                    <h5>Imágenes cargadas ({{ regularProductImages.length }})</h5>
+                    <div class="row">
+                        <div class="img-container col-md-2 mb-3" v-for="(image, index_image) in regularProductImages" :key="`imagen-regular-${image.id || index_image}`">
+                            <span class="btn-img-remove" type="button" @click="removeImageRegular($event, image.id)">
+                                <i class="fas fa-times"></i> 
+                            </span>
+                            <span v-if="image.is_primary" class="badge-primary-img">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span v-else class="btn-img-primary" type="button" @click="setPrimaryImageRegular($event, image.id)" title="Establecer como principal">
+                                <i class="far fa-star"></i> 
+                            </span>
+                            <span class="badge-position-img">
+                                {{ index_image + 1 }}
+                            </span>
+                            <img :src="image.url_img" class="img-thumbnail">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
@@ -384,6 +404,19 @@
                 thumbnailWidth: 150,
                 autoDiscover: false,
             },
+            dropzoneOptionsRegular: {
+                url: "",
+                acceptedFiles: "image/*",
+                autoProcessQueue: true,
+                uploadMultiple: true,
+                parallelUploads: 10,
+                maxFiles: 10,
+                maxFilesize: 2,
+                addRemoveLinks: true,
+                thumbnailWidth: 150,
+                autoDiscover: false,
+            },
+            regularProductImages: [],
             has_gender : true, 
             has_size : true,
         }),
@@ -449,6 +482,31 @@
                         .getAttribute("value"),
                 }
             });
+
+            // Initialize dropzone options for regular products
+            Object.assign(this.dropzoneOptionsRegular, {
+                url: this.urlResource,
+                dictDefaultMessage: "Arrastra los archivos aquí para subirlos (Max 2MB)",
+                dictFallbackMessage: "Su navegador no admite la carga de archivos mediante la función de arrastrar y soltar.",
+                dictFallbackText: "Utilice el formulario de respaldo a continuación para cargar sus archivos como en los viejos tiempos.",
+                dictFileTooBig: "El archivo es demasiado grande. Máx: 2MB.",
+                dictInvalidFileType: "No puede cargar archivos de este tipo.",
+                dictResponseError: "El servidor respondió con el código statusCode.",
+                dictCancelUpload: "Cancelar carga",
+                dictCancelUploadConfirmation: "¿Estás seguro de que deseas cancelar esta carga?",
+                dictRemoveFile: "Remover archivo",
+                dictMaxFilesExceeded: "No puede cargar más archivos.", 
+                headers: {
+                    "X-CSRF-TOKEN": document
+                        .querySelector('input[name="_token"]')
+                        .getAttribute("value"),
+                }
+            });
+
+            // Load existing images for regular products
+            if (this.product.id && this.product.is_regular !== false) {
+                this.regularProductImages = this.images.filter(img => !img.combination_index || img.combination_index === 0);
+            }
 
 
              /**
@@ -962,6 +1020,147 @@
                 });
             },
 
+            // Methods for regular products dropzone
+            sendingEventRegular(files, xhr, formData) {
+                formData.append('combination_index', 0); // 0 for regular products
+                formData.append('temp_code', this.temp_code);
+            },
+
+            successEventRegular(files, response) {
+                if (response.success && response.data) {
+                    // Add new images to the list
+                    response.data.forEach(imageData => {
+                        this.regularProductImages.push({
+                            id: null, // Will be set when product is saved
+                            url: imageData.url,
+                            url_img: imageData.url_img || `/storage/products/${imageData.url}`,
+                            url_original: imageData.url_original,
+                            temp_code: imageData.temp_code,
+                            combination_index: imageData.combination_index,
+                            is_primary: false,
+                            position: this.regularProductImages.length
+                        });
+                    });
+
+                    new Noty({
+                        text: 'Imágenes cargadas con éxito',
+                        type: 'success'
+                    }).show();
+                }
+            },
+
+            removedFileEventRegular(file, error, xhr) {
+                if (!file.xhr) return;
+                
+                let response = JSON.parse(file.xhr.response);
+                if (!response.data || !response.data.length) return;
+                
+                let fileName = file.name;
+                
+                // Remove from server
+                axios({
+                    url: this.urlDeleteResource,
+                    method: 'post',
+                    headers: { 
+                        "X-CSRF-TOKEN": document
+                            .querySelector('input[name="_token"]')
+                            .getAttribute("value"),
+                    },
+                    data: {
+                        fileName: fileName,
+                        combinationIndex: 0
+                    }
+                }).then(response => {
+                    // Remove from local list
+                    this.regularProductImages = this.regularProductImages.filter(img => 
+                        img.url_original !== fileName
+                    );
+                    
+                    new Noty({
+                        text: 'Imagen removida con éxito.',
+                        type: 'success'
+                    }).show();
+                }).catch(error => {
+                    console.error('Error removing image:', error);
+                });
+            },
+
+            removeImageRegular(e, image_id) {
+                const vm = this;
+                let url = this.urlDeleteResource;
+
+                swal({
+                    title: '',
+                    text: "¿Seguro desea eliminar esta imagen?",
+                    type: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si',
+                    cancelButtonText: 'No'
+                }).then(function() {
+                    axios({
+                        url: url,
+                        method: 'post',
+                        headers: { 
+                            "X-CSRF-TOKEN": document
+                                .querySelector('input[name="_token"]')
+                                .getAttribute("value"),
+                        },
+                        data: {
+                            image_id
+                        }
+                    }).then(response => {
+                        // Remove from local list
+                        vm.regularProductImages = vm.regularProductImages.filter(img => img.id !== image_id);
+                        
+                        new Noty({
+                            text: 'Imagen removida con éxito.',
+                            type: 'success'
+                        }).show();
+                    }).catch(error => {
+                        new Noty({
+                            text: 'Error al eliminar la imagen',
+                            type: 'error'
+                        }).show();
+                    });
+                }).catch(swal.noop);
+            },
+
+            setPrimaryImageRegular(e, image_id) {
+                const vm = this;
+                let url = '/admin/catalogo/producto-imagen/set-primary';
+
+                axios({
+                    url: url,
+                    method: 'post',
+                    headers: { 
+                        "X-CSRF-TOKEN": document
+                            .querySelector('input[name="_token"]')
+                            .getAttribute("value"),
+                    },
+                    data: {
+                        image_id
+                    }
+                }).then(response => {
+                    if (response.data.success) {
+                        // Update local state
+                        vm.regularProductImages = vm.regularProductImages.map(img => ({
+                            ...img,
+                            is_primary: img.id === image_id
+                        }));
+                        
+                        new Noty({
+                            text: response.data.message,
+                            type: 'success'
+                        }).show();
+                    }
+                }).catch(error => {
+                    new Noty({
+                        text: error.response?.data?.message || 'Error al establecer imagen principal',
+                        type: 'error'
+                    }).show();
+                });
+            },
+
         }, 
         
     }
@@ -1014,6 +1213,18 @@
         top: 0px;
         left: 5px;
         background: rgba(40, 167, 69, 0.9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        z-index: 10;
+    }
+
+    .badge-position-img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: rgba(0, 123, 255, 0.9);
         color: white;
         padding: 4px 8px;
         border-radius: 3px;

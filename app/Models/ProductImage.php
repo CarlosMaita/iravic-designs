@@ -17,7 +17,8 @@ class ProductImage extends Model
         'combination_index',
         'temp_code',
         'url_original',
-        'is_primary'
+        'is_primary',
+        'position'
     ];
 
     public $appends = [

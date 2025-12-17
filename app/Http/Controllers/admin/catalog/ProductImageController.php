@@ -89,7 +89,7 @@ class ProductImageController extends Controller
         foreach ($files as $file) {
             $url = ImageService::save($this->filedisk, $file);
             if ($url) {
-                ProductImage::create([
+                $productImage = ProductImage::create([
                     'url' => $url,
                     'temp_code' => $request->input('temp_code'),
                     'combination_index' => intval( $request->input('combination_index')),
@@ -97,6 +97,7 @@ class ProductImageController extends Controller
                 ]);
                 array_push($filesname, [
                     'url' => $url,
+                    'url_img' => $productImage->url_img,
                     'temp_code' => $request->input('temp_code'),
                     'combination_index' =>  intval($request->input('combination_index')),
                     'url_original' =>  $file->getClientOriginalName()
