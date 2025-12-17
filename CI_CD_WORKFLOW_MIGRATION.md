@@ -113,6 +113,49 @@ El workflow requiere los siguientes secretos configurados en GitHub:
 ✅ Un solo archivo para gestionar todo el CI/CD
 ```
 
+## ⚠️ IMPORTANTE: Status "Skipped" en Pull Requests
+
+### ¿Por qué el job "Deploy to Production" aparece como "skipped"?
+
+Cuando ejecutes este workflow en un Pull Request, verás que el job **Deploy to Production** aparece con el status **"skipped" (omitido)**. 
+
+**Esto es COMPLETAMENTE NORMAL y es el comportamiento ESPERADO.**
+
+### ¿Por qué?
+
+1. **Los PRs son para revisión, no para despliegue**: Los pull requests son oportunidades para revisar código antes de integrarlo a producción. No queremos desplegar código que aún está en revisión.
+
+2. **Seguridad**: Desplegar desde PRs podría permitir que código no revisado llegue a producción, lo cual es un riesgo de seguridad.
+
+3. **Control de calidad**: El despliegue solo debe ocurrir después de que el código haya sido:
+   - ✅ Revisado por el equipo
+   - ✅ Aprobado por los revisores
+   - ✅ Merged a la rama main
+
+### ¿Cuándo se ejecuta el despliegue?
+
+El despliegue se ejecuta **AUTOMÁTICAMENTE** cuando:
+1. ✅ Haces merge del PR a la rama `main`
+2. ✅ Las pruebas pasan exitosamente
+3. ✅ Es un push directo a `main` (no un PR)
+
+### Flujo Visual
+
+```
+Pull Request → [Tests: ✅] → [Deploy: ⏭️ Skipped]
+     ↓
+   Merge
+     ↓
+Push to main → [Tests: ✅] → [Deploy: 🚀 Ejecutado]
+```
+
+### En Resumen
+
+- **En PR**: Tests ✅ | Deploy ⏭️ (skipped) ← Esto es CORRECTO
+- **Después de merge a main**: Tests ✅ | Deploy 🚀 ← Aquí se despliega
+
+**No te preocupes si ves "skipped" en PRs. Es exactamente lo que debe pasar.**
+
 ## 🚀 Uso del Nuevo Workflow
 
 ### Para Desarrolladores

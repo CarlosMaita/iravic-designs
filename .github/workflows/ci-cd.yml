@@ -10,6 +10,12 @@
 # 2. Solo si las pruebas pasan, procede al despliegue automático
 # 3. El despliegue únicamente se ejecuta en push directo a main (no en PRs)
 #
+# NOTA IMPORTANTE SOBRE EL STATUS "SKIPPED":
+# - En Pull Requests, el job "Deploy to Production" aparecerá como "skipped"
+# - Este es el COMPORTAMIENTO ESPERADO y correcto para producción
+# - El despliegue solo ocurre DESPUÉS de hacer merge a main
+# - Esto previene despliegues accidentales de código no revisado
+#
 # =============================================================================
 # CONFIGURACIÓN DE TRIGGERS
 # =============================================================================
@@ -214,7 +220,22 @@ jobs:
     permissions:
       contents: read
     
+    # ===========================================================================
     # CONDICIÓN CRÍTICA: Solo desplegar en push a main, NO en pull requests
+    # ===========================================================================
+    # 
+    # IMPORTANTE: Este job aparecerá como "skipped" (omitido) en Pull Requests.
+    # Esto es el COMPORTAMIENTO ESPERADO y RECOMENDADO para producción.
+    # 
+    # ¿Por qué se omite el despliegue en PRs?
+    # - Los PRs son para revisión de código, no para despliegue
+    # - El despliegue solo debe ocurrir DESPUÉS del merge a main
+    # - Esto previene despliegues accidentales de código no revisado
+    # 
+    # El despliegue se ejecutará automáticamente cuando:
+    # 1. Las pruebas pasen exitosamente
+    # 2. Los cambios sean merged/pushed directamente a la rama main
+    # 
     # Esta condición previene despliegues accidentales desde PRs
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
