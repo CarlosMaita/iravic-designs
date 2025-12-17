@@ -1028,6 +1028,9 @@
 
             successEventRegular(files, response) {
                 if (response.success && response.data) {
+                    // Capture the starting position before adding new images
+                    const startPosition = this.regularProductImages.length;
+                    
                     // Add new images to the list with proper position indexing
                     response.data.forEach((imageData, index) => {
                         this.regularProductImages.push({
@@ -1038,7 +1041,7 @@
                             temp_code: imageData.temp_code,
                             combination_index: imageData.combination_index,
                             is_primary: false,
-                            position: this.regularProductImages.length + index
+                            position: startPosition + index
                         });
                     });
 
