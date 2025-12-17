@@ -34,13 +34,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return $isSuperAdmin ?
         $this->model
-            ->select('users.*'):
+            ->select('users.*')
+            ->orderBy('name') :
         $this->model
             ->select('users.*')
             ->join('role_user', 'role_user.user_id', '=', 'users.id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->where('roles.is_superadmin', 0)
-            ->orderBy('name') ;
+            ->orderBy('name');
     }
 
     /**
