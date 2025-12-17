@@ -1,16 +1,29 @@
 <x-mail::message>
-# ¡Bienvenido a Iravic Designs, {{ $customer->name }}!
+# 🎉 ¡Bienvenido a Iravic Designs, {{ $customer->name }}! 🎉
 
-Estamos muy contentos de tenerte con nosotros. Gracias por registrarte en nuestra tienda.
+¡Estamos muy contentos de tenerte con nosotros! 😊 Gracias por registrarte en nuestra tienda.
 
-En Iravic Designs encontrarás productos de la más alta calidad con diseños únicos y exclusivos.
+## ✨ ¿Qué encontrarás en Iravic Designs?
+
+- 👗 **Productos de alta calidad** con diseños únicos y exclusivos
+- 🎨 **Estilos únicos** que destacan tu personalidad
+- 💎 **Atención personalizada** para una experiencia de compra inolvidable
+- 🚚 **Envíos seguros** a todo el país
 
 <x-mail::button :url="route('ecommerce.home')">
-Ver Catálogo
+🛍️ Explorar Catálogo
 </x-mail::button>
 
-Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.
+## 💡 Consejos para comenzar:
 
-Saludos,<br>
-{{ config('app.name') }}
+- 📱 Explora nuestras categorías y encuentra tu estilo favorito
+- ⭐ Guarda tus productos favoritos para comprarlos después
+- 🔔 Activa las notificaciones para estar al tanto de ofertas especiales
+
+---
+
+Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. ¡Estamos aquí para ayudarte! 💬
+
+¡Felices compras! 🎊<br>
+**El equipo de {{ config('app.name') }}**
 </x-mail::message>
