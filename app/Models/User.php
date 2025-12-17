@@ -16,7 +16,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'deleted_at'
+        'deleted_at',
+        'notify_new_order',
+        'notify_new_payment'
     ];
 
     protected $hidden = [
@@ -25,6 +27,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'notify_new_order' => 'boolean',
+        'notify_new_payment' => 'boolean',
     ];
 
     protected $dates = [

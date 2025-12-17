@@ -26,3 +26,28 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="font-weight-bold">Notificaciones por Email</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="notify_new_order" name="notify_new_order" value="1" {{ old('notify_new_order', $user->notify_new_order) ? 'checked' : '' }}>
+                <label class="form-check-label" for="notify_new_order">
+                    Recibir notificación de Nueva Venta
+                </label>
+                <small class="form-text text-muted">
+                    Al marcar esta opción, recibirás un correo electrónico cada vez que se registre una nueva orden en el sistema.
+                </small>
+            </div>
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" id="notify_new_payment" name="notify_new_payment" value="1" {{ old('notify_new_payment', $user->notify_new_payment) ? 'checked' : '' }}>
+                <label class="form-check-label" for="notify_new_payment">
+                    Recibir notificación de Nuevo Pago
+                </label>
+                <small class="form-text text-muted">
+                    Al marcar esta opción, recibirás un correo electrónico cada vez que se registre un nuevo pago en el sistema.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
