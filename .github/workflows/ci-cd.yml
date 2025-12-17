@@ -1,0 +1,352 @@
+# =============================================================================
+# Workflow CI/CD Unificado para Laravel
+# =============================================================================
+# 
+# Este workflow combina las funcionalidades de pruebas y despliegue en un solo
+# archivo para simplificar la gestión de CI/CD.
+#
+# FLUJO DE TRABAJO:
+# 1. Ejecuta pruebas automáticas en cada push o pull request a la rama main
+# 2. Solo si las pruebas pasan, procede al despliegue automático
+# 3. El despliegue únicamente se ejecuta en push directo a main (no en PRs)
+#
+# NOTA IMPORTANTE SOBRE EL STATUS "SKIPPED":
+# - En Pull Requests, el job "Deploy to Production" aparecerá como "skipped"
+# - Este es el COMPORTAMIENTO ESPERADO y correcto para producción
+# - El despliegue solo ocurre DESPUÉS de hacer merge a main
+# - Esto previene despliegues accidentales de código no revisado
+#
+# =============================================================================
+# CONFIGURACIÓN DE TRIGGERS
+# =============================================================================
+#
+# - push: Se activa cuando hay commits directos a las ramas especificadas
+# - pull_request: Se activa cuando se crea o actualiza un PR hacia las ramas
+#
+# IMPORTANTE: El job de deploy tiene una condición adicional que previene
+# su ejecución en pull requests, solo se ejecuta en push directo a main.
+#
+# =============================================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# =============================================================================
+# JOBS
+# =============================================================================
+
+jobs:
+  # ===========================================================================
+  # JOB: TESTS
+  # ===========================================================================
+  # 
+  # Este job ejecuta todas las pruebas automatizadas del proyecto.
+  # Se ejecuta en TODOS los eventos (push y pull_request).
+  #
+  # CONFIGURACIÓN DE BASE DE DATOS:
+  # - Utiliza MySQL 8.0 como servicio de base de datos
+  # - Credenciales de prueba: root/password
+  # - Base de datos: laravel_test
+  # 
+  # AJUSTES SEGÚN TU STACK:
+  # - PHP Version: Modifica 'php-version' si usas otra versión
+  # - Database: Cambia el servicio 'mysql' si usas PostgreSQL o SQLite
+  # - Extensions: Agrega extensiones PHP adicionales según necesites
+  # - Test Command: Personaliza el comando de pruebas según tu configuración
+  #
+  # ===========================================================================
+  
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    # Servicio MySQL para pruebas
+    # Para PostgreSQL, reemplaza con:
+    # postgres:
+    #   image: postgres:14
+    #   env:
+    #     POSTGRES_PASSWORD: password
+    #     POSTGRES_DB: laravel_test
+    #   ports:
+    #     - 5432:5432
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Configurar PHP con extensiones necesarias
+      # Ajusta 'php-version' según tu versión de PHP en producción
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, json, bcmath, pdo, mysql, pdo_mysql
+          coverage: none
+
+      # Copiar archivo de configuración de entorno
+      - name: Copy .env
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          
+      # Instalar dependencias de Composer
+      # --no-interaction: No solicita entrada del usuario
+      # --prefer-dist: Descarga archivos dist en lugar de clonar repositorios
+      # --optimize-autoloader: Optimiza el autoloader para mejor rendimiento
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      # Generar clave de aplicación Laravel
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      # Ejecutar migraciones de base de datos
+      # Ajusta las variables de entorno según tu configuración de BD
+      - name: Run Migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: laravel_test
+          DB_USERNAME: root
+          DB_PASSWORD: password
+
+      # Ejecutar pruebas PHPUnit
+      # Opciones:
+      # --testdox: Formato de salida legible
+      # --stop-on-failure: Detiene en el primer fallo para diagnóstico rápido
+      # 
+      # PERSONALIZACIÓN:
+      # - Puedes agregar --coverage-html para generar reportes de cobertura
+      # - Usa --filter para ejecutar solo pruebas específicas
+      # - Agrega --testsuite=Feature para ejecutar solo un suite específico
+      - name: Run PHPUnit Tests
+        run: vendor/bin/phpunit --testdox --stop-on-failure
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: laravel_test
+          DB_USERNAME: root
+          DB_PASSWORD: password
+
+      # Mostrar logs de Laravel si las pruebas fallan
+      # Útil para debugging
+      - name: Output Laravel logs
+        if: failure()
+        run: cat storage/logs/laravel.log || true
+
+      # Generar resumen de pruebas en la interfaz de GitHub Actions
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "Tests completed" >> $GITHUB_STEP_SUMMARY
+
+  # ===========================================================================
+  # JOB: DEPLOY
+  # ===========================================================================
+  # 
+  # Este job despliega la aplicación a producción.
+  # Solo se ejecuta si:
+  # 1. El job 'tests' se completó exitosamente (needs: tests)
+  # 2. El evento es un push a la rama main (no pull requests)
+  #
+  # CONFIGURACIÓN DE DESPLIEGUE:
+  # Este workflow usa SSH para conectarse al servidor VPS y ejecutar comandos.
+  # 
+  # SECRETOS REQUERIDOS (Configurar en GitHub Settings > Secrets):
+  # - HOST: Dirección IP o dominio del servidor VPS
+  # - USERNAME: Usuario SSH (ej: iravic)
+  # - PASSWORD: Contraseña SSH del usuario
+  # 
+  # ALTERNATIVA MÁS SEGURA:
+  # En lugar de password, puedes usar SSH keys:
+  # - Genera un par de llaves SSH: ssh-keygen -t ed25519
+  # - Agrega la llave pública al servidor: ~/.ssh/authorized_keys
+  # - Guarda la llave privada en GitHub Secrets como SSH_PRIVATE_KEY
+  # - Usa 'key: ${{ secrets.SSH_PRIVATE_KEY }}' en lugar de 'password'
+  #
+  # AJUSTES SEGÚN TU HOSTING:
+  # - VPS/Servidor Dedicado: Usa el método SSH actual
+  # - Shared Hosting: Puede requerir FTP/SFTP en lugar de SSH
+  # - Cloud Platforms (AWS, Azure, GCP): Usa sus acciones específicas
+  # - Vercel/Netlify: No aplica para Laravel backend
+  #
+  # COMANDOS DE DESPLIEGUE:
+  # Los comandos actuales asumen:
+  # - Código en ~/public_html/ecommerce-iravic
+  # - Usuario con permisos sudo
+  # - Git instalado en el servidor
+  # - Composer instalado en el servidor
+  # 
+  # Ajusta según tu estructura:
+  # - Cambia la ruta si tu proyecto está en otra ubicación
+  # - Elimina 'sudo' si tu usuario tiene permisos directos
+  # - Agrega comandos de build de frontend si es necesario:
+  #   npm install --production
+  #   npm run build
+  # - Agrega reinicio de servicios si es necesario:
+  #   sudo systemctl reload php8.3-fpm
+  #   sudo systemctl reload nginx
+  #
+  # ===========================================================================
+  
+  deploy:
+    name: Deploy to Production
+    needs: tests
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+    
+    # ===========================================================================
+    # CONDICIÓN CRÍTICA: Solo desplegar en push a main, NO en pull requests
+    # ===========================================================================
+    # 
+    # IMPORTANTE: Este job aparecerá como "skipped" (omitido) en Pull Requests.
+    # Esto es el COMPORTAMIENTO ESPERADO y RECOMENDADO para producción.
+    # 
+    # ¿Por qué se omite el despliegue en PRs?
+    # - Los PRs son para revisión de código, no para despliegue
+    # - El despliegue solo debe ocurrir DESPUÉS del merge a main
+    # - Esto previene despliegues accidentales de código no revisado
+    # 
+    # El despliegue se ejecutará automáticamente cuando:
+    # 1. Las pruebas pasen exitosamente
+    # 2. Los cambios sean merged/pushed directamente a la rama main
+    # 
+    # Esta condición previene despliegues accidentales desde PRs
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Desplegar usando SSH
+      # 
+      # NOTAS DE SEGURIDAD:
+      # - Nunca incluyas credenciales directamente en el código
+      # - Usa GitHub Secrets para información sensible
+      # - Considera usar SSH keys en lugar de contraseñas
+      # - Limita los permisos del usuario SSH al mínimo necesario
+      #
+      # SCRIPT DE DESPLIEGUE:
+      # El script ejecuta los siguientes pasos en el servidor:
+      # 1. Navega al directorio del proyecto
+      # 2. Obtiene los últimos cambios de Git
+      # 3. Instala/actualiza dependencias de Composer (sin dev)
+      # 4. Descubre paquetes de Laravel
+      # 5. Limpia cachés de configuración, rutas y vistas
+      # 6. Ejecuta migraciones de base de datos
+      # 7. Optimiza la aplicación (cachea config, routes, views)
+      #
+      # PERSONALIZACIÓN PARA TU STACK:
+      # 
+      # Para aplicaciones con frontend compilado (Vue/React):
+      #   npm ci --production
+      #   npm run build
+      #   sudo chown -R www-data:www-data public/build
+      #
+      # Para aplicaciones con workers/queues:
+      #   sudo supervisorctl restart laravel-worker:*
+      #
+      # Para aplicaciones con cache de Redis:
+      #   sudo php artisan cache:clear
+      #   sudo php artisan config:cache
+      #
+      # Para servidores con múltiples instancias:
+      #   # Implementar estrategia de zero-downtime deployment
+      #   # Usar herramientas como Envoyer o Deployer
+      #
+      - name: Deploy Laravel Project via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd ~/public_html/ecommerce-iravic
+            sudo git pull origin main
+            sudo composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            sudo php artisan package:discover --ansi
+            sudo php artisan config:clear
+            sudo php artisan cache:clear
+            sudo php artisan route:clear
+            sudo php artisan view:clear
+            sudo php artisan migrate --force --no-interaction
+            sudo php artisan optimize
+
+# =============================================================================
+# TROUBLESHOOTING
+# =============================================================================
+#
+# PROBLEMA: Las pruebas fallan localmente pero pasan en CI
+# SOLUCIÓN: Verifica que las versiones de PHP y extensiones coincidan
+#
+# PROBLEMA: El despliegue falla con "Permission denied"
+# SOLUCIÓN: Verifica permisos del usuario SSH o agrega sudo a los comandos
+#
+# PROBLEMA: Git pull falla con "Your local changes would be overwritten"
+# SOLUCIÓN: Agrega 'sudo git reset --hard origin/main' antes del pull
+#           O mejor: No edites archivos directamente en producción
+#
+# PROBLEMA: Composer install falla por memoria
+# SOLUCIÓN: Agrega 'sudo COMPOSER_MEMORY_LIMIT=-1 composer install...'
+#
+# PROBLEMA: Las migraciones fallan en producción
+# SOLUCIÓN: Revisa permisos de base de datos y credenciales en .env
+#           Verifica que el usuario de BD tenga permisos CREATE, ALTER
+#
+# PROBLEMA: El workflow no se ejecuta
+# SOLUCIÓN: Verifica que el archivo esté en .github/workflows/
+#           Revisa la sintaxis YAML con un validador
+#           Confirma que las ramas en 'on' coincidan con tu estructura
+#
+# =============================================================================
+# MEJORAS FUTURAS SUGERIDAS
+# =============================================================================
+#
+# 1. Implementar caché de dependencias para acelerar el workflow:
+#    - uses: actions/cache@v3 para Composer y npm
+#
+# 2. Agregar notificaciones de despliegue:
+#    - Slack, Discord, Email en caso de fallo
+#
+# 3. Implementar despliegue a ambientes de staging:
+#    - Job separado para rama 'develop'
+#
+# 4. Agregar análisis de código estático:
+#    - PHPStan, Psalm para detección de errores
+#    - PHP_CodeSniffer para estilo de código
+#
+# 5. Implementar rollback automático:
+#    - Guardar el último commit exitoso
+#    - Revertir automáticamente si falla el health check
+#
+# 6. Agregar health checks post-despliegue:
+#    - Verificar que la aplicación responda correctamente
+#    - Curl al endpoint de la aplicación
+#
+# =============================================================================
