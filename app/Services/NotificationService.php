@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\User;
 use App\Mail\WelcomeCustomer;
 use App\Mail\OrderCreatedNotification;
 use App\Mail\PaymentConfirmedNotification;
@@ -55,11 +56,10 @@ class NotificationService
         // Send email to customer
         Mail::to($order->customer->email)->send(new OrderCreatedNotification($order));
 
-        // Send email to admin
-        $adminEmail = Config::getAdminNotificationEmail();
-        if (!empty($adminEmail) && filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
-            Mail::to($adminEmail)->send(new AdminNewOrderNotification($order));
-        }
+        // Send email to all admins with notify_new_order enabled
+        $this->notifyAdmins('notify_new_order', function ($admin) use ($order) {
+            Mail::to($admin->email)->send(new AdminNewOrderNotification($order));
+        });
     }
 
     /**
@@ -78,10 +78,28 @@ class NotificationService
             'action_url' => route('customer.orders.show', $payment->order_id),
         ]);
 
-        // Send email to admin
-        $adminEmail = Config::getAdminNotificationEmail();
-        if (!empty($adminEmail) && filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
-            Mail::to($adminEmail)->send(new AdminPaymentReceivedNotification($payment));
+        // Send email to all admins with notify_new_payment enabled
+        $this->notifyAdmins('notify_new_payment', function ($admin) use ($payment) {
+            Mail::to($admin->email)->send(new AdminPaymentReceivedNotification($payment));
+        });
+    }
+
+    /**
+     * Helper method to notify admins based on notification preference
+     *
+     * @param string $notificationField The notification preference field to check
+     * @param callable $callback Callback to execute for each admin
+     */
+    private function notifyAdmins(string $notificationField, callable $callback)
+    {
+        $admins = User::where($notificationField, true)
+            ->select(['id', 'email', $notificationField])
+            ->get();
+
+        foreach ($admins as $admin) {
+            if (filter_var($admin->email, FILTER_VALIDATE_EMAIL)) {
+                $callback($admin);
+            }
         }
     }
 

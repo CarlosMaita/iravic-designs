@@ -65,7 +65,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $user = $this->userRepository->updateOrCreateByEmail($request->only('name', 'email', 'password', 'deleted_at'));
+            $user = $this->userRepository->updateOrCreateByEmail($request->only('name', 'email', 'password', 'deleted_at', 'notify_new_order', 'notify_new_payment'));
             flash("El usuario <b>$request->name</b> ha sido creado con éxito")->success();
 
             return response()->json([
@@ -107,7 +107,7 @@ class UserController extends Controller
     public function update(UserRequest $request, User $usuario)
     {
         try {
-            $this->userRepository->update($usuario->id, $request->only('name', 'email', 'password'));
+            $this->userRepository->update($usuario->id, $request->only('name', 'email', 'password', 'notify_new_order', 'notify_new_payment'));
             flash("El usuario <b>$request->name</b> ha sido actualizado con éxito")->success();
 
             return response()->json([
