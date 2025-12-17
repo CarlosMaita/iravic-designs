@@ -169,7 +169,9 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
     Route::patch('pagos/{payment}/status', 'PaymentController@updateStatus')->name('admin.payments.update_status');
 
     # Payment Methods Routes
-    Route::resource('metodos-pago', 'PaymentMethodController')->except(['show'])->names([
+    Route::resource('metodos-pago', 'PaymentMethodController')->except(['show'])->parameters([
+        'metodos-pago' => 'paymentMethod'
+    ])->names([
         'index' => 'admin.payment-methods.index',
         'create' => 'admin.payment-methods.create',
         'store' => 'admin.payment-methods.store',
