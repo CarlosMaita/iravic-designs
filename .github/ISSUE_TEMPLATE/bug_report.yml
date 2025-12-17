@@ -34,25 +34,7 @@ body:
         - ¿Cuándo comenzó a ocurrir este problema?
     validations:
       required: true
-
-  - type: textarea
-    id: steps-to-reproduce
-    attributes:
-      label: 🔄 Pasos para Reproducir
-      description: Lista los pasos exactos para reproducir el error
-      placeholder: |
-        1. Ir a...
-        2. Hacer clic en...
-        3. Escribir...
-        4. Ver error
-      value: |
-        1. 
-        2. 
-        3. 
-        4. 
-    validations:
-      required: true
-
+      
   - type: textarea
     id: expected-behavior
     attributes:
@@ -95,30 +77,6 @@ body:
         - 🟡 A veces - Ocurre ocasionalmente
         - 🟢 Raramente - Ocurre muy pocas veces
         - ❓ No estoy seguro - Difícil de determinar
-    validations:
-      required: true
-
-  - type: textarea
-    id: environment
-    attributes:
-      label: 🖥️ Información del Entorno
-      description: Proporciona información sobre tu entorno de ejecución
-      placeholder: |
-        **Sistema Operativo:** (ej: Windows 10, macOS 12, Ubuntu 20.04)
-        **Navegador:** (ej: Chrome 96, Firefox 95, Safari 15)
-        **Versión de PHP:** (ej: 8.1)
-        **Versión de Laravel:** (ej: 9.x)
-        **Versión de Node.js:** (ej: 16.x)
-        **Base de Datos:** (ej: MySQL 8.0, SQLite)
-        **Entorno:** (ej: local, desarrollo, producción)
-      value: |
-        **Sistema Operativo:** 
-        **Navegador:** 
-        **Versión de PHP:** 
-        **Versión de Laravel:** 
-        **Versión de Node.js:** 
-        **Base de Datos:** 
-        **Entorno:** 
     validations:
       required: true
 
