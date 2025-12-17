@@ -1,26 +1,29 @@
 // Body
-$body-bg: #f0f4f8;
+$body-bg: #fafafa;
 
 // Typography - Modern font stack
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-// Modern Vibrant Technology Colors
-$blue: #3b82f6;        // Modern bright blue
-$indigo: #6366f1;      // Vibrant indigo
-$purple: #8b5cf6;      // Tech purple
-$pink: #ec4899;        // Hot pink
-$red: #ef4444;         // Modern red
+// Elegant Black/White Color Palette with Purple Accent
+$blue: #7c3aed;        // Elegant purple (used for info)
+$indigo: #7c3aed;      // Elegant purple
+$purple: #a78bfa;      // Light purple/lilac
+$pink: #d8b4fe;        // Soft lilac
+$red: #dc2626;         // Elegant red
 $orange: #f59e0b;      // Amber orange
 $yellow: #fbbf24;      // Warm yellow
-$green: #10b981;       // Emerald green
+$green: #059669;       // Elegant green
 $teal: #14b8a6;        // Modern teal
-$cyan: #06b6d4;        // Bright cyan
+$cyan: #7c3aed;        // Elegant purple
 
-// Additional brand colors
-$primary: #6366f1;     // Indigo as primary
-$secondary: #8b5cf6;   // Purple as secondary
-$accent: #3b82f6;      // Blue as accent
-$dark: #1e293b;        // Slate dark
-$light: #f8fafc;       // Slate light
+// Elegant Monochrome with Purple Accent
+$primary: #7c3aed;     // Elegant purple as primary accent
+$secondary: #a78bfa;   // Light purple/lilac as secondary
+$accent: #d8b4fe;      // Soft lilac as tertiary accent
+$dark: #1a1a1a;        // Rich black
+$light: #ffffff;       // Pure white
+$gray-dark: #2d2d2d;   // Dark gray
+$gray-medium: #6b7280; // Medium gray
+$gray-light: #e5e7eb;  // Light gray
