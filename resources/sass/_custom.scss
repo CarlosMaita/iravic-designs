@@ -1,5 +1,11 @@
 // Here you can add other styles
 
+// Modern color palette
+$primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+$sidebar-bg: #1e293b;
+$sidebar-hover: #334155;
+$card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$card-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
 .c-header.c-header-fixed{
     top:0px;
@@ -7,4 +13,433 @@
 
 .click-file{
     cursor:pointer;
+}
+
+// ============================================
+// MODERN SIDEBAR DESIGN
+// ============================================
+
+.c-sidebar.c-sidebar-dark {
+    background: $sidebar-bg;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.c-sidebar-brand {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    border-bottom: none;
+    padding: 1.5rem 1rem;
+    
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    img {
+        filter: brightness(0) invert(1);
+        transition: transform 0.3s ease;
+        
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}
+
+.c-sidebar-nav-link {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+    
+    &:hover {
+        background: $sidebar-hover !important;
+        border-left-color: #6366f1;
+        padding-left: calc(1rem + 3px);
+    }
+    
+    &.c-active {
+        background: linear-gradient(90deg, rgba(99, 102, 241, 0.15) 0%, transparent 100%) !important;
+        border-left-color: #6366f1;
+        color: #fff !important;
+    }
+    
+    .c-sidebar-nav-icon {
+        color: #94a3b8;
+        transition: color 0.3s ease;
+    }
+    
+    &:hover .c-sidebar-nav-icon,
+    &.c-active .c-sidebar-nav-icon {
+        color: #6366f1;
+    }
+}
+
+.c-sidebar-nav-dropdown-toggle {
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background: $sidebar-hover !important;
+    }
+}
+
+.c-sidebar-nav-dropdown.c-show {
+    background: rgba(0, 0, 0, 0.1);
+    
+    .c-sidebar-nav-dropdown-toggle {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        background: rgba(99, 102, 241, 0.1) !important;
+    }
+}
+
+.c-sidebar-minimizer {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    }
+}
+
+// ============================================
+// MODERN HEADER DESIGN
+// ============================================
+
+.c-header {
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-bottom: none;
+}
+
+.c-header-nav-link {
+    color: #64748b;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        color: #6366f1;
+        background: rgba(99, 102, 241, 0.05);
+    }
+    
+    i, .c-icon {
+        font-size: 1.2rem;
+    }
+}
+
+.c-subheader {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+// ============================================
+// MODERN CARDS
+// ============================================
+
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: $card-shadow;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: $card-shadow-lg;
+        transform: translateY(-2px);
+    }
+}
+
+.card-header {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #ffffff;
+    border-bottom: none;
+    border-radius: 0.75rem 0.75rem 0 0 !important;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    
+    i {
+        margin-right: 0.5rem;
+        opacity: 0.9;
+    }
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+// ============================================
+// MODERN BUTTONS
+// ============================================
+
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    
+    &:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    }
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+    
+    &:hover {
+        background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%);
+    }
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #ec4899 100%);
+    
+    &:hover {
+        background: linear-gradient(135deg, #ec4899 0%, #ef4444 100%);
+    }
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    
+    &:hover {
+        background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+    }
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: #fff;
+    
+    &:hover {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #fff;
+    }
+}
+
+// ============================================
+// MODERN ALERTS
+// ============================================
+
+.alert {
+    border: none;
+    border-radius: 0.75rem;
+    border-left: 4px solid;
+    
+    &.alert-info {
+        background: rgba(59, 130, 246, 0.1);
+        border-left-color: #3b82f6;
+        color: #1e40af;
+    }
+    
+    &.alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-left-color: #10b981;
+        color: #065f46;
+    }
+    
+    &.alert-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border-left-color: #f59e0b;
+        color: #92400e;
+    }
+    
+    &.alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border-left-color: #ef4444;
+        color: #991b1b;
+    }
+}
+
+// ============================================
+// MODERN TABLES
+// ============================================
+
+.table {
+    th {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: #ffffff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        border: none;
+    }
+    
+    tbody tr {
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: scale(1.01);
+        }
+    }
+}
+
+// ============================================
+// MODERN BADGES
+// ============================================
+
+.badge {
+    border-radius: 0.375rem;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+    
+    &.badge-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    }
+    
+    &.badge-success {
+        background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+    }
+    
+    &.badge-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #ec4899 100%);
+    }
+    
+    &.badge-info {
+        background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    }
+    
+    &.badge-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    }
+}
+
+// ============================================
+// MODERN FORMS
+// ============================================
+
+.form-control {
+    border-radius: 0.5rem;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    
+    &:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+}
+
+.form-label {
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+// ============================================
+// MODERN BREADCRUMB
+// ============================================
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    
+    .breadcrumb-item {
+        color: #64748b;
+        
+        &.active {
+            color: #6366f1;
+            font-weight: 600;
+        }
+        
+        a {
+            color: #64748b;
+            transition: color 0.3s ease;
+            
+            &:hover {
+                color: #6366f1;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+// ============================================
+// DROPDOWN MENUS
+// ============================================
+
+.dropdown-menu {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        background: rgba(99, 102, 241, 0.1);
+        color: #6366f1;
+    }
+}
+
+.dropdown-header {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+// ============================================
+// BODY BACKGROUND
+// ============================================
+
+.c-app {
+    background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+    min-height: 100vh;
+}
+
+.c-main {
+    background: transparent;
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+// ============================================
+// MODERN SCROLLBAR
+// ============================================
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border-radius: 4px;
+    
+    &:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    }
 }

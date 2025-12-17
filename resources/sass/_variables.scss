@@ -1,19 +1,26 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #f0f4f8;
 
-// Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+// Typography - Modern font stack
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-// Colors
-$blue: #3490dc;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66d9b;
-$red: #e3342f;
-$orange: #f6993f;
-$yellow: #ffed4a;
-$green: #38c172;
-$teal: #4dc0b5;
-$cyan: #6cb2eb;
+// Modern Vibrant Technology Colors
+$blue: #3b82f6;        // Modern bright blue
+$indigo: #6366f1;      // Vibrant indigo
+$purple: #8b5cf6;      // Tech purple
+$pink: #ec4899;        // Hot pink
+$red: #ef4444;         // Modern red
+$orange: #f59e0b;      // Amber orange
+$yellow: #fbbf24;      // Warm yellow
+$green: #10b981;       // Emerald green
+$teal: #14b8a6;        // Modern teal
+$cyan: #06b6d4;        // Bright cyan
+
+// Additional brand colors
+$primary: #6366f1;     // Indigo as primary
+$secondary: #8b5cf6;   // Purple as secondary
+$accent: #3b82f6;      // Blue as accent
+$dark: #1e293b;        // Slate dark
+$light: #f8fafc;       // Slate light
