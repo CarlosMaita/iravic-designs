@@ -1,0 +1,271 @@
+name: 🔧 Ajuste Rápido
+description: Plantilla para solicitar ajustes rápidos y reparaciones menores en Iravic Designs
+title: "[QUICK-FIX] "
+labels: ["quick-fix", "ajuste-rápido"]
+assignees:
+  - CarlosMaita
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🔧 Ajuste Rápido
+        
+        Esta plantilla está diseñada para solicitar ajustes rápidos y reparaciones menores que no requieren un desarrollo extenso.
+        
+        **Usa esta plantilla para:**
+        - Correcciones visuales menores
+        - Ajustes de texto o contenido
+        - Pequeñas modificaciones de estilo
+        - Reparaciones rápidas que no afectan la lógica del negocio
+        
+        **Para problemas más complejos, usa:**
+        - 🐛 Reporte de Error - Para bugs que requieren investigación
+        - 🚀 Solicitud de Funcionalidad - Para nuevas características
+
+  - type: input
+    id: fix-title
+    attributes:
+      label: 🏷️ Título del Ajuste
+      description: Proporciona un título breve y descriptivo del ajuste necesario
+      placeholder: "Ej: Corregir alineación del botón de compra en móvil"
+    validations:
+      required: true
+
+  - type: textarea
+    id: fix-description
+    attributes:
+      label: 📋 Descripción del Ajuste o Reparación
+      description: Describe en detalle qué necesita ser ajustado o reparado
+      placeholder: |
+        Describe claramente el ajuste que necesitas:
+        
+        - ¿Qué elemento necesita ser modificado?
+        - ¿Cuál es el problema actual?
+        - ¿Cómo debería verse o comportarse?
+        - ¿En qué página o sección se encuentra?
+        
+        Ejemplo:
+        El botón "Agregar al Carrito" en la página de producto se ve desalineado en dispositivos móviles. 
+        Debería estar centrado y tener el mismo espaciado que en la versión de escritorio.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence-images
+    attributes:
+      label: 📸 Evidencia en Imágenes
+      description: Adjunta capturas de pantalla que muestren el problema y/o el resultado esperado
+      placeholder: |
+        Arrastra y suelta las imágenes aquí o pega las URLs:
+        
+        **Imagen del problema actual:**
+        [Adjuntar captura de pantalla mostrando el problema]
+        
+        **Imagen del resultado esperado (opcional):**
+        [Adjuntar referencia visual de cómo debería verse]
+        
+        **Imagen de diseño de referencia (opcional):**
+        [Si existe un diseño o mockup que seguir]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: fix-type
+    attributes:
+      label: 🔨 Tipo de Ajuste
+      description: ¿Qué tipo de ajuste rápido se necesita?
+      options:
+        - 🎨 Visual/Estilo - Cambios de diseño, CSS, alineación
+        - 📝 Contenido/Texto - Correcciones de texto, traducciones
+        - 🖼️ Imágenes/Media - Reemplazo o ajuste de imágenes
+        - 🔗 Enlaces - Corrección de enlaces rotos o incorrectos
+        - 📱 Responsive - Ajustes para diferentes dispositivos
+        - ⚡ Rendimiento - Optimizaciones menores
+        - ♿ Accesibilidad - Mejoras de accesibilidad
+        - 🔧 Configuración - Ajustes en configuraciones
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module-location
+    attributes:
+      label: 📍 Ubicación/Módulo
+      description: ¿Dónde se encuentra el elemento que necesita ajuste?
+      options:
+        - 🛍️ E-commerce / Catálogo de Productos
+        - 👥 Gestión de Clientes
+        - 📦 Control de Inventario
+        - 💳 Pagos y Facturación
+        - 📊 Reportes y Analytics
+        - 👨‍💼 Panel de Administración
+        - 🔐 Autenticación y Roles
+        - 🚚 Logística y Envíos
+        - 🎨 Frontend / UI/UX
+        - 🔌 API / Integraciones
+        - 📱 Aplicación Móvil
+        - 🔧 Configuración del Sistema
+        - 🏠 Página Principal / Home
+        - 📄 Páginas Estáticas
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: ⏱️ Urgencia
+      description: ¿Qué tan urgente es este ajuste?
+      options:
+        - 🔴 Urgente - Afecta la experiencia del usuario de manera significativa
+        - 🟡 Normal - Debería corregirse pronto pero no es crítico
+        - 🟢 Baja - Puede esperar, mejora cosmética
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device-scope
+    attributes:
+      label: 📱 Alcance del Dispositivo
+      description: ¿En qué dispositivos se presenta el problema?
+      options:
+        - 💻 Todos los dispositivos
+        - 🖥️ Solo escritorio (Desktop)
+        - 📱 Solo móvil (Mobile)
+        - 📲 Solo tablet
+        - 🔀 Desktop y Tablet
+        - 📱 Móvil y Tablet
+        - ❓ No estoy seguro
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: ❌ Comportamiento Actual
+      description: Describe cómo se ve o comporta actualmente
+      placeholder: |
+        Ejemplo:
+        - El botón está alineado a la izquierda en móvil
+        - El espaciado es inconsistente
+        - El color del texto no tiene suficiente contraste
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: ✅ Comportamiento Esperado
+      description: Describe cómo debería verse o comportarse después del ajuste
+      placeholder: |
+        Ejemplo:
+        - El botón debe estar centrado en todas las resoluciones
+        - El espaciado debe ser de 16px arriba y abajo
+        - El color del texto debe cumplir con WCAG AA (contraste mínimo 4.5:1)
+    validations:
+      required: true
+
+  - type: textarea
+    id: specific-location
+    attributes:
+      label: 🗺️ Ubicación Específica
+      description: Proporciona la URL o ruta específica donde se encuentra el problema
+      placeholder: |
+        **URL de la página:**
+        https://iravicdesigns.com/products/detalle-producto
+        
+        **Ruta del archivo (si la conoces):**
+        - resources/views/products/show.blade.php
+        - resources/js/components/ProductCard.vue
+        - public/css/custom.css
+        
+        **Selector CSS (si aplica):**
+        .product-card .btn-add-to-cart
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: 💡 Solución Sugerida (Opcional)
+      description: Si tienes una idea de cómo resolverlo, compártela aquí
+      placeholder: |
+        Si sabes cómo podría solucionarse, describe la solución:
+        
+        Ejemplo:
+        - Agregar la clase "text-center" al contenedor del botón
+        - Cambiar el padding de "10px 15px" a "16px 20px"
+        - Actualizar el color de #666 a #333
+        - Modificar el media query para pantallas menores a 768px
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Contexto Adicional
+      description: Cualquier información adicional que pueda ser útil
+      placeholder: |
+        - ¿Cuándo notaste este problema?
+        - ¿Afecta a todos los navegadores o solo a algunos?
+        - ¿Hay algún patrón específico?
+        - ¿Tienes acceso para hacer el cambio tú mismo?
+        - ¿Este ajuste es parte de un diseño más grande?
+
+  - type: checkboxes
+    id: browser-tested
+    attributes:
+      label: 🌐 Navegadores Probados
+      description: Marca los navegadores donde has verificado el problema
+      options:
+        - label: 🌐 Google Chrome
+          required: false
+        - label: 🦊 Mozilla Firefox
+          required: false
+        - label: 🧭 Safari
+          required: false
+        - label: 🌊 Microsoft Edge
+          required: false
+        - label: 📱 Navegador móvil (especificar en contexto adicional)
+          required: false
+
+  - type: dropdown
+    id: estimated-effort
+    attributes:
+      label: ⏰ Esfuerzo Estimado
+      description: ¿Cuánto esfuerzo consideras que requiere este ajuste?
+      options:
+        - ⚡ Muy rápido - Menos de 15 minutos
+        - 🏃 Rápido - 15-30 minutos
+        - 🚶 Moderado - 30 minutos a 1 hora
+        - 🤔 Requiere análisis - Más de 1 hora
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: ✔️ Confirmación
+      description: Confirma que has proporcionado la información necesaria
+      options:
+        - label: He proporcionado evidencia visual del problema
+          required: true
+        - label: He descrito claramente el comportamiento actual y esperado
+          required: true
+        - label: He verificado que este no es un bug complejo (usar plantilla de Bug si lo es)
+          required: true
+        - label: Entiendo que este es para ajustes rápidos y menores
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📚 Recursos de Ayuda
+        
+        - [Documentación del Proyecto](https://github.com/CarlosMaita/iravic-designs#readme)
+        - [Issues Existentes](https://github.com/CarlosMaita/iravic-designs/issues)
+        - [Guía de UI/UX](https://github.com/CarlosMaita/iravic-designs/blob/main/UI_DESIGN_GUIDE.md)
+        
+        **¿Necesitas ayuda más compleja?**
+        - 🐛 Usa "Reporte de Error" para bugs que requieren investigación
+        - 🚀 Usa "Solicitud de Funcionalidad" para cambios más grandes
+        
+        **¡Gracias por ayudar a mejorar Iravic Designs! 🔧**

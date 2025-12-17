@@ -4,6 +4,32 @@ Este directorio contiene las plantillas de issues configuradas para el repositor
 
 ## 📋 Plantillas Disponibles
 
+### 🔧 Ajuste Rápido (`quick_fix.yml`)
+
+Plantilla diseñada para solicitar ajustes rápidos y reparaciones menores que no requieren un desarrollo extenso.
+
+**Secciones incluidas:**
+- **Título y descripción del ajuste**: Información clara sobre qué necesita modificarse
+- **Evidencia en imágenes**: Capturas de pantalla del problema y resultado esperado
+- **Tipo de ajuste**: Clasificación (Visual/Estilo, Contenido, Imágenes, Enlaces, etc.)
+- **Ubicación/Módulo**: Dónde se encuentra el elemento a ajustar
+- **Urgencia**: Nivel de prioridad del ajuste
+- **Alcance del dispositivo**: En qué dispositivos se presenta el problema
+- **Comportamiento actual vs esperado**: Descripción clara del antes y después
+- **Ubicación específica**: URL, ruta de archivo, selectores CSS
+- **Solución sugerida**: Propuesta opcional de cómo resolverlo
+- **Navegadores probados**: Lista de verificación de navegadores
+- **Esfuerzo estimado**: Tiempo aproximado que tomará el ajuste
+
+**Casos de uso ideales:**
+- Correcciones visuales menores (alineación, espaciado, colores)
+- Ajustes de texto o contenido
+- Pequeñas modificaciones de estilo CSS
+- Corrección de enlaces rotos
+- Optimizaciones de responsive design
+- Mejoras de accesibilidad menores
+- Reparaciones que no afectan la lógica del negocio
+
 ### 🚀 Solicitud de Nueva Funcionalidad (`feature_request.yml`)
 
 Plantilla completa para proponer el desarrollo de nuevas funcionalidades en el sistema e-commerce Iravic Designs.
@@ -95,11 +121,13 @@ Archivo de configuración que:
 - `enhancement` + `nueva-funcionalidad` → Solicitudes de funcionalidades
 - `bug` + `needs-investigation` → Reportes de errores  
 - `documentation` + `enhancement` → Solicitudes de documentación
+- `quick-fix` + `ajuste-rápido` → Ajustes rápidos y reparaciones menores
 
 ### Prefijos de Títulos:
 - `[FEATURE]` → Nueva funcionalidad
 - `[BUG]` → Reporte de error
 - `[DOCS]` → Documentación
+- `[QUICK-FIX]` → Ajuste rápido
 
 ## 🔧 Mantenimiento
 
