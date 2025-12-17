@@ -185,9 +185,9 @@
                                             <p class="mb-1 text-muted small">{{ $notification->message }}</p>
                                             <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                         </div>
-                                        @if($notification->action_url)
+                                        @if($notification->action_url && filter_var($notification->action_url, FILTER_VALIDATE_URL) !== false || str_starts_with($notification->action_url, '/'))
                                             <div class="ms-3">
-                                                <a href="{{ $notification->action_url }}" class="btn btn-sm btn-outline-primary">Ver</a>
+                                                <a href="{{ url($notification->action_url) }}" class="btn btn-sm btn-outline-primary">Ver</a>
                                             </div>
                                         @endif
                                     </div>
