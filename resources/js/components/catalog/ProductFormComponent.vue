@@ -1028,8 +1028,8 @@
 
             successEventRegular(files, response) {
                 if (response.success && response.data) {
-                    // Add new images to the list
-                    response.data.forEach(imageData => {
+                    // Add new images to the list with proper position indexing
+                    response.data.forEach((imageData, index) => {
                         this.regularProductImages.push({
                             id: null, // Will be set when product is saved
                             url: imageData.url,
@@ -1038,7 +1038,7 @@
                             temp_code: imageData.temp_code,
                             combination_index: imageData.combination_index,
                             is_primary: false,
-                            position: this.regularProductImages.length
+                            position: this.regularProductImages.length + index
                         });
                     });
 
@@ -1052,37 +1052,42 @@
             removedFileEventRegular(file, error, xhr) {
                 if (!file.xhr) return;
                 
-                let response = JSON.parse(file.xhr.response);
-                if (!response.data || !response.data.length) return;
-                
-                let fileName = file.name;
-                
-                // Remove from server
-                axios({
-                    url: this.urlDeleteResource,
-                    method: 'post',
-                    headers: { 
-                        "X-CSRF-TOKEN": document
-                            .querySelector('input[name="_token"]')
-                            .getAttribute("value"),
-                    },
-                    data: {
-                        fileName: fileName,
-                        combinationIndex: 0
-                    }
-                }).then(response => {
-                    // Remove from local list
-                    this.regularProductImages = this.regularProductImages.filter(img => 
-                        img.url_original !== fileName
-                    );
+                try {
+                    let response = JSON.parse(file.xhr.response);
+                    if (!response.data || !response.data.length) return;
                     
-                    new Noty({
-                        text: 'Imagen removida con éxito.',
-                        type: 'success'
-                    }).show();
-                }).catch(error => {
-                    console.error('Error removing image:', error);
-                });
+                    let fileName = file.name;
+                    
+                    // Remove from server
+                    axios({
+                        url: this.urlDeleteResource,
+                        method: 'post',
+                        headers: { 
+                            "X-CSRF-TOKEN": document
+                                .querySelector('input[name="_token"]')
+                                .getAttribute("value"),
+                        },
+                        data: {
+                            fileName: fileName,
+                            combinationIndex: 0
+                        }
+                    }).then(response => {
+                        // Remove from local list
+                        this.regularProductImages = this.regularProductImages.filter(img => 
+                            img.url_original !== fileName
+                        );
+                        
+                        new Noty({
+                            text: 'Imagen removida con éxito.',
+                            type: 'success'
+                        }).show();
+                    }).catch(error => {
+                        console.error('Error removing image:', error);
+                    });
+                } catch (parseError) {
+                    console.error('Error parsing response:', parseError);
+                    // Still allow removal from dropzone even if we can't parse the response
+                }
             },
 
             removeImageRegular(e, image_id) {
