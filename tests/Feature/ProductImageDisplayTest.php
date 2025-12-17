@@ -46,9 +46,11 @@ class ProductImageDisplayTest extends TestCase
         );
 
         // Verify there are 3 columns (image, is_primary, action)
+        // Count columns by looking for either 'data:' or 'render:' at the start of column definitions
         preg_match('/columns:\s*\[(.*?)\]/s', $content, $matches);
         if (isset($matches[1])) {
-            $columnsCount = substr_count($matches[1], '{');
+            preg_match_all('/\{[\s\n]*(data:|render:)/', $matches[1], $columnMatches);
+            $columnsCount = count($columnMatches[0]);
             $this->assertEquals(3, $columnsCount, 'DataTable should have exactly 3 columns');
         }
     }
