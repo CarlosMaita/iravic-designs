@@ -61,7 +61,7 @@
                         </div>
                         <div>
                             <h6 class="card-title mb-1">Pedidos Realizados</h6>
-                            <h4 class="mb-0">0</h4>
+                            <h4 class="mb-0">{{ $ordersCount }}</h4>
                         </div>
                     </div>
                 </div>
@@ -107,17 +107,6 @@
                     <h5 class="card-title mb-3">Acciones Rápidas</h5>
                     <div class="row">
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <a href="{{ route('customer.profile') }}" class="text-decoration-none">
-                                <div class="d-flex align-items-center p-3 bg-light rounded">
-                                    <i class="ci-user text-primary me-3" style="font-size: 1.5rem;"></i>
-                                    <div>
-                                        <h6 class="mb-0">Ver Perfil</h6>
-                                        <small class="text-muted">Gestiona tu información</small>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-3">
                             <a href="{{ route('ecommerce.catalog') }}" class="text-decoration-none">
                                 <div class="d-flex align-items-center p-3 bg-light rounded">
                                     <i class="ci-store text-success me-3" style="font-size: 1.5rem;"></i>
@@ -151,17 +140,6 @@
                             </a>
                         </div>
                         <div class="col-md-3 col-sm-6 mb-3">
-                            <a href="{{ route('customer.favorites.index') }}" class="text-decoration-none">
-                                <div class="d-flex align-items-center p-3 bg-light rounded">
-                                    <i class="ci-heart text-danger me-3" style="font-size: 1.5rem;"></i>
-                                    <div>
-                                        <h6 class="mb-0">Mis Favoritos</h6>
-                                        <small class="text-muted">Productos guardados</small>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-3 col-sm-6 mb-3">
                             <a href="#" class="text-decoration-none">
                                 <div class="d-flex align-items-center p-3 bg-light rounded">
                                     <i class="ci-support text-info me-3" style="font-size: 1.5rem;"></i>
@@ -183,15 +161,49 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Actividad Reciente</h5>
-                    <div class="text-center py-4">
-                        <i class="ci-shopping-bag text-muted mb-3" style="font-size: 3rem;"></i>
-                        <h6 class="text-muted">No tienes pedidos aún</h6>
-                        <p class="text-muted">¡Explora nuestra tienda y realiza tu primera compra!</p>
-                        <a href="{{ route('ecommerce.catalog') }}" class="btn btn-primary">
-                            <i class="ci-store me-2"></i>Ir a la Tienda
-                        </a>
-                    </div>
+                    <h5 class="card-title mb-3">Actividad Reciente</h5>
+                    @if($recentNotifications->count() > 0)
+                        <div class="list-group list-group-flush">
+                            @foreach($recentNotifications as $notification)
+                                <div class="list-group-item px-0 {{ $notification->is_read ? 'opacity-75' : '' }}">
+                                    <div class="d-flex align-items-start">
+                                        <div class="me-3">
+                                            @if($notification->type === 'order_created')
+                                                <i class="ci-shopping-bag text-primary" style="font-size: 1.5rem;"></i>
+                                            @elseif($notification->type === 'payment_submitted')
+                                                <i class="ci-credit-card text-info" style="font-size: 1.5rem;"></i>
+                                            @elseif($notification->type === 'payment_confirmed')
+                                                <i class="ci-check-circle text-success" style="font-size: 1.5rem;"></i>
+                                            @elseif($notification->type === 'shipped')
+                                                <i class="ci-delivery text-warning" style="font-size: 1.5rem;"></i>
+                                            @else
+                                                <i class="ci-bell text-secondary" style="font-size: 1.5rem;"></i>
+                                            @endif
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ $notification->title }}</h6>
+                                            <p class="mb-1 text-muted small">{{ $notification->message }}</p>
+                                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                        </div>
+                                        @if($notification->action_url)
+                                            <div class="ms-3">
+                                                <a href="{{ $notification->action_url }}" class="btn btn-sm btn-outline-primary">Ver</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="ci-shopping-bag text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h6 class="text-muted">No tienes pedidos aún</h6>
+                            <p class="text-muted">¡Explora nuestra tienda y realiza tu primera compra!</p>
+                            <a href="{{ route('ecommerce.catalog') }}" class="btn btn-primary">
+                                <i class="ci-store me-2"></i>Ir a la Tienda
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
