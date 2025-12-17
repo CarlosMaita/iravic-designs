@@ -80,25 +80,59 @@
 
         /**
          * Inicializa datatable de imagenes de un producto
+         * Espera a que el elemento exista en el DOM antes de inicializar
          */
-        DATATABLE_IMAGES.DataTable({
-            fixedHeader: true,
-            processing: false,
-            responsive: true,
-            serverSide: true,
-            ajax: `${URL_PRODUCT_IMAGES}?producto={{ $product->id }}`,
-            pageLength: 25,
-            columns: [
-                {
-                    render: function (data, type, row) {
-                        var img = "<img src=\"" + row.url_img + "\" style=\"max-width:150px;\"alt=\"\">";
-                        return (img);
-                    }
-                },
-                {data: 'is_primary', name: 'is_primary', orderable: false, searchable: false},
-                {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
+        function initializeImagesDataTable() {
+            // Verificar si el elemento existe antes de inicializar
+            if (DATATABLE_IMAGES.length > 0 && !$.fn.DataTable.isDataTable(DATATABLE_IMAGES)) {
+                DATATABLE_IMAGES.DataTable({
+                    fixedHeader: true,
+                    processing: false,
+                    responsive: true,
+                    serverSide: true,
+                    ajax: `${URL_PRODUCT_IMAGES}?producto={{ $product->id }}`,
+                    pageLength: 25,
+                    columns: [
+                        {
+                            render: function (data, type, row) {
+                                var img = "<img src=\"" + row.url_img + "\" style=\"max-width:150px;\"alt=\"\">";
+                                return (img);
+                            }
+                        },
+                        {data: 'is_primary', name: 'is_primary', orderable: false, searchable: false},
+                        {data: 'action', name: 'action', orderable: false, searchable: false}
+                    ]
+                });
+            }
+        }
+
+        // Intentar inicializar inmediatamente
+        initializeImagesDataTable();
+
+        // Si no se pudo inicializar (elemento no existe), esperar a que Vue monte el componente
+        if (!$.fn.DataTable.isDataTable(DATATABLE_IMAGES)) {
+            // Usar un MutationObserver para detectar cuando el elemento aparece en el DOM
+            const observer = new MutationObserver(function(mutations) {
+                if (DATATABLE_IMAGES.length > 0) {
+                    initializeImagesDataTable();
+                    observer.disconnect(); // Dejar de observar una vez inicializado
+                }
+            });
+
+            // Observar cambios en el contenedor del tab de multimedia
+            const tabContent = document.getElementById('multimedia');
+            if (tabContent) {
+                observer.observe(tabContent, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+
+            // También intentar inicializar después de un breve delay como fallback
+            setTimeout(function() {
+                initializeImagesDataTable();
+            }, 500);
+        }
 
         const handlerBeforeUnload = function (event) {
             event.preventDefault();
