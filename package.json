@@ -113,6 +113,8 @@
         "eslint-plugin-unicorn": "^20.0.0",
         "eslint-plugin-vue": "^7.0.0",
         "foreach-cli": "^1.8.1",
+        "icss-replace-symbols": "^1.1.0",
+        "icss-utils": "^5.1.0",
         "jquery": "^3.2",
         "js-beautify": "^1.11.0",
         "jsdom": "^16.2.2",
