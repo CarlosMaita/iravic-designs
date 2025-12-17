@@ -39,6 +39,7 @@ class Customer extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'google_verified' => 'boolean',
     ];
 
     protected static function boot()
