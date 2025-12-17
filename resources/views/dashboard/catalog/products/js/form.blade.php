@@ -95,6 +95,7 @@
                         return (img);
                     }
                 },
+                {data: 'is_primary', name: 'is_primary', orderable: false, searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -252,6 +253,57 @@
                     }
                 });
             }).catch(swal.noop);
+        });
+
+        /**
+         * Captura evento para establecer una imagen como principal
+         * Realiza peticion HTTP
+         */
+        $('body').on('click', 'tbody .set-primary-image', function (e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            let token = $("input[name=_token]").val();
+            let url = "{{ route('producto-imagen.set-primary') }}";
+            
+            $.ajax({
+                url: url,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                datatype: 'json',
+                data: { image_id: id },
+                success: function (response) {
+                    if (response.success) {
+                        DATATABLE_IMAGES.DataTable().ajax.reload();
+                        new Noty({
+                            text: response.message,
+                            type: 'success'
+                        }).show();
+                    } else if (response.message) {
+                        new Noty({
+                            text: response.message,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "No se puede establecer la imagen como principal en este momento.",
+                            type: 'error'
+                        }).show();
+                    }
+                },
+                error: function (e) {
+                    if (e.responseJSON && e.responseJSON.message) {
+                        new Noty({
+                            text: e.responseJSON.message,
+                            type: 'error'
+                        }).show();
+                    } else {
+                        new Noty({
+                            text: "No se puede establecer la imagen como principal en este momento.",
+                            type: 'error'
+                        }).show();
+                    }
+                }
+            });
         });
 
 
