@@ -86,7 +86,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Configurar PHP con extensiones necesarias
       # Ajusta 'php-version' según tu versión de PHP en producción
@@ -220,7 +220,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Desplegar usando SSH
       # 
@@ -274,7 +274,7 @@ jobs:
             sudo php artisan cache:clear
             sudo php artisan route:clear
             sudo php artisan view:clear
-            sudo php artisan migrate --force
+            sudo php artisan migrate --force --no-interaction
             sudo php artisan optimize
 
 # =============================================================================
