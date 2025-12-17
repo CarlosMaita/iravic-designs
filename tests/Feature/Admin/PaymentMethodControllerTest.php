@@ -21,7 +21,11 @@ class PaymentMethodControllerTest extends TestCase
         parent::setUp();
         
         // Create an admin user
-        $this->admin = User::factory()->create();
+        $this->admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'password' => bcrypt('password'),
+        ]);
     }
 
     /** @test */
