@@ -111,7 +111,8 @@ Nuevas secciones de troubleshooting:
 
 ## Estadísticas
 
-- **Líneas añadidas**: ~475
+- **Líneas totales añadidas**: 608 (476 en TESTING.md, 133 en TESTING_UPDATES_ES.md)
+- **Líneas añadidas a TESTING.md**: 476
 - **Ejemplos de código**: 12+ ejemplos completos
 - **Pruebas documentadas**: 6 nuevas pruebas agregadas
 - **Secciones nuevas**: 5 secciones principales agregadas
