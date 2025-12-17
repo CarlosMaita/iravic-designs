@@ -22,6 +22,9 @@ class StoreController extends Controller
             $stores = $this->storeRepository->allQuery();
             return datatables()->eloquent($stores)
                     ->addIndexColumn()
+                    ->editColumn('type.name', function($row){
+                        return $row->type ? $row->type->name : '';
+                    })
                     ->addColumn('action', function($row){
                         $btn = '';
 

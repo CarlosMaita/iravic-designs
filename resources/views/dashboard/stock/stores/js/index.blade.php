@@ -3,10 +3,13 @@
         const DATATABLE_RESOURCE = $("#datatable_stores");
         const URL_RESOURCE = "{{ route('depositos.index') }}";
 
-        $('select').select2({
-            allowClear: true,
-            placeholder: "Seleccionar"
-        });
+        // Initialize select2 only if available
+        if (typeof $.fn.select2 !== 'undefined') {
+            $('select').select2({
+                allowClear: true,
+                placeholder: "Seleccionar"
+            });
+        }
 
         initDataTable();  
 
