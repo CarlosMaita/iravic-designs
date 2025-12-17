@@ -36,7 +36,9 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required'
+            'name' => 'required',
+            'notify_new_order' => 'nullable|boolean',
+            'notify_new_payment' => 'nullable|boolean',
         ];
 
         if ($this->isMethod('POST')) {
@@ -59,6 +61,12 @@ class UserRequest extends FormRequest
     public function withValidator($validator)
     {
         if (!$validator->fails()) {
+            // Normalize checkbox values to boolean
+            $this->merge([
+                'notify_new_order' => $this->has('notify_new_order') ? true : false,
+                'notify_new_payment' => $this->has('notify_new_payment') ? true : false,
+            ]);
+
             if ($this->isMethod('POST')) {
                 $this->merge(['password' => Hash::make($this->password)]);
                 $this->merge(['deleted_at' => null]);
