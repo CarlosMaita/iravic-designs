@@ -15,18 +15,20 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
+        // NOTE: These are EXAMPLE payment methods with PLACEHOLDER instructions.
+        // Update the instructions with your actual payment details after deployment.
         $methods = [
             [
                 'name' => 'Pago Móvil',
                 'code' => 'pago_movil',
-                'instructions' => 'Realizar pago móvil al número: 0414-1234567 | Banco Mercantil | V-12345678',
+                'instructions' => 'EJEMPLO: Realizar pago móvil al número: 0414-XXXXXXX | Banco Mercantil | V-XXXXXXXX',
                 'is_active' => true,
                 'sort_order' => 1,
             ],
             [
                 'name' => 'Transferencia',
                 'code' => 'transferencia',
-                'instructions' => 'Realizar transferencia a la cuenta: 0105-XXXX-XXXX-XXXX | Banco Mercantil',
+                'instructions' => 'EJEMPLO: Realizar transferencia a la cuenta: 0105-XXXX-XXXX-XXXX | Banco Mercantil',
                 'is_active' => true,
                 'sort_order' => 2,
             ],
@@ -40,14 +42,14 @@ class PaymentMethodSeeder extends Seeder
             [
                 'name' => 'Binance',
                 'code' => 'binance',
-                'instructions' => 'Realizar el pago a: usuario@ejemplo.com',
+                'instructions' => 'EJEMPLO: Realizar el pago a: usuario@ejemplo.com',
                 'is_active' => true,
                 'sort_order' => 4,
             ],
             [
                 'name' => 'PayPal',
                 'code' => 'paypal',
-                'instructions' => 'Realizar el pago a: paypal@ejemplo.com',
+                'instructions' => 'EJEMPLO: Realizar el pago a: paypal@ejemplo.com',
                 'is_active' => true,
                 'sort_order' => 5,
             ],

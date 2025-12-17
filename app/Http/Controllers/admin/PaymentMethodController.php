@@ -42,7 +42,7 @@ class PaymentMethodController extends Controller
             'name' => $request->name,
             'code' => $request->code,
             'instructions' => $request->instructions,
-            'is_active' => $request->has('is_active'),
+            'is_active' => $request->boolean('is_active'),
             'sort_order' => $request->sort_order ?? 0,
         ]);
 
@@ -75,7 +75,7 @@ class PaymentMethodController extends Controller
             'name' => $request->name,
             'code' => $request->code,
             'instructions' => $request->instructions,
-            'is_active' => $request->has('is_active'),
+            'is_active' => $request->boolean('is_active'),
             'sort_order' => $request->sort_order ?? 0,
         ]);
 

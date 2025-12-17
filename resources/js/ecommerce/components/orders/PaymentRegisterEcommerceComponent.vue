@@ -138,7 +138,7 @@ export default {
         this.paymentMethods = data;
       } catch (error) {
         console.error('Error fetching payment methods:', error);
-        this.toast('error', 'Error al cargar métodos de pago');
+        this.toast('error', 'No se pudieron cargar los métodos de pago. Por favor, recargue la página.');
       }
     },
     onPaymentMethodChange() {
