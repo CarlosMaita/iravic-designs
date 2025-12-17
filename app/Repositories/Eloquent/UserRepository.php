@@ -28,7 +28,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     /**
-     * @return 
+     * @param bool $isSuperAdmin
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function allUsersQuery($isSuperAdmin = false)
     {
