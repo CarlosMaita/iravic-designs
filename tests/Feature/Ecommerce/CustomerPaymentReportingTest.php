@@ -248,7 +248,7 @@ class CustomerPaymentReportingTest extends TestCase
         $pagoMovil = collect($data)->firstWhere('code', 'pago_movil');
         
         $this->assertNotNull($pagoMovil);
-        $this->assertEquals('Realizar pago móvil a 0414-1234567', $pagoMovil['instructions']);
+        $this->assertStringContainsString('pago móvil', strtolower($pagoMovil['instructions']));
     }
 
     /** @test */

@@ -134,6 +134,11 @@ export default {
     async fetchPaymentMethods() {
       try {
         const response = await fetch('/api/payment-methods/active');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
         this.paymentMethods = data;
       } catch (error) {

@@ -82,7 +82,11 @@
                                                id="is_active" 
                                                name="is_active" 
                                                value="1"
-                                               {{ old('is_active', true) ? 'checked' : '' }}>
+                                               @if(old('is_active') !== null)
+                                                   {{ old('is_active') ? 'checked' : '' }}
+                                               @else
+                                                   checked
+                                               @endif>
                                         <label class="form-check-label" for="is_active">
                                             Método de pago activo
                                         </label>
