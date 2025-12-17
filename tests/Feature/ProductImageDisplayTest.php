@@ -7,112 +7,159 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * Test to validate that product images are displayed correctly in the admin panel.
- * This test validates the fix for the issue where images were not showing in the Multimedia tab.
+ * This test validates that regular products now use vue2-dropzone for async image uploads.
  */
 class ProductImageDisplayTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * Test that the product edit page loads successfully.
-     * This is a basic smoke test to ensure the page is accessible.
+     * Test that the Vue component has vue-dropzone for regular products.
+     * Validates that the migration from Dropzone.js to vue2-dropzone is complete.
      *
      * @test
      */
-    public function product_edit_page_contains_images_table()
-    {
-        // This test validates that the HTML structure for the images table exists
-        // The actual fix is in the JavaScript DataTable initialization
-        $this->assertTrue(true, 'Product images DataTable structure is defined in ProductFormComponent.vue lines 123-134');
-    }
-
-    /**
-     * Test that DataTable columns are correctly configured.
-     * Validates that the is_primary column was added to the DataTable initialization.
-     *
-     * @test
-     */
-    public function datatable_has_three_columns_including_is_primary()
-    {
-        // Read the form.blade.php file to validate the DataTable configuration
-        $formBladePath = resource_path('views/dashboard/catalog/products/js/form.blade.php');
-        $content = file_get_contents($formBladePath);
-
-        // Verify the is_primary column exists in the DataTable columns definition
-        $this->assertStringContainsString(
-            "{data: 'is_primary', name: 'is_primary', orderable: false, searchable: false}",
-            $content,
-            'DataTable should include is_primary column configuration'
-        );
-
-        // Verify there are 3 columns (image, is_primary, action)
-        // Count columns by looking for either 'data:' or 'render:' at the start of column definitions
-        preg_match('/columns:\s*\[(.*?)\]/s', $content, $matches);
-        if (isset($matches[1])) {
-            preg_match_all('/\{[\s\n]*(data:|render:)/', $matches[1], $columnMatches);
-            $columnsCount = count($columnMatches[0]);
-            $this->assertEquals(3, $columnsCount, 'DataTable should have exactly 3 columns');
-        }
-    }
-
-    /**
-     * Test that the event handler for setting primary images exists.
-     *
-     * @test
-     */
-    public function event_handler_for_set_primary_image_exists()
-    {
-        // Read the form.blade.php file
-        $formBladePath = resource_path('views/dashboard/catalog/products/js/form.blade.php');
-        $content = file_get_contents($formBladePath);
-
-        // Verify the event handler for .set-primary-image exists
-        $this->assertStringContainsString(
-            "\$('body').on('click', 'tbody .set-primary-image'",
-            $content,
-            'Event handler for set-primary-image button should exist'
-        );
-
-        // Verify the route used in the event handler
-        $this->assertStringContainsString(
-            "{{ route('producto-imagen.set-primary') }}",
-            $content,
-            'Event handler should use the producto-imagen.set-primary route'
-        );
-    }
-
-    /**
-     * Test that the ProductImageController returns is_primary column.
-     * This validates the backend is configured correctly.
-     *
-     * @test
-     */
-    public function product_image_controller_returns_is_primary_column()
-    {
-        $controllerPath = app_path('Http/Controllers/admin/catalog/ProductImageController.php');
-        $content = file_get_contents($controllerPath);
-
-        // Verify the is_primary column is added to the DataTables response
-        $this->assertStringContainsString(
-            "->addColumn('is_primary'",
-            $content,
-            'ProductImageController should add is_primary column to DataTables response'
-        );
-    }
-
-    /**
-     * Test that the table header in Vue component matches DataTable columns.
-     *
-     * @test
-     */
-    public function vue_component_table_header_matches_datatable_columns()
+    public function vue_component_has_dropzone_for_regular_products()
     {
         $vueComponentPath = resource_path('js/components/catalog/ProductFormComponent.vue');
         $content = file_get_contents($vueComponentPath);
 
-        // Verify the table has 3 header columns: Foto, Principal, Acciones
-        $this->assertStringContainsString('<th scope="col">Foto</th>', $content);
-        $this->assertStringContainsString('<th scope="col">Principal</th>', $content);
-        $this->assertStringContainsString('<th scope="col">Acciones</th>', $content);
+        // Verify v-dropzone component exists for regular products
+        $this->assertStringContainsString(
+            'ref="dropzone-regular"',
+            $content,
+            'Vue component should have v-dropzone with ref="dropzone-regular"'
+        );
+
+        // Verify dropzone options are configured for regular products
+        $this->assertStringContainsString(
+            ':options="dropzoneOptionsRegular"',
+            $content,
+            'Vue component should have dropzoneOptionsRegular configured'
+        );
+    }
+
+    /**
+     * Test that regularProductImages data property exists.
+     * Validates that the component manages regular product images in Vue.
+     *
+     * @test
+     */
+    public function vue_component_has_regular_product_images_data()
+    {
+        $vueComponentPath = resource_path('js/components/catalog/ProductFormComponent.vue');
+        $content = file_get_contents($vueComponentPath);
+
+        // Verify regularProductImages data property exists
+        $this->assertStringContainsString(
+            'regularProductImages:',
+            $content,
+            'Vue component should have regularProductImages data property'
+        );
+
+        // Verify images are displayed in a grid
+        $this->assertStringContainsString(
+            'v-for="(image, index_image) in regularProductImages"',
+            $content,
+            'Vue component should display regularProductImages in a v-for loop'
+        );
+    }
+
+    /**
+     * Test that async upload handlers exist for regular products.
+     *
+     * @test
+     */
+    public function vue_component_has_async_upload_handlers()
+    {
+        $vueComponentPath = resource_path('js/components/catalog/ProductFormComponent.vue');
+        $content = file_get_contents($vueComponentPath);
+
+        // Verify event handlers for vue-dropzone exist
+        $this->assertStringContainsString(
+            '@vdropzone-sending-multiple="sendingEventRegular"',
+            $content,
+            'Vue component should have sendingEventRegular handler'
+        );
+
+        $this->assertStringContainsString(
+            '@vdropzone-success-multiple="successEventRegular"',
+            $content,
+            'Vue component should have successEventRegular handler'
+        );
+
+        $this->assertStringContainsString(
+            '@vdropzone-removed-file="removedFileEventRegular"',
+            $content,
+            'Vue component should have removedFileEventRegular handler'
+        );
+    }
+
+    /**
+     * Test that Vue methods for image management exist.
+     *
+     * @test
+     */
+    public function vue_component_has_image_management_methods()
+    {
+        $vueComponentPath = resource_path('js/components/catalog/ProductFormComponent.vue');
+        $content = file_get_contents($vueComponentPath);
+
+        // Verify methods exist for managing regular product images
+        $this->assertStringContainsString(
+            'removeImageRegular',
+            $content,
+            'Vue component should have removeImageRegular method'
+        );
+
+        $this->assertStringContainsString(
+            'setPrimaryImageRegular',
+            $content,
+            'Vue component should have setPrimaryImageRegular method'
+        );
+    }
+
+    /**
+     * Test that the ProductImageController returns url_img in response.
+     * This validates that images can be displayed immediately after upload.
+     *
+     * @test
+     */
+    public function product_image_controller_returns_url_img()
+    {
+        $controllerPath = app_path('Http/Controllers/admin/catalog/ProductImageController.php');
+        $content = file_get_contents($controllerPath);
+
+        // Verify url_img is included in the response
+        $this->assertStringContainsString(
+            "'url_img' => \$productImage->url_img",
+            $content,
+            'ProductImageController should return url_img in the response'
+        );
+    }
+
+    /**
+     * Test that form submission is simplified (no Dropzone.js).
+     *
+     * @test
+     */
+    public function form_submission_is_simplified()
+    {
+        $formBladePath = resource_path('views/dashboard/catalog/products/js/form.blade.php');
+        $content = file_get_contents($formBladePath);
+
+        // Verify Dropzone.js initialization is removed
+        $this->assertStringNotContainsString(
+            'new Dropzone("#myDropzone"',
+            $content,
+            'form.blade.php should not have Dropzone.js initialization'
+        );
+
+        // Verify DataTable initialization is removed
+        $this->assertStringNotContainsString(
+            'DATATABLE_IMAGES.DataTable',
+            $content,
+            'form.blade.php should not have DataTable initialization'
+        );
     }
 }
