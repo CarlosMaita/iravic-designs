@@ -28,11 +28,24 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
             
-            // Check if customer exists with this email
-            $customer = Customer::where('email', $googleUser->email)->first();
+            // Check if customer exists with this email (including soft-deleted)
+            $customer = Customer::withTrashed()->where('email', $googleUser->email)->first();
             
             if ($customer) {
-                // Customer exists - check if Google is verified
+                // Check if customer is soft-deleted
+                if ($customer->trashed()) {
+                    // Restore the customer and update Google info
+                    $customer->restore();
+                    $customer->google_verified = true;
+                    $customer->google_id = $googleUser->id;
+                    $customer->save();
+                    
+                    // Log the customer in
+                    Auth::guard('customer')->login($customer);
+                    return redirect()->route('customer.dashboard')->with('success', '¡Bienvenido de vuelta! Tu cuenta ha sido reactivada.');
+                }
+                
+                // Customer exists and is active - check if Google is verified
                 if (!$customer->google_verified) {
                     // This is an existing customer trying to login with Google for the first time
                     // Update their Google verification status
@@ -43,7 +56,7 @@ class GoogleController extends Controller
                 
                 // Log the customer in
                 Auth::guard('customer')->login($customer);
-                return redirect()->route('customer.dashboard')->with('success', 'Bienvenido de vuelta!');
+                return redirect()->route('customer.dashboard')->with('success', '¡Bienvenido de vuelta!');
             } else {
                 // Customer doesn't exist - redirect to registration with Google data
                 Session::put('google_user', [
@@ -96,28 +109,59 @@ class GoogleController extends Controller
             'password.confirmed' => 'La confirmación de contraseña no coincide.',
         ]);
 
-        // Check if email is already taken by another user
-        $existingCustomer = Customer::where('email', $googleUser['email'])->first();
+        // Check if email is already taken (including soft-deleted customers)
+        $existingCustomer = Customer::withTrashed()->where('email', $googleUser['email'])->first();
+        
         if ($existingCustomer) {
-            return redirect()->route('customer.login.form')->with('error', 'Ya existe una cuenta con este correo electrónico. Por favor, inicia sesión normalmente.');
+            // Clear Google session data to prevent retry
+            Session::forget('google_user');
+            
+            if ($existingCustomer->trashed()) {
+                // Customer was soft-deleted - restore and update
+                $existingCustomer->restore();
+                $existingCustomer->name = $request->name;
+                $existingCustomer->password = Hash::make($request->password);
+                $existingCustomer->google_verified = true;
+                $existingCustomer->google_id = $googleUser['google_id'];
+                $existingCustomer->save();
+                
+                // Log the customer in
+                Auth::guard('customer')->login($existingCustomer);
+                return redirect()->route('customer.dashboard')->with('success', '¡Bienvenido de vuelta! Tu cuenta ha sido reactivada.');
+            } else {
+                // Customer exists and is active - they should login instead
+                return redirect()->route('customer.login.form')->with('error', 'Ya existe una cuenta con este correo electrónico. Por favor, inicia sesión normalmente.');
+            }
         }
 
-        // Create new customer
-        $customer = Customer::create([
-            'name' => $request->name,
-            'email' => $googleUser['email'],
-            'password' => Hash::make($request->password),
-            'google_verified' => true,
-            'google_id' => $googleUser['google_id'],
-            'qualification' => 'Bueno', // Default qualification
-        ]);
+        try {
+            // Create new customer
+            $customer = Customer::create([
+                'name' => $request->name,
+                'email' => $googleUser['email'],
+                'password' => Hash::make($request->password),
+                'google_verified' => true,
+                'google_id' => $googleUser['google_id'],
+                'qualification' => 'Bueno', // Default qualification
+            ]);
 
-        // Log the customer in
-        Auth::guard('customer')->login($customer);
-        
-        // Clear Google session data
-        Session::forget('google_user');
-        
-        return redirect()->route('customer.dashboard')->with('success', '¡Bienvenido! Tu cuenta ha sido creada exitosamente.');
+            // Log the customer in
+            Auth::guard('customer')->login($customer);
+            
+            // Clear Google session data
+            Session::forget('google_user');
+            
+            return redirect()->route('customer.dashboard')->with('success', '¡Bienvenido! Tu cuenta ha sido creada exitosamente.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle duplicate key error gracefully
+            if ($e->getCode() == 23000) {
+                // Clear Google session data
+                Session::forget('google_user');
+                return redirect()->route('customer.login.form')->with('error', 'Ya existe una cuenta con este correo electrónico. Por favor, inicia sesión normalmente.');
+            }
+            
+            // Re-throw other exceptions
+            throw $e;
+        }
     }
 }
