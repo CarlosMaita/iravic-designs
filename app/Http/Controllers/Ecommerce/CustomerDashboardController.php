@@ -27,7 +27,16 @@ class CustomerDashboardController extends Controller
     {
         $customer = Auth::guard('customer')->user();
         
-        return view('ecommerce.dashboard.index', compact('customer'));
+        // Get customer statistics
+        $ordersCount = $customer->orders()->count();
+        
+        // Get recent notifications (last 5)
+        $recentNotifications = $customer->notifications()
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        
+        return view('ecommerce.dashboard.index', compact('customer', 'ordersCount', 'recentNotifications'));
     }
 
     /**
