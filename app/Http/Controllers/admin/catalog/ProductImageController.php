@@ -227,4 +227,5 @@ class ProductImageController extends Controller
     }
 
     
-    
+}
+
