@@ -269,7 +269,7 @@
                 url: url,
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
-                datatype: 'json',
+                dataType: 'json',
                 data: { image_id: id },
                 success: function (response) {
                     if (response.success) {
