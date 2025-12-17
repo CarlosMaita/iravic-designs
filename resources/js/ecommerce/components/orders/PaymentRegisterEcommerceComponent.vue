@@ -29,7 +29,10 @@
               <p class="mb-1"><small>Equivalente aproximado: <strong>Bs. {{ (remaining * exchangeRate).toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</strong></small></p>
               <small class="text-muted">
                 <i class="fas fa-info-circle"></i>
-                Esta es una tasa referencial. Para pagos en bolívares, use la tasa oficial del BCV del día del pago.
+                Para pagos en bolívares, consulte la tasa oficial del BCV en 
+                <a href="https://www.bcv.org.ve/" target="_blank" rel="noopener noreferrer" class="alert-link">www.bcv.org.ve</a>.
+                <br>
+                <strong>Cálculo:</strong> Monto a pagar en Bs = ${{ remaining.toFixed(2) }} × Tasa BCV en Bs/$
               </small>
             </div>
 
