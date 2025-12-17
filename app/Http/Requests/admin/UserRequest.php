@@ -63,8 +63,8 @@ class UserRequest extends FormRequest
         if (!$validator->fails()) {
             // Normalize checkbox values to boolean
             $this->merge([
-                'notify_new_order' => $this->has('notify_new_order') ? true : false,
-                'notify_new_payment' => $this->has('notify_new_payment') ? true : false,
+                'notify_new_order' => $this->has('notify_new_order'),
+                'notify_new_payment' => $this->has('notify_new_payment'),
             ]);
 
             if ($this->isMethod('POST')) {

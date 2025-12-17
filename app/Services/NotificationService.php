@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\User;
 use App\Mail\WelcomeCustomer;
 use App\Mail\OrderCreatedNotification;
 use App\Mail\PaymentConfirmedNotification;
@@ -91,7 +92,7 @@ class NotificationService
      */
     private function notifyAdmins(string $notificationField, callable $callback)
     {
-        $admins = \App\Models\User::where($notificationField, true)
+        $admins = User::where($notificationField, true)
             ->select(['id', 'email', $notificationField])
             ->get();
 
