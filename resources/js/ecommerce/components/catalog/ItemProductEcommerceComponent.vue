@@ -5,7 +5,7 @@
             <product-card-skeleton-ecommerce-component />
         </div>
         <div v-show="imageLoaded" class="animate-underline hover-effect-opacity">
-            <div class="position-relative mb-3 border border-black overflow-hidden rounded-[8px]">
+            <div class="position-relative mb-3 border border-dark overflow-hidden rounded">
             <button
                 v-if="isAuthenticated"
                 type="button"
