@@ -36,7 +36,7 @@
     <header class="navbar navbar-expand-lg bg-light fixed-top shadow-sm">
         <div class="container">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ route('customer.dashboard') }}">
+            <a class="navbar-brand" href="{{ route('ecommerce.home') }}">
                 <h6 class="m-0 text-uppercase" style="font-family: Roboto, sans-serif; letter-spacing: 3px;">Iravic Designs</h6>
             </a>
 
