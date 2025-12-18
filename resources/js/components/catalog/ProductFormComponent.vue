@@ -5,9 +5,6 @@
                 <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
             </li>
             <li v-if="is_regular" class="nav-item">
-                <a class="nav-link" id="multimedia-tab" data-toggle="tab" href="#multimedia" role="tab" aria-controls="multimedia" aria-selected="true">Multimedia</a>
-            </li>
-            <li v-if="is_regular" class="nav-item">
                 <a class="nav-link" id="stocks-tab" data-toggle="tab" href="#stocks" role="tab" aria-controls="stocks" aria-selected="false">Atributos y Stocks</a>
             </li>
             <li v-if="!is_regular" class="nav-item">
@@ -118,8 +115,8 @@
                 <!-- hidden input -->
                 <input type="hidden" name="temp_code" :value="temp_code">
             </div>
-            <!--  -->
-            <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
+            <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
+                <!-- Multimedia section -->
                 <div class="mt-3">
                     <v-dropzone 
                         ref="dropzone-regular"
@@ -152,10 +149,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade" id="stocks" role="tabpanel" aria-labelledby="stocks-tab">
-                <!-- stock with store -->
-                <div class="row mt-3"> 
+
+                <!-- Stock with store -->
+                <div class="row mt-4"> 
                     <div v-for="(product_store) in product_stores" :key="`store-${product_store.store_id}`" class="col-md-4">
                         <div class="form-group">
                             <label :for="`store-${product_store.store_id}`">{{ product_store.store_name }}</label>
@@ -166,7 +162,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- end stock with store -->
             </div>
 
             <div class="tab-pane fade" id="combinations" role="tabpanel" aria-labelledby="combinations-tab">
