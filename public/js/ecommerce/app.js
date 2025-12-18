@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -11959,6 +11959,25 @@ throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\
 /***/ (function(module, exports) {
 
 throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.alert-info[data-v-a3951f10] {\n  background-color: #e7f3ff;\n  border-color: #b3d9ff;\n}\n.alert-warning[data-v-a3951f10] {\n  background-color: #fff4e5;\n  border-color: #ffd699;\n}\n", ""]);
+
+// exports
+
 
 /***/ }),
 
@@ -57614,7 +57633,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 0:
+/***/ 1:
 /*!*********************************************!*\
   !*** multi ./resources/js/ecommerce/app.js ***!
   \*********************************************/
