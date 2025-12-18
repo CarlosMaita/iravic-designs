@@ -119,6 +119,7 @@
                 <!-- Multimedia section -->
                 <div class="mt-3">
                     <v-dropzone 
+                        v-if="mounted"
                         ref="dropzone-regular"
                         id="dropzone-regular"
                         :options="dropzoneOptionsRegular"
@@ -214,7 +215,9 @@
                         <!-- selector de images de combinacion -->
                         <div class="col-md-12">
                             <div class="form-group">
-                                <v-dropzone :ref="`dropzone-${index}`" 
+                                <v-dropzone 
+                                    v-if="mounted"
+                                    :ref="`dropzone-${index}`" 
                                     :id="`dropzone-${index}`"
                                     :options="dropzoneOptions"
                                     @vdropzone-sending-multiple="sendingEvent"
