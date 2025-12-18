@@ -174,7 +174,7 @@
       </div>
 
       <!-- Main navigation that turns into offcanvas on screens < 992px wide (lg breakpoint) -->
-      <div class="collapse navbar-stuck-hide" id="stuckNav">
+      <div class="collapse navbar-stuck-hide" id="stuckNav" style="display: none;">
         <nav class="offcanvas offcanvas-start" id="navbarNav" tabindex="-1" aria-labelledby="navbarNavLabel">
           <div class="offcanvas-header py-3">
             <h5 class="offcanvas-title" id="navbarNavLabel">Menu</h5>
