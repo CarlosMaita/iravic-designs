@@ -162,12 +162,30 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             }
         }
         
-        // atach images if exists
+        // attach images if exists - from temp_code (dropzone uploads)
+        if (isset($request->temp_code)) {
+            $productImages = ProductImage::where('temp_code', $request->temp_code)
+                ->where('combination_index', 0) // Regular products use combination_index 0
+                ->get();
+            
+            // Update each image individually to set primary flag
+            foreach ($productImages as $index => $image) {
+                $image->update([
+                    'product_id' => $product->id,
+                    'temp_code' => null,
+                    'is_primary' => ($index === 0) // First image is primary
+                ]);
+            }
+        }
+        
+        // attach images if exists - from file upload (legacy support)
         $files = $request->file('file', []);
         if (!empty($files)) {
             $this->saveImages($product, $files);
         }
-       
+        
+        // Clean Storage Images
+        $this->cleanStorageImages();
     }
 
     /**
@@ -250,10 +268,17 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $this->cleanStorageImages();
     }
 
-    
+    /**
+     * Clean up orphaned temporary images older than 1 hour
+     * This prevents deleting images that are currently being processed
+     * 
+     * @return void
+     */
     private function cleanStorageImages(): void
     {
-        ProductImage::where('temp_code', '!=' , null)->delete();
+        ProductImage::where('temp_code', '!=' , null)
+            ->where('created_at', '<', now()->subHour())
+            ->delete();
     }
 
     /**
@@ -306,12 +331,35 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             }
         }
         
+        // attach images if exists - from temp_code (dropzone uploads)
+        if (isset($request->temp_code)) {
+            $productImages = ProductImage::where('temp_code', $request->temp_code)
+                ->where('combination_index', 0) // Regular products use combination_index 0
+                ->get();
+            
+            // Check if a primary image already exists for this product
+            $hasPrimary = ProductImage::where('product_id', $product->id)
+                ->where('is_primary', true)
+                ->exists();
+            
+            // Update each image individually to set primary flag
+            foreach ($productImages as $index => $image) {
+                $image->update([
+                    'product_id' => $product->id,
+                    'temp_code' => null,
+                    'is_primary' => (!$hasPrimary && $index === 0) // First image is primary if no primary exists
+                ]);
+            }
+        }
 
-        // atach images if exists
+        // attach images if exists - from file upload (legacy support)
         $files = $request->file('file', []);
         if (!empty($files)) {
             $this->saveImages($product, $files);
         }
+        
+        // Clean Storage Images
+        $this->cleanStorageImages();
     }
 
     private function updateNonRegularProduct($id, $request): void
