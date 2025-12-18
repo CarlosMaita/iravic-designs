@@ -10,15 +10,14 @@
                 v-if="isAuthenticated"
                 type="button"
                 @click="toggleFavorite"
-                :class="['btn btn-icon btn-secondary animate-pulse fs-base bg-white border-0 position-absolute top-0 end-0 z-3 mt-2 me-2', {'text-danger': isFavorite}]"
+                :class="['btn btn-icon btn-secondary animate-pulse fs-base bg-white border-0 position-absolute top-0 end-0 z-3 mt-2 me-2 favorite-heart-btn', {'text-danger': isFavorite}]"
                 :aria-label="isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'"
-                :disabled="favoriteLoading"
-                style="box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                :disabled="favoriteLoading">
                 <i :class="['animate-target', favoriteLoading ? 'ci-refresh spinner-border-sm' : (isFavorite ? 'ci-heart-filled' : 'ci-heart')]"></i>
             </button>
             <a class="d-block rounded overflow-hidden" :href="product.url_detail">
                 <div class="ratio" style="--cz-aspect-ratio: calc(308 / 274 * 100%)">
-                <img class="object-fit-cover product-image-zoom w-100 h-100" :src="(currentCombination ? currentCombination.url_thumbnail : product.url_thumbnail) || '/img/no_image.jpg'" alt="Image" @load="onImageLoad" @error="onImageLoad" style="display:block;" />
+                <img class="object-fit-cover product-image-zoom w-100 h-100" :src="(currentCombination ? currentCombination.url_thumbnail : product.url_thumbnail) || '/img/no_image.jpg'" :alt="product.name" @load="onImageLoad" @error="onImageLoad" style="display:block;" />
                 </div>
             </a>
             <div v-if="!product.is_regular && currentCombination" class="hover-effect-target position-absolute start-0 bottom-0 w-100 z-2 opacity-0 pb-2 pb-sm-3 px-2 px-sm-3">
@@ -205,5 +204,10 @@ export default {
 .product-image-zoom:hover {
   transform: scale(1.1);
   z-index: 2;
+}
+
+/* Favorite heart button styling */
+.favorite-heart-btn {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 </style>
