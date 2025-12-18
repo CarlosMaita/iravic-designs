@@ -4712,7 +4712,7 @@ var render = function render() {
       }
     })]);
   }), 0)]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "row mt-4"
+    staticClass: "row mt-3"
   }, _vm._l(_vm.product_stores, function (product_store) {
     return _c("div", {
       key: "store-".concat(product_store.store_id),

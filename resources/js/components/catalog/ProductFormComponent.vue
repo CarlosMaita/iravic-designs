@@ -151,7 +151,7 @@
                 </div>
 
                 <!-- Stock with store -->
-                <div class="row mt-4"> 
+                <div class="row mt-3"> 
                     <div v-for="(product_store) in product_stores" :key="`store-${product_store.store_id}`" class="col-md-4">
                         <div class="form-group">
                             <label :for="`store-${product_store.store_id}`">{{ product_store.store_name }}</label>
