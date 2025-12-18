@@ -17,7 +17,7 @@
             </button>
             <a class="d-block rounded overflow-hidden" :href="product.url_detail">
                 <div class="ratio" style="--cz-aspect-ratio: calc(308 / 274 * 100%)">
-                <img class="object-fit-cover product-image-zoom w-100 h-100" :src="(currentCombination ? currentCombination.url_thumbnail : product.url_thumbnail) || '/img/no_image.jpg'" :alt="product.name" @load="onImageLoad" @error="onImageLoad" style="display:block;" />
+                <img class="object-fit-cover product-image-zoom w-100 h-100 d-block" :src="(currentCombination ? currentCombination.url_thumbnail : product.url_thumbnail) || '/img/no_image.jpg'" :alt="product.name" @load="onImageLoad" @error="onImageLoad" />
                 </div>
             </a>
             <div v-if="!product.is_regular && currentCombination" class="hover-effect-target position-absolute start-0 bottom-0 w-100 z-2 opacity-0 pb-2 pb-sm-3 px-2 px-sm-3">
