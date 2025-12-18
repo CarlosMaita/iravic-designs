@@ -27,8 +27,8 @@ class CustomerDashboardController extends Controller
     {
         $customer = Auth::guard('customer')->user();
         
-        // Get customer statistics
-        $ordersCount = $customer->orders()->count();
+        // Get customer statistics (only count non-archived orders)
+        $ordersCount = $customer->orders()->notArchived()->count();
         
         // Get recent notifications (last 5)
         $recentNotifications = $customer->notifications()
