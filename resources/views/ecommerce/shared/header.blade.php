@@ -174,7 +174,7 @@
       </div>
 
       <!-- Mobile offcanvas menu -->
-      <nav class="offcanvas offcanvas-start" id="navbarNav" tabindex="-1" aria-labelledby="navbarNavLabel">
+      <nav class="offcanvas offcanvas-start d-lg-none" id="navbarNav" tabindex="-1" aria-labelledby="navbarNavLabel">
         <div class="offcanvas-header py-3">
           <h5 class="offcanvas-title" id="navbarNavLabel">Menu</h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
