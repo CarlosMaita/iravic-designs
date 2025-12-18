@@ -36,6 +36,15 @@ class AppServiceProvider extends ServiceProvider
         View::share('menuService', $menuService);
         View::share('url', $url);
 
+        // Share submenu links globally for ecommerce views
+        try {
+            $submenuLinks = \App\Models\SubmenuLink::active()->ordered()->get();
+            View::share('submenuLinks', $submenuLinks);
+        } catch (\Exception $e) {
+            // If table doesn't exist yet, use empty collection
+            View::share('submenuLinks', collect());
+        }
+
         // Register exchange rate view composer for ecommerce views
         View::composer([
             'ecommerce.*',

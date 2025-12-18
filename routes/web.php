@@ -197,6 +197,16 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         Route::post('tasa-cambio/toggle-module', 'ExchangeRateController@toggleCurrencyModule')->name('admin.exchange-rate.toggle-module');
         Route::get('tasa-cambio/current', 'ExchangeRateController@getCurrentRate')->name('admin.exchange-rate.current');
         #
+        # Submenu Links Routes
+        Route::resource('submenu-links', 'SubmenuLinkController')->except('show')->names([
+            'index' => 'admin.submenu-links.index',
+            'create' => 'admin.submenu-links.create',
+            'store' => 'admin.submenu-links.store',
+            'edit' => 'admin.submenu-links.edit',
+            'update' => 'admin.submenu-links.update',
+            'destroy' => 'admin.submenu-links.destroy',
+        ]);
+        #
         Route::resource('usuarios', 'UserController')->except('show');
     });
 
