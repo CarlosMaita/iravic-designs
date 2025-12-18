@@ -4066,6 +4066,9 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PaymentRegisterEcommerceComponent',
   props: {
@@ -4090,6 +4093,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   data: function data() {
     return {
       submitting: false,
+      paymentMethods: [],
       form: {
         currency: 'USD',
         amount: '',
@@ -4105,11 +4109,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     amountLabel: function amountLabel() {
       return 'Monto a Pagar (USD)';
     },
+    isPagoMovil: function isPagoMovil() {
+      return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'pago-movil';
+    },
     needsReference: function needsReference() {
-      return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'transferencia';
+      return this.isPagoMovil || this.form.payment_method === 'transferencia';
     },
     needsMobileDate: function needsMobileDate() {
-      return this.form.payment_method === 'pago_movil';
+      return this.isPagoMovil;
     },
     exchangeRateFormatted: function exchangeRateFormatted() {
       try {
@@ -4120,13 +4127,65 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       } catch (e) {
         return this.exchangeRate;
       }
+    },
+    selectedMethodInstructions: function selectedMethodInstructions() {
+      var _this = this;
+      var method = this.paymentMethods.find(function (m) {
+        return m.code === _this.form.payment_method;
+      });
+      return method ? method.instructions : '';
     }
   },
+  mounted: function mounted() {
+    this.fetchPaymentMethods();
+  },
   methods: {
+    fetchPaymentMethods: function fetchPaymentMethods() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var response, data;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return fetch('/api/payment-methods/active');
+            case 3:
+              response = _context.sent;
+              if (response.ok) {
+                _context.next = 6;
+                break;
+              }
+              throw new Error("HTTP error! status: ".concat(response.status));
+            case 6:
+              _context.next = 8;
+              return response.json();
+            case 8:
+              data = _context.sent;
+              _this2.paymentMethods = data;
+              _context.next = 16;
+              break;
+            case 12:
+              _context.prev = 12;
+              _context.t0 = _context["catch"](0);
+              console.error('Error fetching payment methods:', _context.t0);
+              _this2.toast('error', 'No se pudieron cargar los métodos de pago. Por favor, recargue la página.');
+            case 16:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, null, [[0, 12]]);
+      }))();
+    },
+    onPaymentMethodChange: function onPaymentMethodChange() {
+      // Reset fields when payment method changes
+      this.form.reference_number = '';
+      this.form.mobile_payment_date = '';
+    },
     open: function open() {
-      var _this = this;
+      var _this3 = this;
       this.$nextTick(function () {
-        _this.ensureModal();
+        _this3.ensureModal();
       });
     },
     ensureModal: function ensureModal() {
@@ -4142,8 +4201,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       if (inst) inst.hide();
     },
     submit: function submit() {
-      var _this2 = this;
+      var _this4 = this;
       if (this.submitting) return;
+
+      // Set amount to remaining balance
+      this.form.amount = this.remaining;
       this.submitting = true;
       var payload = _objectSpread({}, this.form);
       fetch(this.resolveEndpoint(), {
@@ -4157,18 +4219,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return r.json();
       }).then(function (res) {
         if (res && res.success) {
-          _this2.toast('success', res.message || 'Pago registrado exitosamente');
-          _this2.close();
+          _this4.toast('success', res.message || 'Pago registrado exitosamente');
+          _this4.close();
           setTimeout(function () {
             return window.location.reload();
           }, 600);
         } else {
-          _this2.toast('error', res && res.message || 'No se pudo registrar el pago');
+          _this4.toast('error', res && res.message || 'No se pudo registrar el pago');
         }
       })["catch"](function () {
-        return _this2.toast('error', 'Error al procesar el pago');
+        return _this4.toast('error', 'Error al procesar el pago');
       })["finally"](function () {
-        _this2.submitting = false;
+        _this4.submitting = false;
       });
     },
     resolveEndpoint: function resolveEndpoint() {
@@ -6742,44 +6804,33 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "modal-body"
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
-    staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v(_vm._s(_vm.amountLabel))]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model.number",
-      value: _vm.form.amount,
-      expression: "form.amount",
-      modifiers: {
-        number: true
-      }
-    }],
-    staticClass: "form-control",
+  }, [_c("div", {
+    staticClass: "alert alert-info mb-3"
+  }, [_vm._m(0), _vm._v(" "), _c("p", {
+    staticClass: "mb-1 h5"
+  }, [_vm._v("$" + _vm._s(_vm.remaining.toFixed(2)) + " USD")]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c("div", {
+    staticClass: "alert alert-warning mb-3"
+  }, [_vm._m(2), _vm._v(" "), _c("p", {
+    staticClass: "mb-1"
+  }, [_c("strong", [_vm._v(_vm._s(_vm.exchangeRateFormatted) + " Bs/$")])]), _vm._v(" "), _c("p", {
+    staticClass: "mb-1"
+  }, [_c("small", [_vm._v("Equivalente aproximado: "), _c("strong", [_vm._v("Bs. " + _vm._s((_vm.remaining * _vm.exchangeRate).toLocaleString("es-VE", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })))])])]), _vm._v(" "), _c("small", {
+    staticClass: "text-muted"
+  }, [_c("i", {
+    staticClass: "fas fa-info-circle"
+  }), _vm._v("\n              Para pagos en bolívares, consulte la tasa oficial del BCV en \n              "), _c("a", {
+    staticClass: "alert-link",
     attrs: {
-      type: "number",
-      min: "0.01",
-      step: "0.01",
-      required: ""
-    },
-    domProps: {
-      value: _vm.form.amount
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.form, "amount", _vm._n($event.target.value));
-      },
-      blur: function blur($event) {
-        return _vm.$forceUpdate();
-      }
+      href: "https://www.bcv.org.ve/",
+      target: "_blank",
+      rel: "noopener noreferrer"
     }
-  })]), _vm._v(" "), _c("div", {
+  }, [_vm._v("www.bcv.org.ve")]), _vm._v(".\n              "), _c("br"), _vm._v(" "), _c("strong", [_vm._v("Cálculo:")]), _vm._v(" Monto a pagar en Bs = $" + _vm._s(_vm.remaining.toFixed(2)) + " × Tasa BCV en Bs/$\n            ")])]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Método de Pago")]), _vm._v(" "), _c("select", {
+  }, [_vm._m(3), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6791,7 +6842,7 @@ var render = function render() {
       required: ""
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -6799,30 +6850,28 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.form, "payment_method", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, _vm.onPaymentMethodChange]
     }
   }, [_c("option", {
     attrs: {
       disabled: "",
       value: ""
     }
-  }, [_vm._v("Seleccione un método")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "pago_movil"
+  }, [_vm._v("Seleccione un método")]), _vm._v(" "), _vm._l(_vm.paymentMethods, function (method) {
+    return _c("option", {
+      key: method.code,
+      domProps: {
+        value: method.code
+      }
+    }, [_vm._v("\n                " + _vm._s(method.name) + "\n              ")]);
+  })], 2)]), _vm._v(" "), _vm.selectedMethodInstructions ? _c("div", {
+    staticClass: "alert alert-light mb-3"
+  }, [_vm._m(4), _vm._v(" "), _c("p", {
+    staticClass: "mb-0",
+    staticStyle: {
+      "white-space": "pre-line"
     }
-  }, [_vm._v("Pago Móvil")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "transferencia"
-    }
-  }, [_vm._v("Transferencia")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "efectivo"
-    }
-  }, [_vm._v("Efectivo")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "tarjeta"
-    }
-  }, [_vm._v("Tarjeta")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.selectedMethodInstructions))])]) : _vm._e(), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -6832,7 +6881,9 @@ var render = function render() {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Número de Referencia")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Número de Referencia "), _vm.needsReference ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")]) : _vm._e()]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6842,7 +6893,8 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      required: _vm.needsReference
+      required: _vm.needsReference,
+      placeholder: "Ej: 1234567890"
     },
     domProps: {
       value: _vm.form.reference_number
@@ -6855,9 +6907,7 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Fecha del Pago")]), _vm._v(" "), _c("input", {
+  }, [_vm._m(5), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6888,7 +6938,9 @@ var render = function render() {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Fecha (Pago Móvil)")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Fecha del Pago Móvil "), _vm.needsMobileDate ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")]) : _vm._e()]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6909,7 +6961,9 @@ var render = function render() {
         _vm.$set(_vm.form, "mobile_payment_date", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _c("small", {
+    staticClass: "form-text text-muted"
+  }, [_vm._v("Fecha que aparece en el comprobante del pago móvil")])]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
@@ -6922,7 +6976,8 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      rows: "3"
+      rows: "3",
+      placeholder: "Detalles adicionales sobre el pago"
     },
     domProps: {
       value: _vm.form.comment
@@ -6963,15 +7018,51 @@ var render = function render() {
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Moneda")]), _vm._v(" "), _c("div", {
-    staticClass: "form-control-plaintext fw-semibold"
-  }, [_vm._v("USD ($)")]), _vm._v(" "), _c("small", {
+  return _c("h6", {
+    staticClass: "mb-2"
+  }, [_c("i", {
+    staticClass: "fas fa-dollar-sign"
+  }), _vm._v(" Monto a Pagar")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("small", {
     staticClass: "text-muted"
-  }, [_vm._v("Los pagos se registran en dólares americanos.")])]);
+  }, [_c("i", {
+    staticClass: "fas fa-info-circle"
+  }), _vm._v(" \n              Este es el monto pendiente en dólares americanos. Si realiza el pago en bolívares, \n              debe utilizar la tasa de cambio oficial del Banco Central de Venezuela (BCV).\n            ")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("h6", {
+    staticClass: "mb-2"
+  }, [_c("i", {
+    staticClass: "fas fa-exchange-alt"
+  }), _vm._v(" Tasa de Cambio Referencial")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Método de Pago "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("h6", {
+    staticClass: "mb-2"
+  }, [_c("i", {
+    staticClass: "fas fa-info-circle"
+  }), _vm._v(" Instrucciones de Pago")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Fecha del Pago "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
 }];
 render._withStripped = true;
 
@@ -11755,17 +11846,9 @@ render._withStripped = true;
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-select/dist/vue-select.css ***!
   \*************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ":root{--vs-colors--lightest:rgba(60,60,60,0.26);--vs-colors--light:rgba(60,60,60,0.5);--vs-colors--dark:#333;--vs-colors--darkest:rgba(0,0,0,0.15);--vs-search-input-color:inherit;--vs-search-input-bg:#fff;--vs-search-input-placeholder-color:inherit;--vs-font-size:1rem;--vs-line-height:1.4;--vs-state-disabled-bg:#f8f8f8;--vs-state-disabled-color:var(--vs-colors--light);--vs-state-disabled-controls-color:var(--vs-colors--light);--vs-state-disabled-cursor:not-allowed;--vs-border-color:var(--vs-colors--lightest);--vs-border-width:1px;--vs-border-style:solid;--vs-border-radius:4px;--vs-actions-padding:4px 6px 0 3px;--vs-controls-color:var(--vs-colors--light);--vs-controls-size:1;--vs-controls--deselect-text-shadow:0 1px 0 #fff;--vs-selected-bg:#f0f0f0;--vs-selected-color:var(--vs-colors--dark);--vs-selected-border-color:var(--vs-border-color);--vs-selected-border-style:var(--vs-border-style);--vs-selected-border-width:var(--vs-border-width);--vs-dropdown-bg:#fff;--vs-dropdown-color:inherit;--vs-dropdown-z-index:1000;--vs-dropdown-min-width:160px;--vs-dropdown-max-height:350px;--vs-dropdown-box-shadow:0px 3px 6px 0px var(--vs-colors--darkest);--vs-dropdown-option-bg:#000;--vs-dropdown-option-color:var(--vs-dropdown-color);--vs-dropdown-option-padding:3px 20px;--vs-dropdown-option--active-bg:#5897fb;--vs-dropdown-option--active-color:#fff;--vs-dropdown-option--deselect-bg:#fb5858;--vs-dropdown-option--deselect-color:#fff;--vs-transition-timing-function:cubic-bezier(1,-0.115,0.975,0.855);--vs-transition-duration:150ms}.v-select{font-family:inherit;position:relative}.v-select,.v-select *{box-sizing:border-box}:root{--vs-transition-timing-function:cubic-bezier(1,0.5,0.8,1);--vs-transition-duration:0.15s}@-webkit-keyframes vSelectSpinner{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes vSelectSpinner{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.vs__fade-enter-active,.vs__fade-leave-active{pointer-events:none;transition:opacity var(--vs-transition-duration) var(--vs-transition-timing-function)}.vs__fade-enter,.vs__fade-leave-to{opacity:0}:root{--vs-disabled-bg:var(--vs-state-disabled-bg);--vs-disabled-color:var(--vs-state-disabled-color);--vs-disabled-cursor:var(--vs-state-disabled-cursor)}.vs--disabled .vs__clear,.vs--disabled .vs__dropdown-toggle,.vs--disabled .vs__open-indicator,.vs--disabled .vs__search,.vs--disabled .vs__selected{background-color:var(--vs-disabled-bg);cursor:var(--vs-disabled-cursor)}.v-select[dir=rtl] .vs__actions{padding:0 3px 0 6px}.v-select[dir=rtl] .vs__clear{margin-left:6px;margin-right:0}.v-select[dir=rtl] .vs__deselect{margin-left:0;margin-right:2px}.v-select[dir=rtl] .vs__dropdown-menu{text-align:right}.vs__dropdown-toggle{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:var(--vs-search-input-bg);border:var(--vs-border-width) var(--vs-border-style) var(--vs-border-color);border-radius:var(--vs-border-radius);display:flex;padding:0 0 4px;white-space:normal}.vs__selected-options{display:flex;flex-basis:100%;flex-grow:1;flex-wrap:wrap;padding:0 2px;position:relative}.vs__actions{align-items:center;display:flex;padding:var(--vs-actions-padding)}.vs--searchable .vs__dropdown-toggle{cursor:text}.vs--unsearchable .vs__dropdown-toggle{cursor:pointer}.vs--open .vs__dropdown-toggle{border-bottom-color:transparent;border-bottom-left-radius:0;border-bottom-right-radius:0}.vs__open-indicator{fill:var(--vs-controls-color);transform:scale(var(--vs-controls-size));transition:transform var(--vs-transition-duration) var(--vs-transition-timing-function);transition-timing-function:var(--vs-transition-timing-function)}.vs--open .vs__open-indicator{transform:rotate(180deg) scale(var(--vs-controls-size))}.vs--loading .vs__open-indicator{opacity:0}.vs__clear{fill:var(--vs-controls-color);background-color:transparent;border:0;cursor:pointer;margin-right:8px;padding:0}.vs__dropdown-menu{background:var(--vs-dropdown-bg);border:var(--vs-border-width) var(--vs-border-style) var(--vs-border-color);border-radius:0 0 var(--vs-border-radius) var(--vs-border-radius);border-top-style:none;box-shadow:var(--vs-dropdown-box-shadow);box-sizing:border-box;color:var(--vs-dropdown-color);display:block;left:0;list-style:none;margin:0;max-height:var(--vs-dropdown-max-height);min-width:var(--vs-dropdown-min-width);overflow-y:auto;padding:5px 0;position:absolute;text-align:left;top:calc(100% - var(--vs-border-width));width:100%;z-index:var(--vs-dropdown-z-index)}.vs__no-options{text-align:center}.vs__dropdown-option{clear:both;color:var(--vs-dropdown-option-color);cursor:pointer;display:block;line-height:1.42857143;padding:var(--vs-dropdown-option-padding);white-space:nowrap}.vs__dropdown-option--highlight{background:var(--vs-dropdown-option--active-bg);color:var(--vs-dropdown-option--active-color)}.vs__dropdown-option--deselect{background:var(--vs-dropdown-option--deselect-bg);color:var(--vs-dropdown-option--deselect-color)}.vs__dropdown-option--disabled{background:var(--vs-state-disabled-bg);color:var(--vs-state-disabled-color);cursor:var(--vs-state-disabled-cursor)}.vs__selected{align-items:center;background-color:var(--vs-selected-bg);border:var(--vs-selected-border-width) var(--vs-selected-border-style) var(--vs-selected-border-color);border-radius:var(--vs-border-radius);color:var(--vs-selected-color);display:flex;line-height:var(--vs-line-height);margin:4px 2px 0;padding:0 .25em;z-index:0}.vs__deselect{fill:var(--vs-controls-color);-webkit-appearance:none;-moz-appearance:none;appearance:none;background:none;border:0;cursor:pointer;display:inline-flex;margin-left:4px;padding:0;text-shadow:var(--vs-controls--deselect-text-shadow)}.vs--single .vs__selected{background-color:transparent;border-color:transparent}.vs--single.vs--loading .vs__selected,.vs--single.vs--open .vs__selected{opacity:.4;position:absolute}.vs--single.vs--searching .vs__selected{display:none}.vs__search::-webkit-search-cancel-button{display:none}.vs__search::-ms-clear,.vs__search::-webkit-search-decoration,.vs__search::-webkit-search-results-button,.vs__search::-webkit-search-results-decoration{display:none}.vs__search,.vs__search:focus{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:none;border:1px solid transparent;border-left:none;box-shadow:none;color:var(--vs-search-input-color);flex-grow:1;font-size:var(--vs-font-size);line-height:var(--vs-line-height);margin:4px 0 0;max-width:100%;outline:none;padding:0 7px;width:0;z-index:1}.vs__search::-moz-placeholder{color:var(--vs-search-input-placeholder-color)}.vs__search:-ms-input-placeholder{color:var(--vs-search-input-placeholder-color)}.vs__search::placeholder{color:var(--vs-search-input-placeholder-color)}.vs--unsearchable .vs__search{opacity:1}.vs--unsearchable:not(.vs--disabled) .vs__search{cursor:pointer}.vs--single.vs--searching:not(.vs--open):not(.vs--loading) .vs__search{opacity:.2}.vs__spinner{align-self:center;-webkit-animation:vSelectSpinner 1.1s linear infinite;animation:vSelectSpinner 1.1s linear infinite;border:.9em solid hsla(0,0%,39%,.1);border-left-color:rgba(60,60,60,.45);font-size:5px;opacity:0;overflow:hidden;text-indent:-9999em;transform:translateZ(0) scale(var(--vs-controls--spinner-size,var(--vs-controls-size)));transition:opacity .1s}.vs__spinner,.vs__spinner:after{border-radius:50%;height:5em;transform:scale(var(--vs-controls--spinner-size,var(--vs-controls-size)));width:5em}.vs--loading .vs__spinner{opacity:1}", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11774,17 +11857,9 @@ exports.push([module.i, ":root{--vs-colors--lightest:rgba(60,60,60,0.26);--vs-co
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/catalog/ItemProductEcommerceComponent.vue?vue&type=style&index=0&id=4f19b6b7&scoped=true&lang=css ***!
   \****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n/* Zoom effect on image hover */\n.product-image-zoom[data-v-4f19b6b7] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-image-zoom[data-v-4f19b6b7]:hover {\n  transform: scale(1.1);\n  z-index: 2;\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11793,17 +11868,9 @@ exports.push([module.i, "\n/* Zoom effect on image hover */\n.product-image-zoom
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/catalog/ProductCardSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=ea7bef32&scoped=true&lang=css ***!
   \************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.skeleton-product-card[data-v-ea7bef32] {\n  background: #fff;\n  border: 1px solid #eee;\n  border-radius: 8px;\n  overflow: hidden;\n  min-height: 350px;\n  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);\n}\n.skeleton-image[data-v-ea7bef32] {\n  height: 180px;\n  background: #d1d5db;\n  animation: pulse-ea7bef32 1.5s infinite;\n}\n.skeleton-title[data-v-ea7bef32],\n.skeleton-price[data-v-ea7bef32],\n.skeleton-button[data-v-ea7bef32] {\n  background: #d1d5db;\n  border-radius: 4px;\n  animation: pulse-ea7bef32 1.5s infinite;\n}\n.skeleton-title[data-v-ea7bef32] { height: 24px; width: 70%; margin-bottom: 12px;\n}\n.skeleton-price[data-v-ea7bef32] { height: 18px; width: 40%; margin-bottom: 12px;\n}\n.skeleton-button[data-v-ea7bef32] { height: 36px; width: 60%;\n}\n@keyframes pulse-ea7bef32 {\n0% { opacity: 1;\n}\n50% { opacity: 0.5;\n}\n100% { opacity: 1;\n}\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11812,17 +11879,9 @@ exports.push([module.i, "\n.skeleton-product-card[data-v-ea7bef32] {\n  backgrou
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/common/CurrencySwitcherComponent.vue?vue&type=style&index=0&id=31e2f37a&scoped=true&lang=css ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.modal.show[data-v-31e2f37a] {\n    background-color: rgba(0, 0, 0, 0.5);\n}\n.btn[data-v-31e2f37a]:hover {\n    transform: translateY(-1px);\n    transition: transform 0.2s ease;\n}\n.btn-primary[data-v-31e2f37a] {\n    background-color: #0d6efd;\n    border-color: #0d6efd;\n}\n.btn-outline-primary[data-v-31e2f37a]:hover {\n    background-color: #0d6efd;\n    border-color: #0d6efd;\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11831,17 +11890,9 @@ exports.push([module.i, "\n.modal.show[data-v-31e2f37a] {\n    background-color:
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/common/ToastEcommerceComponent.vue?vue&type=style&index=0&id=7ce827dc&scoped=true&lang=css ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n/* Puedes añadir estilos específicos si es necesario, aunque Bootstrap ya maneja mucho */\n.toast[data-v-7ce827dc] {\n  position: fixed; /* O 'absolute' dependiendo de dónde quieras que aparezca */\n  top: 20px; /* Ajusta la posición vertical */\n  right: 20px; /* Ajusta la posición horizontal */\n  z-index: 2000 !important; /* Por encima del modal/backdrop personalizado */\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11850,17 +11901,9 @@ exports.push([module.i, "\n/* Puedes añadir estilos específicos si es necesari
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/common/cart/CartEcommerceComponent.vue?vue&type=style&index=0&id=1f6956b8&lang=css ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.progress-container {\n  width: 100%;\n}\n.progress {\n  height: 20px;\n  background-color: #e9ecef;\n  border-radius: 10px;\n  overflow: hidden;\n}\n.progress-bar {\n  height: 100%;\n  text-align: center;\n  line-height: 20px;\n  color: #fff;\n}\n.shipping-info-container {\n  /* Estilos adicionales si son necesarios */\n}\n.mrw-logo {\n  width: 30px; /* Ajusta el tamaño según sea necesario */\n  height: auto; /* Mantiene la proporción de la imagen */\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11869,17 +11912,9 @@ exports.push([module.i, "\n.progress-container {\n  width: 100%;\n}\n.progress {
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/common/cart/ShippingModalComponent.vue?vue&type=style&index=0&id=eedfb736&scoped=true&lang=css ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n/* Fix z-index issues for modal interaction */\n.modal[data-v-eedfb736] {\n  z-index: 1055 !important;\n}\n.modal-dialog[data-v-eedfb736] {\n  z-index: 1056 !important;\n}\n.modal-content[data-v-eedfb736] {\n  z-index: 1057 !important;\n}\n.modal-header[data-v-eedfb736],\n.modal-body[data-v-eedfb736],\n.modal-footer[data-v-eedfb736] {\n  z-index: 1058 !important;\n  position: relative;\n}\n.form-label[data-v-eedfb736] {\n  font-weight: 600;\n  color: #333;\n  position: relative;\n  z-index: 1059;\n}\n.form-control[data-v-eedfb736], .form-select[data-v-eedfb736] {\n  border-radius: 0.5rem;\n  border: 1px solid #e1e5e9;\n  position: relative;\n  z-index: 1059 !important;\n}\n.form-control[data-v-eedfb736]:focus, .form-select[data-v-eedfb736]:focus {\n  border-color: #667eea;\n  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);\n  z-index: 1060 !important;\n}\n.btn-primary[data-v-eedfb736] {\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  border: none;\n  border-radius: 0.5rem;\n  position: relative;\n  z-index: 1059;\n}\n.btn-primary[data-v-eedfb736]:hover {\n  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);\n}\n.btn-secondary[data-v-eedfb736] {\n  position: relative;\n  z-index: 1059;\n}\n.text-danger[data-v-eedfb736] {\n  font-size: 0.875rem;\n  position: relative;\n  z-index: 1059;\n}\n.modal-body[data-v-eedfb736] {\n  padding: 1.5rem;\n}\n#shipping-modal.modal[data-v-eedfb736] {\n  z-index: 1080 !important;\n}\n\n/* Ensure form elements are clickable */\ninput[data-v-eedfb736], select[data-v-eedfb736], textarea[data-v-eedfb736], button[data-v-eedfb736] {\n  pointer-events: auto !important;\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11888,17 +11923,9 @@ exports.push([module.i, "\n/* Fix z-index issues for modal interaction */\n.moda
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/home/FeaturedProductCardEcommerceComponent.vue?vue&type=style&index=0&id=6aec98ba&scoped=true&lang=css ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n/* Product card following Cartzilla standards */\n.product-card[data-v-6aec98ba] {\n  transition: transform 0.3s ease, box-shadow 0.3s ease;\n  max-width: 306px; /* Cartzilla standard width */\n  margin: 0 auto;\n}\n.product-card[data-v-6aec98ba]:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);\n  z-index: 2;\n}\n\n/* Image hover effects following Cartzilla */\n.product-image-zoom[data-v-6aec98ba] {\n  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.product-card:hover .product-image-zoom[data-v-6aec98ba] {\n  transform: scale(1.05);\n}\n\n/* Hover effects for action buttons */\n.hover-effect-target[data-v-6aec98ba] {\n  transition: opacity 0.3s ease, transform 0.3s ease;\n}\n.product-card:hover .hover-effect-target[data-v-6aec98ba] {\n  opacity: 1 !important;\n}\n\n/* Button styling following Cartzilla */\n.btn-icon[data-v-6aec98ba] {\n  width: 2.5rem;\n  height: 2.5rem;\n  padding: 0;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 50%;\n  transition: all 0.3s ease;\n}\n.btn-icon[data-v-6aec98ba]:hover {\n  transform: scale(1.1);\n}\n\n/* Product card button styling */\n.product-card-button[data-v-6aec98ba] {\n  transition: all 0.3s ease;\n  border-color: transparent;\n  background: transparent;\n}\n.product-card:hover .product-card-button[data-v-6aec98ba] {\n  background-color: var(--bs-primary);\n  border-color: var(--bs-primary);\n  color: white;\n}\n.product-card:hover .product-card-button[data-v-6aec98ba]:hover {\n  background-color: var(--bs-primary);\n  border-color: var(--bs-primary);\n  color: white;\n  transform: scale(1.1);\n}\n\n/* Animate scale effect */\n.animate-scale[data-v-6aec98ba] {\n  transition: transform 0.2s ease;\n}\n.animate-scale[data-v-6aec98ba]:hover {\n  transform: scale(1.05);\n}\n\n/* Underline animation for product titles */\n.hover-effect-underline[data-v-6aec98ba] {\n  text-decoration: none;\n  transition: text-decoration 0.3s ease;\n}\n.product-card:hover .hover-effect-underline[data-v-6aec98ba] {\n  text-decoration: underline;\n  text-decoration-thickness: 2px;\n  text-underline-offset: 2px;\n}\n\n/* Responsive adjustments */\n@media (max-width: 575.98px) {\n.product-card[data-v-6aec98ba] {\n    max-width: 100%;\n}\n.btn-icon[data-v-6aec98ba] {\n    width: 2rem;\n    height: 2rem;\n}\n}\n\n/* Badge styling */\n.badge[data-v-6aec98ba] {\n  font-size: 0.75rem;\n  font-weight: 600;\n  padding: 0.375rem 0.5rem;\n  border-radius: 0.25rem;\n}\n\n/* Star ratings */\n.ci-star[data-v-6aec98ba] {\n  font-size: 0.875rem;\n}\n\n/* Dropdown customization for mobile */\n.dropdown-menu[data-v-6aec98ba] {\n  --bs-dropdown-border-radius: 0.5rem;\n  --bs-dropdown-box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);\n}\n\n/* Image container improvements */\n.ratio-1x1[data-v-6aec98ba] {\n  --bs-aspect-ratio: 100%;\n}\n.object-fit-contain[data-v-6aec98ba] {\n  object-fit: contain;\n  width: 100%;\n  height: 100%;\n}\n\n/* Card body adjustments */\n.card-body[data-v-6aec98ba] {\n  padding: 1rem 0.5rem;\n}\n@media (min-width: 768px) {\n.card-body[data-v-6aec98ba] {\n    padding: 1rem;\n}\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11907,17 +11934,9 @@ exports.push([module.i, "\n/* Product card following Cartzilla standards */\n.pr
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/home/FeaturedProductsCarouselEcommerceComponent.vue?vue&type=style&index=0&id=8f0ff81a&scoped=true&lang=css ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n/* Navigation button styles */\n.btn-icon[data-v-8f0ff81a] {\n  width: 3rem;\n  height: 3rem;\n  padding: 0;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid #e9ecef;\n  color: #495057;\n  transition: all 0.3s ease;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n}\n.btn-icon[data-v-8f0ff81a]:hover {\n  background: #007bff;\n  border-color: #007bff;\n  color: #fff;\n  transform: scale(1.1);\n  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);\n}\n.btn-icon[data-v-8f0ff81a]:focus {\n  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);\n}\n\n/* Swiper pagination customization */\n.featured-products-pagination[data-v-8f0ff81a] {\n  text-align: center;\n  margin-top: 2rem;\n}\n.featured-products-pagination .swiper-pagination-bullet[data-v-8f0ff81a] {\n  width: 12px;\n  height: 12px;\n  background: #dee2e6;\n  opacity: 1;\n  margin: 0 6px;\n  transition: all 0.3s ease;\n}\n.featured-products-pagination .swiper-pagination-bullet-active[data-v-8f0ff81a] {\n  background: #007bff;\n  transform: scale(1.2);\n}\n\n/* Responsive adjustments */\n@media (max-width: 767.98px) {\n.btn-icon[data-v-8f0ff81a] {\n    width: 2.5rem;\n    height: 2.5rem;\n}\n}\n\n/* Ensure z-index for navigation buttons */\n.featured-products-prev[data-v-8f0ff81a],\n.featured-products-next[data-v-8f0ff81a] {\n  z-index: 10;\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11926,17 +11945,20 @@ exports.push([module.i, "\n/* Navigation button styles */\n.btn-icon[data-v-8f0f
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/home/SpecialOffersCarouselEcommerceComponent.vue?vue&type=style&index=0&id=5170b019&scoped=true&lang=css ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
+/***/ }),
 
-// module
-exports.push([module.i, "\n.object-fit-cover[data-v-5170b019]{ object-fit: cover;\n}\n", ""]);
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-// exports
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -11945,104 +11967,9 @@ exports.push([module.i, "\n.object-fit-cover[data-v-5170b019]{ object-fit: cover
   !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.skeleton-product-detail[data-v-79ac96c6] {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n  max-width: 400px;\n  margin: 0 auto;\n}\n.skeleton-image[data-v-79ac96c6],\n.skeleton-title[data-v-79ac96c6],\n.skeleton-price[data-v-79ac96c6],\n.skeleton-description[data-v-79ac96c6],\n.skeleton-button[data-v-79ac96c6] {\n  background: #d1d5db; /* gris más oscuro para mejor contraste */\n  border-radius: 4px;\n  animation: pulse-79ac96c6 1.5s infinite;\n}\n.skeleton-image[data-v-79ac96c6] { height: 200px;\n}\n.skeleton-title[data-v-79ac96c6] { height: 32px; width: 70%;\n}\n.skeleton-price[data-v-79ac96c6] { height: 24px; width: 30%;\n}\n.skeleton-description[data-v-79ac96c6] { height: 80px; width: 100%;\n}\n.skeleton-button[data-v-79ac96c6] { height: 40px; width: 40%;\n}\n@keyframes pulse-79ac96c6 {\n0% { opacity: 1;\n}\n50% { opacity: 0.5;\n}\n100% { opacity: 1;\n}\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/*!*************************************************!*\
-  !*** ./node_modules/css-loader/lib/css-base.js ***!
-  \*************************************************/
-/*! no static exports found */
 /***/ (function(module, exports) {
 
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nError: Cannot find module '/home/runner/work/iravic-designs/iravic-designs/node_modules/icss-replace-symbols/lib/index.js'. Please verify that the package.json has a valid \"main\" entry\n    at tryPackage (node:internal/modules/cjs/loader:491:19)\n    at Module._findPath (node:internal/modules/cjs/loader:758:18)\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)\n    at Module._load (node:internal/modules/cjs/loader:1038:27)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/postcss-modules-values/lib/index.js:13:27)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/processCss.js:15:21)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/lib/loader.js:6:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at Object.<anonymous> (/home/runner/work/iravic-designs/iravic-designs/node_modules/css-loader/index.js:5:18)\n    at Module._compile (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:192:30)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (/home/runner/work/iravic-designs/iravic-designs/node_modules/v8-compile-cache/v8-compile-cache.js:159:20)\n    at loadLoader (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/loadLoader.js:18:17)\n    at iteratePitchingLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/home/runner/work/iravic-designs/iravic-designs/node_modules/loader-runner/lib/LoaderRunner.js:365:2)\n    at NormalModule.doBuild (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:295:3)\n    at NormalModule.build (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModule.js:446:15)\n    at Compilation.buildModule (/home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:739:10)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/Compilation.js:981:14\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:409:6\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:155:13\n    at AsyncSeriesWaterfallHook.eval [as callAsync] (eval at create (/home/runner/work/iravic-designs/iravic-designs/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:138:29\n    at /home/runner/work/iravic-designs/iravic-designs/node_modules/webpack/lib/NormalModuleFactory.js:346:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
@@ -43280,6 +43207,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--5-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--5-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css ***!
@@ -57287,7 +57244,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PaymentRegisterEcommerceComponent_vue_vue_type_template_id_a3951f10_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaymentRegisterEcommerceComponent.vue?vue&type=template&id=a3951f10&scoped=true */ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=template&id=a3951f10&scoped=true");
 /* harmony import */ var _PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js */ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css */ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -57295,7 +57254,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   _PaymentRegisterEcommerceComponent_vue_vue_type_template_id_a3951f10_scoped_true__WEBPACK_IMPORTED_MODULE_0__["render"],
   _PaymentRegisterEcommerceComponent_vue_vue_type_template_id_a3951f10_scoped_true__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -57324,6 +57283,22 @@ component.options.__file = "resources/js/ecommerce/components/orders/PaymentRegi
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!************************************************************************************************************************************************!*\
+  !*** ./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--5-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--5-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 

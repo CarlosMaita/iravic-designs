@@ -114,11 +114,15 @@ export default {
     amountLabel() {
       return 'Monto a Pagar (USD)';
     },
+    isPagoMovil() {
+      return this.form.payment_method === 'pago_movil' || 
+             this.form.payment_method === 'pago-movil';
+    },
     needsReference() {
-      return this.form.payment_method === 'pago_movil' || this.form.payment_method === 'transferencia';
+      return this.isPagoMovil || this.form.payment_method === 'transferencia';
     },
     needsMobileDate() {
-      return this.form.payment_method === 'pago_movil';
+      return this.isPagoMovil;
     },
     exchangeRateFormatted() {
       try {

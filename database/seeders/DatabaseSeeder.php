@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\PaymentMethod;
 use App\Models\Size;
 use App\Models\StoreType;
 use App\TypeSize;
@@ -43,6 +44,10 @@ class DatabaseSeeder extends Seeder
 
         if (!StoreType::first()) {
             $this->call(StoreTypesSeeder::class);
+        }
+
+        if (!PaymentMethod::first()) {
+            $this->call(PaymentMethodSeeder::class);
         }
     }
 }
