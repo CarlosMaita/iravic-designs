@@ -187,6 +187,9 @@
     <!-- Navigation bar (Page header) -->
     @include('ecommerce.shared.header')
 
+    <!-- Submenu (Desktop only) -->
+    @include('ecommerce.shared.submenu')
+
     <!-- Page content -->
     <main class="content-wrapper"  >
 

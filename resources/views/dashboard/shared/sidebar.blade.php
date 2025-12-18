@@ -93,6 +93,7 @@
         $menuService->isActive($url,"/admin/config/usuarios", false, true) . " " .
         $menuService->isActive($url,"/admin/config/general", false, true) . " " .
         $menuService->isActive($url,"/admin/config/tasa-cambio", false, true) . " " .
+        $menuService->isActive($url,"/admin/config/submenu-links", false, true) . " " .
         $menuService->isActive($url,"/admin/banners", false, true) . " " .
         $menuService->isActive($url,"/admin/ofertas-especiales", false, true)
     }}">
@@ -105,6 +106,12 @@
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{$menuService->isActive($url,"/admin/config/tasa-cambio")}}" href="{{ route('admin.exchange-rate.index') }}">
                     <span class="c-sidebar-nav-icon"></span> Tasa de Cambio
+                </a>
+            </li>
+            {{-- Submenu Links --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/config/submenu-links')}}" href="{{ route('admin.submenu-links.index') }}">
+                    <span class="c-sidebar-nav-icon"></span> Submenú
                 </a>
             </li>
             {{-- Banner CRUD --}}
