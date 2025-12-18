@@ -4666,7 +4666,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "mt-3"
-  }, [_vm._m(1)], 1), _vm._v(" "), _vm.regularProductImages.length > 0 ? _c("div", {
+  }, [_vm.mounted ? _vm._m(1) : _vm._e()], 1), _vm._v(" "), _vm.regularProductImages.length > 0 ? _c("div", {
     staticClass: "mt-4"
   }, [_c("h5", [_vm._v("Imágenes cargadas (" + _vm._s(_vm.regularProductImages.length) + ")")]), _vm._v(" "), _c("div", {
     staticClass: "row"
@@ -4912,7 +4912,7 @@ var render = function render() {
       staticClass: "col-md-12"
     }, [_c("div", {
       staticClass: "form-group"
-    }, [_vm._o(_c("v-dropzone", {
+    }, [_vm.mounted ? _vm._o(_c("v-dropzone", {
       ref: "dropzone-".concat(index),
       refInFor: true,
       attrs: {
@@ -4924,7 +4924,7 @@ var render = function render() {
         "vdropzone-removed-file": _vm.removedFileEvent,
         "vdropzone-error": _vm.errorEvent
       }
-    }), 0, "combination-".concat(index))], 1)]), _vm._v(" "), _c("div", {
+    }), 0, "combination-".concat(index)) : _vm._e()], 1)]), _vm._v(" "), _c("div", {
       staticClass: "col-md-12"
     }, [_c("div", {
       staticClass: "row"
