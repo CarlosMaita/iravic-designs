@@ -1,5 +1,5 @@
- <header class="navbar navbar-expand-lg navbar-sticky bg-body d-lg-block sticky-top p-0" data-sticky-navbar='{"offset": 100}'>
-      <div class="container py-2 py-lg-3">
+ <header class="navbar navbar-expand-lg navbar-sticky navbar-ecommerce-header bg-body d-lg-block sticky-top p-0" data-sticky-navbar='{"offset": 100}'>
+      <div class="container">
 
           <!-- Categories mega menu -->
           <div class=" navbar-nav d-none d-lg-flex align-items-center justify-content-between flex-wrap gap-3 me-lg-3 mb-2 mb-lg-0">
