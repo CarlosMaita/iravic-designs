@@ -113,6 +113,24 @@
     <link rel="preload" href="{{ asset('assets/cartzilla/css/theme.min.css')}}" as="style">
     <link rel="preload" href="{{ asset('assets/cartzilla/css/theme.rtl.min.css')}}" as="style">
     <link rel="stylesheet" href="{{ asset('assets/cartzilla/css/theme.min.css')}}" id="theme-styles">
+    
+    <!-- Custom styles for e-commerce header -->
+    <style>
+      /* Reduce e-commerce header height to 64px */
+      .navbar-ecommerce-header {
+        min-height: 64px;
+      }
+      .navbar-ecommerce-header .container {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+      }
+      @media (min-width: 992px) {
+        .navbar-ecommerce-header .container {
+          padding-top: 0.75rem !important;
+          padding-bottom: 0.75rem !important;
+        }
+      }
+    </style>
   </head>
 
 
