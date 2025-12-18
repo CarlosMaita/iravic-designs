@@ -11,6 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
+//****************** JS ADMIN ****************** 
+mix.js('resources/js/app.js', 'public/js')
+// mix.sass('resources/sass/app.scss', 'public/css');
+
 // ****************** JS Ecommerce ****************** 
 mix.js('resources/js/ecommerce/app.js', 'public/js/ecommerce')
 

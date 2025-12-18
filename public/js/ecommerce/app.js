@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -4066,6 +4066,9 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PaymentRegisterEcommerceComponent',
   props: {
@@ -4090,6 +4093,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   data: function data() {
     return {
       submitting: false,
+      paymentMethods: [],
       form: {
         currency: 'USD',
         amount: '',
@@ -4120,13 +4124,65 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       } catch (e) {
         return this.exchangeRate;
       }
+    },
+    selectedMethodInstructions: function selectedMethodInstructions() {
+      var _this = this;
+      var method = this.paymentMethods.find(function (m) {
+        return m.code === _this.form.payment_method;
+      });
+      return method ? method.instructions : '';
     }
   },
+  mounted: function mounted() {
+    this.fetchPaymentMethods();
+  },
   methods: {
+    fetchPaymentMethods: function fetchPaymentMethods() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var response, data;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return fetch('/api/payment-methods/active');
+            case 3:
+              response = _context.sent;
+              if (response.ok) {
+                _context.next = 6;
+                break;
+              }
+              throw new Error("HTTP error! status: ".concat(response.status));
+            case 6:
+              _context.next = 8;
+              return response.json();
+            case 8:
+              data = _context.sent;
+              _this2.paymentMethods = data;
+              _context.next = 16;
+              break;
+            case 12:
+              _context.prev = 12;
+              _context.t0 = _context["catch"](0);
+              console.error('Error fetching payment methods:', _context.t0);
+              _this2.toast('error', 'No se pudieron cargar los métodos de pago. Por favor, recargue la página.');
+            case 16:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, null, [[0, 12]]);
+      }))();
+    },
+    onPaymentMethodChange: function onPaymentMethodChange() {
+      // Reset fields when payment method changes
+      this.form.reference_number = '';
+      this.form.mobile_payment_date = '';
+    },
     open: function open() {
-      var _this = this;
+      var _this3 = this;
       this.$nextTick(function () {
-        _this.ensureModal();
+        _this3.ensureModal();
       });
     },
     ensureModal: function ensureModal() {
@@ -4142,8 +4198,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       if (inst) inst.hide();
     },
     submit: function submit() {
-      var _this2 = this;
+      var _this4 = this;
       if (this.submitting) return;
+
+      // Set amount to remaining balance
+      this.form.amount = this.remaining;
       this.submitting = true;
       var payload = _objectSpread({}, this.form);
       fetch(this.resolveEndpoint(), {
@@ -4157,18 +4216,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return r.json();
       }).then(function (res) {
         if (res && res.success) {
-          _this2.toast('success', res.message || 'Pago registrado exitosamente');
-          _this2.close();
+          _this4.toast('success', res.message || 'Pago registrado exitosamente');
+          _this4.close();
           setTimeout(function () {
             return window.location.reload();
           }, 600);
         } else {
-          _this2.toast('error', res && res.message || 'No se pudo registrar el pago');
+          _this4.toast('error', res && res.message || 'No se pudo registrar el pago');
         }
       })["catch"](function () {
-        return _this2.toast('error', 'Error al procesar el pago');
+        return _this4.toast('error', 'Error al procesar el pago');
       })["finally"](function () {
-        _this2.submitting = false;
+        _this4.submitting = false;
       });
     },
     resolveEndpoint: function resolveEndpoint() {
@@ -6742,44 +6801,33 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "modal-body"
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
-    staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v(_vm._s(_vm.amountLabel))]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model.number",
-      value: _vm.form.amount,
-      expression: "form.amount",
-      modifiers: {
-        number: true
-      }
-    }],
-    staticClass: "form-control",
+  }, [_c("div", {
+    staticClass: "alert alert-info mb-3"
+  }, [_vm._m(0), _vm._v(" "), _c("p", {
+    staticClass: "mb-1 h5"
+  }, [_vm._v("$" + _vm._s(_vm.remaining.toFixed(2)) + " USD")]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c("div", {
+    staticClass: "alert alert-warning mb-3"
+  }, [_vm._m(2), _vm._v(" "), _c("p", {
+    staticClass: "mb-1"
+  }, [_c("strong", [_vm._v(_vm._s(_vm.exchangeRateFormatted) + " Bs/$")])]), _vm._v(" "), _c("p", {
+    staticClass: "mb-1"
+  }, [_c("small", [_vm._v("Equivalente aproximado: "), _c("strong", [_vm._v("Bs. " + _vm._s((_vm.remaining * _vm.exchangeRate).toLocaleString("es-VE", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })))])])]), _vm._v(" "), _c("small", {
+    staticClass: "text-muted"
+  }, [_c("i", {
+    staticClass: "fas fa-info-circle"
+  }), _vm._v("\n              Para pagos en bolívares, consulte la tasa oficial del BCV en \n              "), _c("a", {
+    staticClass: "alert-link",
     attrs: {
-      type: "number",
-      min: "0.01",
-      step: "0.01",
-      required: ""
-    },
-    domProps: {
-      value: _vm.form.amount
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.form, "amount", _vm._n($event.target.value));
-      },
-      blur: function blur($event) {
-        return _vm.$forceUpdate();
-      }
+      href: "https://www.bcv.org.ve/",
+      target: "_blank",
+      rel: "noopener noreferrer"
     }
-  })]), _vm._v(" "), _c("div", {
+  }, [_vm._v("www.bcv.org.ve")]), _vm._v(".\n              "), _c("br"), _vm._v(" "), _c("strong", [_vm._v("Cálculo:")]), _vm._v(" Monto a pagar en Bs = $" + _vm._s(_vm.remaining.toFixed(2)) + " × Tasa BCV en Bs/$\n            ")])]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Método de Pago")]), _vm._v(" "), _c("select", {
+  }, [_vm._m(3), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6791,7 +6839,7 @@ var render = function render() {
       required: ""
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -6799,30 +6847,28 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.form, "payment_method", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, _vm.onPaymentMethodChange]
     }
   }, [_c("option", {
     attrs: {
       disabled: "",
       value: ""
     }
-  }, [_vm._v("Seleccione un método")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "pago_movil"
+  }, [_vm._v("Seleccione un método")]), _vm._v(" "), _vm._l(_vm.paymentMethods, function (method) {
+    return _c("option", {
+      key: method.code,
+      domProps: {
+        value: method.code
+      }
+    }, [_vm._v("\n                " + _vm._s(method.name) + "\n              ")]);
+  })], 2)]), _vm._v(" "), _vm.selectedMethodInstructions ? _c("div", {
+    staticClass: "alert alert-light mb-3"
+  }, [_vm._m(4), _vm._v(" "), _c("p", {
+    staticClass: "mb-0",
+    staticStyle: {
+      "white-space": "pre-line"
     }
-  }, [_vm._v("Pago Móvil")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "transferencia"
-    }
-  }, [_vm._v("Transferencia")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "efectivo"
-    }
-  }, [_vm._v("Efectivo")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "tarjeta"
-    }
-  }, [_vm._v("Tarjeta")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.selectedMethodInstructions))])]) : _vm._e(), _vm._v(" "), _c("div", {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -6832,7 +6878,9 @@ var render = function render() {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Número de Referencia")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Número de Referencia "), _vm.needsReference ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")]) : _vm._e()]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6842,7 +6890,8 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      required: _vm.needsReference
+      required: _vm.needsReference,
+      placeholder: "Ej: 1234567890"
     },
     domProps: {
       value: _vm.form.reference_number
@@ -6855,9 +6904,7 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Fecha del Pago")]), _vm._v(" "), _c("input", {
+  }, [_vm._m(5), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6888,7 +6935,9 @@ var render = function render() {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Fecha (Pago Móvil)")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Fecha del Pago Móvil "), _vm.needsMobileDate ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")]) : _vm._e()]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6909,7 +6958,9 @@ var render = function render() {
         _vm.$set(_vm.form, "mobile_payment_date", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _c("small", {
+    staticClass: "form-text text-muted"
+  }, [_vm._v("Fecha que aparece en el comprobante del pago móvil")])]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
@@ -6922,7 +6973,8 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      rows: "3"
+      rows: "3",
+      placeholder: "Detalles adicionales sobre el pago"
     },
     domProps: {
       value: _vm.form.comment
@@ -6963,15 +7015,51 @@ var render = function render() {
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Moneda")]), _vm._v(" "), _c("div", {
-    staticClass: "form-control-plaintext fw-semibold"
-  }, [_vm._v("USD ($)")]), _vm._v(" "), _c("small", {
+  return _c("h6", {
+    staticClass: "mb-2"
+  }, [_c("i", {
+    staticClass: "fas fa-dollar-sign"
+  }), _vm._v(" Monto a Pagar")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("small", {
     staticClass: "text-muted"
-  }, [_vm._v("Los pagos se registran en dólares americanos.")])]);
+  }, [_c("i", {
+    staticClass: "fas fa-info-circle"
+  }), _vm._v(" \n              Este es el monto pendiente en dólares americanos. Si realiza el pago en bolívares, \n              debe utilizar la tasa de cambio oficial del Banco Central de Venezuela (BCV).\n            ")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("h6", {
+    staticClass: "mb-2"
+  }, [_c("i", {
+    staticClass: "fas fa-exchange-alt"
+  }), _vm._v(" Tasa de Cambio Referencial")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Método de Pago "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("h6", {
+    staticClass: "mb-2"
+  }, [_c("i", {
+    staticClass: "fas fa-info-circle"
+  }), _vm._v(" Instrucciones de Pago")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Fecha del Pago "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("*")])]);
 }];
 render._withStripped = true;
 
@@ -11934,6 +12022,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 // module
 exports.push([module.i, "\n.object-fit-cover[data-v-5170b019]{ object-fit: cover;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.alert-info[data-v-a3951f10] {\n  background-color: #e7f3ff;\n  border-color: #b3d9ff;\n}\n.alert-warning[data-v-a3951f10] {\n  background-color: #fff4e5;\n  border-color: #ffd699;\n}\n", ""]);
 
 // exports
 
@@ -43280,6 +43387,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--5-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--5-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/ecommerce/components/product-detail/ProductDetailSkeletonEcommerceComponent.vue?vue&type=style&index=0&id=79ac96c6&scoped=true&lang=css ***!
@@ -57287,7 +57424,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PaymentRegisterEcommerceComponent_vue_vue_type_template_id_a3951f10_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaymentRegisterEcommerceComponent.vue?vue&type=template&id=a3951f10&scoped=true */ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=template&id=a3951f10&scoped=true");
 /* harmony import */ var _PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js */ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css */ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -57295,7 +57434,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   _PaymentRegisterEcommerceComponent_vue_vue_type_template_id_a3951f10_scoped_true__WEBPACK_IMPORTED_MODULE_0__["render"],
   _PaymentRegisterEcommerceComponent_vue_vue_type_template_id_a3951f10_scoped_true__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -57324,6 +57463,22 @@ component.options.__file = "resources/js/ecommerce/components/orders/PaymentRegi
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=script&lang=js");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css":
+/*!************************************************************************************************************************************************!*\
+  !*** ./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css ***!
+  \************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--5-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--5-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue?vue&type=style&index=0&id=a3951f10&scoped=true&lang=css");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentRegisterEcommerceComponent_vue_vue_type_style_index_0_id_a3951f10_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 
@@ -57639,7 +57794,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 0:
+/***/ 1:
 /*!*********************************************!*\
   !*** multi ./resources/js/ecommerce/app.js ***!
   \*********************************************/
