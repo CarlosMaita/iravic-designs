@@ -178,7 +178,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             }
         }
         
-        // atach images if exists - from file upload (legacy support)
+        // attach images if exists - from file upload (legacy support)
         $files = $request->file('file', []);
         if (!empty($files)) {
             $this->saveImages($product, $files);
@@ -268,10 +268,17 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $this->cleanStorageImages();
     }
 
-    
+    /**
+     * Clean up orphaned temporary images older than 1 hour
+     * This prevents deleting images that are currently being processed
+     * 
+     * @return void
+     */
     private function cleanStorageImages(): void
     {
-        ProductImage::where('temp_code', '!=' , null)->delete();
+        ProductImage::where('temp_code', '!=' , null)
+            ->where('created_at', '<', now()->subHour())
+            ->delete();
     }
 
     /**
@@ -345,7 +352,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             }
         }
 
-        // atach images if exists - from file upload (legacy support)
+        // attach images if exists - from file upload (legacy support)
         $files = $request->file('file', []);
         if (!empty($files)) {
             $this->saveImages($product, $files);
