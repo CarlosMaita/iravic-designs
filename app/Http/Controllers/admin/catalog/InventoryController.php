@@ -12,6 +12,13 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class InventoryController extends Controller
 {
+    // Excel column indices for regular products
+    private const REGULAR_PRICE_COLUMN = 6;
+    private const REGULAR_STOCK_START_COLUMN = 7;
+    
+    // Excel column indices for non-regular products
+    private const NON_REGULAR_PRICE_COLUMN = 10;
+    private const NON_REGULAR_STOCK_START_COLUMN = 11;
 
     public function download()
     {
@@ -52,8 +59,8 @@ class InventoryController extends Controller
         $stores = Store::all();
         $storeIds = $stores->pluck('id')->toArray();
 
-        $this->processProducts($data_regular_products, $id_row, 6, $storeIds, 7);
-        $this->processProducts($data_no_regular_products, $id_row, 10, $storeIds, 11);
+        $this->processProducts($data_regular_products, $id_row, self::REGULAR_PRICE_COLUMN, $storeIds, self::REGULAR_STOCK_START_COLUMN);
+        $this->processProducts($data_no_regular_products, $id_row, self::NON_REGULAR_PRICE_COLUMN, $storeIds, self::NON_REGULAR_STOCK_START_COLUMN);
 
         return response()->json([
             'status' => 200,
