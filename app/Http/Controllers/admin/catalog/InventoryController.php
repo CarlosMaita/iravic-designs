@@ -12,6 +12,13 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class InventoryController extends Controller
 {
+    // Excel column indices for regular products
+    private const REGULAR_PRICE_COLUMN = 6;
+    private const REGULAR_STOCK_START_COLUMN = 7;
+    
+    // Excel column indices for non-regular products
+    private const NON_REGULAR_PRICE_COLUMN = 10;
+    private const NON_REGULAR_STOCK_START_COLUMN = 11;
 
     public function download()
     {
@@ -52,8 +59,8 @@ class InventoryController extends Controller
         $stores = Store::all();
         $storeIds = $stores->pluck('id')->toArray();
 
-        $this->processProducts($data_regular_products, $id_row, 6, $storeIds);
-        $this->processProducts($data_no_regular_products, $id_row, 10, $storeIds, 13);
+        $this->processProducts($data_regular_products, $id_row, self::REGULAR_PRICE_COLUMN, $storeIds, self::REGULAR_STOCK_START_COLUMN);
+        $this->processProducts($data_no_regular_products, $id_row, self::NON_REGULAR_PRICE_COLUMN, $storeIds, self::NON_REGULAR_STOCK_START_COLUMN);
 
         return response()->json([
             'status' => 200,
@@ -82,13 +89,24 @@ private function validateTemplateAndData($data_regular_products, $data_no_regula
 
 private function processProducts($data_products, $id_row, $price_row, $storeIds, $stock_row_start = 9)
 {
-    $ids = array_unique(array_filter(array_column($data_products, $id_row)));
+    // Skip header row and filter only numeric IDs
+    $ids = array_unique(array_filter(array_column($data_products, $id_row), function($id) {
+        return is_numeric($id);
+    }));
     $products = Product::whereIn('id', $ids)->get();
 
-    foreach ($data_products as $row) {
+    foreach ($data_products as $rowIndex => $row) {
+        // Skip header row (first row)
+        if ($rowIndex === 0) continue;
+        
+        // Break if ID column is empty
         if (empty($row[$id_row])) break;
 
         $id = $row[$id_row];
+        
+        // Skip if ID is not numeric
+        if (!is_numeric($id)) continue;
+        
         $product = $products->firstWhere('id', $id);
         if ($product) {
             $price = $row[$price_row] ?? 0;
