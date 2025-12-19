@@ -660,7 +660,7 @@
         <h2 class="h3 mb-3">¿Necesitas Ayuda Adicional?</h2>
         <p class="lead mb-4">Si tienes alguna duda o necesitas asistencia, nuestro equipo está aquí para ayudarte.</p>
         <div class="row g-3 justify-content-center">
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-body text-center p-4">
                 <i class="ci-mail fs-1 text-primary mb-3"></i>
@@ -668,8 +668,8 @@
                 <a href="mailto:soporte@iravicdesigns.com" class="text-decoration-none">soporte@iravicdesigns.com</a>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
+          </div> -->
+          <!-- <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-body text-center p-4">
                 <i class="ci-github fs-1 text-primary mb-3"></i>
@@ -677,7 +677,7 @@
                 <a href="https://github.com/CarlosMaita/iravic-designs/issues" target="_blank" class="text-decoration-none">Reportar Issue</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-body text-center p-4">
@@ -699,7 +699,7 @@
     <div class="col-lg-10 mx-auto">
       <div class="card border-0 shadow-sm bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
         <div class="card-body p-4 p-md-5 text-white">
-          <h2 class="h3 mb-4 text-white"><i class="ci-star me-2"></i>Consejos para una Compra Exitosa</h2>
+          <h2 class="h3 mb-4"><i class="ci-star me-2"></i>Consejos para una Compra Exitosa</h2>
           <div class="row g-3">
             <div class="col-md-6">
               <div class="d-flex align-items-start">
