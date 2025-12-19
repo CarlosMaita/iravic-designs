@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ecommerce;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class HelpController extends Controller
 {
@@ -13,6 +14,13 @@ class HelpController extends Controller
      */
     public function index()
     {
-        return view('ecommerce.help.index');
+        // Get categories for the header navigation
+        try {
+            $categories = Category::withCount('products')->orderBy('id')->get();
+        } catch (\Exception $e) {
+            $categories = collect();
+        }
+        
+        return view('ecommerce.help.index', compact('categories'));
     }
 }
