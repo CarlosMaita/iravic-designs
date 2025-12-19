@@ -7,6 +7,8 @@
 
 **Iravic Designs** es una plataforma de comercio electrónico completa desarrollada con Laravel 9 y Vue.js. El sistema incluye un panel de administración avanzado construido con CoreUI, gestión integral de inventarios, procesamiento de órdenes, y un frontend responsivo para clientes.
 
+> **🛍️ ¿Eres un cliente?** Lee nuestra [**Guía de Compra para Usuarios**](GUIA_COMPRA_USUARIO.md) para aprender cómo comprar, pagar y rastrear tus pedidos.
+
 ## 🌟 Descripción del Proyecto
 
 Iravic Designs es una solución e-commerce robusta que combina la potencia del backend de Laravel con la interactividad del frontend de Vue.js. Está diseñado para manejar operaciones comerciales complejas, desde la gestión de productos hasta el procesamiento de pagos y la administración de clientes.
@@ -559,6 +561,11 @@ SOFTWARE.
 ## 📞 Soporte
 
 ### Documentación Adicional
+
+#### Para Usuarios Finales
+- [📖 Guía de Compra para Usuarios](GUIA_COMPRA_USUARIO.md) - Cómo comprar, pagar y rastrear pedidos
+
+#### Para Desarrolladores
 - [Estándares de Codificación](CODING_STANDARDS.md)
 - [Guía de Implementación](IMPLEMENTATION_GUIDE.md)
 - [Documentación de Laravel](https://laravel.com/docs)
