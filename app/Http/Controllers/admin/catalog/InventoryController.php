@@ -82,13 +82,24 @@ private function validateTemplateAndData($data_regular_products, $data_no_regula
 
 private function processProducts($data_products, $id_row, $price_row, $storeIds, $stock_row_start = 9)
 {
-    $ids = array_unique(array_filter(array_column($data_products, $id_row)));
+    // Skip header row and filter only numeric IDs
+    $ids = array_unique(array_filter(array_column($data_products, $id_row), function($id) {
+        return is_numeric($id);
+    }));
     $products = Product::whereIn('id', $ids)->get();
 
-    foreach ($data_products as $row) {
+    foreach ($data_products as $rowIndex => $row) {
+        // Skip header row (first row)
+        if ($rowIndex === 0) continue;
+        
+        // Break if ID column is empty
         if (empty($row[$id_row])) break;
 
         $id = $row[$id_row];
+        
+        // Skip if ID is not numeric
+        if (!is_numeric($id)) continue;
+        
         $product = $products->firstWhere('id', $id);
         if ($product) {
             $price = $row[$price_row] ?? 0;
