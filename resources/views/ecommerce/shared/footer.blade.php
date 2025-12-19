@@ -160,11 +160,10 @@
           <div class="d-md-flex justify-content-center order-lg-1">
             <ul class="nav justify-content-center gap-4 order-md-3 mb-4 mb-md-0">
               <li class="animate-underline">
-                {{-- <a class="nav-link fs-xs fw-normal p-0 animate-target" href="#!">Privacidad</a> --}}
+                <a class="nav-link fs-xs fw-normal p-0 animate-target" href="{{ route('ecommerce.help') }}">
+                  <i class="ci-help-circle me-1"></i>Ayuda
+                </a>
               </li>
-              {{-- <li class="animate-underline">
-                <a class="nav-link fs-xs fw-normal p-0 animate-target" href="#!">Afiliados</a>
-              </li> --}}
               <li class="animate-underline">
                 <span class="nav-link fs-xs fw-normal p-0 animate-target text-body-secondary">
                   Iravic Designs - {{ date('Y') }}.
