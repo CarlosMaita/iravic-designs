@@ -698,7 +698,7 @@
   <div class="row">
     <div class="col-lg-10 mx-auto">
       <div class="card border-0 shadow-sm bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div class="card-body p-4 p-md-5 text-white">
+        <div class="card-body p-4 p-md-5">
           <h2 class="h3 mb-4"><i class="ci-star me-2"></i>Consejos para una Compra Exitosa</h2>
           <div class="row g-3">
             <div class="col-md-6">
