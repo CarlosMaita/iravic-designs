@@ -52,8 +52,8 @@ class InventoryController extends Controller
         $stores = Store::all();
         $storeIds = $stores->pluck('id')->toArray();
 
-        $this->processProducts($data_regular_products, $id_row, 6, $storeIds);
-        $this->processProducts($data_no_regular_products, $id_row, 10, $storeIds, 13);
+        $this->processProducts($data_regular_products, $id_row, 6, $storeIds, 7);
+        $this->processProducts($data_no_regular_products, $id_row, 10, $storeIds, 11);
 
         return response()->json([
             'status' => 200,
