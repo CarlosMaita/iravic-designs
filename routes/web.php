@@ -30,6 +30,8 @@ Route::group(['namespace' => 'App\Http\Controllers\ecommerce'], function () {
 Route::get('/categoria/{slug}', 'CatalogController@category')->name('ecommerce.categoria');
     # Product Detail
     Route::get('/producto/{slug}', 'CatalogController@show')->name('ecommerce.product.detail');
+    # Help
+    Route::get('/ayuda', 'HelpController@index')->name('ecommerce.help');
 });
 
 # Customer Authentication Routes
