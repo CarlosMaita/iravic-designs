@@ -60,8 +60,11 @@
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
 
 
-  {{-- Productos Destacados (Diseño Figma) --}}
-  @include('ecommerce.home.partials.featured-products-figma', ['featuredProducts' => $featuredProducts])
+  {{-- Productos Destacados en Carrusel --}}
+  <featured-products-carousel-ecommerce-component
+    :featured-products='@json($featuredProducts)'
+    product-detail-route='{{ route('ecommerce.product.detail', ':slug') }}'
+  />
 
   <special-offers-carousel-ecommerce-component
     :offers='@json($specialOffers)'
