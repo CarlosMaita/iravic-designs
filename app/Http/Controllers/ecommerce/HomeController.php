@@ -11,6 +11,7 @@ use App\Models\Color;
 use App\Models\Product;
 use App\Models\Size;
 use App\Models\SpecialOffer;
+use App\Models\HomeCta;
 use Illuminate\Support\Facades\Request;
 
 class HomeController extends Controller
@@ -158,7 +159,14 @@ class HomeController extends Controller
             $specialOffers = collect(); // Empty collection if table doesn't exist
         }
         
-        return view('ecommerce.home.index', compact('categories', 'categories_cards', 'banners', 'featuredProducts', 'specialOffers'));
+        // Handle home CTAs
+        try {
+            $homeCtas = HomeCta::ordered()->get();
+        } catch (\Exception $e) {
+            $homeCtas = collect(); // Empty collection if table doesn't exist
+        }
+        
+        return view('ecommerce.home.index', compact('categories', 'categories_cards', 'banners', 'featuredProducts', 'specialOffers', 'homeCtas'));
     }
 
 }

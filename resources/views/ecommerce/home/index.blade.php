@@ -59,6 +59,10 @@
   {{--  Carousel --}}
   @include('ecommerce.home.partials.carousel', ['banners' => $banners])
 
+  {{-- CTA Carousel --}}
+  <cta-carousel-ecommerce-component
+    :ctas='@json($homeCtas)'
+  />
 
   {{-- Productos Destacados en Carrusel --}}
   <featured-products-carousel-ecommerce-component
