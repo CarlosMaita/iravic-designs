@@ -59,6 +59,10 @@
       // Expose currency data globally for components
       window.currencyData = {!! \App\Helpers\CurrencyHelper::getJavascriptData() !!};
     </script>
+    
+    <!-- Load Swiper before Vue app to ensure it's available for carousel components -->
+    <script src="{{asset('assets/cartzilla/vendor/swiper/swiper-bundle.min.js')}}"></script>
+    
     <script src="{{ asset('js/ecommerce/app.js') }}" defer></script>
     <script>
       // Prefill shipping modal fields from saved customer shipping info when the modal opens
@@ -217,7 +221,6 @@
   {{-- end App Vue --}}
 
     <!-- Vendor scripts -->
-    <script src="{{asset('assets/cartzilla/vendor/swiper/swiper-bundle.min.js')}}"></script>
     <script src="{{asset('assets/cartzilla/vendor/simplebar/dist/simplebar.min.js')}}"></script>
     <script src="{{asset('assets/cartzilla/vendor/choices.js/public/assets/scripts/choices.min.js')}}"></script>
     <script src="{{asset('assets/cartzilla/vendor/nouislider/dist/nouislider.min.js')}}"></script>
