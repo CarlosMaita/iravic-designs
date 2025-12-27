@@ -42,7 +42,9 @@ class HomeController extends Controller
         // Handle case where is_featured column doesn't exist yet
         try {
             $featuredProducts = Product::where('is_featured', true)
-                                      ->with(['images', 'category'])
+                                      ->with(['images' => function($query) {
+                                          $query->orderByDesc('is_primary')->orderBy('position');
+                                      }, 'category'])
                                       ->orderBy('updated_at', 'desc')
                                       ->take(12)
                                       ->get();
