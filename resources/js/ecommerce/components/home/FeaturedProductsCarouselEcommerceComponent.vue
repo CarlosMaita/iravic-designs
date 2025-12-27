@@ -38,14 +38,14 @@
         <button 
           type="button" 
           :id="ids.prev"
-          class="btn btn-icon btn-outline-primary featured-products-prev position-absolute top-50 start-0 translate-middle-y z-5 ms-n5 d-none d-xl-inline-flex"
+          class="btn btn-icon btn-outline-primary featured-products-prev position-absolute top-50 start-0 translate-middle-y z-5 ms-2 d-none d-xl-inline-flex"
         >
           <i class="fas fa-chevron-left"></i>
         </button>
         <button 
           type="button" 
           :id="ids.next"
-          class="btn btn-icon btn-outline-primary featured-products-next position-absolute top-50 end-0 translate-middle-y z-5 me-n5 d-none d-xl-inline-flex"
+          class="btn btn-icon btn-outline-primary featured-products-next position-absolute top-50 end-0 translate-middle-y z-5 me-2 d-none d-xl-inline-flex"
         >
           <i class="fas fa-chevron-right"></i>
         </button>
@@ -246,9 +246,18 @@ export default {
   }
 }
 
-/* Ensure z-index for navigation buttons */
+/* Navigation button positioning */
 .featured-products-prev,
 .featured-products-next {
   z-index: 10;
+}
+
+/* Ensure buttons are visible and well-positioned */
+.featured-products-prev {
+  left: 0.5rem !important;
+}
+
+.featured-products-next {
+  right: 0.5rem !important;
 }
 </style>
