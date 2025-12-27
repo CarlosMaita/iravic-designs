@@ -92,6 +92,12 @@ export default {
     },
     productImage() {
       if (this.product.images && this.product.images.length > 0) {
+        // Find the primary image first
+        const primaryImage = this.product.images.find(img => img.is_primary);
+        if (primaryImage) {
+          return primaryImage.full_url_img;
+        }
+        // Fallback to first image if no primary is set
         return this.product.images[0].full_url_img;
       }
       return '/assets/img/placeholder-product.svg'; // Cartzilla placeholder
