@@ -1,15 +1,6 @@
 <template>
   <section v-if="ctas && ctas.length > 0" class="py-5">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-6">
-          <div class="text-center pb-4 mb-2 mb-md-3">
-            <h2 class="h1 mb-0">Explora Nuestras Categorías</h2>
-            <p class="fs-lg text-body-secondary mb-0">Encuentra lo que buscas rápidamente</p>
-          </div>
-        </div>
-      </div>
-      
       <div class="position-relative">
         <!-- Swiper slider -->
         <div 

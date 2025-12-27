@@ -94,6 +94,7 @@
         $menuService->isActive($url,"/admin/config/general", false, true) . " " .
         $menuService->isActive($url,"/admin/config/tasa-cambio", false, true) . " " .
         $menuService->isActive($url,"/admin/config/submenu-links", false, true) . " " .
+        $menuService->isActive($url,"/admin/config/ctas-home", false, true) . " " .
         $menuService->isActive($url,"/admin/banners", false, true) . " " .
         $menuService->isActive($url,"/admin/ofertas-especiales", false, true)
     }}">
@@ -112,6 +113,12 @@
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/config/submenu-links')}}" href="{{ route('admin.submenu-links.index') }}">
                     <span class="c-sidebar-nav-icon"></span> Submenú
+                </a>
+            </li>
+            {{-- Home CTAs --}}
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{$menuService->isActive($url,'/admin/config/ctas-home')}}" href="{{ route('admin.home-ctas.index') }}">
+                    <span class="c-sidebar-nav-icon"></span> CTAs Home
                 </a>
             </li>
             {{-- Banner CRUD --}}
