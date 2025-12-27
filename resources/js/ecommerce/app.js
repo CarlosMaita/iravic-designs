@@ -54,6 +54,8 @@ Vue.component('product-card-skeleton-ecommerce-component', require('../ecommerce
 Vue.component('featured-products-carousel-ecommerce-component', require('../ecommerce/components/home/FeaturedProductsCarouselEcommerceComponent.vue').default);
 Vue.component('featured-product-card-ecommerce-component', require('../ecommerce/components/home/FeaturedProductCardEcommerceComponent.vue').default);
 Vue.component('special-offers-carousel-ecommerce-component', require('../ecommerce/components/home/SpecialOffersCarouselEcommerceComponent.vue').default);
+Vue.component('cta-carousel-ecommerce-component', require('../ecommerce/components/home/CtaCarouselEcommerceComponent.vue').default);
+Vue.component('cta-card-ecommerce-component', require('../ecommerce/components/home/CtaCardEcommerceComponent.vue').default);
 
 // Orders ecommerce components
 Vue.component('payment-register-ecommerce-component', require('../ecommerce/components/orders/PaymentRegisterEcommerceComponent.vue').default);

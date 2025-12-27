@@ -199,6 +199,16 @@ Route::group(['namespace' => 'App\Http\Controllers\admin', 'middleware' => ['aut
         Route::post('tasa-cambio/toggle-module', 'ExchangeRateController@toggleCurrencyModule')->name('admin.exchange-rate.toggle-module');
         Route::get('tasa-cambio/current', 'ExchangeRateController@getCurrentRate')->name('admin.exchange-rate.current');
         #
+        # Home CTAs Routes
+        Route::resource('ctas-home', 'HomeCtaController')->except('show')->names([
+            'index' => 'admin.home-ctas.index',
+            'create' => 'admin.home-ctas.create',
+            'store' => 'admin.home-ctas.store',
+            'edit' => 'admin.home-ctas.edit',
+            'update' => 'admin.home-ctas.update',
+            'destroy' => 'admin.home-ctas.destroy',
+        ]);
+        #
         # Submenu Links Routes
         Route::resource('submenu-links', 'SubmenuLinkController')->except('show')->names([
             'index' => 'admin.submenu-links.index',
