@@ -294,8 +294,6 @@
                                             <!-- end frequency collection component -->
                                             <hr> 
                                             <!-- Credit-related warnings removed - credits module disabled -->
-                                                        </div>
-                                                    </div>
                                                     <div class="row">
                                                         <div class="col-md-8 mx-auto">
                                                             <div class="custom-control custom-checkbox text-center">
@@ -336,8 +334,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <!--  -->
