@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       swiper: null,
-      uniqueId: Math.random().toString(36).substr(2, 9)
+      uniqueId: Math.random().toString(36).substring(2, 9)
     };
   },
   computed: {

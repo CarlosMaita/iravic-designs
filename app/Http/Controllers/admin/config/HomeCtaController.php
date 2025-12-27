@@ -36,12 +36,22 @@ class HomeCtaController extends Controller
     public function edit($id)
     {
         $homeCta = $this->homeCtas->find($id);
+        
+        if (!$homeCta) {
+            return redirect()->route('admin.home-ctas.index')->with('error', 'CTA no encontrado.');
+        }
+        
         return view('admin.home-ctas.edit', compact('homeCta'));
     }
 
     public function update(HomeCtaRequest $request, $id)
     {
         $homeCta = $this->homeCtas->find($id);
+        
+        if (!$homeCta) {
+            return redirect()->route('admin.home-ctas.index')->with('error', 'CTA no encontrado.');
+        }
+        
         $this->homeCtas->updateByRequest($request, $homeCta);
         return redirect()->route('admin.home-ctas.index')->with('success', 'CTA actualizado correctamente.');
     }
@@ -49,6 +59,11 @@ class HomeCtaController extends Controller
     public function destroy($id)
     {
         $homeCta = $this->homeCtas->find($id);
+        
+        if (!$homeCta) {
+            return redirect()->route('admin.home-ctas.index')->with('error', 'CTA no encontrado.');
+        }
+        
         $this->homeCtas->delete($homeCta);
         return redirect()->route('admin.home-ctas.index')->with('success', 'CTA eliminado correctamente.');
     }
