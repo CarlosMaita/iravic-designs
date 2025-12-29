@@ -61,18 +61,18 @@
 
   {{-- CTA Carousel --}}
   <cta-carousel-ecommerce-component
-    :ctas='@json($homeCtas)'
+    v-bind:ctas="{{ json_encode($homeCtas, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}"
   />
 
   {{-- Productos Destacados en Carrusel --}}
   <featured-products-carousel-ecommerce-component
-    :featured-products='@json($featuredProducts)'
-    product-detail-route='{{ route('ecommerce.product.detail', ':slug') }}'
+    v-bind:featured-products="{{ json_encode($featuredProducts, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}"
+    product-detail-route="{{ route('ecommerce.product.detail', ':slug') }}"
   />
 
   <special-offers-carousel-ecommerce-component
-    :offers='@json($specialOffers)'
-    catalog-route='{{ route('ecommerce.catalog') }}'
+    v-bind:offers="{{ json_encode($specialOffers, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}"
+    catalog-route="{{ route('ecommerce.catalog') }}"
   />
 
 @endsection
