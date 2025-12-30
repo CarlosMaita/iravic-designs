@@ -93,7 +93,7 @@ export default {
         this.swiper = new window.Swiper(`#${this.ids.container}`, {
           slidesPerView: 1,
           spaceBetween: 20,
-          loop: this.ctas.length > 3,
+          loop: this.ctas.length >= 10,
           navigation: {
             nextEl: `#${this.ids.next}`,
             prevEl: `#${this.ids.prev}`,
