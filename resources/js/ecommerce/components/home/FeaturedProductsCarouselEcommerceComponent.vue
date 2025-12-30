@@ -103,7 +103,7 @@ export default {
       this.swiper = new window.Swiper('#' + this.ids.container, {
         slidesPerView: 1,
         spaceBetween: 24,
-        loop: this.featuredProducts.length > 5,
+        loop: this.featuredProducts.length >= 10,
         pagination: this.featuredProducts.length > 1 ? {
           el: '#' + this.ids.pagination,
           clickable: true
