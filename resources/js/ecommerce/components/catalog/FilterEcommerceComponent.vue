@@ -335,8 +335,34 @@ export default {
       // Add any methods you need here
       selectCategory(category) {
         this.selectedCategory = category;
-        this.isFilterActive = true
-        this.setFilter();
+        this.isFilterActive = true;
+        
+        // Redirect to slug-based category route
+        // Build URL with other filters as query parameters
+        const url = new URL(window.location.origin + '/categoria/' + category.slug);
+        
+        // Add other filters as query parameters (but not category)
+        if (this.selectedBrand) {
+          url.searchParams.set('brand', this.selectedBrand.id);
+        }
+        if (this.selectedGender) {
+          url.searchParams.set('gender', this.selectedGender);
+        }
+        if (this.selectedColor) {
+          url.searchParams.set('color', this.selectedColor.id);
+        }
+        if (this.selectedminPrice) {
+          url.searchParams.set('min_price', this.selectedminPrice);
+        }
+        if (this.selectedmaxPrice) {
+          url.searchParams.set('max_price', this.selectedmaxPrice);
+        }
+        if (this.selectedSearch) {
+          url.searchParams.set('search', this.selectedSearch);
+        }
+        
+        // Navigate to the category page
+        window.location.href = url.toString();
       },
       selectBrand(brand) {
         this.selectedBrand = brand;
@@ -389,9 +415,36 @@ export default {
       removeSelection(type) {
         this[`selected${type}`] = null;
         this.checkFilterActive();
-        this.setFilter();
-        type === 'Search'   ? this.cleanSearchParams('search') : null;
-        type === 'Category' ? this.cleanSearchParams('category') : null;
+        
+        // Special handling for category removal - redirect to main catalog
+        if (type === 'Category') {
+          // Build URL for main catalog with other filters
+          const url = new URL(window.location.origin + '/catalogo');
+          
+          if (this.selectedBrand) {
+            url.searchParams.set('brand', this.selectedBrand.id);
+          }
+          if (this.selectedGender) {
+            url.searchParams.set('gender', this.selectedGender);
+          }
+          if (this.selectedColor) {
+            url.searchParams.set('color', this.selectedColor.id);
+          }
+          if (this.selectedminPrice) {
+            url.searchParams.set('min_price', this.selectedminPrice);
+          }
+          if (this.selectedmaxPrice) {
+            url.searchParams.set('max_price', this.selectedmaxPrice);
+          }
+          if (this.selectedSearch) {
+            url.searchParams.set('search', this.selectedSearch);
+          }
+          
+          window.location.href = url.toString();
+        } else {
+          this.setFilter();
+          type === 'Search' ? this.cleanSearchParams('search') : null;
+        }
       },
       cleanPriceSelection(){
         this.selectedminPrice = null;
@@ -402,16 +455,23 @@ export default {
         this.setFilter();
       },
       clearFilters() {
-        this.selectedCategory = null;
-        this.selectedBrand = null;
-        this.selectedGender = null;
-        this.selectedColor = null;
-        this.selectedSearch = null;
-        this.selectedminPrice = null;
-        this.selectedmaxPrice = null;
-        this.isPriceSelected = false;
-        this.isFilterActive = false;
-        this.setFilter();
+        // If on category page, redirect to main catalog
+        const isOnCategoryPage = window.location.pathname.includes('/categoria/');
+        if (isOnCategoryPage) {
+          window.location.href = '/catalogo';
+        } else {
+          // Otherwise just clear filters and update URL
+          this.selectedCategory = null;
+          this.selectedBrand = null;
+          this.selectedGender = null;
+          this.selectedColor = null;
+          this.selectedSearch = null;
+          this.selectedminPrice = null;
+          this.selectedmaxPrice = null;
+          this.isPriceSelected = false;
+          this.isFilterActive = false;
+          this.setFilter();
+        }
       },
       cleanSearchParams(param) {
         const url = new URL(window.location.href);
@@ -432,10 +492,15 @@ export default {
         url.searchParams.delete('max_price');
         
         // Add current filter parameters
+        // Note: We don't add category as a query parameter when on /categoria/{slug} route
+        // The category is already in the URL path
         if (filters.search) {
           url.searchParams.set('search', filters.search);
         }
-        if (filters.category) {
+        // Only add category query param if we're on the main /catalogo page
+        // If we're on /categoria/{slug}, the category is in the path, not query string
+        const isOnCategoryPage = window.location.pathname.includes('/categoria/');
+        if (filters.category && !isOnCategoryPage) {
           url.searchParams.set('category', filters.category);
         }
         if (filters.brand) {
