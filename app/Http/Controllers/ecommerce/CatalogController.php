@@ -103,7 +103,13 @@ class CatalogController extends Controller
         // Redirect old category ID-based URLs to slug-based URLs
         if ($category) {
             $categoryModel = Category::find((int) $category);
-            if ($categoryModel && $categoryModel->slug) {
+            if ($categoryModel) {
+                // Generate slug if missing (edge case)
+                if (!$categoryModel->slug) {
+                    $categoryModel->slug = \Illuminate\Support\Str::slug($categoryModel->name);
+                    $categoryModel->save();
+                }
+                
                 // Build query string with remaining parameters
                 $queryParams = request()->except('category');
                 $queryString = http_build_query($queryParams);
