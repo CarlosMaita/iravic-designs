@@ -14,7 +14,7 @@ class Category extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'base_category_id', 'image_banner', 'bg_banner'
+        'name', 'base_category_id', 'image_banner', 'bg_banner', 'slug'
     ];
 
     public function baseCategory()
