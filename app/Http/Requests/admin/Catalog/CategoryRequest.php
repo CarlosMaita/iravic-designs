@@ -42,7 +42,7 @@ class CategoryRequest extends FormRequest
             'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bg_banner' => 'nullable|string|max:100',
             'slug' => [
-                'required',
+                'nullable',
                 'min:3',
                 'max:191',
                 'alpha_dash',

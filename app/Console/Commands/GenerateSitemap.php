@@ -45,7 +45,7 @@ class GenerateSitemap extends Command
 
         // Add categories
         Category::all()->each(function (Category $category) use ($sitemap) {
-            $sitemap->add(Url::create("/categoria/{$category->id}")->setPriority(0.7));
+            $sitemap->add(Url::create("/categoria/{$category->slug}")->setPriority(0.7));
         });
 
         // Add products

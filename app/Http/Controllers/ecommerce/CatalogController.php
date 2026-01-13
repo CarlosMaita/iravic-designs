@@ -99,6 +99,22 @@ class CatalogController extends Controller
     {
         $search = $this->getSearchInput();
         $category = request()->input('category', null);
+        
+        // Redirect old category ID-based URLs to slug-based URLs
+        if ($category) {
+            $categoryModel = Category::find((int) $category);
+            if ($categoryModel && $categoryModel->slug) {
+                // Build query string with remaining parameters
+                $queryParams = request()->except('category');
+                $queryString = http_build_query($queryParams);
+                $url = route('ecommerce.categoria', $categoryModel->slug);
+                if ($queryString) {
+                    $url .= '?' . $queryString;
+                }
+                return redirect($url, 301);
+            }
+        }
+        
         $category = $category ? (int) $category : null;
         
         // Get additional filter parameters from URL
